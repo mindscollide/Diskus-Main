@@ -93,6 +93,7 @@ import {
   UpdateMeetingStatusApi,
 } from "../../../store/actions/NewMeeting2.actions";
 import { useMeetingListActions } from "@/container/meeting/commonComponents/useMeetingListActions";
+import store from "@/store/store";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -262,9 +263,30 @@ const PublishedMeetingList = () => {
     if (data.talkGroupID !== 0) {
       let allChatMessages =
         talkStateDataAllUserChats.AllUserChatsData.allMessages;
-      const foundRecord =
+      let foundRecord =
         Array.isArray(allChatMessages) &&
         allChatMessages.find((item) => item.id === data.talkGroupID);
+
+      // The chats reducer can be stale (e.g. a chat group created after it
+      // was last loaded) — refetch from the API before concluding the chat
+      // doesn't exist, instead of only ever trusting the cached reducer.
+      if (!foundRecord) {
+        await dispatch(
+          GetAllUserChats(
+            navigate,
+            parseInt(localStorage.getItem("userID")),
+            parseInt(currentOrganizationId),
+            t,
+          ),
+        );
+        const refreshedAllChatMessages =
+          store.getState().talkStateData.AllUserChats.AllUserChatsData
+            .allMessages;
+        foundRecord =
+          Array.isArray(refreshedAllChatMessages) &&
+          refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
+      }
+
       if (foundRecord) {
         dispatch(activeChat(foundRecord));
         localStorage.setItem("activeOtoChatID", data.talkGroupID);
@@ -360,7 +382,9 @@ const PublishedMeetingList = () => {
             : "Organizer",
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-    } catch (error) { }
+    } catch (error) {
+      console.error("src/container/meeting/publishMeeting/index.jsx:", error);
+    }
   };
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
 
@@ -389,8 +413,9 @@ const PublishedMeetingList = () => {
     const canShow = {
       edit:
         (status === STATUS.UPCOMING ||
-          status === STATUS.ACTIVE ||
-          status === STATUS.NOT_CONDUCTED) &&
+          status === STATUS.ACTIVE
+          //  || status === STATUS.NOT_CONDUCTED
+        ) &&
         isOrganizer,
       cancel: status === STATUS.UPCOMING && isOrganizer,
       contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
@@ -623,6 +648,7 @@ const PublishedMeetingList = () => {
         key: "title",
         width: 300,
         ellipsis: true,
+        align: "start",
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
         render: (text, record) => (
@@ -856,12 +882,24 @@ const PublishedMeetingList = () => {
           const isButtonShown = startMeetingButton.find(
             (btn) => Number(btn.meetingID) === Number(pK_MDID),
           );
-          const canStartMeeting =
-            (meetingCurrentStatus === STATUS.UPCOMING &&
-              isOrganizer &&
-              minutesDifference < minutesAgo) ||
-            (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
 
+          const canStartMeeting =
+            meetingCurrentStatus === STATUS.UPCOMING &&
+            isOrganizer &&
+            (
+              minutesDifference < minutesAgo ||
+              (
+                pK_MDID === isButtonShown?.meetingID &&
+                isButtonShown?.showButton &&
+                minutesDifference < minutesAgo
+              )
+            );
+          // const canStartMeeting =
+          //   (meetingCurrentStatus === STATUS.UPCOMING &&
+          //     isOrganizer &&
+          //     minutesDifference < minutesAgo) ||
+          //   (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
+          console.log(canStartMeeting, minutesDifference, minutesAgo, "")
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);
 
@@ -943,17 +981,17 @@ const PublishedMeetingList = () => {
           }
 
           // NOT CONDUCTED
-          if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
-            return (
-              <div className='d-flex justify-content-center align-items-center'>
-                <CustomButton
-                  text={t("Edit-meeting")}
-                  className={styles.EditMeetingButton}
-                  onClick={() => handleClick("EDIT_MEETING")}
-                />
-              </div>
-            );
-          }
+          // if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
+          //   return (
+          //     <div className='d-flex justify-content-center align-items-center'>
+          //       <CustomButton
+          //         text={t("Edit-meeting")}
+          //         className={styles.EditMeetingButton}
+          //         onClick={() => handleClick("EDIT_MEETING")}
+          //       />
+          //     </div>
+          //   );
+          // }
 
           return null;
         },

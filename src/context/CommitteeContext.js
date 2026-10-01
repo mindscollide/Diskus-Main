@@ -138,27 +138,6 @@ export const CommitteeProvider = ({ children }) => {
   // =========================
   // HELPERS (same pattern)
   // =========================
-  const getActiveListAndSetter = () => {
-    switch (currentCommitteeMeetingTabActive) {
-      case 2:
-        return {
-          list: committeeProposedMeetingData,
-          setList: setCommitteeProposedMeetingData,
-        };
-      case 3:
-        return {
-          list: committeeDraftMeetingData,
-          setList: setCommitteeDraftMeetingData,
-        };
-      case 1:
-      default:
-        return {
-          list: committeePublishedMeetingData,
-          setList: setCommitteePublishedMeetingData,
-        };
-    }
-  };
-
   const updateMeetingInAllLists = (meetingID, updateFn) => {
     const mapper = (item) =>
       Number(item.pK_MDID) === Number(meetingID) ? updateFn(item) : item;
@@ -236,7 +215,9 @@ export const CommitteeProvider = ({ children }) => {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [getMeetingByCommitteeID, currentCommitteeMeetingTabActive]);
 
   useEffect(() => {
@@ -249,25 +230,25 @@ export const CommitteeProvider = ({ children }) => {
 
         if (!meeting?.pK_MDID) return;
 
-        const { list, setList } = getActiveListAndSetter();
-
+        // A published meeting always belongs on the Published tab — not
+        // whichever tab happens to be active when the MQTT arrives (that
+        // previously let a publish event add the meeting to the Proposed
+        // or Draft tab if the user was viewing it at the time).
         const newMeetingData = await mqttMeetingData(meeting, 1);
 
-        const exists = list.some(
-          (item) => Number(item.pK_MDID) === Number(meeting.pK_MDID),
-        );
-
-        if (exists) {
-          setList((prev) =>
-            prev.map((item) =>
-              Number(item.pK_MDID) === Number(meeting.pK_MDID)
-                ? newMeetingData
-                : item,
-            ),
+        setCommitteePublishedMeetingData((prev) => {
+          const existingIndex = prev.findIndex(
+            (item) => Number(item.pK_MDID) === Number(meeting.pK_MDID),
           );
-        } else {
-          setList((prev) => [newMeetingData, ...prev]);
-        }
+
+          if (existingIndex !== -1) {
+            return prev.map((item, index) =>
+              index === existingIndex ? newMeetingData : item,
+            );
+          }
+
+          return [newMeetingData, ...prev];
+        });
 
         // A meeting that just got published can no longer be a draft or a
         // proposed meeting — drop it from those tabs regardless of which
@@ -324,7 +305,9 @@ export const CommitteeProvider = ({ children }) => {
           status: "9",
         }));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [MeetingStatusEnded]);
 
   useEffect(() => {
@@ -396,7 +379,9 @@ export const CommitteeProvider = ({ children }) => {
 
       // Reset MQTT
       dispatch(meetingNotConductedMQTT(null));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [meetingStatusNotConductedMqttData]);
 
   // ─── MQTT: Agenda Contributor Added ───
@@ -417,7 +402,9 @@ export const CommitteeProvider = ({ children }) => {
               ]);
               setCommitteeDraftMeetingDataRecord((prev) => prev + 1);
             }
-          } catch (error) {}
+          } catch (error) {
+            console.error("src/context/CommitteeContext.js:", error);
+          }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -425,7 +412,9 @@ export const CommitteeProvider = ({ children }) => {
         }
       };
       callAddAgendaContributor();
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [mqttMeetingAcAdded]);
 
   // ─── MQTT: Agenda Contributor Removed ───
@@ -441,7 +430,9 @@ export const CommitteeProvider = ({ children }) => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch (error) {
+        console.error("src/context/CommitteeContext.js:", error);
+      }
     }
   }, [mqttMeetingAcRemoved]);
 
@@ -463,7 +454,9 @@ export const CommitteeProvider = ({ children }) => {
               ]);
               setCommitteeDraftMeetingDataRecord((prev) => prev + 1);
             }
-          } catch (error) {}
+          } catch (error) {
+            console.error("src/context/CommitteeContext.js:", error);
+          }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -471,7 +464,9 @@ export const CommitteeProvider = ({ children }) => {
         }
       };
       callAddOrganizer();
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
   }, [mqttMeetingOrgAdded]);
 
   // ─── MQTT: Organizer Removed ───
@@ -487,7 +482,9 @@ export const CommitteeProvider = ({ children }) => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch (error) {
+        console.error("src/context/CommitteeContext.js:", error);
+      }
     }
   }, [mqttMeetingOrgRemoved]);
 
@@ -578,7 +575,9 @@ export const CommitteeProvider = ({ children }) => {
       setStartMeetingButton((prev) =>
         prev.filter((btn) => Number(btn.meetingID) !== Number(meetingID)),
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
 
@@ -638,7 +637,9 @@ export const CommitteeProvider = ({ children }) => {
         };
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/CommitteeContext.js:", error);
+      }
     }
   }, [meetingStatusProposedMqttData]);
 

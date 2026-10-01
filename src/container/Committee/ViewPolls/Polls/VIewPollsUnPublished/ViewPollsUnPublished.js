@@ -47,7 +47,9 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewPolls/Polls/VIewPollsUnPublished/ViewPollsUnPublished.js:", error);
+    }
   }, [Allpolls]);
   return (
     <section>

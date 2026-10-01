@@ -136,7 +136,9 @@ const GroupViewPolls = ({ groupStatus }) => {
         setPollsRows([]);
         setDublicatedrows([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/GroupPolls/GroupViewPolls.js:", error);
+    }
   }, [getPollByGroupID]);
 
   // MQTT Response of Polls for Groups
@@ -149,7 +151,9 @@ const GroupViewPolls = ({ groupStatus }) => {
         }
         dispatch(createPollGroupsMQTT(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/GroupPolls/GroupViewPolls.js:", error);
+    }
   }, [newPollGroups]);
 
   useEffect(() => {
@@ -175,7 +179,9 @@ const GroupViewPolls = ({ groupStatus }) => {
 
         setPollsRows(updatedRows);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/GroupPolls/GroupViewPolls.js:", error);
+    }
   }, [pollingSocket]);
 
   useEffect(() => {
@@ -191,7 +197,9 @@ const GroupViewPolls = ({ groupStatus }) => {
         });
         dispatch(deletePollsMQTT(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/GroupPolls/GroupViewPolls.js:", error);
+    }
   }, [newPollDelete]);
 
   const handleEditBtn = (record) => {
@@ -517,8 +525,9 @@ const GroupViewPolls = ({ groupStatus }) => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),

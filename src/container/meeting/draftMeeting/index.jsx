@@ -119,7 +119,6 @@ const DraftMeetingList = () => {
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
 
-
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   // Matches the same controlled-Popover pattern already used on the
@@ -128,8 +127,6 @@ const DraftMeetingList = () => {
   const handelChangePopoverOpen = (recordId, isOpen) => {
     setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
-
-
 
   // ─── MQTT: Agenda Contributor Added ───
   useEffect(() => {
@@ -140,7 +137,9 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) { }
+          } catch (error) {
+            console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+          }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -148,7 +147,9 @@ const DraftMeetingList = () => {
         }
       };
       callAddAgendaContributor();
-    } catch (error) { }
+    } catch (error) {
+      console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+    }
   }, [mqttMeetingAcAdded]);
 
   // ─── MQTT: Agenda Contributor Removed ───
@@ -164,7 +165,9 @@ const DraftMeetingList = () => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch { }
+      } catch (error) {
+        console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+      }
     }
   }, [mqttMeetingAcRemoved]);
 
@@ -177,7 +180,9 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) { }
+          } catch (error) {
+            console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+          }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -185,7 +190,9 @@ const DraftMeetingList = () => {
         }
       };
       callAddOrganizer();
-    } catch (error) { }
+    } catch (error) {
+      console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+    }
   }, [mqttMeetingOrgAdded]);
 
   // ─── MQTT: Organizer Removed ───
@@ -201,7 +208,9 @@ const DraftMeetingList = () => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch { }
+      } catch (error) {
+        console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+      }
     }
   }, [mqttMeetingOrgRemoved]);
 

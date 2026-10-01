@@ -313,7 +313,7 @@ const Reports = () => {
         key: "reportTypeId",
         width: "20%",
         ellipsis: true,
-        align: "left",
+        align: "start",
         ...reportTypeColumnProps,
         render: (_, record) => {
           return (

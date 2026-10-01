@@ -239,7 +239,9 @@ export const NewMeetingProvider = ({ children }) => {
           ];
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/NewMeetingContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingReminderNotification]);
 
@@ -248,56 +250,83 @@ export const NewMeetingProvider = ({ children }) => {
    * already exists in the active list, replace it; otherwise prepend it.
    */
   useEffect(() => {
-    if (meetingStatusPublishedMqttData == null) return;
+    if (meetingStatusPublishedMqttData === null) return;
 
     const callMQTT = async () => {
       try {
         const meetingData = meetingStatusPublishedMqttData;
+
         const newMeetingData = await mqttMeetingData(meetingData, 1);
-        const { list, setList } = getActiveMeetingListAndSetter();
 
-        const indexToUpdate = list.findIndex(
-          (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID),
-        );
+        // =========================
+        // PUBLISHED MEETING
+        // =========================
 
-        if (indexToUpdate !== -1) {
-          const updated = [...list];
-          updated[indexToUpdate] = newMeetingData;
-          setList(updated);
-        } else {
-          setList([newMeetingData, ...list]);
-        }
+        setPublishedMeetingData((prev) => {
+          const existingIndex = prev.findIndex(
+            (meetData) =>
+              Number(meetData.pK_MDID) === Number(meetingData.pK_MDID),
+          );
 
-        // A meeting that just got published can no longer be a draft or a
-        // proposed meeting — drop it from those tabs regardless of which
-        // tab is currently active, so it doesn't linger there. Only
-        // decrement each tab's record count when the meeting actually was
-        // in that tab.
+          // Meeting already exists → Update
+          if (existingIndex !== -1) {
+            return prev.map((meetData, index) =>
+              index === existingIndex ? newMeetingData : meetData,
+            );
+          }
+
+          // Meeting doesn't exist → Add
+          return [newMeetingData, ...prev];
+        });
+
+        // =========================
+        // REMOVE FROM DRAFT
+        // =========================
+
         const publishedMeetingID = Number(meetingData.pK_MDID);
-        if (
-          draftMeetingData.some(
+
+        setDraftMeetingData((prev) => {
+          const exists = prev.some(
             (obj) => Number(obj.pK_MDID) === publishedMeetingID,
-          )
-        ) {
-          setDraftMeetingData((prev) =>
-            prev.filter((obj) => Number(obj.pK_MDID) !== publishedMeetingID),
           );
-          setDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
-        }
-        if (
-          proposedMeetingData.some(
+
+          if (exists) {
+            setDraftMeetingDataRecord((prevRecord) =>
+              Math.max(0, prevRecord - 1),
+            );
+          }
+
+          return prev.filter(
+            (obj) => Number(obj.pK_MDID) !== publishedMeetingID,
+          );
+        });
+
+        // =========================
+        // REMOVE FROM PROPOSED
+        // =========================
+
+        setProposedMeetingData((prev) => {
+          const exists = prev.some(
             (obj) => Number(obj.pK_MDID) === publishedMeetingID,
-          )
-        ) {
-          setProposedMeetingData((prev) =>
-            prev.filter((obj) => Number(obj.pK_MDID) !== publishedMeetingID),
           );
-          setProposedMeetingDataRecord((prev) => Math.max(0, prev - 1));
-        }
-      } catch (error) {}
+
+          if (exists) {
+            setProposedMeetingDataRecord((prevRecord) =>
+              Math.max(0, prevRecord - 1),
+            );
+          }
+
+          return prev.filter(
+            (obj) => Number(obj.pK_MDID) !== publishedMeetingID,
+          );
+        });
+      } catch (error) {
+        console.error("meetingStatusPublishedMqttData error:", error);
+      }
     };
 
     callMQTT();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingStatusPublishedMqttData]);
 
@@ -348,7 +377,9 @@ export const NewMeetingProvider = ({ children }) => {
       setStartMeetingButton((prev) =>
         prev.filter((btn) => Number(btn.meetingID) !== Number(meetingID)),
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/NewMeetingContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
 
@@ -381,7 +412,9 @@ export const NewMeetingProvider = ({ children }) => {
           (btn) => Number(btn.meetingID) !== Number(endMeetingData.pK_MDID),
         ),
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/NewMeetingContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusEnded]);
 
@@ -413,7 +446,9 @@ export const NewMeetingProvider = ({ children }) => {
         } else {
           setList([newMeetingData, ...list]);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/NewMeetingContext.js:", error);
+      }
     };
 
     updateMeeting();
@@ -432,7 +467,9 @@ export const NewMeetingProvider = ({ children }) => {
       if (!meetingData?.pK_MDID) return;
 
       updateMeetingInAllLists(meetingData.pK_MDID, () => meetingData);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/NewMeetingContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [CommitteeMeetingMQTT]);
 
@@ -448,7 +485,9 @@ export const NewMeetingProvider = ({ children }) => {
       if (!meetingData?.pK_MDID) return;
 
       updateMeetingInAllLists(meetingData.pK_MDID, () => meetingData);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/NewMeetingContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [GroupMeetingMQTT]);
 
@@ -499,7 +538,9 @@ export const NewMeetingProvider = ({ children }) => {
 
         const { list, setList } = getActiveMeetingListAndSetter();
         setList([newData, ...list]);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/NewMeetingContext.js:", error);
+      }
     }
 
     // ---- Participant REMOVED ----
@@ -509,7 +550,9 @@ export const NewMeetingProvider = ({ children }) => {
         if (meetingID != null) {
           removeMeetingFromAllLists(meetingID);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/NewMeetingContext.js:", error);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mqttMeetingPrAdded, mqtMeetingPrRemoved]);
@@ -589,7 +632,13 @@ export const NewMeetingProvider = ({ children }) => {
   useEffect(() => {
     try {
       const types = getALlMeetingTypes?.meetingTypes;
-      if (types === null) return;
+      // Must be an array check, not `=== null`. The optional chain above yields
+      // `undefined` (never `null`) whenever getALlMeetingTypes is absent — which
+      // is the normal state before the meeting-types request resolves — so the
+      // old guard let `undefined` through to .map() and threw on every mount.
+      // The throw was swallowed by an empty catch, so the only visible symptom
+      // was the meeting-type filter silently staying empty.
+      if (!Array.isArray(types)) return;
 
       const meetingtypeFilter = [
         { value: "0", text: t("Quick-meeting") },
@@ -604,12 +653,14 @@ export const NewMeetingProvider = ({ children }) => {
                   : data.type,
           value: String(data.pK_MTID),
         })),
-      ];  
+      ];
 
-      console.log(meetingtypeFilter, "meetingtypeFiltermeetingtypeFilter")
+      console.log(meetingtypeFilter, "meetingtypeFiltermeetingtypeFilter");
 
       setMeetingTypeFilter(meetingtypeFilter);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/NewMeetingContext.js:", error);
+    }
   }, [getALlMeetingTypes?.meetingTypes, t]);
 
   // ============================================================

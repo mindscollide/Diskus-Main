@@ -414,7 +414,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       a = Object.values(countryNames).find((obj) => {
         return obj.shortCode == value;
       });
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Admin/CustomerInfo/CustomerInformation/CustomerInformation.js:", error);
+    }
 
     setCustomerSection({
       ...customerSection,

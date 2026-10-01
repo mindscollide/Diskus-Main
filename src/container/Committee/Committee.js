@@ -269,7 +269,9 @@ const Committee = () => {
         // matching the pattern already used by meeting/index.jsx for the
         // same notification flow.
         navigate(pathname, { replace: true, state: null });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Committee/Committee.js:", error);
+      }
     }
   }, [state]);
 
@@ -354,7 +356,9 @@ const Committee = () => {
       } else {
         setGetCommitteeData([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerGetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
@@ -414,7 +418,9 @@ const Committee = () => {
   useEffect(() => {
     if (committee_meetingprop !== null) {
       try {
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Committee/Committee.js:", error);
+      }
     }
   }, [committee_meetingprop]);
 
@@ -568,7 +574,9 @@ const Committee = () => {
 
         dispatch(realtimeCommitteeStatusResponse(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerrealtimeCommitteeStatus]);
 
   useEffect(() => {
@@ -590,7 +598,9 @@ const Committee = () => {
 
         dispatch(realtimeCommitteeResponse(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerrealtimeCommitteeCreateResponse]);
 
   useEffect(() => {
@@ -615,7 +625,9 @@ const Committee = () => {
           }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerremoveCommitteeMember]);
 
   const archivedmodaluser = async (e) => {

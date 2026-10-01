@@ -802,7 +802,9 @@ const SearchComponent = ({
         setTotalRecords(0);
         setSRowsData(0);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.js:", error);
+    }
   }, [
     DataRoomReducer.SearchFilesAndFoldersResponse,
     DataRoomReducer.SearchFileListCount,
@@ -837,7 +839,9 @@ const SearchComponent = ({
         );
         setAssignessList(filteredApiResponse);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.js:", error);
+    }
   }, [assignees.user]);
 
   // api call onscroll

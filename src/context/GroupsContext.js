@@ -127,27 +127,6 @@ export const GroupsProvider = ({ children }) => {
   // =========================
   // HELPERS
   // =========================
-  const getActiveListAndSetter = () => {
-    switch (currentGroupMeetingTabActive) {
-      case 2:
-        return {
-          list: groupProposedMeetingData,
-          setList: setGroupProposedMeetingData,
-        };
-      case 3:
-        return {
-          list: groupDraftMeetingData,
-          setList: setGroupDraftMeetingData,
-        };
-      case 1:
-      default:
-        return {
-          list: groupPublishedMeetingData,
-          setList: setGroupPublishedMeetingData,
-        };
-    }
-  };
-
   const updateMeetingInAllLists = (meetingID, updateFn) => {
     const mapper = (item) =>
       Number(item.pK_MDID) === Number(meetingID) ? updateFn(item) : item;
@@ -226,24 +205,25 @@ export const GroupsProvider = ({ children }) => {
         const meetingData = GroupMeetingMQTT.meeting;
         if (!meetingData?.pK_MDID) return;
 
-        const { list, setList } = getActiveListAndSetter();
-
-        const exists = list.some(
-          (item) => Number(item.pK_MDID) === Number(meetingData.pK_MDID),
-        );
+        // A published meeting always belongs on the Published tab — not
+        // whichever tab happens to be active when the MQTT arrives (that
+        // previously let a publish event add the meeting to the Proposed
+        // or Draft tab if the user was viewing it at the time).
         const newMeetingData = await mqttMeetingData(meeting, 1);
 
-        if (exists) {
-          setList((prev) =>
-            prev.map((item) =>
-              Number(item.pK_MDID) === Number(meetingData.pK_MDID)
-                ? newMeetingData
-                : item,
-            ),
+        setGroupPublishedMeetingData((prev) => {
+          const existingIndex = prev.findIndex(
+            (item) => Number(item.pK_MDID) === Number(meetingData.pK_MDID),
           );
-        } else {
-          setList((prev) => [newMeetingData, ...prev]);
-        }
+
+          if (existingIndex !== -1) {
+            return prev.map((item, index) =>
+              index === existingIndex ? newMeetingData : item,
+            );
+          }
+
+          return [newMeetingData, ...prev];
+        });
 
         // A meeting that just got published can no longer be a draft or a
         // proposed meeting — drop it from those tabs regardless of which
@@ -275,7 +255,9 @@ export const GroupsProvider = ({ children }) => {
         dispatch(createGroupMeeting(null));
       };
       callAddAndUpdateGroupMeeting();
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [GroupMeetingMQTT]);
 
@@ -298,7 +280,9 @@ export const GroupsProvider = ({ children }) => {
           status: "9",
         }));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusEnded]);
 
@@ -376,7 +360,9 @@ export const GroupsProvider = ({ children }) => {
       });
 
       dispatch(meetingNotConductedMQTT(null));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meetingStatusNotConductedMqttData]);
 
@@ -420,6 +406,7 @@ export const GroupsProvider = ({ children }) => {
       removeMeetingFromAllLists(mqttMeetingAcRemoved.pK_MDID);
       setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
     } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
     } finally {
       dispatch(meetingAgendaContributorAdded(null));
       dispatch(meetingAgendaContributorRemoved(null));
@@ -447,6 +434,7 @@ export const GroupsProvider = ({ children }) => {
           setGroupDraftMeetingDataRecord((prev) => prev + 1);
         }
       } catch (error) {
+        console.error("src/context/GroupsContext.js:", error);
       } finally {
         dispatch(meetingAgendaContributorAdded(null));
         dispatch(meetingAgendaContributorRemoved(null));
@@ -469,6 +457,7 @@ export const GroupsProvider = ({ children }) => {
       removeMeetingFromAllLists(mqttMeetingOrgRemoved.pK_MDID);
       setGroupDraftMeetingDataRecord((prev) => Math.max(0, prev - 1));
     } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
     } finally {
       dispatch(meetingAgendaContributorAdded(null));
       dispatch(meetingAgendaContributorRemoved(null));
@@ -515,6 +504,7 @@ export const GroupsProvider = ({ children }) => {
         //   return prev;
         // });
       } catch (error) {
+        console.error("src/context/GroupsContext.js:", error);
       } finally {
         dispatch(meetingStatusProposedMqtt(null));
       }
@@ -562,7 +552,9 @@ export const GroupsProvider = ({ children }) => {
       setStartMeetingButton((prev) =>
         prev.filter((btn) => Number(btn.meetingID) !== Number(meetingID)),
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/GroupsContext.js:", error);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusSocket]);
 
@@ -622,7 +614,9 @@ export const GroupsProvider = ({ children }) => {
         };
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/GroupsContext.js:", error);
+      }
     }
   }, [meetingStatusProposedMqttData]);
   // =========================

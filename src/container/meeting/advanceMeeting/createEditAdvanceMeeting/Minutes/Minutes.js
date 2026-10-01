@@ -355,7 +355,9 @@ const Minutes = () => {
         setFileAttachments([]);
         setPreviousFileIDs([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Minutes/Minutes.js:", error);
+    }
   }, [generalMinutesDocument]);
 
   const handleAgendaWiseClick = () => {

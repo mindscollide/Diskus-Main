@@ -404,8 +404,8 @@ const Createpolls = ({ setCreatepoll }) => {
             } else {
             }
           });
-        } catch {
-          
+        } catch (error) {
+          console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Polls/CreatePolls/Createpolls.js:", error);
         }
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
@@ -415,7 +415,9 @@ const Createpolls = ({ setCreatepoll }) => {
       } else {
         // setopen notionation work here
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Polls/CreatePolls/Createpolls.js:", error);
+    }
   };
 
   //For Saving the polls

@@ -153,7 +153,9 @@ const Events = () => {
         // Update state with the final, filtered, sorted events
         setUpComingEvents(filteredEvents);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Events/Events.js:", error);
+    }
   }, [MQTTUpcomingEvents]);
 
   useEffect(() => {
@@ -291,7 +293,9 @@ const Events = () => {
           upcomingMeetings.push(upcomingEventsData);
         }
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Events/Events.js:", error);
+    }
 
     // Render all meetings (today's first, then upcoming)
     return (
@@ -974,9 +978,13 @@ const Events = () => {
           });
 
           dispatch(mqttCurrentMeetingEnded(null));
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/NewDashboardLayout/Events/Events.js:", error);
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Events/Events.js:", error);
+    }
   }, [MeetingStatusEnded]);
 
   useEffect(() => {
@@ -991,7 +999,9 @@ const Events = () => {
           });
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Events/Events.js:", error);
+    }
   }, [removeUpcomingEvents]);
 
   const handleClickShowMore = () => {

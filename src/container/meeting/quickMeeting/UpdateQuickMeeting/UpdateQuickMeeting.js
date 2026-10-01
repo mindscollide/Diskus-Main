@@ -828,7 +828,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         });
       });
       setReminderOptions(reminderOptions);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:", error);
+    }
   }, [assigneesRemindersData]);
 
   const callApi = async () => {
@@ -1008,9 +1010,13 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
             return;
           }
           setAllPresenters(PresenterData);
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:", error);
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:", error);
+    }
   }, [assigneesuser, checkFlag]);
 
   useEffect(() => {
@@ -1292,7 +1298,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         }
         // meeting Members
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:", error);
+    }
   }, [checkFlag]);
 
   // for fetch data for edit from grid
@@ -1459,7 +1467,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
         setAttendeesParticipant(membersData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:", error);
+    }
   }, [
     assigneesuser,
     checkFlag,
@@ -1617,7 +1627,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
               setAddedParticipantNameList(List);
             }
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:", error);
+        }
         try {
           viewData.meetingAgendas.forEach((atchmenData, index) => {
             let opData = {
@@ -1648,7 +1660,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:", error);
+        }
         try {
           viewData.minutesOfMeeting.forEach((minutesOfMeetingData) => {
             minutesOfMeetings.push({
@@ -1713,7 +1727,9 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         });
         setMinutesOfMeeting(minutesOfMeetings);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:", error);
+    }
   }, [assigneesViewMeetingDetails]);
 
   const editGrid = (datarecord, dataindex) => {

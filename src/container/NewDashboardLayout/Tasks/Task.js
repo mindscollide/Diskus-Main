@@ -171,7 +171,9 @@ const Task = () => {
           setRowToDo(sortedTasks.slice(0, 15));
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Tasks/Task.js:", error);
+    }
   }, [SocketTodoActivityData]);
 
   // Update MQTT Status
@@ -216,7 +218,9 @@ const Task = () => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Tasks/Task.js:", error);
+    }
   }, [socketTodoStatusData]);
 
   useEffect(() => {

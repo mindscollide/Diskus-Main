@@ -37,7 +37,6 @@ import {
   checkFeatureIDAvailability,
   getHomeRoute,
   getLocalStorageItemNonActiveCheck,
-  SideBarGlobalNavigationFunction,
   SideBarGlobalNavigationFunctionNew,
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
@@ -252,7 +251,9 @@ const Header2 = ({ isVideo }) => {
       try {
         const data = { sRow: 0, eRow: 8 }; // Initial fetch data from API
         await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/components/layout/header2/Header2.js:", error);
+      }
     };
     fetchInitialData();
   }, []);
@@ -284,7 +285,9 @@ const Header2 = ({ isVideo }) => {
     try {
       const data = { sRow: webNotificationData.length, eRow: 8 };
       await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/header2/Header2.js:", error);
+    }
   };
 
   useEffect(() => {

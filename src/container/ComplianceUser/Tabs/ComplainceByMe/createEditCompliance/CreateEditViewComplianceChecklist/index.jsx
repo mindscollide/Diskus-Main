@@ -200,7 +200,9 @@ const CreateEditViewComplianceChecklist = () => {
           checklistDescription: checklistData.checklistDescription,
           checklistDueDate: checklistData.checklistDueDate,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/CreateEditViewComplianceChecklist/index.jsx:", error);
+      }
   };
 
   //To set the task count updated on checklist:
@@ -293,7 +295,9 @@ const CreateEditViewComplianceChecklist = () => {
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/CreateEditViewComplianceChecklist/index.jsx:", error);
+      }
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
 

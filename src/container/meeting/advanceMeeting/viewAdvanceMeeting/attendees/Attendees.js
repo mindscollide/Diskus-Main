@@ -77,7 +77,9 @@ const Attendees = () => {
         setMayBe(tentativeCount);
         setNotAttending(declinedCount);
         setNotResponded(awaitingCount);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/attendees/Attendees.js:", error);
+      }
     }
   }, [getMeetingUsersRSVP]);
 

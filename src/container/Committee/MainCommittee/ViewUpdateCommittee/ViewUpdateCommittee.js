@@ -66,7 +66,9 @@ const ViewUpdateCommittee = ({
           dispatch(getCommitteesbyCommitteeId(navigate, Data, t));
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/MainCommittee/ViewUpdateCommittee/ViewUpdateCommittee.js:", error);
+    }
     return () => {
       localStorage.removeItem("NotificationClickCommitteeOperations");
       localStorage.removeItem("NotifcationClickViewCommitteeID");

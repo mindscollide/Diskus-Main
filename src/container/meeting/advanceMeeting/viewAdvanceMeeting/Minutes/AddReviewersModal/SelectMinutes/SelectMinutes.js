@@ -83,7 +83,7 @@ const SelectMinutes = ({
         setSelectedMinuteIDs([]);
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AddReviewersModal/SelectMinutes/SelectMinutes.js:", error);
     }
   };
 

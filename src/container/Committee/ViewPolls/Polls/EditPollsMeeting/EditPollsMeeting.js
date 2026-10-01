@@ -186,7 +186,9 @@ const EditPollsMeeting = ({ setEditPolls }) => {
               }
             }
           });
-        } catch {}
+        } catch (error) {
+          console.error("src/container/Committee/ViewPolls/Polls/EditPollsMeeting/EditPollsMeeting.js:", error);
+        }
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
         const result = Array.from(uniqueData).map(JSON.parse);
@@ -195,7 +197,9 @@ const EditPollsMeeting = ({ setEditPolls }) => {
       } else {
         // setopen notionation work here
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewPolls/Polls/EditPollsMeeting/EditPollsMeeting.js:", error);
+    }
   };
 
   const handleUpdateClick = (pollStatusValue) => {
@@ -338,7 +342,9 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           Option.push(dataAdd);
         });
         setOptions(Option);
-      } catch {}
+      } catch (error) {
+        console.error("src/container/Committee/ViewPolls/Polls/EditPollsMeeting/EditPollsMeeting.js:", error);
+      }
     }
   }, [Allpolls]);
 

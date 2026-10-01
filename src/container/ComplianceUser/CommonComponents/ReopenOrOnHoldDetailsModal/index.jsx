@@ -37,7 +37,9 @@ const ReopenOrOnHoldDetailsModal = () => {
           );
 
         setComplianceStatusChangeHistory(filteredHistory);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/CommonComponents/ReopenOrOnHoldDetailsModal/index.jsx:", error);
+      }
     } else {
       setComplianceStatusChangeHistory([]);
     }

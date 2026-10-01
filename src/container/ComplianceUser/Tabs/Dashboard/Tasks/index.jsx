@@ -39,6 +39,32 @@ const ComplianceTasks = () => {
     { label: t("Upcoming"), value: 2 },
   ];
 
+  // react-select doesn't pick up dir="rtl" from the page automatically —
+  // without this, the selected value's text collapses/disappears once the
+  // page switches to Arabic. Only applied in Arabic so the English/LTR
+  // layout is untouched.
+  const currentLanguage = localStorage.getItem("i18nextLng");
+  const dashboardFilterSelectStyles =
+    currentLanguage === "ar"
+      ? {
+          control: (provided) => ({
+            ...provided,
+            direction: "rtl",
+          }),
+          singleValue: (provided) => ({
+            ...provided,
+            direction: "rtl",
+            textAlign: "right",
+            left: "auto"
+          }),
+          option: (provided) => ({
+            ...provided,
+            direction: "rtl",
+            textAlign: "right",
+          }),
+        }
+      : undefined;
+
   const onClickToTask = () => {
     navigate("/Diskus/todolist");
   };
@@ -52,116 +78,67 @@ const ComplianceTasks = () => {
 
   return (
     <>
-      {!hasDataComplianceTask && (
-        <div className={styles["complianceTasksBox"]}>
-          <div className={styles.Header}>
-            <Row>
-              <Col
-                md={12}
-                lg={12}
-                sm={12}
-                className="d-flex align-items-center justify-content-start gap-2"
-              >
-                <h3 className={styles.cardHeading}>{t("Tasks")}</h3>
-                <Select
-                  classNamePrefix="DashbaordSelectDropdown"
-                  isSearchable={false}
-                  options={filterOptions}
-                  value={filterOptions.find(
-                    (o) => o.value === complianceTaskDashboardFilter
-                  )}
-                  onChange={(selected) =>
-                    setComplianceTaskDashboardFilter(selected.value)
-                  }
-                  styles={{
-                    control: (provided) => ({
-                      ...provided,
-                      direction: "rtl",
-                    }),
-                    singleValue: (provided) => ({
-                      ...provided,
-                      direction: "rtl",
-                      textAlign: "right",
-                    }),
-                    option: (provided) => ({
-                      ...provided,
-                      direction: "rtl",
-                      textAlign: "right",
-                    }),
-                  }}
-                />
-                {/* <Select
-                  classNamePrefix="DashbaordSelectDropdown"
-                  isSearchable={false}
-                  options={filterOptions}
-                  value={filterOptions.find(
-                    (o) => o.value === complianceTaskDashboardFilter,
-                  )}
-                  onChange={(selected) =>
-                    setComplianceTaskDashboardFilter(selected.value)
-                  }
-                /> */}
-              </Col>
-            </Row>
-          </div>
+      <div className={styles["complianceTasksBox"]}>
+        <div className={styles.Header}>
+          <Row>
+            <Col
+              md={12}
+              lg={12}
+              sm={12}
+              className="d-flex align-items-center justify-content-start gap-4"
+            >
+              <h3 className={styles.cardHeading}>{t("Tasks")}</h3>
+              <Select
+                classNamePrefix="DashbaordSelectDropdown"
+                isSearchable={false}
+                options={filterOptions}
+                value={filterOptions.find(
+                  (o) => o.value === complianceTaskDashboardFilter,
+                )}
+                onChange={(selected) =>
+                  setComplianceTaskDashboardFilter(selected.value)
+                }
+                styles={dashboardFilterSelectStyles}
+              />
+            </Col>
+          </Row>
+        </div>
+
+        {!hasDataComplianceTask && (
           <ComplianceEmptyState
             type="noComplianceTaskDashboard"
             title={t("No-tasks-available")}
             layout="imageTop"
             imgMarginTop="105px"
           />
-        </div>
-      )}
+        )}
 
-      {hasDataComplianceTask && (
-        <div className={styles["complianceTasksBox"]}>
-          <div className={styles.Header}>
-            <Row>
-              <Col
-                md={12}
-                lg={12}
-                sm={12}
-                className="d-flex align-items-center justify-content-start gap-4"
-              >
-                <h3 className={styles.cardHeading}>{t("Tasks")}</h3>
-                <Select
-                  classNamePrefix="DashbaordSelectDropdown"
-                  isSearchable={false}
-                  options={filterOptions}
-                  value={filterOptions.find(
-                    (o) => o.value === complianceTaskDashboardFilter,
-                  )}
-                  onChange={(selected) =>
-                    setComplianceTaskDashboardFilter(selected.value)
-                  }
+        {hasDataComplianceTask && (
+          <>
+            {/* Dynamic Rendering */}
+            <div className={styles.CardInsideHeight}>
+              {complianceTaskList?.map((item) => (
+                <ComplianceCard
+                  key={item.taskId}
+                  title={item.taskTitle}
+                  dueDate={formatDateToYMD(`${item.dueDate}`)}
+                  criticalityId={item.criticality} // 1=High, 2=Medium, 3=Low
+                  authority={item.authorityShortCode}
+                  showHoverIcon={true}
+                  onIconClick={() => onClickTaskId(item.taskId)}
+                  onTitleClick={() => onClickTaskId(item.taskId)}
                 />
-              </Col>
-            </Row>
-          </div>
+              ))}
+            </div>
 
-          {/* Dynamic Rendering */}
-          <div className={styles.CardInsideHeight}>
-            {complianceTaskList?.map((item) => (
-              <ComplianceCard
-                key={item.taskId}
-                title={item.taskTitle}
-                dueDate={formatDateToYMD(`${item.dueDate}`)}
-                criticalityId={item.criticality} // 1=High, 2=Medium, 3=Low
-                authority={item.authorityShortCode}
-                showHoverIcon={true}
-                onIconClick={() => onClickTaskId(item.taskId)}
-                onTitleClick={() => onClickTaskId(item.taskId)}
-              />
-            ))}
-          </div>
-
-          <CustomButton
-            text={t("View-all-tasks")}
-            className={styles.ViewAllTaskButton}
-            onClick={onClickToTask}
-          />
-        </div>
-      )}
+            <CustomButton
+              text={t("View-all-tasks")}
+              className={styles.ViewAllTaskButton}
+              onClick={onClickToTask}
+            />
+          </>
+        )}
+      </div>
 
       {openTaskViewModal && (
         <TaskDetailsViewModal

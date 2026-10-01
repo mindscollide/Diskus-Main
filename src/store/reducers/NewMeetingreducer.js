@@ -2963,7 +2963,9 @@ const NewMeetingreducer = (state = initialState, action) => {
           ...state,
         };
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/store/reducers/NewMeetingreducer.js:", error);
+  }
 };
 
 export default NewMeetingreducer;

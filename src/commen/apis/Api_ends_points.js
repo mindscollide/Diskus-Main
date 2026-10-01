@@ -1,3 +1,22 @@
+/**
+ * Every service URL the app talks to, in one place.
+ *
+ * Each entry is `REACT_APP_BASE_URL` + a per-service path, both supplied by the
+ * .env file the build was made with (see the `build:*` scripts in package.json —
+ * `env-cmd -f .env.<target>`). Pointing the app at a different environment is
+ * therefore a rebuild, never a runtime switch: CRA inlines `process.env.*` as
+ * string literals at build time, and these constants are evaluated once when the
+ * module first loads.
+ *
+ * Consumers import the named constant rather than composing URLs themselves, so
+ * a service moving path is a one-line change here. The values are passed to
+ * `axiosInstance` (see commen/functions/axiosInstance.js), which supplies the
+ * auth header and session handling.
+ *
+ * Note the names are historical and not uniform — `getAdminURLs`, `getCalender`,
+ * `AuditAPi`, `complainceApi` (both misspellings are load-bearing: they are what
+ * the 60-odd importers use). Renaming them is a mechanical but wide change.
+ */
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 // API Endpoints from Environment Variables

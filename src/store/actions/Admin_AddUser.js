@@ -79,7 +79,9 @@ const addUserAction = (
             dispatch(addUserSuccess(response.data.responseResult, newMessage));
             try {
               setEmailVerifyModal(true);
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_AddUser.js:", error);
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -144,7 +146,9 @@ const addUserAction = (
             dispatch(addUserFail(newMessage));
             try {
               setAllowedLimitModal(true);
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_AddUser.js:", error);
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -349,7 +353,9 @@ const AllUserAction = (navigate, Data, t, setIsUpdateSuccessfully) => {
               );
               try {
                 setIsUpdateSuccessfully(false);
-              } catch (response) {}
+              } catch (response) {
+                console.error("src/store/actions/Admin_AddUser.js:", response);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -459,7 +465,9 @@ const editUserAction = (
               setIsUserNotUpdate(false);
               setIsUpdateSuccessfully(true);
               setEditModal(false);
-            } catch (response) {}
+            } catch (response) {
+              console.error("src/store/actions/Admin_AddUser.js:", response);
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -486,7 +494,9 @@ const editUserAction = (
               setIsUserNotUpdate(true);
               setIsUpdateSuccessfully(false);
               setEditModal(false);
-            } catch (response) {}
+            } catch (response) {
+              console.error("src/store/actions/Admin_AddUser.js:", response);
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

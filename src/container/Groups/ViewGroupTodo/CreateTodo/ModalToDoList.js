@@ -90,7 +90,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         }
       }
     } catch (error) {
-      
+      console.error("src/container/Groups/ViewGroupTodo/CreateTodo/ModalToDoList.js:", error);
     }
   }, [currentLanguage]);
 
@@ -154,7 +154,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setFileForSend([]);
         setTasksAttachments({ TasksAttachments: [] });
       };
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/ViewGroupTodo/CreateTodo/ModalToDoList.js:", error);
+    }
   }, []);
 
   //To Set task Creater ID
@@ -358,7 +360,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setAllPresenters(sortedAssigners);
       }
     } catch (error) {
-      
+      console.error("src/container/Groups/ViewGroupTodo/CreateTodo/ModalToDoList.js:", error);
     }
   }, [GroupsReducergetGroupByGroupIdResponse]);
 
@@ -471,7 +473,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 3, setShow)
       );
     } catch (error) {
-      
+      console.error("src/container/Groups/ViewGroupTodo/CreateTodo/ModalToDoList.js:", error);
     }
   };
 

@@ -162,7 +162,12 @@ const MainMeeting = () => {
       dispatch(GetAllMeetingTypesNewFunction(navigate, t));
     }
 
-    localStorage.setItem("MeetingCurrentView", MEETING_VIEWS.PUBLISHED);
+    // Persist the tab we actually resolved above (existing value, or the
+    // Published default only when nothing was set yet) — this used to
+    // unconditionally force Published on every mount, which stomped the
+    // correct tab (e.g. Proposed) right after creating a proposed meeting
+    // and returning to this list.
+    localStorage.setItem("MeetingCurrentView", currentView);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", currentView);
 
@@ -366,7 +371,9 @@ const MainMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/index.jsx:", error);
+      }
     }
   }, [state]);
 
@@ -421,7 +428,9 @@ const MainMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/index.jsx:", error);
+      }
     }
   }, [state]);
 
@@ -607,8 +616,20 @@ const MainMeeting = () => {
     setSearchText("");
   };
 
-  const HandleCloseSearchModalMeeting = () => {
+  const HandleCloseSearchModalMeeting = async () => {
     setSearchMeeting(false);
+
+    // A search is currently applied: closing must undo it, not just hide the
+    // form. Previously the fields were cleared but the API was never called, so
+    // the list stayed filtered while the modal looked reset. handleClearSearch
+    // hits the API with empty filters and clears the fields, top box and ✕.
+    if (entereventIcon) {
+      await handleClearSearch();
+      return;
+    }
+
+    // Nothing was searched (fields may just have been typed into) — the list is
+    // not filtered, so there is nothing to reset on the server.
     setSearchFeilds({
       ...searchFields,
       Date: "",
@@ -656,6 +677,27 @@ const MainMeeting = () => {
       ),
     );
     console.log(searchFields, searchText, "handleClickSearch");
+
+    // The search is now applied, so tidy up the UI to match:
+    //  - `entereventIcon` doubles as "a search is applied" (it is what shows
+    //    the reset ✕ in the top box). Without it, once this modal closes there
+    //    was no way to see or undo the filter. It stays off when every field
+    //    was empty, because that request just returns the unfiltered list.
+    //  - clear the modal's fields and the top box, so nothing stale is left
+    //    behind for the next search, then close the modal.
+    const hasCriteria =
+      searchFields.MeetingTitle.trim() !== "" ||
+      searchFields.OrganizerName.trim() !== "" ||
+      searchFields.Date !== "";
+    setentereventIcon(hasCriteria);
+    setSearchText("");
+    setSearchFeilds({
+      MeetingTitle: "",
+      Date: "",
+      OrganizerName: "",
+      DateView: "",
+    });
+    setSearchMeeting(false);
   };
 
   const handleClickReset = async () => {
@@ -681,12 +723,17 @@ const MainMeeting = () => {
     );
 
     setSearchText("");
+    // The list is unfiltered again, so the "search applied" ✕ must go too.
+    setentereventIcon(false);
     setSearchFeilds({
       MeetingTitle: "",
       Date: "",
       OrganizerName: "",
       DateView: "",
     });
+    // Close the modal as well, matching what Search does — Reset used to leave
+    // an empty form sitting open.
+    setSearchMeeting(false);
   };
 
   // ─── Create Handlers ──────────────────────────────────────────────────

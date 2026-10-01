@@ -862,8 +862,9 @@ const TodoList = () => {
         filterDropdown: () => (
           <Dropdown
             overlay={filterMenu}
-            visible={filterVisible}
-            onVisibleChange={setFilterVisible}>
+            open={filterVisible}
+            onOpenChange={setFilterVisible}
+          >
             <div />
           </Dropdown>
         ),

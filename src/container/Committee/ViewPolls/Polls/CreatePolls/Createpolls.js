@@ -260,7 +260,9 @@ const Createpolls = ({ setCreatepoll }) => {
               }
             }
           });
-        } catch {}
+        } catch (error) {
+          console.error("src/container/Committee/ViewPolls/Polls/CreatePolls/Createpolls.js:", error);
+        }
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
         const result = Array.from(uniqueData).map(JSON.parse);
@@ -269,7 +271,9 @@ const Createpolls = ({ setCreatepoll }) => {
       } else {
         // setopen notionation work here
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewPolls/Polls/CreatePolls/Createpolls.js:", error);
+    }
   };
 
   //For Saving the polls

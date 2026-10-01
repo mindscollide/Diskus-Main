@@ -145,7 +145,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
         });
         setAllPresenters(newData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/MainGroup/CreateGroup/CreateGroup.js:", error);
+    }
   }, [assigneesuserData]);
 
   // for api response of list group roles

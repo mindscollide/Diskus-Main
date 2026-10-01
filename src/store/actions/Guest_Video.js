@@ -33,6 +33,7 @@ import {
 } from "./VideoFeature_actions";
 import { isArray } from "lodash";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { findMissingVideoIds } from "../../commen/functions/videoCallIds";
 
 const guestVideoNavigationScreen = (response) => {
   return {
@@ -164,6 +165,8 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
     axiosInstance
       .post(meetingApi, form)
       .then(async (response) => {
+        console.log("Hello", response);
+
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshToken(navigate, t));
           dispatch(validateEncryptGuestVideoMainApi(navigate, t, data));
@@ -176,6 +179,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_01".toLowerCase(),
                 )
             ) {
+              console.log("Hello");
               sessionStorage.setItem("isLeftCheck", false);
               sessionStorage.setItem(
                 "roomID",
@@ -202,10 +206,12 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_02".toLowerCase(),
                 )
             ) {
+              console.log("Hello");
+
               await dispatch(
                 validateEncryptGuestVideoFail(t("Meeting-not-active")),
               );
-              dispatch(guestVideoNavigationScreen(4));
+              dispatch(guestVideoNavigationScreen(6));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -213,10 +219,12 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_03".toLowerCase(),
                 )
             ) {
+              console.log("Hello");
+
               await dispatch(
                 validateEncryptGuestVideoFail(t("Invalid-meeting")),
               );
-              dispatch(guestVideoNavigationScreen(4));
+              dispatch(guestVideoNavigationScreen(1));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -224,27 +232,79 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_04".toLowerCase(),
                 )
             ) {
+              console.log("Hello");
+
               await dispatch(
                 validateEncryptGuestVideoFail(t("Something-went-wrong")),
               );
+              dispatch(guestVideoNavigationScreen(1));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_05".toLowerCase(),
+                )
+            ) {
+              //  Meeting-Not-started-yet"
+              await dispatch(validateEncryptGuestVideoFail(""));
+
+              dispatch(guestVideoNavigationScreen(6));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_06".toLowerCase(),
+                )
+            ) {
+              //  Meeting-Not-Published-yet"
+              await dispatch(validateEncryptGuestVideoFail(""));
+
+              dispatch(guestVideoNavigationScreen(7));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_07".toLowerCase(),
+                )
+            ) {
+              //  Meeting-Not-started-yet"
+              await dispatch(validateEncryptGuestVideoFail(""));
+
               dispatch(guestVideoNavigationScreen(4));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringGuestVideoLink_08".toLowerCase(),
+                )
+            ) {
+              //  Meeting-Not-started-yet"
+              await dispatch(validateEncryptGuestVideoFail(""));
+
+              dispatch(guestVideoNavigationScreen(6));
             }
           } else {
+            console.log("Hello");
+
             await dispatch(
               validateEncryptGuestVideoFail(t("Something-went-wrong")),
             );
-            dispatch(guestVideoNavigationScreen(4));
+            dispatch(guestVideoNavigationScreen(1));
           }
         } else {
+          console.log("Hello");
+
           await dispatch(
             validateEncryptGuestVideoFail(t("Something-went-wrong")),
           );
-          dispatch(guestVideoNavigationScreen(4));
+          dispatch(guestVideoNavigationScreen(1));
         }
       })
       .catch((response) => {
+        console.log("Hello");
+
         dispatch(validateEncryptGuestVideoFail(t("Something-went-wrong")));
-        dispatch(guestVideoNavigationScreen(4));
+        dispatch(guestVideoNavigationScreen(1));
       });
   };
 };
@@ -294,7 +354,9 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
             ) {
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/Guest_Video.js:", error);
+              }
               // dispatch(guestVideoNavigationScreen(true));
               mqttConnectionGuestUser(
                 response.data.responseResult.guestGuid,
@@ -326,7 +388,9 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
             ) {
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/Guest_Video.js:", error);
+              }
               await dispatch(
                 joinGuestVideoFail(t("meeting-organizers-not-found")),
               );
@@ -339,26 +403,34 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
             ) {
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/Guest_Video.js:", error);
+              }
               await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
             }
           } else {
             try {
               setJoinButton(false);
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Guest_Video.js:", error);
+            }
             await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
           }
         } else {
           try {
             setJoinButton(false);
-          } catch {}
+          } catch (error) {
+            console.error("src/store/actions/Guest_Video.js:", error);
+          }
           await dispatch(joinGuestVideoFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         try {
           setJoinButton(false);
-        } catch {}
+        } catch (error) {
+          console.error("src/store/actions/Guest_Video.js:", error);
+        }
         dispatch(joinGuestVideoFail(t("Something-went-wrong")));
       });
   };
@@ -555,6 +627,23 @@ const raiseUnRaisedFail = (message) => {
 
 const raiseUnRaisedHandMainApi = (navigate, t, data) => {
   return (dispatch) => {
+    // Refuse to send a request the server cannot match to anyone.
+    //
+    // Callers build RoomID / UID with String(localStorage.getItem(...)), and a
+    // missing key becomes the TEXT "null" — so a lost ID used to go out as
+    // {"RoomID":"null","UID":"null",...} with no error anywhere, and the hand
+    // simply never raised. Failing here names the missing field instead.
+    // This covers raise AND lower (IsHandRaised true / false) and every caller.
+    const missingIds = findMissingVideoIds(data);
+    if (missingIds.length > 0) {
+      console.error(
+        `src/store/actions/Guest_Video.js: RaiseUnRaiseHand not sent — missing ${missingIds.join(" and ")}`,
+        data,
+      );
+      dispatch(raiseUnRaisedFail(t("Invalid-data")));
+      return;
+    }
+
     dispatch(raiseUnRaisedInit());
     let form = new FormData();
     form.append("RequestMethod", raiseUnRaisedHand.RequestMethod);

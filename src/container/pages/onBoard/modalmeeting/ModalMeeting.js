@@ -272,7 +272,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         xs={12}
                         className="d-flex justify-content-start flex-column margin-left-5"
                       >
-                        <label>Attachment</label>
+                        <label>{t("Attachment")}</label>
                         <span className="custom-upload-input">
                           <CustomUpload
                             className="UploadFileButton"
@@ -297,7 +297,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                     <Col lg={6} md={6} xs={6} className="onboard_addAgenda">
                       <Button
                         className={"btn btn-primary addAgenda"}
-                        text={"+" + t("Add Agenda")}
+                        text={"+" + t("Add-agenda")}
                         disableBtn={true}
                       />
                     </Col>
@@ -310,7 +310,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       <Button
                         onClick={navigateToAttendees}
                         className={"btn btn-primary meeting next"}
-                        text="Next"
+                        text={t("Next")}
                         disableBtn={true}
                       />
                     </Col>
@@ -348,7 +348,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       <Button
                         disableBtn={true}
                         className={"btn btn-primary meeting next"}
-                        text="Add"
+                        text={t("Add")}
                       />
                     </Col>
                   </Row>
@@ -360,7 +360,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       xs={12}
                       className="onboard_attendees_organizer_label"
                     >
-                      <label>Organizer</label>
+                      <label>{t("Organizer")}</label>
                     </Col>
                   </Row>
 

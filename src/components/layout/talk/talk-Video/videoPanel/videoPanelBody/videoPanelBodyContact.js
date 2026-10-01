@@ -127,7 +127,9 @@ const VideoPanelBodyContact = () => {
           setAllUsers(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-Video/videoPanel/videoPanelBody/videoPanelBodyContact.js:", error);
+    }
   };
 
   useEffect(() => {

@@ -36,7 +36,9 @@ export const mqttConnection = (subscribeID, dispatch) => {
             onSuccess: () => {},
             onFailure: (error) => console.log(error),
           });
-        } catch (subError) {}
+        } catch (subError) {
+          console.error("src/commen/functions/mqttconnection.js:", subError);
+        }
       },
       onFailure: (error) => {
         setTimeout(() => mqttConnection(subscribeID, dispatch), 6000); // Retry connection after 6 seconds

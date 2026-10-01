@@ -143,7 +143,7 @@ const AddUsers = () => {
         setTotalUserCount(UserCount);
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers.js:", error);
     }
   }, [UserMangementReducergetOrganizationUserStatsGraph]);
 
@@ -601,6 +601,7 @@ useEffect(() => {
                     selected={selected}
                     onSelect={handleSelect}
                     selectButtonClassName={styles["flagButton"]}
+                    searchPlaceholder={t("Select")}
                     searchable={true}
                     customLabels={countryNameforPhoneNumber}
                   />

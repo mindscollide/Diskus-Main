@@ -89,6 +89,7 @@ import {
   clearGetMeetingbyGroupID,
 } from "../../../../store/actions/Groups_actions";
 import { validateStringEmail_success, validateStringMeetingEmail_clear } from "../../../../store/actions/NewMeetingActions";
+import store from "../../../../store/store";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -288,9 +289,30 @@ const GroupPublishedMeetingList = () => {
     }
 
     const allChatMessages = talkStateDataAllUserChats.AllUserChatsData.allMessages;
-    const foundRecord =
+    let foundRecord =
       Array.isArray(allChatMessages) &&
       allChatMessages.find((item) => item.id === data.talkGroupID);
+
+    // The chats reducer can be stale (e.g. a chat group created after it
+    // was last loaded) — refetch from the API before concluding the chat
+    // doesn't exist, instead of only ever trusting the cached reducer.
+    if (!foundRecord) {
+      await dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(localStorage.getItem("userID")),
+          parseInt(currentOrganizationId),
+          t,
+        ),
+      );
+      const refreshedAllChatMessages =
+        store.getState().talkStateData.AllUserChats.AllUserChatsData
+          .allMessages;
+      foundRecord =
+        Array.isArray(refreshedAllChatMessages) &&
+        refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
+    }
+
     if (!foundRecord) {
       show(t("No-talk-group-created"), "error");
       return;
@@ -536,7 +558,9 @@ const GroupPublishedMeetingList = () => {
           });
         };
         meetingNotificationRouting();
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/Groups/groupsMeetings/groupPublishMeetings/index.jsx:", error);
+      }
     }
   }, [state, DetailsWebNotificationViewMeeting]);
 
@@ -567,8 +591,9 @@ const GroupPublishedMeetingList = () => {
     const canShow = {
       edit:
         (status === STATUS.UPCOMING ||
-          status === STATUS.ACTIVE ||
-          status === STATUS.NOT_CONDUCTED) &&
+          status === STATUS.ACTIVE
+          //  || status === STATUS.NOT_CONDUCTED
+          ) &&
         isOrganizer,
       cancel: status === STATUS.UPCOMING && isOrganizer,
       contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
@@ -1103,17 +1128,17 @@ const GroupPublishedMeetingList = () => {
           }
 
           // NOT CONDUCTED
-          if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
-            return (
-              <div className="d-flex justify-content-center align-items-center">
-                <CustomButton
-                  text={t("Edit-meeting")}
-                  className={styles.EditMeetingButton}
-                  onClick={() => handleClick("EDIT_MEETING")}
-                />
-              </div>
-            );
-          }
+          // if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
+          //   return (
+          //     <div className="d-flex justify-content-center align-items-center">
+          //       <CustomButton
+          //         text={t("Edit-meeting")}
+          //         className={styles.EditMeetingButton}
+          //         onClick={() => handleClick("EDIT_MEETING")}
+          //       />
+          //     </div>
+          //   );
+          // }
 
           return null;
         },

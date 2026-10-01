@@ -375,7 +375,9 @@ const UpdateMeeting = (
                     setEditFlag,
                   ),
                 );
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Get_List_Of_Assignees.js:", error);
+              }
 
               // dispatch(
               //   CreateUpdateMeetingDataRoomMap(
@@ -551,7 +553,9 @@ const ViewMeeting = (
                   dispatch(scheduleMeetingPageFlag(false));
                 }
                 dispatch(removeCalenderDataFunc(null));
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Get_List_Of_Assignees.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

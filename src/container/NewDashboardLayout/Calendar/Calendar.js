@@ -326,7 +326,9 @@ const NewCalendar = () => {
           show(t("No-events-available-on-this-date"), "error");
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Calendar/Calendar.js:", error);
+    }
   };
 
   const calendarClickFunction = async (value) => {
@@ -436,9 +438,13 @@ const NewCalendar = () => {
           updateEventStatus(meetingID, 9);
           // dispatch(getMeetingStatusfromSocket(null));
           dispatch(mqttCurrentMeetingEnded(null));
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/NewDashboardLayout/Calendar/Calendar.js:", error);
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Calendar/Calendar.js:", error);
+    }
   }, [meetingIdReducer.MeetingStatusEnded]);
   // Set Meeting Data in Calendar and Events Modal
   useEffect(() => {
@@ -484,7 +490,9 @@ const NewCalendar = () => {
         // If meeting ID doesn't exist, add the meeting data to upComingEvents
         upsertCalendarEvent(isExistAlready, dashboardData, formattedDate);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Calendar/Calendar.js:", error);
+    }
   }, [NewMeetingreducer.meetingStatusPublishedMqttData]);
 
   useEffect(() => {
@@ -587,7 +595,9 @@ const NewCalendar = () => {
 
         dispatch(getMeetingStatusfromSocket(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Calendar/Calendar.js:", error);
+    }
   }, [meetingIdReducer.MeetingStatusSocket]);
 
   return (

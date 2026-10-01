@@ -344,7 +344,9 @@ const UserSettings = ({ googleClientIDs }) => {
           AllowGoogleCalenderSync: false,
         });
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/setting/UserLevelSettings/UserSettings.js:", error);
+    }
   };
 
   async function redirectToUrl() {

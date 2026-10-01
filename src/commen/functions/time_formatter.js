@@ -216,7 +216,8 @@ export const convertToGMTMinuteTime = (timeStr) => {
     }
 
     return moment(date).format("hh:mm a");
-  } catch {
+  } catch (error) {
+    console.error("src/commen/functions/time_formatter.js:", error);
     return "";
   }
 };
@@ -265,7 +266,8 @@ export const convertDateToGMTMinute = (dateStr) => {
     }, ${date.getUTCFullYear()}`;
 
     return formattedDate;
-  } catch {
+  } catch (error) {
+    console.error("src/commen/functions/time_formatter.js:", error);
     return "";
   }
 };

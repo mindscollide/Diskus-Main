@@ -66,12 +66,18 @@ const CommitteeDraftMeetings = () => {
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTitle, setMeetingTitle] = useState("");
 
 
 
   const {
     handleViewMeeting,
   } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
   })
 
   const {
@@ -81,6 +87,7 @@ const CommitteeDraftMeetings = () => {
     setCurrentPageDraftCommitteeMeeting,
     currentLengthDraftCommitteeMeeting,
     setCurrentLengthDraftCommitteeMeeting,
+    setCurrentCommitteeMeetingTabActive,
   } = useCommitteeContext();
 
   // ─── Context ───
@@ -189,7 +196,7 @@ const CommitteeDraftMeetings = () => {
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          { setEditorRole },
+          { setEditorRole, setCurrentCommitteeMeetingTabActive },
         ),
       );
     };

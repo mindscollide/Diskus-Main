@@ -307,7 +307,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         setCommitteeMembersRolesOptions(committeeMembersRoleOptions);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/UpdateCommittee/UpdateCommittee.js:", error);
     }
   }, [CommitteeReducergetCommitteeMembersRoles]);
 
@@ -325,7 +325,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         setNewCommitteeTypeOptions(committeeTypeOptions);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/UpdateCommittee/UpdateCommittee.js:", error);
     }
   }, [CommitteeReducergetCommitteeTypes]);
 
@@ -409,7 +409,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         });
         setAllPresenters(newData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/MainCommittee/UpdateCommittee/UpdateCommittee.js:", error);
+    }
   }, [assigneesuser]);
 
   // dispatch apis for committee types and committee member roles
@@ -470,8 +472,8 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           value: committeedetails.committeeType.committeeTypeId,
         });
       }
-    } catch {
-      
+    } catch (error) {
+      console.error("src/container/Committee/MainCommittee/UpdateCommittee/UpdateCommittee.js:", error);
     }
   }, [CommitteeReducergetCommitteeByCommitteeID, meetingAttendeesList]);
 

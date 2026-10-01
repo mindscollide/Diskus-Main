@@ -103,7 +103,9 @@ const ModalArchivedCommittee = ({
 
         dispatch(realtimeCommitteeStatusResponse(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/ModalArchivedCommittee/ModalArchivedCommittee.js:", error);
+    }
   }, [CommitteeReducerrealtimeCommitteeStatus]);
 
   useEffect(() => {
@@ -127,7 +129,9 @@ const ModalArchivedCommittee = ({
           setGetCommitteeData([]);
           setTotalLength(0);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ModalArchivedCommittee/ModalArchivedCommittee.js:", error);
+      }
     } else {
       setGetCommitteeData([]);
       setTotalLength(0);

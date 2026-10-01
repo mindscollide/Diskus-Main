@@ -51,7 +51,7 @@ const PakageDetailsUMUpgrade = () => {
     try {
       dispatch(getAllUserTypePackagesApi(navigate, t, false));
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade.js:", error);
     }
   }, []);
 
@@ -103,7 +103,7 @@ const PakageDetailsUMUpgrade = () => {
         setTableData(UserMangementReducergetAllUserTypePackagesData.packages);
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade.js:", error);
     }
   }, [UserMangementReducergetAllUserTypePackagesData]);
 
@@ -483,7 +483,7 @@ const PakageDetailsUMUpgrade = () => {
 
     // Return an object with the totals that can be used as a row in your table.
     return {
-      name: "Total",
+      name: t("Total"),
       Numberoflicenses: Number(totalOrganizationPackagePrice),
       price: Number(totalMonthlyCharges),
       Quarterlycharges: Number(totalQuarterlyCharges),

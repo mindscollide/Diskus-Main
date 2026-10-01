@@ -136,7 +136,9 @@ const AgendaWise = ({
         });
         setAgendaOptions(NewData);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+    }
   }, [AllAgendas]);
 
   // Combined Data for both Documents and Minutes Agenda Wise
@@ -592,7 +594,9 @@ const AgendaWise = ({
         setFileAttachments(files);
         setPreviousFileIDs(prevData);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+    }
   }, [RetriveAgendaWiseDocuments]);
 
   //Handle Update Button Api

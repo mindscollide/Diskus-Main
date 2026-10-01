@@ -410,7 +410,9 @@ const ModalView = ({ ModalTitle }) => {
             }
           }
           setAddedParticipantNameList(List);
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+        }
 
         try {
           viewData.meetingAgendas.forEach((atchmenData, index) => {
@@ -448,7 +450,9 @@ const ModalView = ({ ModalTitle }) => {
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+        }
         try {
           viewData.minutesOfMeeting.forEach((minutesOfMeetingData, index) => {
             minutesOfMeeting.push({
@@ -615,7 +619,9 @@ const ModalView = ({ ModalTitle }) => {
             }
           }
           setAddedParticipantNameList(List);
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+        }
 
         try {
           calendarMeetingData.meetingAgendas.forEach((atchmenData, index) => {
@@ -653,7 +659,9 @@ const ModalView = ({ ModalTitle }) => {
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+        }
         try {
           calendarMeetingData.minutesOfMeeting.forEach(
             (minutesOfMeetingData, index) => {
@@ -711,7 +719,9 @@ const ModalView = ({ ModalTitle }) => {
 
         setAllMeetingDetails(calendarMeetingData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+    }
   }, [calendarReducereventsDetails]);
 
   //  Update Meeting Status Cancelled and Start Meeting
@@ -751,7 +761,9 @@ const ModalView = ({ ModalTitle }) => {
         //   updateCalendarData(true, meetingID);
         // }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+    }
   }, [MeetingStatusSocket]);
 
   useEffect(() => {
@@ -1125,7 +1137,9 @@ const ModalView = ({ ModalTitle }) => {
 
         leaveMeeting(currentMeetingID, true, false);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+    }
   }, [endMeetingStatusForQuickMeetingModalFlag]);
 
   useEffect(() => {
@@ -1134,7 +1148,9 @@ const ModalView = ({ ModalTitle }) => {
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         leaveMeeting(currentMeetingID, false, true);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+    }
   }, [leaveMeetingOnLogoutResponse]);
 
   const leaveMeeting = async (id, flag, flag2) => {
@@ -1298,7 +1314,9 @@ const ModalView = ({ ModalTitle }) => {
       } else {
         openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+    }
   };
 
   const copyToClipboardd = () => {
@@ -1403,7 +1421,9 @@ const ModalView = ({ ModalTitle }) => {
           });
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:", error);
+    }
   }, [meetingIdReducerMeetingStatusEnded]);
 
   useEffect(() => {

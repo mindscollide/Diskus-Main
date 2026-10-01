@@ -137,7 +137,9 @@ const PrivateChats = () => {
           setSearchChatValue("");
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/privateChats/privateChats.js:", error);
+    }
   };
 
   return (
@@ -273,8 +275,8 @@ const PrivateChats = () => {
         })
       ) : (
         <ResultMessage
-          icon={<img src={PrivateMessagesIcon} width={250} />}
-          title={"You haven't started any private conversations yet"}
+          icon={<img src={PrivateMessagesIcon} width={250} alt="" />}
+          title={t("You-haven't-started-any-private-conversations-yet")}
           className="emptyRecentChats"
         />
       )}

@@ -98,7 +98,7 @@ const userLogOutApiFunc = (navigate, t) => {
           await signOut("", dispatch);
         });
     } catch (error) {
-      
+      console.error("src/store/actions/Auth_Sign_Out.js:", error);
     }
   };
 };

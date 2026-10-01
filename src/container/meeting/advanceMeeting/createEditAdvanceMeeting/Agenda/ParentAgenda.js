@@ -652,7 +652,7 @@ const ParentAgenda = ({
                                           className={
                                             styles["Meeting_title_heading"]
                                           }>
-                                          {t("End-date")}
+                                          {t("End-time")}
                                         </span>
                                       </Col>
                                     </Row>

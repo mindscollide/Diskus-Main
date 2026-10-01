@@ -62,7 +62,7 @@ const DowngradeSubscription = () => {
     try {
       dispatch(getOrganizationWalletApi(navigate, t));
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription.js:", error);
     }
   }, []);
 
@@ -110,7 +110,7 @@ const DowngradeSubscription = () => {
         });
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription.js:", error);
     }
   }, []);
 

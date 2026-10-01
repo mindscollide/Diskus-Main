@@ -55,7 +55,6 @@ import {
   getAgendaVotingDetails_success,
   saveFiles_success,
   saveAgendaVoting_success,
-  addUpdateAdvanceMeetingAgenda_success,
   uploadDocument_success,
   getAllVotingResultDisplay_success,
 } from "../../../../../store/actions/MeetingAgenda_action";
@@ -65,6 +64,8 @@ import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
+import { useCommitteeContext } from "../../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
 import {
   UpdateMeetingStatusApi,
   UpdateMeetingUserApi,
@@ -93,6 +94,11 @@ const Organizers = () => {
   } = useNewMeetingContext();
   const { editorRole, setEditorRole, setGoBackCancelModal } =
     useContext(MeetingContext);
+  // Shared across Main Meeting, Committee, and Group — only one context is
+  // ever actually "live"; threaded into the publish action so it can
+  // switch the correct module's active tab to Published on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
@@ -642,6 +648,8 @@ const Organizers = () => {
     dispatch(
       UpdateMeetingStatusApi(navigate, t, Data, "publishMeetingFromOrganizer", {
         setEditorRole, // shorthand if variable name matches key
+        setCurrentCommitteeMeetingTabActive,
+        setCurrentGroupMeetingTabActive,
 
         setRowsData,
       }),

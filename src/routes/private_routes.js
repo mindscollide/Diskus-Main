@@ -443,7 +443,9 @@ const PrivateRoutes = () => {
           let getValue = getActionValue(currentUrl, "signed_action=");
           localStorage.setItem("docSignedAction", getValue);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/routes/private_routes.js:", error);
+      }
       if (
         currentUrl
           .toLowerCase()

@@ -140,7 +140,9 @@ const AddNewChat = () => {
           setAllUsers(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/recentChats/addNewChats.js:", error);
+    }
   };
 
   return (
@@ -149,7 +151,7 @@ const AddNewChat = () => {
         <Row className='margin-top-10'>
           <Col lg={11} md={11} sm={12}>
             <div className='new-chat'>
-              <p className='fw-bold m-0'>{t("New Conversation")}</p>
+              <p className='fw-bold m-0'>{t("New-conversation")}</p>
             </div>
           </Col>
 

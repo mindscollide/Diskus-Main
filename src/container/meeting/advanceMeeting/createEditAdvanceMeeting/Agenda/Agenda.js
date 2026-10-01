@@ -60,6 +60,8 @@ import {
 } from "../../../../../store/actions/NewMeeting2.actions";
 
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useCommitteeContext } from "../../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { getRandomUniqueNumber, onDragEnd } from "./drageFunction";
 
@@ -316,6 +318,12 @@ const Agenda = () => {
     setGoBackCancelModal,
     setEditorRole,
   } = useContext(MeetingContext);
+  // This tab is shared across Main Meeting, Committee, and Group — only one
+  // of these contexts is actually "live" for any given render, but reading
+  // both here is harmless. Threaded through to the publish action so it can
+  // switch the correct module's active tab to Published on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
 
   /* --------------------------------------------------------------------------
    * Local state
@@ -390,7 +398,9 @@ const Agenda = () => {
         );
         return;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/Agenda.js:", error);
+    }
   }, [getAllMeetingDetails, dispatch, meetingId, navigate, t]);
 
   useEffect(() => {
@@ -504,7 +514,6 @@ const Agenda = () => {
 
     // ---- Step 1 & 2: upload + persist files only if there are any ---------
     if (fileForSend.length > 0) {
-      // Upload every file in parallel rather than sequentially — they're independent.
       // Upload one file at a time. Firing all of them in parallel
       // (Promise.all + map) overwhelmed the backend with N simultaneous
       // requests for the same meeting/agenda context, causing some uploads
@@ -579,6 +588,8 @@ const Agenda = () => {
     await dispatch(
       AddUpdateAdvanceMeetingAgendaApi(navigate, t, payload, routeValue, {
         setEditorRole,
+        setCurrentCommitteeMeetingTabActive,
+        setCurrentGroupMeetingTabActive,
       }),
     );
   };
@@ -726,7 +737,9 @@ const Agenda = () => {
 
       setRows(hydrated);
       setIsPublishedState(MeetingAgendaData.isPublished);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/Agenda.js:", error);
+    }
     // We intentionally omit allSavedPresenters/allUsersRC: hydration should
     // run when server data arrives, not whenever the dropdowns refresh.
     // eslint-disable-next-line react-hooks/exhaustive-deps

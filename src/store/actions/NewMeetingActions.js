@@ -1079,7 +1079,9 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                 if (webNotifactionDataRoutecheckFlag) {
                   dispatch(webnotificationGlobalFlag(true));
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
                 true
@@ -2401,7 +2403,9 @@ const GetAllMeetingDetailsApiFunc = (
                     ),
                   );
                 }
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3837,7 +3841,9 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
                     pK_FileID: newFileID.pK_FileID,
                   });
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
               await dispatch(
                 saveFiles_success(
                   response.data.responseResult,
@@ -4246,7 +4252,9 @@ const GetAllAgendaWiseMinutesApiFunc = (
                   );
                   break;
               }
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/store/actions/NewMeetingActions.js:", error);
+            }
 
             await dispatch(
               showGetAllAgendaWiseMinutesSuccess(
@@ -4517,7 +4525,7 @@ const DeleteAgendaWiseMinutesApiFunc = (
               await dispatch(
                 showDeleteAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  "",
                 ),
               );
 
@@ -4527,9 +4535,10 @@ const DeleteAgendaWiseMinutesApiFunc = (
               dispatch(
                 GetAllAgendaWiseMinutesApiFunc(
                   navigate,
-                  DeleteGetAll,
                   t,
-                  currentMeeting,
+                  DeleteGetAll,
+                  "",
+                  {currentMeeting},
                 ),
               );
             } else if (
@@ -5281,7 +5290,9 @@ const saveFilesMeetingagendaWiseMinutesApi = (
                     pK_FileID: newFileID.pK_FileID,
                   });
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
               await dispatch(
                 saveFiles_success_agenda_wise(response.data.responseResult, ""),
               );
@@ -5599,7 +5610,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               await dispatch(
                 showDeleteAgendaWiseDocumentSuccess(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  "",
                 ),
               );
               let AgendaWiseDelData = {
@@ -5610,7 +5621,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   navigate,
                   AgendaWiseDelData,
                   t,
-                  currentMeeting,
+                  Data.MDID,
                   id,
                 ),
               );
@@ -5637,7 +5648,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                 )
             ) {
               dispatch(
-                showDeleteAgendaWiseDocumentFailed(t("No-record-deleted")),
+                showDeleteAgendaWiseDocumentFailed(""),
               );
               let AgendaWiseDelData = {
                 MinuteID: Number(id),
@@ -5647,7 +5658,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   navigate,
                   AgendaWiseDelData,
                   t,
-                  currentMeeting,
+                  Data.MDID,
                 ),
               );
             } else if (
@@ -6148,7 +6159,9 @@ const UpdateMeetingUserApiFunc = (
           } else {
             dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/store/actions/NewMeetingActions.js:", error);
+        }
       })
       .catch((response) => {
         dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
@@ -7508,6 +7521,37 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                     );
                   } else if (navigateLocation === "Minutes") {
                     navigate("/Diskus/Minutes");
+                  } else if (ViewCommitteeID !== null) {
+                    // Stayed on Committee's meeting list — refetch through
+                    // the Committee-specific action, not the Main Meeting
+                    // listOfMeetingsApi (which updates the wrong reducer).
+                    dispatch(
+                      getMeetingByCommitteeIdApi(navigate, t, {
+                        CommitteeID: Number(ViewCommitteeID),
+                        Date: "",
+                        Title: "",
+                        HostName: "",
+                        UserID: Number(userID),
+                        PageNumber: 1,
+                        Length: 30,
+                        PublishedMeetings: true,
+                        ProposedMeetings: false,
+                      }),
+                    );
+                  } else if (ViewGroupID !== null) {
+                    dispatch(
+                      getMeetingbyGroupIdApi(navigate, t, {
+                        GroupID: Number(ViewGroupID),
+                        Date: "",
+                        Title: "",
+                        HostName: "",
+                        UserID: Number(userID),
+                        PageNumber: 1,
+                        Length: 30,
+                        PublishedMeetings: true,
+                        ProposedMeetings: false,
+                      }),
+                    );
                   } else {
                     await dispatch(
                       listOfMeetingsApi(navigate, t, searchData, "", {}),
@@ -7680,7 +7724,9 @@ const LeaveCurrentMeetingOtherMenus = (
                   },
                   t,
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -8257,7 +8303,9 @@ const LeaveMeetingVideo = (
                 }
 
                 sessionStorage.removeItem("isWaiting");
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
@@ -9171,7 +9219,9 @@ const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
                   displayFileName: newFileID.displayFileName,
                 });
               });
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/store/actions/NewMeetingActions.js:", error);
+            }
 
             dispatch(saveFilesQuickMeeting_Success(responseResult, ""));
 
@@ -9417,7 +9467,7 @@ const getMeetingRecordingFilesApi = (
                 )
             ) {
               dispatch(
-                getMeetingRecordingFiles_fail(t("No-meeting-recording-found")),
+                getMeetingRecordingFiles_fail(""),
               );
             } else if (
               response.data.responseResult.responseMessage

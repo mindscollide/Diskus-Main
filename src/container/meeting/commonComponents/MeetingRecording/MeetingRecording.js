@@ -110,7 +110,9 @@ const MeetingRecording = ({ title }) => {
 
         setData(MeetingData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/commonComponents/MeetingRecording/MeetingRecording.js:", error);
+    }
   }, [meetingRecordingFiles]);
 
   useEffect(() => {
@@ -144,7 +146,10 @@ const MeetingRecording = ({ title }) => {
         });
         setData(copyData);
         dispatch(meetingTranscriptDownloaded(null));
-      } catch (error) {}
+        
+      } catch (error) {
+        console.error("src/container/meeting/commonComponents/MeetingRecording/MeetingRecording.js:", error);
+      }
     }
   }, [meetingTranscriptDownload]);
 
@@ -164,7 +169,10 @@ const MeetingRecording = ({ title }) => {
         });
         setData(copyData);
         dispatch(meetingMinutesDownloaded(null));
-      } catch (error) {}
+        
+      } catch (error) {
+        console.error("src/container/meeting/commonComponents/MeetingRecording/MeetingRecording.js:", error);
+      }
     }
   }, [meetingMinutesDownloaded]);
 

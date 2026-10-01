@@ -62,25 +62,29 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [talkGroupID, setTalkGroupID] = useState(0);
 
-  
+
 
   useEffect(() => {
-    let searchData = {
-      CommitteeID: Number(ViewCommitteeID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: currentCommitteeMeetingTabActive === 1 ? true : false,
-      ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
-    };
-    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
-
-    // return () => {
-    //   setCurrentCommitteeMeetingTabActive(1);
+    // let searchData = {
+    //   CommitteeID: Number(ViewCommitteeID),
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: Number(userID),
+    //   PageNumber: 1,
+    //   Length: 30,
+    //   PublishedMeetings: currentCommitteeMeetingTabActive === 1 ? true : false,
+    //   ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
     // };
+    // dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    // Resetting the tab here on every unmount was too broad: Committee.js
+    // swaps its whole render tree to CreateEditAdvanceMeeting/ViewMeetingModal/
+    // ProposedNewMeeting while those flows are active, which unmounts this
+    // component too — so creating/scheduling/publishing a proposed meeting
+    // reset the tab to Published before this component even remounted.
+    // Committee.js's own top-level unmount cleanup already resets the tab
+    // when actually leaving the Committee module, so this isn't needed here.
   }, []);
 
   const handleClickTabNavigate = (value) => {
@@ -198,7 +202,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           {committeeStatus === 3 && (
             <ReactBootstrapDropdown
               className='SceduleMeetingButton d-inline-block position-relative ms-2'
-              // onClick={eventClickHandler}
+            // onClick={eventClickHandler}
             >
               <ReactBootstrapDropdown.Toggle title={t("Schedule-a-meeting")}>
                 <Row>

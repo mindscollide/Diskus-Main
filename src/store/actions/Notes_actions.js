@@ -975,7 +975,7 @@ const saveFilesNotesApi = (navigate, t, data, folderID, newFolder) => {
                   return newFolder.push({ pK_FileID: newFileID.pK_FileID });
                 });
               } catch (error) {
-                
+                console.error("src/store/actions/Notes_actions.js:", error);
               }
               await dispatch(
                 saveFilesNotes_success(response.data.responseResult, "")

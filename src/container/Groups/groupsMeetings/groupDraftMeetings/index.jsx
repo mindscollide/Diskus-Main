@@ -69,6 +69,11 @@ const GroupDraftMeetings = () => {
   const {
     handleViewMeeting,
   } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
   })
   const {
     groupDraftMeetingData,
@@ -79,6 +84,7 @@ const GroupDraftMeetings = () => {
     setCurrentPageDraftGroupMeeting,
     currentLengthDraftGroupMeeting,
     setCurrentLengthDraftGroupMeeting,
+    setCurrentGroupMeetingTabActive,
   } = useGroupsContext();
 
   // ─── Context ───
@@ -104,8 +110,6 @@ const GroupDraftMeetings = () => {
   const handelChangePopoverOpen = (recordId, isOpen) => {
     setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
-
-
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -191,7 +195,7 @@ const GroupDraftMeetings = () => {
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          { setEditorRole },
+          { setEditorRole, setCurrentGroupMeetingTabActive },
         ),
       );
     };
@@ -402,7 +406,7 @@ const GroupDraftMeetings = () => {
                 <span>
                   <CustomButton
                     className={styles.MoreMeetingButton}
-                    text="More"
+                    text={t("More")}
                     icon2={
                       <img src={ChevronDownIcon} alt="Chevron Down" width={10} />
                     }

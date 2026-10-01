@@ -17,6 +17,8 @@ import useSnackbar from "@/components/elements/snack_bar/useSnackbar";
 import { toggleIsOrganizerProposedMeetingDates } from "../../../../store/actions/ModalStates_actions";
 import { scheduleMeetingFromProposedMeetingApi } from "../../../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../../../context/MeetingContext";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 
 const SceduleProposedmeeting = () => {
   const [show, SnackBar] = useSnackbar();
@@ -25,6 +27,12 @@ const SceduleProposedmeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { setEditorRole } = useMeetingContext();
+  // This modal is shared across Main Meeting, Committee, and Group — only
+  // one of these contexts is actually "live" for any given render, but
+  // reading all three here is harmless. Used so that scheduling a proposed
+  // meeting can switch the correct module's active tab to Draft on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   const isOrganizerViewPollProposedMeeting = useSelector(
     (state) => state.ModalStatesReducer.isOrganizerRespondProposedMeeting,
   );
@@ -108,7 +116,9 @@ const SceduleProposedmeeting = () => {
           const formatetDateTime = utcConvertintoGMT(datetimeVal);
 
           return formatetDateTime;
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/container/meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting.js:", error);
+        }
       });
 
       if (formattedDates) {
@@ -180,7 +190,12 @@ const SceduleProposedmeeting = () => {
             ProposedDateID: findIsSelected.proposedDateID,
           },
           "EditMeetingFromScheduleProposed",
-          { role: "Organizer", setEditorRole },
+          {
+            role: "Organizer",
+            setEditorRole,
+            setCurrentCommitteeMeetingTabActive,
+            setCurrentGroupMeetingTabActive,
+          },
         ),
       );
     }

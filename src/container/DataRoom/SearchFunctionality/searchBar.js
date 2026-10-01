@@ -121,7 +121,9 @@ const SearchBarComponent = ({
         );
         setAssignessList(filteredApiResponse);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchBar.js:", error);
+    }
   }, [user]);
 
   // this is used for input title

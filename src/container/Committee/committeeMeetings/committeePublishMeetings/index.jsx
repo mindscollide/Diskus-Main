@@ -83,6 +83,7 @@ import {
 } from "@/store/actions/NewMeeting2.actions";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
+import store from "../../../../store/store";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
 import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 import {
@@ -462,7 +463,9 @@ const CommitteePublishedMeetingList = () => {
           });
         };
         meetingNotificationRouting();
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/Committee/committeeMeetings/committeePublishMeetings/index.jsx:", error);
+      }
     }
   }, [state]);
 
@@ -475,9 +478,30 @@ const CommitteePublishedMeetingList = () => {
     }
 
     const allChatMessages = talkStateDataAllUserChats.AllUserChatsData.allMessages;
-    const foundRecord =
+    let foundRecord =
       Array.isArray(allChatMessages) &&
       allChatMessages.find((item) => item.id === data.talkGroupID);
+
+    // The chats reducer can be stale (e.g. a chat group created after it
+    // was last loaded) — refetch from the API before concluding the chat
+    // doesn't exist, instead of only ever trusting the cached reducer.
+    if (!foundRecord) {
+      await dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(localStorage.getItem("userID")),
+          parseInt(currentOrganizationId),
+          t,
+        ),
+      );
+      const refreshedAllChatMessages =
+        store.getState().talkStateData.AllUserChats.AllUserChatsData
+          .allMessages;
+      foundRecord =
+        Array.isArray(refreshedAllChatMessages) &&
+        refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
+    }
+
     if (!foundRecord) {
       show(t("No-talk-group-created"), "error");
       return;
@@ -561,7 +585,9 @@ const CommitteePublishedMeetingList = () => {
             : "Organizer",
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-    } catch (error) { }
+    } catch (error) {
+      console.error("src/container/Committee/committeeMeetings/committeePublishMeetings/index.jsx:", error);
+    }
   };
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
@@ -592,8 +618,9 @@ const CommitteePublishedMeetingList = () => {
     const canShow = {
       edit:
         (status === STATUS.UPCOMING ||
-          status === STATUS.ACTIVE ||
-          status === STATUS.NOT_CONDUCTED) &&
+          status === STATUS.ACTIVE 
+          // || status === STATUS.NOT_CONDUCTED
+        ) &&
         isOrganizer,
       cancel: status === STATUS.UPCOMING && isOrganizer,
       contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
@@ -1133,17 +1160,17 @@ const CommitteePublishedMeetingList = () => {
           }
 
           // NOT CONDUCTED
-          if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
-            return (
-              <div className='d-flex justify-content-center align-items-center'>
-                <CustomButton
-                  text={t("Edit-meeting")}
-                  className={styles.EditMeetingButton}
-                  onClick={() => handleClick("EDIT_MEETING")}
-                />
-              </div>
-            );
-          }
+          // if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
+          //   return (
+          //     <div className='d-flex justify-content-center align-items-center'>
+          //       <CustomButton
+          //         text={t("Edit-meeting")}
+          //         className={styles.EditMeetingButton}
+          //         onClick={() => handleClick("EDIT_MEETING")}
+          //       />
+          //     </div>
+          //   );
+          // }
 
           return null;
         },

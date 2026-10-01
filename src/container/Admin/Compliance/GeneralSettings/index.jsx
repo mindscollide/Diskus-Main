@@ -266,7 +266,7 @@ const GeneralSetting = () => {
 
         dispatch(setOrganizationSettingUpdateData(null));
       } catch (error) {
-        
+        console.error("src/container/Admin/Compliance/GeneralSettings/index.jsx:", error);
       }
     }
   }, [MqttOrganizationSettingUpdated]);

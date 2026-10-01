@@ -41,7 +41,9 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
           dispatch(getbyGroupID(navigate, ViewGroupID, t));
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/MainGroup/ViewGrouppage/ViewGrouppage.js:", error);
+    }
 
     return () => {
       localStorage.removeItem("NotifcationClickViewGroupID");
@@ -63,7 +65,9 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
       } else {
         setGroupStatus(null);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/MainGroup/ViewGrouppage/ViewGrouppage.js:", error);
+    }
   }, [GroupsReducergetGroupByGroupIdResponse]);
   return (
     <>

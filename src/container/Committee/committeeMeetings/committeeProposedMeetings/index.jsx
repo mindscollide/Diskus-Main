@@ -153,7 +153,9 @@ const CommitteeProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingParticipant]);
 
@@ -176,7 +178,9 @@ const CommitteeProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingOrganizer]);
 
@@ -556,7 +560,7 @@ const CommitteeProposedMeetings = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-center my-3 pagination-groups-table"
+                className="d-flex justify-content-center  pagination-groups-table"
               >
 
                 <CustomPagination

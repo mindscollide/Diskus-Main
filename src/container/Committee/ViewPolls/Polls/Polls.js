@@ -258,7 +258,9 @@ const Polls = ({ committeeStatus }) => {
         setPollsRows([]);
         setDublicatedrows([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewPolls/Polls/Polls.js:", error);
+    }
   }, [getPollByCommitteeID]);
 
   // MQTT Response of Polls for Committees
@@ -273,7 +275,7 @@ const Polls = ({ committeeStatus }) => {
         dispatch(createPollCommitteesMQTT(null));
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/ViewPolls/Polls/Polls.js:", error);
     }
   }, [newPollCommittees]);
 
@@ -301,7 +303,7 @@ const Polls = ({ committeeStatus }) => {
         setPollsRows(updatedRows);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/ViewPolls/Polls/Polls.js:", error);
     }
   }, [pollingSocket]);
 
@@ -319,7 +321,7 @@ const Polls = ({ committeeStatus }) => {
         dispatch(deletePollsMQTT(null));
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/ViewPolls/Polls/Polls.js:", error);
     }
   }, [newPollDelete]);
 
@@ -410,7 +412,7 @@ const Polls = ({ committeeStatus }) => {
           onClick={resetFilter}
         />
         <Button
-          text="Ok"
+          text={t("Ok")}
           disableBtn={selectedValues.length === 0}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
@@ -470,8 +472,8 @@ const Polls = ({ committeeStatus }) => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}
         >
           <div />
         </Dropdown>

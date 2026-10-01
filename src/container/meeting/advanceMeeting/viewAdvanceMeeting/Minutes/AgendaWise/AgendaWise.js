@@ -178,7 +178,9 @@ const AgendaWise = ({
         });
         setAgendaOptions(NewData);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+    }
   }, [AllAgendas]);
 
   const modules = {
@@ -606,7 +608,9 @@ const AgendaWise = ({
         setFileAttachments(files);
         setPreviousFileIDs(prevData);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+    }
   }, [RetriveAgendaWiseDocuments]);
 
   //Handle Update Button Api
@@ -713,23 +717,6 @@ const AgendaWise = ({
       );
     }
   };
-
-  // useEffect(() => {
-  //   if (
-  //     ResponseMessage !== t("No-record-found") &&
-  //     ResponseMessage !== t("No-records-found") &&
-  //     ResponseMessage !== "" &&
-  //     ResponseMessage !== t("No-record-found") &&
-  //     ResponseMessage !== t("List-updated-successfully") &&
-  //     ResponseMessage !== t("No-data-available")
-  //   ) {
-  //
-  //     showMessage(ResponseMessage, "success", setOpen);
-  //     dispatch(CleareMessegeNewMeeting());
-  //   } else {
-  //     dispatch(CleareMessegeNewMeeting());
-  //   }
-  // }, [ResponseMessage]);
 
   useEffect(() => {
     let Data = {

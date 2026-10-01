@@ -1327,6 +1327,15 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.GET_PARTICIPANTS_OF_GROUP_CALL_SUCCESS: {
+      // GC-DEBUG: temporary
+      console.log("GC-DEBUG roster API response", {
+        inCall: (action.response.inCallParticipants || []).map(
+          (p) => `${p.userID}:${p.name}:${p.callStatus}`,
+        ),
+        pending: (action.response.pendingParticipantList || []).map(
+          (p) => `${p.userID}:${p.name}:${p.callStatus}`,
+        ),
+      });
       return {
         ...state,
         Loading: false,

@@ -242,7 +242,9 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
             let resData = JSON.parse(
               new TextDecoder().decode(new Uint8Array(response)),
             );
-          } catch {}
+          } catch (error) {
+            console.error("src/store/actions/Download_action.js:", error);
+          }
         }
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
