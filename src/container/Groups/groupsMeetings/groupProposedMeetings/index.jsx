@@ -111,10 +111,10 @@ const GroupProposedMeetings = () => {
     };
     dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
 
-       return () => {
-          dispatch(clearGetMeetingbyGroupID());
-    
-        }
+    return () => {
+      dispatch(clearGetMeetingbyGroupID());
+
+    }
   }, [])
 
   const handleClickActions = (record) => {

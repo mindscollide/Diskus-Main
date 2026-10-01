@@ -268,27 +268,19 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                     // switch to it so the user lands where the meeting now
                     // actually lives.
                     object.setCurrentCommitteeMeetingTabActive?.(1);
-                    {
-                      const publishedCommitteeInfo =
-                        store.getState().CommitteeReducer?.viewCommitteeDetails;
-                      if (publishedCommitteeInfo) {
-                        dispatch(
-                          getMeetingByCommitteeIdApi(navigate, t, {
-                            CommitteeID: Number(
-                              publishedCommitteeInfo.committeeID,
-                            ),
-                            Date: "",
-                            Title: "",
-                            HostName: "",
-                            UserID: Number(localStorage.getItem("userID")),
-                            PageNumber: 1,
-                            Length: 30,
-                            PublishedMeetings: true,
-                            ProposedMeetings: false,
-                          }),
-                        );
-                      }
-                    }
+                    // let searchData = {
+                    //   CommitteeID: Number(committeeInfo.committeeID),
+                    //   Date: "",
+                    //   Title: "",
+                    //   HostName: "",
+                    //   UserID: Number(localStorage.getItem("userID")),
+                    //   PageNumber: 1,
+                    //   Length: 30,
+                    //   PublishedMeetings: true,
+                    // };
+                    // dispatch(
+                    //   getMeetingByCommitteeIdApi(navigate, t, searchData),
+                    // );
                     break;
                   case "groupSaveMeeting":
                     dispatch(
@@ -337,25 +329,6 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                     // switch to it so the user lands where the meeting now
                     // actually lives.
                     object.setCurrentGroupMeetingTabActive?.(1);
-                    {
-                      const publishedGroupInfo =
-                        store.getState().GroupsReducer?.viewGroupDetails;
-                      if (publishedGroupInfo) {
-                        dispatch(
-                          getMeetingbyGroupIdApi(navigate, t, {
-                            GroupID: Number(publishedGroupInfo.groupID),
-                            Date: "",
-                            Title: "",
-                            HostName: "",
-                            UserID: Number(localStorage.getItem("userID")),
-                            PageNumber: 1,
-                            Length: 30,
-                            PublishedMeetings: true,
-                            ProposedMeetings: false,
-                          }),
-                        );
-                      }
-                    }
                     break;
                   case "saveProposedMeeting":
                   case "saveCommitteeProposedMeeting":
@@ -899,7 +872,7 @@ export const UpdateMeetingUserApi = (
                             MeetingID: Data.MeetingID,
                           },
                           "saveProposedMeeting",
-                          { ...object, sortedDates, sendResponseBtDateVal },
+                          { sortedDates, sendResponseBtDateVal },
                         ),
                       );
                       break;
@@ -923,7 +896,7 @@ export const UpdateMeetingUserApi = (
                             MeetingID: Data.MeetingID,
                           },
                           "updateProposedMeeting",
-                          { ...object, sortedDates, sendResponseBtDateVal },
+                          { sortedDates, sendResponseBtDateVal },
                         ),
                       );
                       break;
@@ -1128,9 +1101,6 @@ export const setProposedMeetingDateApi = (
                 switch (routePath) {
                   case "saveProposedMeeting":
                   case "updateProposedMeeting":
-                    // Creating/updating a proposed meeting should switch to
-                    // the Proposed tab regardless of which tab the user was
-                    // on beforehand (e.g. Published).
                     if (committeeInfo) {
                       object.setCurrentCommitteeMeetingTabActive?.(2);
                       setTimeout(() => {
@@ -2444,17 +2414,11 @@ export const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
                     // dispatcher and does nothing without one here).
                     setCurrentCommitteeMeetingTabActive?.(1);
                     dispatch(
-                      getMeetingByCommitteeIdApi(navigate, t, {
-                        CommitteeID: Number(ViewCommitteeID),
-                        Date: "",
-                        Title: "",
-                        HostName: "",
-                        UserID: Number(localStorage.getItem("userID")),
-                        PageNumber: 1,
-                        Length: 30,
-                        PublishedMeetings: true,
-                        ProposedMeetings: false,
-                      }),
+                      setMeetingbyCommitteeIdApi(
+                        navigate,
+                        t,
+                        CommitteeMeetingData,
+                      ),
                     );
                     break;
                   case 7:
@@ -2464,17 +2428,7 @@ export const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
                     // checkFlag 7, Update/Publish uses checkFlag 8).
                     setCurrentGroupMeetingTabActive?.(1);
                     dispatch(
-                      getMeetingbyGroupIdApi(navigate, t, {
-                        GroupID: Number(ViewGroupID),
-                        Date: "",
-                        Title: "",
-                        HostName: "",
-                        UserID: Number(localStorage.getItem("userID")),
-                        PageNumber: 1,
-                        Length: 30,
-                        PublishedMeetings: true,
-                        ProposedMeetings: false,
-                      }),
+                      setMeetingByGroupIdApi(navigate, t, GroupMeetingData),
                     );
                     break;
                   default:
@@ -2877,35 +2831,6 @@ export const UpdateMeetingStatusApi = (
                         } = object;
                         setIsQuickMeetingView(false);
                         setEndMeetingConfirmationModal(false);
-                        if (committeeInfo !== null) {
-                          dispatch(
-                            getMeetingByCommitteeIdApi(navigate, t, {
-                              CommitteeID: Number(committeeInfo.committeeID),
-                              Date: "",
-                              Title: "",
-                              HostName: "",
-                              UserID: Number(localStorage.getItem("userID")),
-                              PageNumber: 1,
-                              Length: 30,
-                              PublishedMeetings: true,
-                              ProposedMeetings: false,
-                            }),
-                          );
-                        } else if (groupInfo !== null) {
-                          dispatch(
-                            getMeetingbyGroupIdApi(navigate, t, {
-                              GroupID: Number(groupInfo.groupID),
-                              Date: "",
-                              Title: "",
-                              HostName: "",
-                              UserID: Number(localStorage.getItem("userID")),
-                              PageNumber: 1,
-                              Length: 30,
-                              PublishedMeetings: true,
-                              ProposedMeetings: false,
-                            }),
-                          );
-                        }
                         break;
                       }
 
@@ -4045,7 +3970,7 @@ export const saveParcipantsProposeMeetingApi = (
                       t,
                       Data2,
                       "saveProposedMeeting",
-                      object,
+                      {},
                       // setProposedNewMeeting,
                       // setSceduleMeeting,
                     ),
@@ -4058,7 +3983,7 @@ export const saveParcipantsProposeMeetingApi = (
                       t,
                       Data2,
                       "updateProposedMeeting",
-                      object,
+                      {},
                       // setProposedNewMeeting,
                       // setSceduleMeeting,
                     ),

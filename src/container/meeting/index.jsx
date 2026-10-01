@@ -164,12 +164,7 @@ const MainMeeting = () => {
       dispatch(GetAllMeetingTypesNewFunction(navigate, t));
     }
 
-    // Persist the tab we actually resolved above (existing value, or the
-    // Published default only when nothing was set yet) — this used to
-    // unconditionally force Published on every mount, which stomped the
-    // correct tab (e.g. Proposed) right after creating a proposed meeting
-    // and returning to this list.
-    localStorage.setItem("MeetingCurrentView", currentView);
+    localStorage.setItem("MeetingCurrentView", MEETING_VIEWS.PUBLISHED);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", currentView);
 

@@ -49,8 +49,6 @@ import {
   proposedMeetingData,
 } from "../../../../store/actions/NewMeetingActions";
 import { useMeetingContext } from "../../../../context/MeetingContext";
-import { useCommitteeContext } from "../../../../context/CommitteeContext";
-import { useGroupsContext } from "../../../../context/GroupsContext";
 import { toggleCreateEditProposedMeetingModal } from "../../../../store/actions/ModalStates_actions";
 import {
   listOfMeetingsApi,
@@ -61,12 +59,6 @@ const ProposedNewMeeting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { editorRole, setSceduleMeeting, setEditorRole } = useMeetingContext();
-  // Shared across Main Meeting, Committee, and Group — only one context is
-  // ever actually "live"; threaded into the save action so it can switch
-  // the correct module's active tab to Proposed on success, regardless of
-  // which tab the user was on when they created/updated the proposal.
-  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
-  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   const animatedComponents = makeAnimated();
   const userID = localStorage.getItem("userID");
   const calendRef = useRef();
@@ -779,8 +771,6 @@ const ProposedNewMeeting = () => {
             membersParticipants,
             sortedDates,
             sendResponseBtDateVal,
-            setCurrentCommitteeMeetingTabActive,
-            setCurrentGroupMeetingTabActive,
           }),
         );
 
@@ -883,8 +873,6 @@ const ProposedNewMeeting = () => {
             membersParticipants,
             sortedDates,
             sendResponseBtDateVal,
-            setCurrentCommitteeMeetingTabActive,
-            setCurrentGroupMeetingTabActive,
           }),
         );
 

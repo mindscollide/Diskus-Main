@@ -1960,7 +1960,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         MeetingAttendees: createMeeting.MeetingAttendees,
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
-      console.log(newData, "UpdateMeetingUpdateMeetingUpdateMeeting");
       await dispatch(
         UpdateMeeting(
           navigate,

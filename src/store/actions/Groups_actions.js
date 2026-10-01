@@ -2012,6 +2012,29 @@ const setMeetingByGroupIdApi = (navigate, t, Data, routePath, object) => {
                 default:
                   break;
               }
+              // let ViewGroupID = localStorage.getItem("ViewGroupID");
+              // let currentUserId = localStorage.getItem("userID");
+
+              // let searchData = {
+              //   GroupID: Number(ViewGroupID),
+              //   Date: "",
+              //   Title: "",
+              //   HostName: "",
+              //   UserID: Number(currentUserId),
+              //   PageNumber: 1,
+              //   Length: 50,
+              //   PublishedMeetings:
+              //     localStorage.getItem("MeetingCurrentView") &&
+              //     Number(localStorage.getItem("MeetingCurrentView")) === 1
+              //       ? true
+              //       : false,
+              //   ProposedMeetings:
+              //     localStorage.getItem("MeetingCurrentView") &&
+              //     Number(localStorage.getItem("MeetingCurrentView")) === 2
+              //       ? true
+              //       : false,
+              // };
+              // dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

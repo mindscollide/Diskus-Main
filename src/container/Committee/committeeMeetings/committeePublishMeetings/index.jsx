@@ -182,7 +182,6 @@ const CommitteePublishedMeetingList = () => {
   } = useCommitteeContext();
 
 
-
   const { setIsQuickMeetingView } = useNewMeetingContext();
 
   // ─── Local state ──────────────────────────────────────────────────────────
@@ -237,7 +236,6 @@ const CommitteePublishedMeetingList = () => {
 
   const userID = localStorage.getItem("userID");
   const currentOrganizationId = localStorage.getItem("organizationID");
-
   const statusFilters = useMemo(
     () => [
       { value: "10", text: t("Active") },
@@ -248,7 +246,21 @@ const CommitteePublishedMeetingList = () => {
     ],
     [t],
   );
+  useEffect(() => {
 
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: true,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+  }, [])
   useEffect(() => {
 
     let searchData = {

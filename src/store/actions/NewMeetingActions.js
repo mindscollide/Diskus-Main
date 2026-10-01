@@ -7521,37 +7521,6 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                     );
                   } else if (navigateLocation === "Minutes") {
                     navigate("/Diskus/Minutes");
-                  } else if (ViewCommitteeID !== null) {
-                    // Stayed on Committee's meeting list — refetch through
-                    // the Committee-specific action, not the Main Meeting
-                    // listOfMeetingsApi (which updates the wrong reducer).
-                    dispatch(
-                      getMeetingByCommitteeIdApi(navigate, t, {
-                        CommitteeID: Number(ViewCommitteeID),
-                        Date: "",
-                        Title: "",
-                        HostName: "",
-                        UserID: Number(userID),
-                        PageNumber: 1,
-                        Length: 30,
-                        PublishedMeetings: true,
-                        ProposedMeetings: false,
-                      }),
-                    );
-                  } else if (ViewGroupID !== null) {
-                    dispatch(
-                      getMeetingbyGroupIdApi(navigate, t, {
-                        GroupID: Number(ViewGroupID),
-                        Date: "",
-                        Title: "",
-                        HostName: "",
-                        UserID: Number(userID),
-                        PageNumber: 1,
-                        Length: 30,
-                        PublishedMeetings: true,
-                        ProposedMeetings: false,
-                      }),
-                    );
                   } else {
                     await dispatch(
                       listOfMeetingsApi(navigate, t, searchData, "", {}),

@@ -2012,6 +2012,29 @@ const setMeetingbyCommitteeIdApi = (navigate, t, Data, routePath, object) => {
                   // );
                   break;
                 default:
+                  // dispatch(
+                  //   getMeetingByCommitteeIdApi(navigate, t, {
+                  //     CommitteeID: Number(
+                  //       localStorage.getItem("ViewCommitteeID"),
+                  //     ),
+                  //     Date: "",
+                  //     Title: "",
+                  //     HostName: "",
+                  //     UserID: Number(localStorage.getItem("userID")),
+                  //     PageNumber: 1,
+                  //     Length: 30,
+                  //     PublishedMeetings:
+                  //       localStorage.getItem("MeetingCurrentView") &&
+                  //       Number(localStorage.getItem("MeetingCurrentView")) === 1
+                  //         ? true
+                  //         : false,
+                  //     ProposedMeetings:
+                  //       localStorage.getItem("MeetingCurrentView") &&
+                  //       Number(localStorage.getItem("MeetingCurrentView")) === 2
+                  //         ? true
+                  //         : false,
+                  //   }),
+                  // );
                   break;
               }
               // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
