@@ -5,7 +5,11 @@ import { useTranslation } from "react-i18next";
 import Polls from "../../GroupPolls/GroupViewPolls";
 import ViewGroupTodo from "../../ViewGroupTodo/ViewGroupTodo";
 import ViewUpdateGroup from "../ViewGroup/ViewUpdateGroup";
-import { getbyGroupID } from "../../../../store/actions/Groups_actions";
+import {
+  getbyGroupID,
+  resetViewGroupDetails,
+  viewGroupPageFlag,
+} from "../../../../store/actions/Groups_actions";
 import { Button } from "./../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -61,7 +65,9 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
   const handleClose = () => {
     localStorage.removeItem("ViewGroupID");
     setViewGroupPage(false);
+    dispatch(viewGroupPageFlag(false));
     setCurrentGroupMeetingTabActive(1);
+    dispatch(resetViewGroupDetails());
   };
 
   useEffect(() => {
