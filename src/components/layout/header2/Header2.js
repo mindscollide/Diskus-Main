@@ -72,8 +72,10 @@ const Header2 = ({ isVideo }) => {
   const location = useLocation();
   const { t } = useTranslation();
   const WebNotificationBell = useRef();
-  const { isQuickMeetingCreate, setIsQuickMeetingCreate } =
-    useNewMeetingContext();
+  const {
+    isQuickMeetingFromHeader,
+    setIsQuickMeetingFromHeader
+  } = useNewMeetingContext();
   const remainingDays = localStorage.getItem("remainingDays");
   let defaultDashboard = getHomeRoute();
   const scheduleMeetingPageFlagReducer = useSelector(
@@ -479,7 +481,7 @@ const Header2 = ({ isVideo }) => {
       // User is in advance meeting modal and meeting is ongoing
       dispatch(showEndMeetingModal(true));
     } else {
-      setIsQuickMeetingCreate(true);
+      setIsQuickMeetingFromHeader(true);
     }
   };
 
@@ -1819,7 +1821,7 @@ const Header2 = ({ isVideo }) => {
           setEditFlag={setEditFlag}
         />
       ) : null}
-      {isQuickMeetingCreate && (
+      {isQuickMeetingFromHeader && (
         <CreateQuickMeeting
           // this is check from where its called 1 is from header
           checkFlag={1}

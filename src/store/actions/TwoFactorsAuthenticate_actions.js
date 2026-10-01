@@ -635,7 +635,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               let isFirstLogin = JSON.parse(
                 localStorage.getItem("isFirstLogin")
               );
-              handleNavigation(navigate, isFirstLogin, dispatch);
+              handleNavigation(navigate, isFirstLogin,dispatch);
 
               clearLocalStorageAtloginresponce(dispatch, 1, navigate);
             } else if (

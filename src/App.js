@@ -213,10 +213,31 @@ const App = () => {
 
   const isMobileDevice = () => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    const isAndroid = /android/i.test(userAgent);
-    const isIOS = /iPhone|iPad|iPod/i.test(userAgent);
 
-    return isAndroid || isIOS;
+    // ✅ Modern iPad (iPadOS 13+) apna UA "Macintosh" jaisa bhejta hai,
+    // lekin touch points > 1 hote hain jo asli Mac mein nahi hote
+    const isModernIPad =
+      /Macintosh/i.test(userAgent) &&
+      navigator.maxTouchPoints &&
+      navigator.maxTouchPoints > 1;
+
+    // ✅ Purane iPad ya agar kabhi "iPad" UA mein explicitly aaye
+    const isOldIPad = /iPad/i.test(userAgent);
+
+    const isTablet = isModernIPad || isOldIPad;
+
+    // ✅ Android phone: "Mobile" word hota hai UA mein
+    // ✅ Android tablet: "Mobile" word NAHI hota — isliye ye check tablet ko exclude kar deta hai
+    const isAndroidPhone =
+      /android/i.test(userAgent) && /mobile/i.test(userAgent);
+
+    // ✅ iPhone/iPod hamesha phone hi hote hain
+    const isIOSPhone = /iPhone|iPod/i.test(userAgent);
+
+    // Tablet ko explicitly false rakho, chahe uska UA kuch bhi ho
+    if (isTablet) return false;
+
+    return isAndroidPhone || isIOSPhone;
   };
 
   let RSVPRouteforApp = localStorage.getItem("mobilePopUpAppRoute");

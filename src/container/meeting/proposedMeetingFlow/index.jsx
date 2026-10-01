@@ -613,7 +613,25 @@ const ProposedMeeting = () => {
           if (indexToUpdate !== -1) {
             let updatedRows = [...proposedMeetingData];
 
-            updatedRows[indexToUpdate] = getMeetingData;
+            // This poll-response event is broadcast to every connected
+            // user, not just the one who voted. The vote count in
+            // getMeetingData is correct for everyone, but its isVoted flag
+            // reflects the sender's vote — applying it as-is would flip
+            // other users' Vote button to Voted too. Only trust isVoted
+            // when the logged-in user is the one who actually voted.
+            let currentUserID = Number(localStorage.getItem("userID"));
+            let mergedMeetingData =
+              Number(meetingData.senderID) !== currentUserID
+                ? {
+                    ...getMeetingData,
+                    meetingPoll: {
+                      ...getMeetingData.meetingPoll,
+                      isVoted: updatedRows[indexToUpdate]?.meetingPoll?.isVoted,
+                    },
+                  }
+                : getMeetingData;
+
+            updatedRows[indexToUpdate] = mergedMeetingData;
 
             setProposedMeetingData(updatedRows);
           } else {

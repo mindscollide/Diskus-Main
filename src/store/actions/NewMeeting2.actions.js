@@ -759,7 +759,7 @@ export const UpdateMeetingUserApi = (
                               ParticipantRoleID:
                                 row.participantRole?.participantRoleID ?? 0,
                             })),
-                            MeetingID: Number(meetingId),
+                            MeetingID: Number(Data.MeetingID),
                             IsParticipantsAddFlow:
                               Number(editableSave) === 2 ? true : false,
                             NotificationMessage: "",
@@ -791,13 +791,13 @@ export const UpdateMeetingUserApi = (
                               Title: item.organizerTitle,
                               UserID: item.userID,
                             })),
-                            MeetingID: meetingId,
+                            MeetingID: Data.MeetingID,
                             IsOrganizerAddFlow:
                               isEditValue === 1 ? true : false,
                             NotificationMessage: notificationMessage,
                           },
                           "saveMeetingOrganizer",
-                          { currentMeeting: meetingId },
+                          { currentMeeting: Data.MeetingID },
                         ),
                       );
                       break;
@@ -815,10 +815,12 @@ export const UpdateMeetingUserApi = (
                               Title: data.Title,
                               AgendaListRightsAll: data.agendaListRightsAll,
                               MeetingID:
-                                meetingId !== 0 ? Number(meetingId) : 0,
+                                Data.MeetingID !== 0
+                                  ? Number(Data.MeetingID)
+                                  : 0,
                               IsContributorNotified: data.isContributorNotified,
                             })),
-                            MeetingID: Number(meetingId),
+                            MeetingID: Number(Data.MeetingID),
                             IsAgendaContributorAddFlow: isEditFlag !== 1,
                             NotificationMessage: notifyMessageField,
                           },
@@ -865,7 +867,7 @@ export const UpdateMeetingUserApi = (
                           t,
                           {
                             MeetingParticipants: newMembers,
-                            MeetingID: meetingId,
+                            MeetingID: Data.MeetingID,
                           },
                           "updateProposedMeeting",
                           { sortedDates, sendResponseBtDateVal },
@@ -2192,12 +2194,12 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
                         : null;
                     const agendaFiles = agendas.Files.map((file) => ({
                       PK_FileID: Number(file.OriginalAttachmentName),
-                    }));
+                    })).filter((file) => !Number.isNaN(file.PK_FileID));
                     const subAgendaFiles =
                       agendas.SubAgenda.length > 0
                         ? agendas.SubAgenda[0].Subfiles.map((file) => ({
                             PK_FileID: parseInt(file.OriginalAttachmentName),
-                          }))
+                          })).filter((file) => !Number.isNaN(file.PK_FileID))
                         : [];
                     if (agendaFiles.length > 0) {
                       newUpdateFileList.UpdateFileList.push({
