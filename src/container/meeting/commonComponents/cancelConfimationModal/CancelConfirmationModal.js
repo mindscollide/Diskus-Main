@@ -17,9 +17,6 @@ import {
   toggleCreateEditMeetingModal,
 } from "../../../../store/actions/ModalStates_actions";
 import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
-import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
-import { useCommitteeContext } from "../../../../context/CommitteeContext";
-import { useGroupsContext } from "../../../../context/GroupsContext";
 const CancelConfirmationModal = () => {
   const committeeInfo = useSelector(
     (state) => state.CommitteeReducer.viewCommitteeDetails,
@@ -28,9 +25,6 @@ const CancelConfirmationModal = () => {
   const groupInfo = useSelector(
     (state) => state.GroupsReducer.viewGroupDetails,
   );
-
-  const { currentCommitteeMeetingTabActive } = useCommitteeContext();
-  const { currentGroupMeetingTabActive } = useGroupsContext();
 
   const {
     unSaveChangesModalForMeeting,
@@ -86,35 +80,9 @@ const CancelConfirmationModal = () => {
     }
 
     if (committeeInfo !== null) {
-      dispatch(
-        getMeetingByCommitteeIdApi(navigate, t, {
-          CommitteeID: Number(committeeInfo.committeeID),
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(localStorage.getItem("userID")),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings: currentCommitteeMeetingTabActive === 1,
-          ProposedMeetings: currentCommitteeMeetingTabActive === 2,
-        }),
-      );
       return;
     }
     if (groupInfo !== null) {
-      dispatch(
-        getMeetingbyGroupIdApi(navigate, t, {
-          GroupID: Number(groupInfo.groupID),
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(localStorage.getItem("userID")),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings: currentGroupMeetingTabActive === 1,
-          ProposedMeetings: currentGroupMeetingTabActive === 2,
-        }),
-      );
       return;
     }
     // ✅ Default flow (search meetings)

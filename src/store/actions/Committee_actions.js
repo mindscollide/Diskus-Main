@@ -1975,26 +1975,30 @@ const setMeetingbyCommitteeIdApi = (navigate, t, Data, routePath, object) => {
                   dispatch(setCreateEditTab("organizers"));
                   break;
 
-                case "saveProposedMeetingFromCommittee":
-                  // Refetch the Proposed list so the meeting just created/
-                  // updated actually shows up — the active tab was already
-                  // switched to Proposed (2) by the caller before this ran.
-                  dispatch(
-                    getMeetingByCommitteeIdApi(navigate, t, {
-                      CommitteeID: Number(Data.CommitteeID),
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(localStorage.getItem("userID")),
-                      PageNumber: 1,
-                      Length: 30,
-                      PublishedMeetings: false,
-                      ProposedMeetings: true,
-                    }),
-                  );
-                  break;
-
                 default:
+                  // dispatch(
+                  //   getMeetingByCommitteeIdApi(navigate, t, {
+                  //     CommitteeID: Number(
+                  //       localStorage.getItem("ViewCommitteeID"),
+                  //     ),
+                  //     Date: "",
+                  //     Title: "",
+                  //     HostName: "",
+                  //     UserID: Number(localStorage.getItem("userID")),
+                  //     PageNumber: 1,
+                  //     Length: 30,
+                  //     PublishedMeetings:
+                  //       localStorage.getItem("MeetingCurrentView") &&
+                  //       Number(localStorage.getItem("MeetingCurrentView")) === 1
+                  //         ? true
+                  //         : false,
+                  //     ProposedMeetings:
+                  //       localStorage.getItem("MeetingCurrentView") &&
+                  //       Number(localStorage.getItem("MeetingCurrentView")) === 2
+                  //         ? true
+                  //         : false,
+                  //   }),
+                  // );
                   break;
               }
               // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");

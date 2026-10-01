@@ -118,6 +118,7 @@ const DraftMeetingList = () => {
   );
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
+  // ─── Local state ───
 
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
@@ -127,6 +128,7 @@ const DraftMeetingList = () => {
   const handelChangePopoverOpen = (recordId, isOpen) => {
     setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
+
 
   // ─── MQTT: Agenda Contributor Added ───
   useEffect(() => {
