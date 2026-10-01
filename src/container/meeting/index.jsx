@@ -52,6 +52,7 @@ import {
 import {
   getViewMeetingByMeetingIdApi,
   joinMeetingApi,
+  resetCurrentMeetingInfo,
   setCurrentMeetingInfo,
 } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
@@ -67,6 +68,7 @@ import {
   getMeetingFilters,
   isMeetingPublished,
 } from "./commonComponents/meeting.utils";
+import { disconnect } from "process";
 
 const MainMeeting = () => {
   const { t } = useTranslation();
@@ -741,6 +743,13 @@ const MainMeeting = () => {
   const handleCreateAdvanceMeeting = () => {
     dispatch(setAdvanceMeetingRoute(1));
     dispatch(toggleCreateEditMeetingModal(true));
+    setEditorRole({
+      status: "11",
+      role: "Organizer",
+      isPrimaryOrganizer: true,
+    });
+    dispatch(resetCurrentMeetingInfo())
+    
   };
 
   const handleCreateProposedMeeting = () => {

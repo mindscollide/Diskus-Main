@@ -9307,6 +9307,7 @@ const moveFilesAndFoldersApi = (
   newAgendas,
   checkFlag,
   setShow,
+  tabSetters = {},
 ) => {
   return async (dispatch) => {
     await dispatch(moveFilesAndFolder_init());
@@ -9326,6 +9327,7 @@ const moveFilesAndFoldersApi = (
               newAgendas,
               checkFlag,
               setShow,
+              tabSetters,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -9348,6 +9350,7 @@ const moveFilesAndFoldersApi = (
                 SaveMeetingDocuments(navigate, t, newAgendas, "", {
                   checkFlag,
                   setShow,
+                  ...tabSetters,
                 }),
               );
             } else if (

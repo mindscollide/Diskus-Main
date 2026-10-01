@@ -16,7 +16,11 @@ import { useGroupsContext } from "../../../../context/GroupsContext";
 const ViewGrouppage = ({ setViewGroupPage }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { currentViewGroupTabs, setCurrentViewGroupTabs } = useGroupsContext();
+  const {
+    currentViewGroupTabs,
+    setCurrentViewGroupTabs,
+    setCurrentGroupMeetingTabActive,
+  } = useGroupsContext();
 
   const GroupsReducergetGroupByGroupIdResponse = useSelector(
     (state) => state.GroupsReducer.getGroupByGroupIdResponse,
@@ -42,7 +46,10 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
         }
       }
     } catch (error) {
-      console.error("src/container/Groups/MainGroup/ViewGrouppage/ViewGrouppage.js:", error);
+      console.error(
+        "src/container/Groups/MainGroup/ViewGrouppage/ViewGrouppage.js:",
+        error,
+      );
     }
 
     return () => {
@@ -54,6 +61,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
   const handleClose = () => {
     localStorage.removeItem("ViewGroupID");
     setViewGroupPage(false);
+    setCurrentGroupMeetingTabActive(1);
   };
 
   useEffect(() => {
@@ -66,7 +74,10 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
         setGroupStatus(null);
       }
     } catch (error) {
-      console.error("src/container/Groups/MainGroup/ViewGrouppage/ViewGrouppage.js:", error);
+      console.error(
+        "src/container/Groups/MainGroup/ViewGrouppage/ViewGrouppage.js:",
+        error,
+      );
     }
   }, [GroupsReducergetGroupByGroupIdResponse]);
   return (

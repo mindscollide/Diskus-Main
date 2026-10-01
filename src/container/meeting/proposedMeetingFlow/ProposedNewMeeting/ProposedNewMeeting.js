@@ -140,7 +140,6 @@ const ProposedNewMeeting = () => {
         const EditFlowData = getAllMeetingDetails.advanceMeetingDetails;
 
         if (isProposedMeetingRoute === 2) {
-        
           // Update meetingTypeDetails based on the edit flow
           setMeetingTypeDetails({
             MeetingType: {
@@ -159,7 +158,10 @@ const ProposedNewMeeting = () => {
         }
       }
     } catch (error) {
-      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
     }
   }, [getAllMeetingDetails, isProposedMeetingRoute]);
 
@@ -175,7 +177,10 @@ const ProposedNewMeeting = () => {
         setMembersParticipants(getAllParticipants);
       }
     } catch (error) {
-      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
     }
   }, [getAllParticipants]);
 
@@ -264,7 +269,10 @@ const ProposedNewMeeting = () => {
         });
       }
     } catch (error) {
-      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
     }
   }, [getAllProposedDatesEditFlow, isProposedMeetingRoute]);
 
@@ -432,7 +440,10 @@ const ProposedNewMeeting = () => {
         }));
       }
     } catch (error) {
-      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
     }
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
@@ -585,7 +596,10 @@ const ProposedNewMeeting = () => {
       updatedRows[index].dateSelect = newDate;
       setRows(updatedRows);
     } catch (error) {
-      console.error("src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:", error);
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
     }
   };
 
@@ -753,9 +767,14 @@ const ProposedNewMeeting = () => {
             MeetingStatusID: 11,
           },
         };
-
+        let routeValue =
+          committeeInfo !== null
+            ? "updateCommitteeProposedMeeting"
+            : groupInfo !== null
+              ? "updateGroupProposedMeeting"
+              : "updateProposedMeeting";
         dispatch(
-          SaveMeetingDetailsApi(navigate, t, data, "updateProposedMeeting", {
+          SaveMeetingDetailsApi(navigate, t, data, routeValue, {
             proposedMeetingDetails,
             membersParticipants,
             sortedDates,
@@ -852,8 +871,14 @@ const ProposedNewMeeting = () => {
             MeetingStatusID: 11,
           },
         };
+        let routeValue =
+          committeeInfo !== null
+            ? "saveCommitteeProposedMeeting"
+            : groupInfo !== null
+              ? "saveGroupProposedMeeting"
+              : "saveProposedMeeting";
         dispatch(
-          SaveMeetingDetailsApi(navigate, t, data, "saveProposedMeeting", {
+          SaveMeetingDetailsApi(navigate, t, data, routeValue, {
             proposedMeetingDetails,
             membersParticipants,
             sortedDates,

@@ -51,6 +51,7 @@ import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableCom
 import SceduleProposedmeeting from "../../../meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting";
 import DeleteMeetingModal from "../../../meeting/proposedMeetingFlow/DeleteMeetingModal/DeleteMeetingModal";
 import { MeetingProposedForOrganizerProposed, MeetingProposedForParticipantProposed } from "../../../../store/actions/NotificationRouting_actions";
+import { clearGetMeetingByCommitteeID } from "../../../../store/actions/Committee_actions";
 const CommitteeProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -93,6 +94,27 @@ const CommitteeProposedMeetings = () => {
   const deleteMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.deleteMeetingModal,
   );
+
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: true,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    return () => {
+      dispatch(clearGetMeetingByCommitteeID());
+
+    }
+  }, [])
 
   const handleClickActions = (record) => {
     if (record.isParticipant) {
@@ -502,7 +524,7 @@ const CommitteeProposedMeetings = () => {
                     <span>
                       <CustomButton
                         className={styles.MoreMeetingButton}
-                        text='More'
+                        text={t('More')}
                         icon2={
                           <img
                             src={ChevronDownIcon}

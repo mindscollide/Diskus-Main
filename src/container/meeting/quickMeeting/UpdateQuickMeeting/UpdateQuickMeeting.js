@@ -66,6 +66,8 @@ import { useSnackbar } from "@/components/elements";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 
 const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //For Localization
@@ -83,6 +85,11 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const dispatch = useDispatch();
   const { isQuickMeetingUpdate, setIsQuickMeetingUpdate } =
     useNewMeetingContext();
+  // Publishing a quick meeting from Committee/Group's Draft tab should move
+  // the user to the Published tab, regardless of which tab they were on —
+  // threaded through to the refetch action so it can switch it on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   const assigneesViewMeetingDetails = useSelector(
     (state) => state.assignees.ViewMeetingDetails,
   );
@@ -421,6 +428,10 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         newData,
         2,
         setIsQuickMeetingUpdate,
+        {
+          setCurrentCommitteeMeetingTabActive,
+          setCurrentGroupMeetingTabActive,
+        },
       ),
     );
     await setObjMeetingAgenda({

@@ -39,7 +39,7 @@ import {
 } from "@/store/actions/ModalStates_actions";
 import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
-import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
+import { clearGetMeetingByCommitteeID, getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 import { useMeetingListActions } from "../../../meeting/commonComponents/useMeetingListActions";
 
@@ -113,6 +113,27 @@ const CommitteeDraftMeetings = () => {
     setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
 
+
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    return () => {
+      dispatch(clearGetMeetingByCommitteeID());
+
+    }
+  }, [])
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {

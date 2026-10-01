@@ -507,7 +507,10 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                   });
                 }
               } catch (error) {
-                console.error("src/store/actions/MeetingAgenda_action.js:", error);
+                console.error(
+                  "src/store/actions/MeetingAgenda_action.js:",
+                  error,
+                );
               }
 
               dispatch(showCastVoteAgendaModal(false));
@@ -782,6 +785,7 @@ const CreateUpdateMeetingDataRoomMap = (
   newAgendas,
   checkFlag,
   setShow,
+  tabSetters = {},
 ) => {
   return (dispatch) => {
     dispatch(createUpdateMeetingDataRoomMap_init());
@@ -833,6 +837,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     newAgendas,
                     checkFlag,
                     setShow,
+                    tabSetters,
                   ),
                 );
               } else {
@@ -840,6 +845,10 @@ const CreateUpdateMeetingDataRoomMap = (
                 setShow(false);
                 if (checkFlag === 5) {
                   dispatch(meetingLoaderDashboard(false));
+                  // A quick meeting is published immediately — force the
+                  // tab to Published rather than trusting whatever tab
+                  // (e.g. Draft) was active when it was created.
+                  localStorage.setItem("MeetingCurrentView", 1);
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
                   let meetingPageCurrent =
                     localStorage.getItem("MeetingPageCurrent") || 1;
@@ -852,53 +861,69 @@ const CreateUpdateMeetingDataRoomMap = (
                     Length: Number(meetingpageRow)
                       ? Number(meetingpageRow)
                       : 30,
-                    PublishedMeetings:
-                      localStorage.getItem("MeetingCurrentView") !== null &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 1
-                        ? true
-                        : false,
-                    ProposedMeetings:
-                      localStorage.getItem("MeetingCurrentView") !== null &&
-                      Number(localStorage.getItem("MeetingCurrentView")) === 2
-                        ? true
-                        : false,
+                    PublishedMeetings: true,
+                    ProposedMeetings: false,
                   };
 
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else if (checkFlag === 6) {
-                  //  Create Committee Meeting 5
+                  // Committee quick meeting (Create and Update/Publish both
+                  // use checkFlag 6) — refetch the Published list and switch
+                  // to the Published tab, since a quick meeting is published
+                  // immediately regardless of which tab the user was on.
+                  // let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+
                   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
                   let Data = {
                     MeetingID: Number(data.MeetingID),
                     CommitteeID: Number(ViewCommitteeID),
                   };
-                  dispatch(setMeetingbyCommitteeIdApi(navigate, t, Data));
-                } else if (checkFlag === 6) {
-                  // Update Committee Meeting 6
-                  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+                  dispatch(
+                    setMeetingbyCommitteeIdApi(
+                      navigate,
+                      t,
+                      Data,
+                      "CreateQuickmeetingFromCommittee",
+                      { tabSetters },
+                    ),
+                  );
+                  tabSetters.setCurrentCommitteeMeetingTabActive?.(1);
+                } else if (checkFlag === 9) {
+                  tabSetters.setCurrentCommitteeMeetingTabActive?.(1);
 
-                  let Data = {
-                    CommitteeID: Number(ViewCommitteeID),
-                    Date: "",
-                    Title: "",
-                    HostName: "",
-                    UserID: Number(createrID),
-                    PageNumber: 1,
-                    Length: 30,
-                    PublishedMeetings: true,
-                    ProposedMeetings: false,
-                  };
-                  dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
+                  dispatch(
+                    getMeetingByCommitteeIdApi(navigate, t, {
+                      CommitteeID: Number(data.CommitteeID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(localStorage.getItem("userID")),
+                      PageNumber: 1,
+                      Length: 30,
+                      PublishedMeetings: true,
+                      ProposedMeetings: false,
+                    }),
+                  );
                 } else if (checkFlag === 7) {
-                  // Create Group Meeting 7
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
                   let Data = {
                     MeetingID: Number(data.MeetingID),
                     GroupID: Number(ViewGroupID),
                   };
-                  dispatch(setMeetingByGroupIdApi(navigate, t, Data));
+                  dispatch(
+                    setMeetingByGroupIdApi(
+                      navigate,
+                      t,
+                      Data,
+                      "CreateQuickmeetingFromGroup",
+                      { tabSetters },
+                    ),
+                  );
                 } else if (checkFlag === 8) {
+                  // Group quick meeting (Create uses checkFlag 7, Update/
+                  // Publish uses checkFlag 8) — same as Committee above.
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
+                  tabSetters.setCurrentGroupMeetingTabActive?.(1);
                   let Data = {
                     GroupID: Number(ViewGroupID),
                     Date: "",

@@ -452,7 +452,10 @@ const VideoPanelNormal = () => {
             console.log("share screen Iframe contentWindow is not available.");
           }
         } catch (error) {
-          console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+          console.error(
+            "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+            error,
+          );
         }
       }
       let newRoomID = localStorage.getItem("newRoomId");
@@ -699,7 +702,10 @@ const VideoPanelNormal = () => {
           await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
         }
       } catch (error) {
-        console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+        console.error(
+          "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+          error,
+        );
       }
     };
 
@@ -815,7 +821,10 @@ const VideoPanelNormal = () => {
         }
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }, [InitiateVideoCallData]);
 
@@ -946,7 +955,10 @@ const VideoPanelNormal = () => {
         }
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }, [VideoCallResponseData]);
 
@@ -1009,7 +1021,10 @@ const VideoPanelNormal = () => {
         }
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }, [newRoomID]);
 
@@ -1030,7 +1045,10 @@ const VideoPanelNormal = () => {
         }
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }, [presenterParticipantAlreadyInMeetingVideo]);
 
@@ -1049,7 +1067,10 @@ const VideoPanelNormal = () => {
         setShareScreenTrue(false);
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }, [shareScreenTrue]);
 
@@ -1336,13 +1357,9 @@ const VideoPanelNormal = () => {
             sessionStorage.getItem("alreadyInMeetingVideo"),
           );
           let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
-            sessionStorage.getItem(
-              "alreadyInMeetingVideoStartPresenterCheck",
-            ),
+            sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck"),
           );
-          let nonPresenter = JSON.parse(
-            sessionStorage.getItem("nonPresenter"),
-          );
+          let nonPresenter = JSON.parse(sessionStorage.getItem("nonPresenter"));
           console.log("handlePostMessage", alreadyInMeetingVideo);
           console.log(
             "handlePostMessage",
@@ -1448,9 +1465,7 @@ const VideoPanelNormal = () => {
 
           // 🔒 Firefox false stop protection
           if (isFirefox && !isScreenActive) {
-            console.warn(
-              "Firefox blocked screen share – ignoring stop event",
-            );
+            console.warn("Firefox blocked screen share – ignoring stop event");
             return;
           }
 
@@ -1511,8 +1526,7 @@ const VideoPanelNormal = () => {
 
               let videoCallURL = Number(localStorage.getItem("videoCallURL"));
               let roomID = localStorage.getItem("acceptedRoomID");
-              let participantRoomId =
-                localStorage.getItem("participantRoomId");
+              let participantRoomId = localStorage.getItem("participantRoomId");
               let RoomID =
                 presenterViewFlag &&
                 (presenterViewHostFlag || presenterViewJoinFlag)
@@ -1770,7 +1784,10 @@ const VideoPanelNormal = () => {
           setToggleVideoMinimizeNonMeeting(false);
         }
       } catch (error) {
-        console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+        console.error(
+          "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+          error,
+        );
       }
     }
   }, [toggleVideoMinimizeNonMeeting]);
@@ -1843,7 +1860,10 @@ const VideoPanelNormal = () => {
         }
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   };
 
@@ -1858,7 +1878,10 @@ const VideoPanelNormal = () => {
         dispatch(makeParticipantHost([], false));
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }, [makeParticipantAsHost]);
 
@@ -1906,7 +1929,10 @@ const VideoPanelNormal = () => {
       } else {
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }
   useEffect(() => {
@@ -1918,7 +1944,10 @@ const VideoPanelNormal = () => {
         dispatch(transferMeetingHostSuccess(false));
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }, [hostTransferFlag]);
 
@@ -1932,7 +1961,10 @@ const VideoPanelNormal = () => {
         dispatch(toggleParticipantsVisibility(false));
       }
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }, [accpetAccessOfHostTransfer]);
 
@@ -1943,7 +1975,10 @@ const VideoPanelNormal = () => {
       // for make host
       setIsMeetingHost(meetingHost?.isHost ? true : false);
     } catch (error) {
-      console.error("src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:", error);
+      console.error(
+        "src/components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.js:",
+        error,
+      );
     }
   }, [participantWaitinglistBox]);
 
@@ -2206,8 +2241,7 @@ const VideoPanelNormal = () => {
                           presenterViewHostFlag
                             ? 9
                             : 12
-                        }
-                      >
+                        }>
                         <div
                           className={
                             presenterViewFlag &&
@@ -2222,8 +2256,7 @@ const VideoPanelNormal = () => {
                                     MaximizeVideoFlag === true
                                   ? "normal-avatar-large"
                                   : ""
-                          }
-                        >
+                          }>
                           {console.log("iframeiframe", isMeetingHost)}
                           {console.log("iframeiframe", callerURL)}
                           <>
@@ -2232,13 +2265,13 @@ const VideoPanelNormal = () => {
                                 src={callerURL}
                                 ref={iframeRef}
                                 title={t("Live-video")}
-                                width="100%"
-                                height="100%"
-                                frameBorder="0"
-                                allow="camera; microphone; fullscreen; display-capture; cross-origin-isolated"
+                                width='100%'
+                                height='100%'
+                                frameBorder='0'
+                                allow='camera; microphone; fullscreen; display-capture; cross-origin-isolated'
                                 // Add these for better cross-browser support
-                                mozallowfullscreen="true"
-                                webkitallowfullscreen="true"
+                                mozallowfullscreen='true'
+                                webkitallowfullscreen='true'
                               />
                             )}
                           </>
@@ -2268,8 +2301,7 @@ const VideoPanelNormal = () => {
                                 participantWaitinglistBox
                                   ? "ParticipantsWaiting_In"
                                   : "ParticipantsWaiting_Out"
-                              } ps-0`}
-                            >
+                              } ps-0`}>
                               {/* <VideoCallParticipants /> */}
 
                               {/* this is new Host Panel */}
@@ -2285,11 +2317,11 @@ const VideoPanelNormal = () => {
                       ) : isMeeting && isMeetingVideo && !isMeetingHost ? (
                         <>
                           {participantsVisible && (
-                            <div className="Participants-Lists">
+                            <div className='Participants-Lists'>
                               <>
                                 <Row>
                                   <Col lg={10} md={10} sm={10}>
-                                    <p className="Participant-name-title">
+                                    <p className='Participant-name-title'>
                                       {t("Participants")}
                                     </p>
                                   </Col>
@@ -2297,10 +2329,10 @@ const VideoPanelNormal = () => {
                                     <img
                                       draggable={false}
                                       src={BlackCrossIcon}
-                                      alt=""
+                                      alt=''
                                       className={"cursor-pointer"}
-                                      width="8px"
-                                      height="8px"
+                                      width='8px'
+                                      height='8px'
                                       onClick={closeParticipantsList}
                                     />
                                   </Col>
@@ -2312,22 +2344,19 @@ const VideoPanelNormal = () => {
                                       <>
                                         <Row
                                           key={participant.guid}
-                                          className="mb-1"
-                                        >
+                                          className='mb-1'>
                                           <Col
                                             lg={7}
                                             md={7}
                                             sm={12}
-                                            className="d-flex justify-content-start"
-                                          >
-                                            <p className="participantModal_name">
+                                            className='d-flex justify-content-start'>
+                                            <p className='participantModal_name'>
                                               {participant.name}
                                               {participant.isHost && (
                                                 <Tooltip
                                                   title={t("Host")}
-                                                  placement="top-right"
-                                                >
-                                                  <span className="hostName-in-participant">
+                                                  placement='top-right'>
+                                                  <span className='hostName-in-participant'>
                                                     ({t("Host")})
                                                   </span>
                                                 </Tooltip>
@@ -2338,13 +2367,12 @@ const VideoPanelNormal = () => {
                                             lg={5}
                                             md={5}
                                             sm={12}
-                                            className="d-flex justify-content-end gap-2"
-                                          >
+                                            className='d-flex justify-content-end gap-2'>
                                             <img
                                               src={VideoOff}
-                                              width="20px"
-                                              height="20px"
-                                              alt="Video Off"
+                                              width='20px'
+                                              height='20px'
+                                              alt='Video Off'
                                               style={{
                                                 visibility:
                                                   participant.hideCamera
@@ -2355,9 +2383,9 @@ const VideoPanelNormal = () => {
 
                                             <img
                                               src={MicOff}
-                                              width="20px"
-                                              height="20px"
-                                              alt="Mic Mute"
+                                              width='20px'
+                                              height='20px'
+                                              alt='Mic Mute'
                                               style={{
                                                 visibility: participant.mute
                                                   ? "visible"
@@ -2366,9 +2394,9 @@ const VideoPanelNormal = () => {
                                             />
                                             <img
                                               src={Raisehandselected}
-                                              width="20px"
-                                              height="20px"
-                                              alt="raise hand"
+                                              width='20px'
+                                              height='20px'
+                                              alt='raise hand'
                                               style={{
                                                 visibility:
                                                   participant.raiseHand
@@ -2396,11 +2424,11 @@ const VideoPanelNormal = () => {
                         // GetPresentationParticipants' response shape.
                         <>
                           {participantsVisible && (
-                            <div className="Participants-Lists">
+                            <div className='Participants-Lists'>
                               <>
                                 <Row>
                                   <Col lg={10} md={10} sm={10}>
-                                    <p className="Participant-name-title">
+                                    <p className='Participant-name-title'>
                                       {t("Participants")}
                                     </p>
                                   </Col>
@@ -2408,10 +2436,10 @@ const VideoPanelNormal = () => {
                                     <img
                                       draggable={false}
                                       src={BlackCrossIcon}
-                                      alt=""
+                                      alt=''
                                       className={"cursor-pointer"}
-                                      width="8px"
-                                      height="8px"
+                                      width='8px'
+                                      height='8px'
                                       onClick={closeParticipantsList}
                                     />
                                   </Col>
@@ -2432,15 +2460,13 @@ const VideoPanelNormal = () => {
                                     presentationRoster.map((participant) => (
                                       <Row
                                         key={participant.guid}
-                                        className="mb-1"
-                                      >
+                                        className='mb-1'>
                                         <Col
                                           lg={7}
                                           md={7}
                                           sm={12}
-                                          className="d-flex justify-content-start"
-                                        >
-                                          <p className="participantModal_name">
+                                          className='d-flex justify-content-start'>
+                                          <p className='participantModal_name'>
                                             {participant.name}
                                           </p>{" "}
                                         </Col>
@@ -2448,13 +2474,12 @@ const VideoPanelNormal = () => {
                                           lg={5}
                                           md={5}
                                           sm={12}
-                                          className="d-flex justify-content-end gap-2"
-                                        >
+                                          className='d-flex justify-content-end gap-2'>
                                           <img
                                             src={VideoOff}
-                                            width="20px"
-                                            height="20px"
-                                            alt="Video Off"
+                                            width='20px'
+                                            height='20px'
+                                            alt='Video Off'
                                             style={{
                                               visibility: participant.hideCamera
                                                 ? "visible"
@@ -2463,9 +2488,9 @@ const VideoPanelNormal = () => {
                                           />
                                           <img
                                             src={MicOff}
-                                            width="20px"
-                                            height="20px"
-                                            alt="Mic Mute"
+                                            width='20px'
+                                            height='20px'
+                                            alt='Mic Mute'
                                             style={{
                                               visibility: participant.mute
                                                 ? "visible"
@@ -2474,9 +2499,9 @@ const VideoPanelNormal = () => {
                                           />
                                           <img
                                             src={Raisehandselected}
-                                            width="20px"
-                                            height="20px"
-                                            alt="raise hand"
+                                            width='20px'
+                                            height='20px'
+                                            alt='raise hand'
                                             style={{
                                               visibility: participant.raiseHand
                                                 ? "visible"
@@ -2505,8 +2530,6 @@ const VideoPanelNormal = () => {
                       {VideoAgendaNormalFlag === true ? (
                         <VideoPanelNormalAgenda />
                       ) : null}
-
-                 
                     </Col>
                   </Row>
                 </>

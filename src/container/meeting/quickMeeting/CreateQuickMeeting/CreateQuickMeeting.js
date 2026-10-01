@@ -65,6 +65,8 @@ import { DataRoomDownloadFileWithFooterApiFunc } from "@/store/actions/DataRoom_
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
@@ -86,6 +88,11 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     isQuickMeetingFromCalendar,
     setIsQuickMeetingFromCalendar,
   } = useNewMeetingContext();
+  // Creating a quick meeting publishes it immediately — switch to the
+  // Published tab on success regardless of which tab (e.g. Draft) was
+  // active when it was created.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   const CommitteeReducergetCommitteeByCommitteeID = useSelector(
     (state) => state.CommitteeReducer?.getCommitteeByCommitteeID,
   );
@@ -1974,7 +1981,10 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
           ? setIsQuickMeetingFromCalendar
           : setIsQuickMeetingCreate;
     await dispatch(
-      ScheduleNewMeeting(navigate, t, checkFlag, newData, forModalCloseState),
+      ScheduleNewMeeting(navigate, t, checkFlag, newData, forModalCloseState, {
+        setCurrentCommitteeMeetingTabActive,
+        setCurrentGroupMeetingTabActive,
+      }),
     );
   };
 

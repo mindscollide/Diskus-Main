@@ -176,6 +176,7 @@ body[dir="rtl"] .ResetOkBtn {
   font-size: 0.8em;
   border-radius: 4px !important;
   white-space: nowrap;
+  gap: 4px ;
 }
 
 .VoteMeetingButton{
@@ -192,7 +193,5 @@ body[dir="rtl"] .ResetOkBtn {
 }
 .MainMeetingTablePublished {
   min-height: 50vh !important;
-  max-height: 63vh !important;
-  margin-bottom: 40px;
 }
 

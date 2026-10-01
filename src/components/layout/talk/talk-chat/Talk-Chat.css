@@ -403,7 +403,6 @@ span.securityicon-box {
   z-index: 999999;
 }
 
-
 body[dir="rtl"] p.chat-username.chathead {
   right: 18px !important;
 }
@@ -1889,8 +1888,8 @@ button.UploadFileButton {
 }
 
 img.thumbnailImage {
-  height: 170px;
-  width: 95%;
+  max-height: 190px;
+  width: auto;
 }
 
 /* .removeImage-thumbnail {
@@ -2061,7 +2060,7 @@ textarea.chat-message-input.form-control::-webkit-scrollbar-thumb {
   top: 4px;
   z-index: 9;
 }
-body[dir="rtl"] .chat-searchfield .valid-feedback{
+body[dir="rtl"] .chat-searchfield .valid-feedback {
   right: auto !important;
   left: -7px !important;
 }
@@ -2243,7 +2242,6 @@ body[dir="rtl"] .ChatsOneToOneDropDownRecieverToggle button {
   cursor: pointer;
 }
 
-
 .talk-popover-menu {
   min-width: 150px;
   padding: 0 !important;
@@ -2264,6 +2262,6 @@ body[dir="rtl"] .ChatsOneToOneDropDownRecieverToggle button {
 .talk-popover-item:last-child {
   border-bottom: none;
 }
-.talkChatBox_threeDots .ant-popover-inner-content{
+.talkChatBox_threeDots .ant-popover-inner-content {
   padding: 12px 5px !important;
 }

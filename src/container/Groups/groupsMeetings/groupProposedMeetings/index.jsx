@@ -54,6 +54,7 @@ import {
   MeetingProposedForOrganizerProposed,
   MeetingProposedForParticipantProposed,
 } from "../../../../store/actions/NotificationRouting_actions";
+import { clearGetMeetingbyGroupID } from "../../../../store/actions/Groups_actions";
 const GroupProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -95,6 +96,26 @@ const GroupProposedMeetings = () => {
   const meetingStatusProposedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
   );
+
+  useEffect(() => {
+    let searchData = {
+      GroupID: Number(localStorage.getItem("ViewGroupID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: true,
+    };
+    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+
+       return () => {
+          dispatch(clearGetMeetingbyGroupID());
+    
+        }
+  }, [])
 
   const handleClickActions = (record) => {
     if (record.isParticipant) {
@@ -580,11 +601,11 @@ const GroupProposedMeetings = () => {
       }
     }
   }, [UserMeetPropoDatPoll]);
-  
+
   return (
     <>
       <Row>
-        <Col lg={12} md={12} sm={12} className='w-100'>
+        <Col lg={12} md={12} sm={12} className={styles["MainMeetingTablePublished"]}>
           <Table
             onChange={handleChangeMeetingTable}
             className='MeetingTable'

@@ -162,7 +162,14 @@ const ScheduleMeetingFail = (message) => {
 };
 
 //SaveNONAPIDisputes
-const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
+const ScheduleNewMeeting = (
+  navigate,
+  t,
+  checkFlag,
+  object,
+  setShow,
+  tabSetters = {},
+) => {
   return (dispatch) => {
     dispatch(ScheculeMeetingInit());
     dispatch(meetingLoaderDashboard(true));
@@ -191,11 +198,18 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                   MeetingTitle: object.MeetingTitle,
                   IsUpdateFlow: false,
                 };
+                // Always map the DataRoom folder and refresh/switch the
+                // meeting list — previously this whole block (including the
+                // Committee/Group tab-switch + refetch) only ran when the
+                // meeting had agenda attachments, so a plain quick meeting
+                // with no attachments never refreshed anything.
+                let newAgendas = { MeetingID: response.data.responseResult.mdid, UpdateFileList: [] };
+                let attachmentIds = [];
                 if (
                   response.data.responseResult?.agendaMappings !== null &&
                   response.data.responseResult?.agendaMappings?.length > 0
                 ) {
-                  let newAgendas = {
+                  newAgendas = {
                     MeetingID: response.data.responseResult.mdid, // Meeting ID remains the same for all agendas
                     UpdateFileList: object.MeetingAgendas.map((doc) => {
                       const mainMatch =
@@ -220,24 +234,24 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                   };
 
                   // Extract all OriginalAttachmentName values as numbers
-                  const attachmentIds = object.MeetingAgendas.flatMap(
-                    (agenda) =>
-                      agenda.MeetingAgendaAttachments.map((attachment) =>
-                        Number(attachment.OriginalAttachmentName),
-                      ),
-                  );
-                  dispatch(
-                    CreateUpdateMeetingDataRoomMap(
-                      navigate,
-                      t,
-                      MappedData,
-                      attachmentIds,
-                      newAgendas,
-                      checkFlag,
-                      setShow,
+                  attachmentIds = object.MeetingAgendas.flatMap((agenda) =>
+                    agenda.MeetingAgendaAttachments.map((attachment) =>
+                      Number(attachment.OriginalAttachmentName),
                     ),
                   );
                 }
+                dispatch(
+                  CreateUpdateMeetingDataRoomMap(
+                    navigate,
+                    t,
+                    MappedData,
+                    attachmentIds,
+                    newAgendas,
+                    checkFlag,
+                    setShow,
+                    tabSetters,
+                  ),
+                );
                 // dispatch(meetingLoaderDashboard(false));
               } catch (error) {
                 dispatch(meetingLoaderDashboard(false));
@@ -288,6 +302,7 @@ const UpdateMeeting = (
   object,
   routeValue,
   setEditFlag,
+  tabSetters = {},
 ) => {
   let createrID = JSON.parse(localStorage.getItem("userID"));
   return async (dispatch) => {
@@ -373,6 +388,7 @@ const UpdateMeeting = (
                     newAgendas,
                     checkFlag,
                     setEditFlag,
+                    tabSetters,
                   ),
                 );
               } catch (error) {

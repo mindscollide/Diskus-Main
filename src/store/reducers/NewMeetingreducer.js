@@ -114,7 +114,7 @@ const initialState = {
   viewAdvanceMeetingUnpublishPageFlag: false,
   viewProposeOrganizerMeetingPageFlag: false,
   proposeNewMeetingPageFlag: false,
-  getUserProposedOrganizerData:null,
+  getUserProposedOrganizerData: null,
   sideBarMeetingPopupState: false,
   viewMeetingFlag: false,
 
@@ -136,7 +136,7 @@ const initialState = {
   mqttMeetingAcRemoved: null,
   mqttMeetingOrgAdded: null,
   mqttMeetingOrgRemoved: null,
-  mqttMeetingDeleted:null,
+  mqttMeetingDeleted: null,
   joinMeetingResponse: null,
   leaveMeetingResponse: null,
   leaveMeetingVideoResponse: null,
@@ -1844,7 +1844,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       case actions.SETMEETINGBYCOMMITTEEID_SUCCESS: {
         return {
           ...state,
-          Loading: false,
+          Loading: action.loader,
           setMeetingbyCommitteeID: action.response,
           ResponseMessage: action.message,
           errorSeverity: "success",
@@ -2956,7 +2956,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         return {
           ...state,
           mqttMeetingDeleted: action.response,
-        }
+        };
       }
       default:
         return {

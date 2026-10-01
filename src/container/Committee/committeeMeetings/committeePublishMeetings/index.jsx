@@ -85,7 +85,7 @@ import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 import store from "../../../../store/store";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
-import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
+import { clearGetMeetingByCommitteeID, getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 import {
   buildEditorRole,
   buildVideoTalk,
@@ -181,10 +181,7 @@ const CommitteePublishedMeetingList = () => {
     loadCommitteeMeetings,
   } = useCommitteeContext();
 
-  console.log(
-    committeePublishedMeetingData,
-    "committeePublishedMeetingDatacommitteePublishedMeetingData",
-  );
+
 
   const { setIsQuickMeetingView } = useNewMeetingContext();
 
@@ -251,6 +248,28 @@ const CommitteePublishedMeetingList = () => {
     ],
     [t],
   );
+
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: true,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    return () => {
+          dispatch(clearGetMeetingByCommitteeID());
+      
+    }
+  }, [])
+
 
   useEffect(() => {
     if (!validatencryptedstringState) return;
@@ -618,7 +637,7 @@ const CommitteePublishedMeetingList = () => {
     const canShow = {
       edit:
         (status === STATUS.UPCOMING ||
-          status === STATUS.ACTIVE 
+          status === STATUS.ACTIVE
           // || status === STATUS.NOT_CONDUCTED
         ) &&
         isOrganizer,

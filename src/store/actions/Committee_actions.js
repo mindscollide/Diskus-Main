@@ -1928,11 +1928,12 @@ const setMeetingbyCommitteeID_init = () => {
     type: actions.SETMEETINGBYCOMMITTEEID_INIT,
   };
 };
-const setMeetingbyCommitteeID_success = (response, message) => {
+const setMeetingbyCommitteeID_success = (response, message, loader = false) => {
   return {
     type: actions.SETMEETINGBYCOMMITTEEID_SUCCESS,
     response: response,
     message: message,
+    loader
   };
 };
 const setMeetingbyCommitteeID_fail = (message) => {
@@ -1968,32 +1969,48 @@ const setMeetingbyCommitteeIdApi = (navigate, t, Data, routePath, object) => {
                 setMeetingbyCommitteeID_success(
                   response.data.responseResult,
                   "",
+                  false
                 ),
               );
               switch (routePath) {
                 case "fromCommitteeAdvanceMeeting":
                   dispatch(setCreateEditTab("organizers"));
                   break;
-
                 case "saveProposedMeetingFromCommittee":
                   // Refetch the Proposed list so the meeting just created/
                   // updated actually shows up — the active tab was already
                   // switched to Proposed (2) by the caller before this ran.
-                  dispatch(
-                    getMeetingByCommitteeIdApi(navigate, t, {
-                      CommitteeID: Number(Data.CommitteeID),
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(localStorage.getItem("userID")),
-                      PageNumber: 1,
-                      Length: 30,
-                      PublishedMeetings: false,
-                      ProposedMeetings: true,
-                    }),
-                  );
+                  // dispatch(
+                  //   getMeetingByCommitteeIdApi(navigate, t, {
+                  //     CommitteeID: Number(Data.CommitteeID),
+                  //     Date: "",
+                  //     Title: "",
+                  //     HostName: "",
+                  //     UserID: Number(localStorage.getItem("userID")),
+                  //     PageNumber: 1,
+                  //     Length: 30,
+                  //     PublishedMeetings: false,
+                  //     ProposedMeetings: true,
+                  //   }),
+                  // );
                   break;
+                case "CreateQuickmeetingFromCommittee":
+                  object.tabSetters.setCurrentCommitteeMeetingTabActive?.(1);
 
+                  // dispatch(
+                  //   getMeetingByCommitteeIdApi(navigate, t, {
+                  //     CommitteeID: Number(Data.CommitteeID),
+                  //     Date: "",
+                  //     Title: "",
+                  //     HostName: "",
+                  //     UserID: Number(localStorage.getItem("userID")),
+                  //     PageNumber: 1,
+                  //     Length: 30,
+                  //     PublishedMeetings: true,
+                  //     ProposedMeetings: false,
+                  //   }),
+                  // );
+                  break;
                 default:
                   break;
               }

@@ -358,6 +358,8 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                     }
                     break;
                   case "saveProposedMeeting":
+                  case "saveCommitteeProposedMeeting":
+                  case "saveGroupProposedMeeting":
                     dispatch(
                       CreateUpdateMeetingDataRoomMapeedFolderIdApi(
                         navigate,
@@ -373,6 +375,8 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                     );
                     break;
                   case "updateProposedMeeting":
+                  case "updateCommitteeProposedMeeting":
+                  case "updateGroupProposedMeeting":
                     dispatch(
                       CreateUpdateMeetingDataRoomMapeedFolderIdApi(
                         navigate,
@@ -387,6 +391,26 @@ export const SaveMeetingDetailsApi = (navigate, t, Data, routePath, object) => {
                       ),
                     );
                     break;
+
+                  // case "saveCommitteeProposedMeeting":
+                  // case "saveGroupProposedMeeting":
+                  //   dispatch(
+                  //     CreateUpdateMeetingDataRoomMapeedFolderIdApi(
+                  //       navigate,
+                  //       t,
+                  //       {
+                  //         MeetingID: meetingID,
+                  //         MeetingTitle: Data.MeetingDetails.MeetingTitle,
+                  //         IsUpdateFlow: false,
+                  //       },
+                  //       routePath,
+                  //       object,
+                  //     ),
+                  //   );
+                  //   break;
+                  // // case "saveGroupProposedMeeting":
+                  // //   break;
+
                   default:
                     break;
                 }
@@ -505,129 +529,113 @@ export const CreateUpdateMeetingDataRoomMapeedFolderIdApi = (
             const committeeInfo =
               store.getState().CommitteeReducer?.viewCommitteeDetails;
             const groupInfo = store.getState().GroupsReducer?.viewGroupDetails;
-            const { setEditorRole } = object;
+
+            // destructure once (also fixes the const-in-switch problem)
+            const {
+              setEditorRole,
+              sortedDates,
+              sendResponseBtDateVal,
+              membersParticipants,
+            } = object;
+
+            // ---- small helpers to avoid repeating the same blocks ----
+            const setPrimaryOrganizer = () =>
+              setEditorRole({
+                status: "11",
+                role: "Organizer",
+                isPrimaryOrganizer: true,
+              });
+
+            const updateParticipants = (route) =>
+              dispatch(
+                UpdateMeetingUserApi(
+                  navigate,
+                  t,
+                  {
+                    MeetingID: Data.MeetingID,
+                    MeetingAttendeRoleID: 2,
+                    UpdatedUsers: membersParticipants.map((m) => m.userID),
+                  },
+                  route,
+                  {
+                    ...object,
+                    membersParticipants,
+                    sortedDates,
+                    sendResponseBtDateVal,
+                  },
+                ),
+              );
+
+            const mapToCommittee = (route) =>
+              dispatch(
+                setMeetingbyCommitteeIdApi(
+                  navigate,
+                  t,
+                  {
+                    MeetingID: Number(Data.MeetingID),
+                    CommitteeID: Number(committeeInfo.committeeID),
+                  },
+                  route,
+                  {},
+                ),
+              );
+
+            const mapToGroup = (route) =>
+              dispatch(
+                setMeetingByGroupIdApi(
+                  navigate,
+                  t,
+                  {
+                    MeetingID: Number(Data.MeetingID),
+                    GroupID: Number(groupInfo.groupID),
+                  },
+                  route,
+                  {},
+                ),
+              );
 
             const handleRouteAfterSuccess = () => {
               switch (routePath) {
                 case "saveMeeting":
                   dispatch(setCreateEditTab("organizers"));
-                  setEditorRole({
-                    status: "11",
-                    role: "Organizer",
-                    isPrimaryOrganizer: true,
-                  });
+                  setPrimaryOrganizer();
                   break;
+
                 case "updateMeeting":
-                  dispatch(setCreateEditTab("organizers"));
-
-                  break;
-                case "saveProposedMeeting": {
-                  const {
-                    sortedDates,
-                    sendResponseBtDateVal,
-                    membersParticipants,
-                  } = object;
-
-                  dispatch(
-                    UpdateMeetingUserApi(
-                      navigate,
-                      t,
-                      {
-                        MeetingID: Data.MeetingID,
-                        MeetingAttendeRoleID: 2,
-                        UpdatedUsers: membersParticipants.map((m) => m.userID),
-                      },
-                      "saveProposedMeeting",
-                      {
-                        ...object,
-                        membersParticipants,
-                        sortedDates,
-                        sendResponseBtDateVal,
-                      },
-                    ),
-                  );
-                  break;
-                }
-                case "updateProposedMeeting": {
-                  const {
-                    sortedDates,
-                    sendResponseBtDateVal,
-                    membersParticipants,
-                  } = object;
-
-                  dispatch(
-                    UpdateMeetingUserApi(
-                      navigate,
-                      t,
-                      {
-                        MeetingID: Data.MeetingID,
-                        MeetingAttendeRoleID: 2,
-                        UpdatedUsers: membersParticipants.map((m) => m.userID),
-                      },
-                      "updateProposedMeeting",
-                      {
-                        ...object,
-                        membersParticipants,
-                        sortedDates,
-                        sendResponseBtDateVal,
-                      },
-                    ),
-                  );
-                  break;
-                }
-                case "getMeetingDetailsFromAgendaTab": {
-                  break;
-                }
-                case "EditMeetingFromMainListing": {
-                  // dispatch(setCreateEditTab("organizers"));
-
-                  break;
-                }
-                case "committeeSaveMeeting":
-                  dispatch(
-                    setMeetingbyCommitteeIdApi(
-                      navigate,
-                      t,
-                      {
-                        MeetingID: Number(Data.MeetingID),
-                        CommitteeID: Number(committeeInfo.committeeID),
-                      },
-                      "fromCommitteeAdvanceMeeting",
-                      {},
-                    ),
-                  );
-                  setEditorRole({
-                    status: "11",
-                    role: "Organizer",
-                    isPrimaryOrganizer: true,
-                  });
-                  break;
                 case "committeeUpdateMeeting":
-                  dispatch(setCreateEditTab("organizers"));
-
-                  break;
-                case "groupSaveMeeting":
-                  dispatch(
-                    setMeetingByGroupIdApi(
-                      navigate,
-                      t,
-                      {
-                        MeetingID: Number(Data.MeetingID),
-                        GroupID: Number(groupInfo.groupID),
-                      },
-                      "fromGroupAdvanceMeeting",
-                      {},
-                    ),
-                  );
-                  setEditorRole({
-                    status: "11",
-                    role: "Organizer",
-                    isPrimaryOrganizer: true,
-                  });
-                  break;
                 case "groupUpdateMeeting":
                   dispatch(setCreateEditTab("organizers"));
+                  break;
 
+                case "saveProposedMeeting":
+                case "updateProposedMeeting":
+                case "updateCommitteeProposedMeeting":
+                case "updateGroupProposedMeeting":
+                  updateParticipants(routePath);
+                  break;
+
+                case "getMeetingDetailsFromAgendaTab":
+                case "EditMeetingFromMainListing":
+                  break;
+
+                case "committeeSaveMeeting":
+                  mapToCommittee("fromCommitteeAdvanceMeeting");
+                  setPrimaryOrganizer();
+                  break;
+
+                case "groupSaveMeeting":
+                  mapToGroup("fromGroupAdvanceMeeting");
+                  setPrimaryOrganizer();
+                  break;
+
+                case "saveCommitteeProposedMeeting":
+                  mapToCommittee("saveCommitteeProposedMeeting");
+                  updateParticipants("saveCommitteeProposedMeeting");
+                  break;
+
+                case "saveGroupProposedMeeting":
+                  mapToGroup("saveGroupProposedMeeting");
+                  updateParticipants("saveGroupProposedMeeting");
                   break;
 
                 default:
@@ -872,6 +880,8 @@ export const UpdateMeetingUserApi = (
                       break;
                     }
                     case "saveProposedMeeting":
+                    case "saveGroupProposedMeeting":
+                    case "saveCommitteeProposedMeeting":
                       DublicateData.forEach((data, index) => {
                         newMembers.push({
                           UserID: data.userID,
@@ -894,6 +904,8 @@ export const UpdateMeetingUserApi = (
                       );
                       break;
                     case "updateProposedMeeting":
+                    case "updateCommitteeProposedMeeting":
+                    case "updateGroupProposedMeeting":
                       DublicateData.forEach((data, index) => {
                         newMembers.push({
                           UserID: data.userID,
@@ -1120,39 +1132,43 @@ export const setProposedMeetingDateApi = (
                     // the Proposed tab regardless of which tab the user was
                     // on beforehand (e.g. Published).
                     if (committeeInfo) {
-                      dispatch(toggleCreateEditProposedMeetingModal(false));
                       object.setCurrentCommitteeMeetingTabActive?.(2);
+                      setTimeout(() => {
+                        dispatch(toggleCreateEditProposedMeetingModal(false));
+                      }, 100);
 
-                      dispatch(
-                        setMeetingbyCommitteeIdApi(
-                          navigate,
-                          t,
-                          {
-                            MeetingID: Number(Data.MeetingID),
-                            CommitteeID: Number(committeeInfo.committeeID),
-                          },
-                          "saveProposedMeetingFromCommittee",
-                          {},
-                        ),
-                      );
+                      // dispatch(
+                      //   setMeetingbyCommitteeIdApi(
+                      //     navigate,
+                      //     t,
+                      //     {
+                      //       MeetingID: Number(Data.MeetingID),
+                      //       CommitteeID: Number(committeeInfo.committeeID),
+                      //     },
+                      //     "saveProposedMeetingFromCommittee",
+                      //     {},
+                      //   ),
+                      // );
                       return;
                     }
                     if (groupInfo) {
-                      dispatch(toggleCreateEditProposedMeetingModal(false));
                       object.setCurrentGroupMeetingTabActive?.(2);
+                      setTimeout(() => {
+                        dispatch(toggleCreateEditProposedMeetingModal(false));
+                      }, 100);
 
-                      dispatch(
-                        setMeetingByGroupIdApi(
-                          navigate,
-                          t,
-                          {
-                            MeetingID: Number(Data.MeetingID),
-                            GroupID: Number(groupInfo.groupID),
-                          },
-                          "saveProposedMeetingFromGroup",
-                          {},
-                        ),
-                      );
+                      // dispatch(
+                      //   setMeetingByGroupIdApi(
+                      //     navigate,
+                      //     t,
+                      //     {
+                      //       MeetingID: Number(Data.MeetingID),
+                      //       GroupID: Number(groupInfo.groupID),
+                      //     },
+                      //     "saveProposedMeetingFromGroup",
+                      //     {},
+                      //   ),
+                      // );
                       return;
                     }
                     dispatch(toggleCreateEditProposedMeetingModal(false));
@@ -2409,17 +2425,24 @@ export const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
                     "",
                   ),
                 );
-                const { setShow, checkFlag } = object;
+                const {
+                  setShow,
+                  checkFlag,
+                  setCurrentCommitteeMeetingTabActive,
+                  setCurrentGroupMeetingTabActive,
+                } = object;
                 if (setShow) setShow(false);
 
                 switch (checkFlag) {
                   case 6:
                     let ViewCommitteeID =
                       localStorage.getItem("ViewCommitteeID");
-                    // Quick meeting created via Committee lands directly on
-                    // Published — refetch it so the newly created meeting
-                    // shows up (setMeetingbyCommitteeIdApi is a routePath
+                    // Quick meeting created/published via Committee lands
+                    // directly on Published — switch to it and refetch so
+                    // the meeting shows up regardless of which tab the user
+                    // was on (setMeetingbyCommitteeIdApi is a routePath
                     // dispatcher and does nothing without one here).
+                    setCurrentCommitteeMeetingTabActive?.(1);
                     dispatch(
                       getMeetingByCommitteeIdApi(navigate, t, {
                         CommitteeID: Number(ViewCommitteeID),
@@ -2435,8 +2458,11 @@ export const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
                     );
                     break;
                   case 7:
+                  case 8:
                     let ViewGroupID = localStorage.getItem("ViewGroupID");
-                    // Same as above, for Group quick meetings.
+                    // Same as above, for Group quick meetings (Create uses
+                    // checkFlag 7, Update/Publish uses checkFlag 8).
+                    setCurrentGroupMeetingTabActive?.(1);
                     dispatch(
                       getMeetingbyGroupIdApi(navigate, t, {
                         GroupID: Number(ViewGroupID),
@@ -2586,20 +2612,20 @@ export const UpdateMeetingStatusApi = (
                           // Published tab — switch to it so the user lands
                           // where the meeting now actually lives.
                           setCurrentCommitteeMeetingTabActive?.(1);
-                          let searchData = {
-                            CommitteeID: Number(committeeInfo.committeeID),
-                            Date: "",
-                            Title: "",
-                            HostName: "",
-                            UserID: Number(localStorage.getItem("userID")),
-                            PageNumber: 1,
-                            Length: 30,
-                            PublishedMeetings: true,
-                            ProposedMeetings: false,
-                          };
-                          dispatch(
-                            getMeetingByCommitteeIdApi(navigate, t, searchData),
-                          );
+                          // let searchData = {
+                          //   CommitteeID: Number(committeeInfo.committeeID),
+                          //   Date: "",
+                          //   Title: "",
+                          //   HostName: "",
+                          //   UserID: Number(localStorage.getItem("userID")),
+                          //   PageNumber: 1,
+                          //   Length: 30,
+                          //   PublishedMeetings: true,
+                          //   ProposedMeetings: false,
+                          // };
+                          // dispatch(
+                          //   getMeetingByCommitteeIdApi(navigate, t, searchData),
+                          // );
                           // let searchData = {
                           //   CommitteeID: Number(committeeInfo.committeeID),
                           //   Date: "",
@@ -2618,20 +2644,20 @@ export const UpdateMeetingStatusApi = (
                         if (groupInfo !== null) {
                           setCurrentGroupMeetingTabActive?.(1);
 
-                          let searchData = {
-                            GroupID: Number(groupInfo.groupID),
-                            Date: "",
-                            Title: "",
-                            HostName: "",
-                            UserID: Number(localStorage.getItem("userID")),
-                            PageNumber: 1,
-                            Length: 30,
-                            PublishedMeetings: true,
-                            ProposedMeetings: false,
-                          };
-                          dispatch(
-                            getMeetingbyGroupIdApi(navigate, t, searchData),
-                          );
+                          // let searchData = {
+                          //   GroupID: Number(groupInfo.groupID),
+                          //   Date: "",
+                          //   Title: "",
+                          //   HostName: "",
+                          //   UserID: Number(localStorage.getItem("userID")),
+                          //   PageNumber: 1,
+                          //   Length: 30,
+                          //   PublishedMeetings: true,
+                          //   ProposedMeetings: false,
+                          // };
+                          // dispatch(
+                          //   getMeetingbyGroupIdApi(navigate, t, searchData),
+                          // );
                           // let searchData = {
                           //   GroupID: Number(groupInfo.groupID),
                           //   Date: "",
@@ -2734,7 +2760,44 @@ export const UpdateMeetingStatusApi = (
                         break;
                       case "EndMeetingFromMeetingDetailsModal": {
                         setEndMeetingConfirmationModal(false);
+                        // if (committeeInfo !== null) {
+                        //   dispatch(
+                        //     getMeetingByCommitteeIdApi(navigate, t, {
+                        //       CommitteeID: Number(committeeInfo.committeeID),
+                        //       Date: "",
+                        //       Title: "",
+                        //       HostName: "",
+                        //       UserID: Number(localStorage.getItem("userID")),
+                        //       PageNumber: 1,
+                        //       Length: 30,
+                        //       PublishedMeetings: true,
+                        //       ProposedMeetings: false,
+                        //     }),
+                        //   );
+                        // } else if (groupInfo !== null) {
+                        //   dispatch(
+                        //     getMeetingbyGroupIdApi(navigate, t, {
+                        //       GroupID: Number(groupInfo.groupID),
+                        //       Date: "",
+                        //       Title: "",
+                        //       HostName: "",
+                        //       UserID: Number(localStorage.getItem("userID")),
+                        //       PageNumber: 1,
+                        //       Length: 30,
+                        //       PublishedMeetings: true,
+                        //       ProposedMeetings: false,
+                        //     }),
+                        //   );
+                        // }
+                        break;
+                      }
+                      case "deleteMeetingFromDraftTab": {
+                        const { setDeleteMeetingConfirmationModal } = object;
+                        setDeleteMeetingConfirmationModal(false);
                         if (committeeInfo !== null) {
+                          // Deleting happens from the Draft tab itself, so
+                          // refetch the Draft list to drop the deleted
+                          // meeting rather than leaving the stale row shown.
                           dispatch(
                             getMeetingByCommitteeIdApi(navigate, t, {
                               CommitteeID: Number(committeeInfo.committeeID),
@@ -2744,11 +2807,13 @@ export const UpdateMeetingStatusApi = (
                               UserID: Number(localStorage.getItem("userID")),
                               PageNumber: 1,
                               Length: 30,
-                              PublishedMeetings: true,
+                              PublishedMeetings: false,
                               ProposedMeetings: false,
                             }),
                           );
-                        } else if (groupInfo !== null) {
+                          return;
+                        }
+                        if (groupInfo !== null) {
                           dispatch(
                             getMeetingbyGroupIdApi(navigate, t, {
                               GroupID: Number(groupInfo.groupID),
@@ -2758,20 +2823,10 @@ export const UpdateMeetingStatusApi = (
                               UserID: Number(localStorage.getItem("userID")),
                               PageNumber: 1,
                               Length: 30,
-                              PublishedMeetings: true,
+                              PublishedMeetings: false,
                               ProposedMeetings: false,
                             }),
                           );
-                        }
-                        break;
-                      }
-                      case "deleteMeetingFromDraftTab": {
-                        const { setDeleteMeetingConfirmationModal } = object;
-                        setDeleteMeetingConfirmationModal(false);
-                        if (committeeInfo !== null) {
-                          return;
-                        }
-                        if (groupInfo !== null) {
                           return;
                         }
                         await dispatch(
@@ -4729,35 +4784,35 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                   if (typeof setEndMeetingConfirmationModal === "function") {
                     setEndMeetingConfirmationModal(false);
                   }
-                  if (ViewCommitteeID !== null) {
-                    dispatch(
-                      getMeetingByCommitteeIdApi(navigate, t, {
-                        CommitteeID: Number(ViewCommitteeID),
-                        Date: "",
-                        Title: "",
-                        HostName: "",
-                        UserID: Number(userID),
-                        PageNumber: 1,
-                        Length: 30,
-                        PublishedMeetings: true,
-                        ProposedMeetings: false,
-                      }),
-                    );
-                  } else if (ViewGroupID !== null) {
-                    dispatch(
-                      getMeetingbyGroupIdApi(navigate, t, {
-                        GroupID: Number(ViewGroupID),
-                        Date: "",
-                        Title: "",
-                        HostName: "",
-                        UserID: Number(userID),
-                        PageNumber: 1,
-                        Length: 30,
-                        PublishedMeetings: true,
-                        ProposedMeetings: false,
-                      }),
-                    );
-                  }
+                  // if (ViewCommitteeID !== null) {
+                  //   dispatch(
+                  //     getMeetingByCommitteeIdApi(navigate, t, {
+                  //       CommitteeID: Number(ViewCommitteeID),
+                  //       Date: "",
+                  //       Title: "",
+                  //       HostName: "",
+                  //       UserID: Number(userID),
+                  //       PageNumber: 1,
+                  //       Length: 30,
+                  //       PublishedMeetings: true,
+                  //       ProposedMeetings: false,
+                  //     }),
+                  //   );
+                  // } else if (ViewGroupID !== null) {
+                  //   dispatch(
+                  //     getMeetingbyGroupIdApi(navigate, t, {
+                  //       GroupID: Number(ViewGroupID),
+                  //       Date: "",
+                  //       Title: "",
+                  //       HostName: "",
+                  //       UserID: Number(userID),
+                  //       PageNumber: 1,
+                  //       Length: 30,
+                  //       PublishedMeetings: true,
+                  //       ProposedMeetings: false,
+                  //     }),
+                  //   );
+                  // }
                 } else {
                   dispatch(
                     leaveMeetingAdvancedSuccess(
@@ -4826,31 +4881,31 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                       listOfMeetingsApi(navigate, t, searchData, "", {}),
                     );
                   } else if (committeeInfo !== null) {
-                    let Data = {
-                      CommitteeID: Number(committeeInfo.committeeID),
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: 1,
-                      Length: 30,
-                      PublishedMeetings: true,
-                      ProposedMeetings: false,
-                    };
-                    dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
+                    // let Data = {
+                    //   CommitteeID: Number(committeeInfo.committeeID),
+                    //   Date: "",
+                    //   Title: "",
+                    //   HostName: "",
+                    //   UserID: Number(userID),
+                    //   PageNumber: 1,
+                    //   Length: 30,
+                    //   PublishedMeetings: true,
+                    //   ProposedMeetings: false,
+                    // };
+                    // dispatch(getMeetingByCommitteeIdApi(navigate, t, Data));
                   } else if (groupInfo !== null) {
-                    let Data = {
-                      GroupID: Number(groupInfo.groupID),
-                      Date: "",
-                      Title: "",
-                      HostName: "",
-                      UserID: Number(userID),
-                      PageNumber: 1,
-                      Length: 30,
-                      PublishedMeetings: true,
-                      ProposedMeetings: false,
-                    };
-                    dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
+                    // let Data = {
+                    //   GroupID: Number(groupInfo.groupID),
+                    //   Date: "",
+                    //   Title: "",
+                    //   HostName: "",
+                    //   UserID: Number(userID),
+                    //   PageNumber: 1,
+                    //   Length: 30,
+                    //   PublishedMeetings: true,
+                    //   ProposedMeetings: false,
+                    // };
+                    // dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
                   }
                 }
 

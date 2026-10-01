@@ -154,8 +154,6 @@
 
 .MainMeetingTablePublished {
   min-height: 50vh !important;
-  max-height: 63vh !important;
-  margin-bottom: 70px;
 }
 .Meeting_Publish_Pagination {
   position: absolute;

@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { forRecentActivity } from "@/commen/functions/date_formater";
 import { Popover } from "antd";
 import CustomButton from "@/components/elements/button/Button";
@@ -36,7 +36,7 @@ import {
 import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 import { useGroupsContext } from "../../../../context/GroupsContext";
-import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
+import { clearGetMeetingbyGroupID, getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
 import { useMeetingListActions } from "../../../meeting/commonComponents/useMeetingListActions";
 
 const buildEditorRole = (record) => ({
@@ -111,6 +111,26 @@ const GroupDraftMeetings = () => {
     setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
 
+
+  useEffect(() => {
+    let searchData = {
+      GroupID: Number(localStorage.getItem("ViewGroupID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+
+    return () => {
+      dispatch(clearGetMeetingbyGroupID());
+
+    }
+  }, [])
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -457,7 +477,7 @@ const GroupDraftMeetings = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-center my-3 pagination-groups-table"
+                className="d-flex justify-content-center  pagination-groups-table"
               >
                 <CustomPagination
                   current={currentPageDraftGroupMeeting}

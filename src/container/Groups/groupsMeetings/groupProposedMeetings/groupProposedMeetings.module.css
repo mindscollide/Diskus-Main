@@ -199,3 +199,7 @@ body[dir="rtl"] .ResetOkBtn {
   border-radius: 4px !important;
   border: none;
 }
+
+.MainMeetingTablePublished {
+  min-height: 50vh !important;
+}

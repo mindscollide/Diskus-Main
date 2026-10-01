@@ -60,16 +60,13 @@ const CreateEditAdvanceMeeting = () => {
   const committeeInfo = useSelector(
     (state) => state.CommitteeReducer.viewCommitteeDetails,
   );
-
+  const currentMeetingInfo = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
   const groupInfo = useSelector(
     (state) => state.GroupsReducer.viewGroupDetails,
   );
-  console.log("CreateEditAdvanceMeeting", {
-    committeeInfo,
-    groupInfo,
-    isAdvanceMeetingRoute,
-    isCreateEditMeetingModal,
-  });
+
   // Fix: read all tab states from Redux MeetingModalsReducer instead of
   // individual NewMeetingreducer global flags
   const {
@@ -240,6 +237,15 @@ const CreateEditAdvanceMeeting = () => {
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
 
+  console.log("CreateEditAdvanceMeeting", {
+    editorRole,
+    currentMeetingInfo,
+    committeeInfo,
+    groupInfo,
+    isAdvanceMeetingRoute,
+    isCreateEditMeetingModal,
+  });
+
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
@@ -343,7 +349,7 @@ const CreateEditAdvanceMeeting = () => {
                       onClick={showMinutes}
                       disableBtn={
                         Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
+                          Number(editorRole.status) === 9
                           ? false
                           : true
                       }
@@ -360,7 +366,7 @@ const CreateEditAdvanceMeeting = () => {
                         onClick={showActions}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
+                            Number(editorRole.status) === 9
                             ? false
                             : true
                         }
@@ -378,7 +384,7 @@ const CreateEditAdvanceMeeting = () => {
                         onClick={ShowPolls}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
+                            Number(editorRole.status) === 9
                             ? false
                             : true
                         }
