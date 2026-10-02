@@ -284,3 +284,14 @@ body[dir="rtl"] .Participants-Lists {
   padding: 10px 20px 0 20px;
   z-index: 103 !important;
 }
+
+/* The right-hand Talk bar (.talk_nav, Talk.css, z-index 999) stayed in front
+   of the full-window meeting call. Drop it just under the call (103) while
+   the call is full window.
+
+   .talk_nav is also where the chat box renders (Talk.js -> <TalkNew/>). When
+   chat is open the call carries .more-zindexwithChatOpen, and this rule then
+   does not match, so the chat box stays in front of the call as before. */
+body:has(.meeting-full-window:not(.more-zindexwithChatOpen)) .talk_nav {
+  z-index: 102 !important;
+}
