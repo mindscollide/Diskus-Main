@@ -94,6 +94,22 @@ const CommitteeProposedMeetings = () => {
     (state) => state.NewMeetingreducer.deleteMeetingModal,
   );
 
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: true,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+  }, [])
+
   const handleClickActions = (record) => {
     if (record.isParticipant) {
       // record.responseDeadLine

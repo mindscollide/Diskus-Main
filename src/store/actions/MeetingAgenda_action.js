@@ -873,7 +873,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     CommitteeID: Number(ViewCommitteeID),
                   };
                   dispatch(setMeetingbyCommitteeIdApi(navigate, t, Data));
-                } else if (checkFlag === 6) {
+                } else if (checkFlag === 9) {
                   // Update Committee Meeting 6
                   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
 

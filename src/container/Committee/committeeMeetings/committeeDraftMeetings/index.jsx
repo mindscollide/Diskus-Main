@@ -114,6 +114,22 @@ const CommitteeDraftMeetings = () => {
   };
 
 
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+  }, [])
+
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
     setMeetingTitleSort(null);

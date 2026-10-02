@@ -64,18 +64,9 @@ const GroupMeetingTab = ({ groupStatus }) => {
   let ViewGroupID = localStorage.getItem("ViewGroupID");
 
   useEffect(() => {
-    let searchData = {
-      GroupID: Number(ViewGroupID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: currentGroupMeetingTabActive === 1 ? true : false,
-      ProposedMeetings: currentGroupMeetingTabActive === 2 ? true : false,
-    };
-    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+    return () => {
+      setCurrentGroupMeetingTabActive(1)
+    }
   }, []);
 
   const handleClickTabNavigate = (value) => {

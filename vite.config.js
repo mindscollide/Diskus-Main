@@ -185,12 +185,12 @@ export default defineConfig(({ mode }) => {
       ],
     },
 
-    server: {
-      // CRA's default, so existing bookmarks, CORS allow-lists and OAuth
-      // redirect URIs registered against localhost:3000 keep working.
-      port: 3000,
-      open: false,
-    },
+    // server: {
+    //   // CRA's default, so existing bookmarks, CORS allow-lists and OAuth
+    //   // redirect URIs registered against localhost:3000 keep working.
+    //   port: ,
+    //   open: false,
+    // },
 
     build: {
       /**

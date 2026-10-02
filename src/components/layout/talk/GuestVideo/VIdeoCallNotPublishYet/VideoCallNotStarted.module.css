@@ -1,0 +1,57 @@
+.Wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: #fff !important;
+  border: 1px solid #e1e1e1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.handRoundBox {
+  max-width: 120px;
+  max-height: 120px;
+  background-color: #ecefff !important;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.Title {
+  font-family: Montserrat;
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 28px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #6172d6;
+  margin: 0;
+}
+
+.Title_tagline {
+  font-family: Montserrat;
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 16px;
+  line-height: 25px;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #5a5a5a;
+  margin: 0;
+  text-align: center;
+}
+
+.CloseButton {
+  max-width: 136px;
+  height: 39px;
+  border-radius: 4px;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  font-weight: 600;
+  font-size: 14px !important;
+}

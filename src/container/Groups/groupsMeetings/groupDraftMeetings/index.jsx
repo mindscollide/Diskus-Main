@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { forRecentActivity } from "@/commen/functions/date_formater";
 import { Popover } from "antd";
 import CustomButton from "@/components/elements/button/Button";
@@ -111,6 +111,21 @@ const GroupDraftMeetings = () => {
     setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
 
+
+  useEffect(() => {
+    let searchData = {
+      GroupID: Number(localStorage.getItem("ViewGroupID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+  }, [])
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {

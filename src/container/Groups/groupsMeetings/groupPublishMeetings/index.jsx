@@ -192,7 +192,20 @@ const GroupPublishedMeetingList = () => {
   const [isDownloadAvailable] = useState(false);
   const [downloadMeetingRecord] = useState(null);
   const [meetingTypeSort, setMeetingTypeSort] = useState(null);
-
+  useEffect(() => {
+    let searchData = {
+      GroupID: Number(localStorage.getItem("ViewGroupID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: true,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+  }, [])
   const {
     handleViewMeeting,
     handleJoinMeeting,
@@ -593,7 +606,7 @@ const GroupPublishedMeetingList = () => {
         (status === STATUS.UPCOMING ||
           status === STATUS.ACTIVE
           //  || status === STATUS.NOT_CONDUCTED
-          ) &&
+        ) &&
         isOrganizer,
       cancel: status === STATUS.UPCOMING && isOrganizer,
       contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,

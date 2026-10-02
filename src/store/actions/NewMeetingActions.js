@@ -4525,7 +4525,7 @@ const DeleteAgendaWiseMinutesApiFunc = (
               await dispatch(
                 showDeleteAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  "",
                 ),
               );
 
@@ -4535,9 +4535,10 @@ const DeleteAgendaWiseMinutesApiFunc = (
               dispatch(
                 GetAllAgendaWiseMinutesApiFunc(
                   navigate,
-                  DeleteGetAll,
                   t,
-                  currentMeeting,
+                  DeleteGetAll,
+                  "",
+                  {currentMeeting},
                 ),
               );
             } else if (
@@ -5609,7 +5610,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               await dispatch(
                 showDeleteAgendaWiseDocumentSuccess(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  "",
                 ),
               );
               let AgendaWiseDelData = {
@@ -5620,7 +5621,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   navigate,
                   AgendaWiseDelData,
                   t,
-                  currentMeeting,
+                  Data.MDID,
                   id,
                 ),
               );
@@ -5647,7 +5648,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                 )
             ) {
               dispatch(
-                showDeleteAgendaWiseDocumentFailed(t("No-record-deleted")),
+                showDeleteAgendaWiseDocumentFailed(""),
               );
               let AgendaWiseDelData = {
                 MinuteID: Number(id),
@@ -5657,7 +5658,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   navigate,
                   AgendaWiseDelData,
                   t,
-                  currentMeeting,
+                  Data.MDID,
                 ),
               );
             } else if (

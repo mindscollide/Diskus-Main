@@ -267,6 +267,7 @@ import {
 } from "../../store/actions/ComplainSettingActions";
 import { useComplianceContext } from "../../context/ComplianceContext";
 import { HIDE_VIDEO } from "../../commen/featureFlags";
+import VIdeoCallNotStarted from "../../components/layout/talk/GuestVideo/VIdeoCallNotStarted";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -1371,12 +1372,19 @@ const Dashboard = () => {
                 });
                 setNotificationID(id);
               }
-              let newMeetting = {
-                ...data.payload.meeting,
-                talkGroupID: data.payload.talkGroupID,
-              };
-              dispatch(meetingStatusPublishedMqtt(newMeetting));
-              setNotificationID(id);
+
+              if (data.payload.standardMeetingType === 3) {
+                dispatch(createCommitteeMeeting(data.payload));
+              } else if (data.payload.standardMeetingType === 4) {
+                dispatch(createGroupMeeting(data.payload));
+              } else {
+                let newMeetting = {
+                  ...data.payload.meeting,
+                  talkGroupID: data.payload.talkGroupID,
+                };
+                dispatch(meetingStatusPublishedMqtt(newMeetting));
+                setNotificationID(id);
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "AGENDA_VOTING_STARTED".toLowerCase()
