@@ -2130,10 +2130,17 @@ const VideoPanelNormal = () => {
               !VideoChatPanel
             ? "videoCallScreen "
             : "max-video-panel ";
-  const finalClass =
+  const chatClass =
     activeVideoIcon || ActiveChatBoxGS
       ? `${baseClass} more-zindexwithChatOpen`
       : baseClass;
+  // A maximised MEETING call covers the whole window at every resolution
+  // (.meeting-full-window in videoCallNormalPanel.css). 1:1 / group talk calls
+  // and the docked/minimised states keep their original size.
+  const finalClass =
+    isMeetingVideo === true && baseClass.trim() === "max-video-panel"
+      ? `${chatClass} meeting-full-window`
+      : chatClass;
 
   return (
     <>
@@ -2209,9 +2216,12 @@ const VideoPanelNormal = () => {
                     iframeCurrent={iframe}
                   />
                   {VideoOutgoingCallFlag && <VideoOutgoing />}
-                  <Row>
+                  {/* videoCallBodyRow / videoCallBodyCol stretch the iframe to the
+                      panel's remaining height (see videoCallNormalPanel.css). */}
+                  <Row className='videoCallBodyRow'>
                     <>
                       <Col
+                        className='videoCallBodyCol'
                         lg={
                           (isMeetingHost &&
                             !presenterViewFlag &&
