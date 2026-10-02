@@ -2532,7 +2532,20 @@ export const UpdateMeetingStatusApi = (
                               ? t("Meeting-ended-successfully")
                               : Data.StatusID === 7
                                 ? t("Meeting-deleted-successfully")
-                                : "",
+                                : (Data.StatusID === 1 &&
+                                      routePath ===
+                                        "publishMeetingFromdraftTable") ||
+                                    routePath ===
+                                      "publishMeetingFromParticipant" ||
+                                    routePath ===
+                                      "publishMeetingFromAgendaContributor" ||
+                                    routePath ===
+                                      "publishMeetingFromOrganizer" ||
+                                    routePath ===
+                                      "PublishMeetingFromMeetingMaterial" ||
+                                    routePath === "publishMeetingFromAgendaTab"
+                                  ? t("Meeting-published-successfully")
+                                  : "",
                       ),
                     );
                     const committeeInfo =
