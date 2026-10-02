@@ -33,6 +33,13 @@ const ViewParticipantsDates = () => {
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket,
   );
+
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
   const { responseByDate } = useNewMeetingContext();
   const { currentGroupMeetingTabActive } = useGroupsContext();
   const { currentCommitteeMeetingTabActive } = useCommitteeContext();
@@ -232,7 +239,10 @@ const ViewParticipantsDates = () => {
       } else {
       }
     } catch (error) {
-      console.error("src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:", error);
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:",
+        error,
+      );
     }
   }, [userWiseMeetingProposed]);
 
@@ -251,7 +261,10 @@ const ViewParticipantsDates = () => {
         });
       }
     } catch (error) {
-      console.error("src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:", error);
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:",
+        error,
+      );
     }
   }, [getAllMeetingDetails]);
 
@@ -362,6 +375,13 @@ const ViewParticipantsDates = () => {
   };
 
   const handleCancel = () => {
+    dispatch(toggleIsParticipantProposedMeetingDates(false));
+    if (committeeInfo !== null) {
+      return;
+    }
+    if (groupInfo !== null) {
+      return;
+    }
     let searchData = {
       Date: "",
       Title: "",
@@ -374,7 +394,6 @@ const ViewParticipantsDates = () => {
     };
     dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
     localStorage.setItem("MeetingCurrentView", 2);
-    dispatch(toggleIsParticipantProposedMeetingDates(false));
   };
 
   useEffect(() => {
@@ -385,9 +404,17 @@ const ViewParticipantsDates = () => {
           MeetingStatusSocket.message === "MEETING_STATUS_EDITED_CANCELLED" &&
           meetingID === meetingDeatils.MeetingID
         ) {
-          localStorage.setItem("MeetingCurrentView", 2);
           dispatch(toggleIsParticipantProposedMeetingDates(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
+
+          if (committeeInfo !== null) {
+            return;
+          }
+          if (groupInfo !== null) {
+            return;
+          }
+          localStorage.setItem("MeetingCurrentView", 2);
+
           let searchData = {
             Date: "",
             Title: "",
@@ -402,7 +429,10 @@ const ViewParticipantsDates = () => {
           dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
         }
       } catch (error) {
-        console.error("src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:", error);
+        console.error(
+          "src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:",
+          error,
+        );
       }
     }
   }, [MeetingStatusSocket]);

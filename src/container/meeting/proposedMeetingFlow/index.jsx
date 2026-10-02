@@ -55,10 +55,13 @@ import {
   MeetingProposedForOrganizerProposed,
   MeetingProposedForParticipantProposed,
 } from "../../../store/actions/NotificationRouting_actions";
+import { getTodayYYYYMMDD } from "../../../commen/functions/utils";
+import { useSnackbar } from "../../../components/elements";
 const ProposedMeeting = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [show, Snackbar] = useSnackbar();
   const {
     isMeetingTypeFilter,
     setProposedMeetingData,
@@ -120,7 +123,12 @@ const ProposedMeeting = () => {
           meetingID,
           responseResult: { sendResponseByDeadline },
         } = proposedMeetingParticipant;
-
+      if (String(sendResponseByDeadline).slice(0, 8) < getTodayYYYYMMDD()) {
+          dispatch(MeetingProposedForParticipantProposed(null));
+          navigate(pathname, { replace: true, state: null });
+          show(t("Vote-deadline-expired"), "success");
+          return;
+        }
         dispatch(
           getMeetingDetailsByMeetingIdApi(
             navigate,
@@ -789,6 +797,7 @@ const ProposedMeeting = () => {
       {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
       {deleteMeetingModal && <DeleteMeetingModal />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+      {Snackbar}
     </section>
   );
 };

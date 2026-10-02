@@ -88,10 +88,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     // component too — so creating/scheduling/publishing a proposed meeting
     // reset the tab to Published before this component even remounted.
     // Committee.js's own top-level unmount cleanup already resets the tab
-    // when actually leaving the Committee module, so this isn't needed here.دھٹتد
-    return () => {
-      setCurrentCommitteeMeetingTabActive(1)
-    }
+    // when actually leaving the Committee module, so this isn't needed here.
   }, []);
 
   const handleClickTabNavigate = (value) => {

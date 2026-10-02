@@ -1890,6 +1890,14 @@ const getMeetingbyGroupIdApi = (navigate, t, Data) => {
                 meetings: getMeetingData,
                 pageNumbers: response.data.responseResult.pageNumbers,
                 totalRecords: response.data.responseResult.totalRecords,
+                // Which tab this response was requested for (1 Published,
+                // 2 Proposed, 3 Draft) so GroupsContext can ignore a stale
+                // response left over from a different tab.
+                requestedTab: Data.ProposedMeetings
+                  ? 2
+                  : Data.PublishedMeetings
+                    ? 1
+                    : 3,
               };
               dispatch(getMeetingbyGroup_success(newMeetingData, ""));
             } else if (

@@ -186,6 +186,16 @@ export const CommitteeProvider = ({ children }) => {
         return;
       }
 
+      // A response fetched for another tab (e.g. Published data still in the
+      // store when the tab flips to Proposed) must not be routed into this
+      // tab's list — wait for the response requested for this tab.
+      if (
+        getMeetingByCommitteeID.requestedTab !== undefined &&
+        getMeetingByCommitteeID.requestedTab !== currentCommitteeMeetingTabActive
+      ) {
+        return;
+      }
+
       const meetings = getMeetingByCommitteeID.meetings || [];
 
       setMinutesAgo(getMeetingByCommitteeID.meetingStartedMinuteAgo || 0);

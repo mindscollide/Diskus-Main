@@ -237,6 +237,8 @@ const Committee = () => {
     if (state !== null) {
       try {
         const { message, response } = state;
+
+        console.log(message, response, "response")
         // response.committeeGroupMeetingID/committeeGroupTitle never
         // existed on this object — routeMeetingTypeNotification only ever
         // populated it with the meeting-status API result plus

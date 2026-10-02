@@ -52,11 +52,14 @@ import SceduleProposedmeeting from "../../../meeting/proposedMeetingFlow/Scedule
 import DeleteMeetingModal from "../../../meeting/proposedMeetingFlow/DeleteMeetingModal/DeleteMeetingModal";
 import { MeetingProposedForOrganizerProposed, MeetingProposedForParticipantProposed } from "../../../../store/actions/NotificationRouting_actions";
 import { clearGetMeetingByCommitteeID } from "../../../../store/actions/Committee_actions";
+import { getTodayYYYYMMDD } from "../../../../commen/functions/utils";
+import { useSnackbar } from "../../../../components/elements";
 const CommitteeProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [show, SnackBar] =useSnackbar()
   const proposedMeetingOrganizer = useSelector(
     (state) => state.NotificationRoutingReducer.MeetingProposedForOrganizer,
   );
@@ -156,7 +159,12 @@ const CommitteeProposedMeetings = () => {
           meetingID,
           responseResult: { sendResponseByDeadline },
         } = proposedMeetingParticipant;
-
+        if (String(sendResponseByDeadline).slice(0, 8) < getTodayYYYYMMDD()) {
+          dispatch(MeetingProposedForParticipantProposed(null));
+          navigate(pathname, { replace: true, state: null });
+          show(t("Vote-deadline-expired"), "success");
+          return;
+        }
         dispatch(
           getMeetingDetailsByMeetingIdApi(
             navigate,
@@ -601,6 +609,7 @@ const CommitteeProposedMeetings = () => {
         {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
         {deleteMeetingModal && <DeleteMeetingModal />}
         {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+        {SnackBar}
       </div>
     </>
   );

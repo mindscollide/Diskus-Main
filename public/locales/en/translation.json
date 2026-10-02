@@ -2945,5 +2945,6 @@
   "Recording": "Recording",
   "The-meeting-has-not-started-yet": "The Meeting Has Not Started Yet",
   "Waiting-for-organizer-to-start-the-meeting-please-try-again-shortly": "Waiting for Organizer to start the meeting  Please try again shortly.",
-  "The-meeting-has-not-published-yet": "The Meeting Has Not Published Yet"
+  "The-meeting-has-not-published-yet": "The Meeting Has Not Published Yet",
+  "Vote-deadline-expired": "Vote deadline expired"
 }

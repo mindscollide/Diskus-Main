@@ -226,7 +226,6 @@ const SceduleProposedmeeting = () => {
     },
     ...formattedDates.map((formattedDate, index) => {
       const proposedRecord = proposedDatesData[index];
-      console.log(formattedDate, "rowRecordrowRecordrowRecordrowRecordrowRecordrowRecordrowRecordrowRecord")
       const isNoneOfAbove =
         proposedRecord?.proposedDate === "10000101" &&
         proposedRecord?.startTime === "000000" &&
@@ -237,7 +236,6 @@ const SceduleProposedmeeting = () => {
       if (proposedRecord) {
         const datetimeVal = `${proposedRecord?.proposedDate}${proposedRecord?.startTime}`;
         const formatetDateTime = utcConvertintoGMT(datetimeVal);
-      console.log(formatetDateTime, "rowRecordrowRecordrowRecordrowRecordrowRecordrowRecordrowRecordrowRecord")
 
         if (String(formatetDateTime) === String(formattedDate)) {
           isFind = proposedRecord;

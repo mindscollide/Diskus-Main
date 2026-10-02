@@ -159,6 +159,12 @@ export const GroupsProvider = ({ children }) => {
         { getMeetingbyGroupID, currentGroupMeetingTabActive },
         "getMeetingbyGroupIDgetMeetingbyGroupID",
       );
+      if (
+        getMeetingbyGroupID.requestedTab !== undefined &&
+        getMeetingbyGroupID.requestedTab !== currentGroupMeetingTabActive
+      ) {
+        return;
+      }
       const meetings = getMeetingbyGroupID.meetings || [];
       setMinutesAgo(getMeetingbyGroupID.meetingStartedMinuteAgo || 0);
 

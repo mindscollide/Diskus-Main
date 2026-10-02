@@ -35,6 +35,22 @@ import { downlooadUserloginHistoryApi } from "../../../store/actions/Download_ac
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
+const DeviceIdType = [
+  {
+    label: "Browser",
+    value: 1,
+  },
+  {
+    label: "Tablet",
+    value: 2,
+  },
+
+  {
+    label: "Mobile",
+    value: 3,
+  },
+];
+
 const Reports = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -74,22 +90,6 @@ const Reports = () => {
     },
     Title: "",
   });
-
-  const DeviceIdType = [
-    {
-      label: "Browser",
-      value: 1,
-    },
-    {
-      label: "Tablet",
-      value: 2,
-    },
-    ,
-    {
-      label: "Mobile",
-      value: 3,
-    },
-  ];
 
   useEffect(() => {
     let Data = {
@@ -295,7 +295,7 @@ const Reports = () => {
         DeviceID:
           userLoginHistorySearch.InterFaceType.value === 0
             ? ""
-            : userLoginHistorySearch.InterFaceType.value,
+            : String(userLoginHistorySearch.InterFaceType.value),
         DateLogin: userLoginHistorySearch.DateTo,
         DateLogOut: userLoginHistorySearch.DateFrom,
         sRow: Number(isRowsData),
@@ -674,7 +674,7 @@ const Reports = () => {
   return (
     <Fragment>
       <Container>
-        <Row className="my-3 d-flex align-items-center">
+        <Row className='my-3 d-flex align-items-center'>
           <Col sm={12} md={4} lg={4}>
             <h2 className={styles["user-login-history-heading"]}>
               {t("User-login-history")}
@@ -686,13 +686,11 @@ const Reports = () => {
                 sm={12}
                 md={4}
                 lg={4}
-                className="d-flex justify-content-end align-items-center gap-4"
-              >
+                className='d-flex justify-content-end align-items-center gap-4'>
                 <span
                   className={styles["export-to-excel-btn"]}
-                  onClick={handleClickExportExcel}
-                >
-                  <img src={XLSIcon} width={17} height={17} alt="" />{" "}
+                  onClick={handleClickExportExcel}>
+                  <img src={XLSIcon} width={17} height={17} alt='' />{" "}
                   {t("Export-to-excel")}
                 </span>
               </Col>
@@ -710,9 +708,9 @@ const Reports = () => {
                     value={userLoginHistorySearch.Title}
                     inputicon={
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={searchicon}
-                        alt=""
+                        alt=''
                         className={styles["searchbox_icon_userhistoryLogin"]}
                         onClick={handleIputSearchIcon}
                       />
@@ -726,13 +724,12 @@ const Reports = () => {
                     userLoginHistorySearch.IpAddress !== "" ||
                     userLoginHistorySearch.DateFrom !== "" ||
                     userLoginHistorySearch.DateTo !== "") ? (
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex gap-2 flex-wrap"
-                      >
+                        className='d-flex gap-2 flex-wrap'>
                         {userLoginHistorySearch.userName !== "" && (
                           <div className={styles["SearchablesItems"]}>
                             <span className={styles["Searches"]}>
@@ -740,8 +737,8 @@ const Reports = () => {
                             </span>
                             <img
                               src={Crossicon}
-                              alt=""
-                              className="cursor-pointer"
+                              alt=''
+                              className='cursor-pointer'
                               width={13}
                               onClick={() =>
                                 handleSearches(
@@ -760,14 +757,11 @@ const Reports = () => {
                             </span>
                             <img
                               src={Crossicon}
-                              alt=""
-                              className="cursor-pointer"
+                              alt=''
+                              className='cursor-pointer'
                               width={13}
                               onClick={() =>
-                                handleSearches(
-                                  committedTitleSearch,
-                                  "Title",
-                                )
+                                handleSearches(committedTitleSearch, "Title")
                               }
                             />
                           </div>
@@ -780,8 +774,8 @@ const Reports = () => {
                             </span>
                             <img
                               src={Crossicon}
-                              alt=""
-                              className="cursor-pointer"
+                              alt=''
+                              className='cursor-pointer'
                               width={13}
                               onClick={() =>
                                 handleSearches(
@@ -800,8 +794,8 @@ const Reports = () => {
                             </span>
                             <img
                               src={Crossicon}
-                              alt=""
-                              className="cursor-pointer"
+                              alt=''
+                              className='cursor-pointer'
                               width={13}
                               onClick={() =>
                                 handleSearches(
@@ -825,8 +819,8 @@ const Reports = () => {
                             </span>
                             <img
                               src={Crossicon}
-                              alt=""
-                              className="cursor-pointer"
+                              alt=''
+                              className='cursor-pointer'
                               width={13}
                               onClick={() =>
                                 handleSearches(
@@ -847,8 +841,8 @@ const Reports = () => {
                             </span>
                             <img
                               src={Crossicon}
-                              alt=""
-                              className="cursor-pointer"
+                              alt=''
+                              className='cursor-pointer'
                               width={13}
                               onClick={() =>
                                 handleSearches(
@@ -870,14 +864,13 @@ const Reports = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-end"
-                        >
+                          className='d-flex justify-content-end'>
                           <img
                             src={CrossIcon}
                             width={14}
                             height={14}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             onClick={handleCloseSearcbBox}
                           />
                         </Col>
@@ -887,7 +880,7 @@ const Reports = () => {
                           <TextField
                             placeholder={t("User-name")}
                             name={"userName"}
-                            type="text"
+                            type='text'
                             value={userLoginHistorySearch.userName}
                             change={handleChangeSearchBoxValues}
                           />
@@ -896,14 +889,14 @@ const Reports = () => {
                           <TextField
                             placeholder={t("User-email")}
                             name={"userEmail"}
-                            type="email"
+                            type='email'
                             onBlur={() => handleValidateEmail()}
                             change={handleChangeSearchBoxValues}
                             value={userLoginHistorySearch.userEmail}
                           />
                         </Col>
                       </Row>
-                      <Row className="my-3">
+                      <Row className='my-3'>
                         <Col sm={12} md={6} lg={6}>
                           <DatePicker
                             format={"DD/MM/YYYY"}
@@ -918,10 +911,10 @@ const Reports = () => {
                               />
                             }
                             editable={false}
-                            className="datePickerTodoCreate2"
+                            className='datePickerTodoCreate2'
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
-                            inputMode=""
+                            inputMode=''
                             calendar={calendarValue}
                             locale={localValue}
                             onChange={handleChangeFromDate}
@@ -951,10 +944,10 @@ const Reports = () => {
                               />
                             }
                             editable={false}
-                            className="datePickerTodoCreate2"
+                            className='datePickerTodoCreate2'
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
-                            inputMode=""
+                            inputMode=''
                             calendar={calendarValue}
                             locale={localValue}
                             onChange={handleChangeToDate}
@@ -989,13 +982,12 @@ const Reports = () => {
                           />
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-end gap-2"
-                        >
+                          className='d-flex justify-content-end gap-2'>
                           <Button
                             className={styles["ResetBtn"]}
                             text={t("Reset")}
@@ -1036,16 +1028,14 @@ const Reports = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center mt-2"
-                      >
+                        className='d-flex justify-content-center mt-2'>
                         <Spin />
                       </Col>
                     </Row>
                   </>
                 ) : null
               }
-              scrollableTarget="scrollableDiv"
-            >
+              scrollableTarget='scrollableDiv'>
               <Table
                 column={userloginColumns}
                 rows={loginHistoyRows}

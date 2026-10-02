@@ -55,6 +55,8 @@ import {
   MeetingProposedForParticipantProposed,
 } from "../../../../store/actions/NotificationRouting_actions";
 import { clearGetMeetingbyGroupID } from "../../../../store/actions/Groups_actions";
+import { getTodayYYYYMMDD } from "../../../../commen/functions/utils";
+import { useSnackbar } from "../../../../components/elements";
 const GroupProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -68,7 +70,7 @@ const GroupProposedMeetings = () => {
     currentLengthProposedGroupMeeting,
     setCurrentLengthProposedGroupMeeting,
   } = useGroupsContext();
-
+  const [show, Snackbar] = useSnackbar()
   const { pathname } = useLocation();
   const proposedMeetingOrganizer = useSelector(
     (state) => state.NotificationRoutingReducer.MeetingProposedForOrganizer,
@@ -180,6 +182,12 @@ const GroupProposedMeetings = () => {
           responseResult: { sendResponseByDeadline },
         } = proposedMeetingParticipant;
 
+        if (String(sendResponseByDeadline).slice(0, 8) < getTodayYYYYMMDD()) {
+          dispatch(MeetingProposedForParticipantProposed(null));
+          navigate(pathname, { replace: true, state: null });
+          show(t("Vote-deadline-expired"), "success");
+          return;
+        }
         dispatch(
           getMeetingDetailsByMeetingIdApi(
             navigate,
@@ -645,6 +653,7 @@ const GroupProposedMeetings = () => {
       {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
       {deleteMeetingModal && <DeleteMeetingModal />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+      {Snackbar}
     </>
   );
 };

@@ -254,8 +254,8 @@ const WebNotfication = ({
               // from the notification payload, where it's already used the
               // same way by the other committee/group notification
               // branches (see notificationActionID 16/21 above).
-              CommitteeID: PayLoadData?.CommitteeID,
-              GroupID: PayLoadData?.GroupID,
+              CommitteeID: responseData?.responseResult?.committeeGroupMeetingID,
+              GroupID: responseData?.responseResult?.committeeGroupMeetingID,
             },
           },
         });
