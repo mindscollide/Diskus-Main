@@ -1877,14 +1877,14 @@ button.UploadFileButton {
 }
 
 .image-thumbnail {
-  display: block;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-  padding: 15px 15px 25px 15px;
-  /* border: 1px solid #ccc; */
-  /* position: absolute; */
-  background: #e1e1e1;
+    display: block;
+    height: auto;
+    width: 100%;
+    text-align: center;
+    padding: 15px 15px 25px 15px;
+    border: 1px solid #ccc;
+    background: #e1e1e1;
+
 }
 
 img.thumbnailImage {

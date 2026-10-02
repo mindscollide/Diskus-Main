@@ -840,10 +840,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       });
       setReminderOptions(reminderOptions);
     } catch (error) {
-      console.error(
-        "CreateQuickMeeting.js:",
-        error,
-      );
+      console.error("CreateQuickMeeting.js:", error);
     }
   }, [assigneesRemindersData]);
 
@@ -2232,8 +2229,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   <Button
                     className={
                       isDetails
-                        ? "isDetail-Schedule-top-btn_active"
-                        : "isDetail-Schedule-top-btn-NonActive"
+                        ? "CreateQuickMeetingTabActive"
+                        : "CreateQuickMeetingTabNotActive"
                     }
                     text={t("Details")}
                     onClick={changeSelectDetails}
@@ -2241,8 +2238,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   <Button
                     className={
                       isAttendees
-                        ? "isAttendee-Schedule-top-btn_active"
-                        : "isAttendee-Schedule-top-btn-NonActive"
+                        ? "CreateQuickMeetingTabActive"
+                        : "CreateQuickMeetingTabNotActive"
                     }
                     text={t("Participants")}
                     datatut='show-meeting-attendees'
@@ -2251,8 +2248,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   <Button
                     className={
                       isAgenda
-                        ? "isAgenda-Schedule-top-btn_active"
-                        : "isAgenda-Schedule-top-btn-NonActive"
+                        ? "CreateQuickMeetingTabActive"
+                        : "CreateQuickMeetingTabNotActive"
                     }
                     text={t("Agenda")}
                     onClick={changeSelectAgenda}
@@ -2371,7 +2368,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     <Col
                       lg={1}
                       md={1}
-                      sm={12}
+                      sm={1}
                       xs={12}
                       className='CreateMeetingInput'>
                       <Button
@@ -2404,7 +2401,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   <Col
                     lg={7}
                     md={7}
-                    sm={12}
+                    sm={7}
                     xs={12}
                     className='location-textbox CreateMeetingInput'>
                     <TextField
@@ -2484,6 +2481,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       <Col
                         lg={7}
                         md={7}
+                        sm={7}
                         xs={12}
                         className='agenda-title-field CreateMeetingAgenda'>
                         <TextField
@@ -2496,7 +2494,12 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           placeholder={t("Agenda-title") + "*"}
                         />
                       </Col>
-                      <Col lg={5} md={5} xs={12} className='agenda-title-field'>
+                      <Col
+                        lg={5}
+                        md={5}
+                        sm={5}
+                        xs={12}
+                        className='agenda-title-field'>
                         <Select
                           options={allPresenters.filter((p) =>
                             createMeeting.MeetingAttendees.some(
@@ -2703,7 +2706,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
             ) : isAttendees ? (
               <>
                 <Row className=' mt-4'>
-                  <Col lg={6} md={6} sm={12} xs={12}>
+                  <Col lg={6} md={6} sm={6} xs={12}>
                     <Select
                       options={attendeesParticipant.filter(
                         (p) => p.value !== Number(createrID),
@@ -2720,7 +2723,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       }
                     />
                   </Col>
-                  <Col lg={4} md={4} sm={12} xs={12}>
+                  <Col lg={4} md={4} sm={4} xs={12}>
                     <Select
                       placeholder={t("Participant") + "*"}
                       onChange={assigntRoleAttendies}
@@ -2728,7 +2731,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       options={participantRoles}
                     />
                   </Col>
-                  <Col lg={2} md={2} sm={12} xs={12}>
+                  <Col lg={2} md={2} sm={2} xs={12}>
                     <Button
                       className={"addattendees-btn"}
                       text={t("Add")}

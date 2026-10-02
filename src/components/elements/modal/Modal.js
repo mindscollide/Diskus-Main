@@ -35,26 +35,28 @@ const CustomModal = ({
           centered={centered ?? true}
           className={className}
           dialogClassName={dialogClassName}
+          
           fullscreen={fullscreen}
           contentClassName={contentClassName}>
           <Modal.Header className={`${modalHeaderClassName} ${"border-0"}`}>
-            {localStorage.getItem("i18nextLng") === "en" ? (
-              <>
-                {closeButton && <img src={CrossIcon} alt='' onClick={onHide} />}
-                <Modal.Title className={modalTitleClassName}>
-                  {ModalTitle}
-                </Modal.Title>
-              </>
-            ) : (
+            <Modal.Title className={modalTitleClassName}>
+              {ModalTitle}
+            </Modal.Title>
+            {/* {localStorage.getItem("i18nextLng") === "en" ? (
               <>
                 <Modal.Title className={modalTitleClassName}>
                   {ModalTitle}
                 </Modal.Title>
-                {closeButton && (
-                  <img src={CrossIcon} onClick={onHide} alt='' />
-                )}{" "}
-              </>
-            )}
+                {/* {closeButton && <img src={CrossIcon} alt='' onClick={onHide} />} */}
+            {/* </> */}
+            {/* ) : (
+              <>
+                {closeButton && <img src={CrossIcon} onClick={onHide} alt='' />}{" "}
+                <Modal.Title className={modalTitleClassName}>
+                  {ModalTitle}
+                </Modal.Title>
+              </> */}
+            {/* )} */}
           </Modal.Header>
           {htmlCode !== "" && htmlCode !== null && htmlCode !== undefined ? (
             <Modal.Body
