@@ -216,3 +216,43 @@ body[dir="rtl"] .Participants-Lists {
   font-weight: 600 !important;
   margin-left: 3px !important;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Make the call iframe fill the panel.
+
+   The video container used fixed heights (.normal-avatar 45vh,
+   .normal-avatar-large / .normal-Presenter-avatar-large 85vh) that ignore the
+   header above them, so the iframe didn't match the panel (57vh docked, 89vh
+   maximised, 100vh presenter): it overflowed the bottom or left a gap.
+
+   The panel becomes a flex column: the header row keeps its natural height and
+   the body row (.videoCallBodyRow, videoCallNormalPanel.js) takes whatever is
+   left, so the iframe always matches the panel at any size.
+   ───────────────────────────────────────────────────────────────────────────── */
+:is(.max-video-panel, .videoCallScreen, .Presenter-Max-VideoPanel) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.videoCallBodyRow {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-bottom: 12px;
+}
+
+.videoCallBodyCol {
+  height: 100%;
+}
+
+.videoCallBodyCol
+  :is(.normal-avatar, .normal-avatar-large, .normal-Presenter-avatar-large) {
+  height: 100% !important;
+  margin-top: 0 !important;
+}
+
+/* An inline iframe adds a few px of baseline gap below it; block removes it. */
+.videoCallBodyCol iframe {
+  display: block;
+}

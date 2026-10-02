@@ -2171,9 +2171,12 @@ const VideoPanelNormal = () => {
                     iframeCurrent={iframe}
                   />
                   {VideoOutgoingCallFlag && <VideoOutgoing />}
-                  <Row>
+                  {/* videoCallBodyRow / videoCallBodyCol stretch the iframe to the
+                      panel's remaining height (see videoCallNormalPanel.css). */}
+                  <Row className='videoCallBodyRow'>
                     <>
                       <Col
+                        className='videoCallBodyCol'
                         lg={
                           (isMeetingHost &&
                             !presenterViewFlag &&

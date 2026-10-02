@@ -595,3 +595,49 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border-radius: 4px !important;
   font-weight: 600 !important;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Video call opened from the Quick Meeting modal
+
+   The modal is 1055 and its backdrop (.modal-backdrop.fade.show, 1050) applies
+   a 10px blur (App.css). Several call screens sit BELOW that, so on joining
+   from this modal the call went behind the blur:
+     .max-video-panel                 1   the live call screen (Dashboard ->
+                                          VideoCallScreen -> videoCallNormalPanel)
+     .more-zindexwithChatOpen        99   any call screen while chat is open
+                                          (deliberately low so the chat box can
+                                          sit above a docked call)
+     .max-videoParticipant-panel    999   pre-join "ready to join" panel
+     other docked/minimised panels   99
+
+   Lift ONLY those low screens, and ONLY while this modal is open, so the chat
+   interplay is untouched everywhere else. Screens already far above the modal
+   (.max-video-panel.more-zindex 99999, .videoCallScreen 99999, the loader
+   variant 99999999999, .Presenter-Max-VideoPanel 9999) are excluded — forcing
+   them to 2000 would LOWER them.
+
+   .MeetingView is set on this modal only (ViewQuickMeeting/index.js). To give
+   another modal the same behaviour, add its class to the :has() below.
+   ───────────────────────────────────────────────────────────────────────────── */
+body:has(.modal.MeetingView.show)
+  :is(
+    .max-video-panel:not(.more-zindex),
+    .more-zindexwithChatOpen,
+    .max-videoParticipant-panel,
+    .max-videoParticipantsvideo-panel,
+    .max-minimize-videoParticipantsvideo-panel,
+    .normal-videoParticipant-panel,
+    .normal-videoHost-panel,
+    .max-videoParticipants-new-panel
+  ):not(.loader-zindex *) {
+  z-index: 2000 !important;
+}
+
+/* Top layer for the call panels portalled out of the Quick Meeting modal.
+   Its own stacking context at 2000 beats the modal (1055) and its blurred
+   backdrop (1050) whatever z-index the individual panels use; the incoming-call
+   overlay and notifications (9999999999) still sit above it. */
+.meetingCallPortal {
+  position: relative;
+  z-index: 2000;
+}
