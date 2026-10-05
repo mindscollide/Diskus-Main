@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
+import { createPortal } from "react-dom";
 import "./ModalView.css";
 import {
   EditmeetingDateFormat,
@@ -1567,21 +1568,31 @@ const ModalView = ({ ModalTitle }) => {
                           onClick={joinMeetingCall}
                         />
 
-                        {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
-                        {NormalHostVideoFlag && (
-                          <NormalHostVideoCallComponent />
-                        )}
-                        {maximizeParticipantVideoFlag && (
-                          <ParticipantVideoCallComponent />
-                        )}
-                        {normalParticipantVideoFlag && (
-                          <NormalParticipantVideoComponent />
-                        )}
-                        {maxParticipantVideoDeniedFlag && (
-                          <MaxParticipantVideoDeniedComponent />
-                        )}
-                        {maxParticipantVideoRemovedFlag && (
-                          <MaxParticipantVideoRemovedComponent />
+                        {/* The call panels are position:fixed, but while they live inside this
+                            modal they are stacked with it (modal 1055 over a blurred 1050
+                            backdrop), so the call showed up behind the blur. Portalling to
+                            <body> puts them in their own top layer (.meetingCallPortal in
+                            ModalView.css) above every modal and backdrop. */}
+                        {createPortal(
+                          <div className='meetingCallPortal'>
+                            {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
+                            {NormalHostVideoFlag && (
+                              <NormalHostVideoCallComponent />
+                            )}
+                            {maximizeParticipantVideoFlag && (
+                              <ParticipantVideoCallComponent />
+                            )}
+                            {normalParticipantVideoFlag && (
+                              <NormalParticipantVideoComponent />
+                            )}
+                            {maxParticipantVideoDeniedFlag && (
+                              <MaxParticipantVideoDeniedComponent />
+                            )}
+                            {maxParticipantVideoRemovedFlag && (
+                              <MaxParticipantVideoRemovedComponent />
+                            )}
+                          </div>,
+                          document.body,
                         )}
                       </Col>
                     )}

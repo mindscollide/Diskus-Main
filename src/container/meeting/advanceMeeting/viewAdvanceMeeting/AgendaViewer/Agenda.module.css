@@ -370,7 +370,7 @@ body[dir="rtl"] .BackGroundNewImplemented {
   right: 0;
   top: 10px;
   width: 40px;
-  z-index: 9 !important;
+  z-index: 1 !important; /* below the meeting video panel (z-index 1, later in DOM) */
 }
 
 body[dir="rtl"] .Arrow {
@@ -382,7 +382,7 @@ body[dir="rtl"] .Arrow {
   top: 10px;
   left: 0;
   width: 40px;
-  z-index: 9 !important;
+  z-index: 1 !important; /* below the meeting video panel (z-index 1, later in DOM) */
 }
 
 .SubAgendaArrow {
@@ -402,7 +402,7 @@ body[dir="rtl"] .SubAgendaArrow {
   right: 0;
   top: 10px;
   width: 40px;
-  z-index: 9 !important;
+  z-index: 1 !important; /* below the meeting video panel (z-index 1, later in DOM) */
 }
 
 body[dir="rtl"] .Arrow_Expanded {
@@ -411,7 +411,7 @@ body[dir="rtl"] .Arrow_Expanded {
   top: 10px;
   left: 0;
   width: 40px;
-  z-index: 9 !important;
+  z-index: 1 !important; /* below the meeting video panel (z-index 1, later in DOM) */
 }
 
 .subAgendaArrowExpand {
