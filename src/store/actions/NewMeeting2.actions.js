@@ -890,7 +890,10 @@ export const UpdateMeetingUserApi = (
                       break;
                   }
                 } catch (error) {
-                  console.error("src/store/actions/NewMeeting2.actions.js:", error);
+                  console.error(
+                    "src/store/actions/NewMeeting2.actions.js:",
+                    error,
+                  );
                 }
               },
               // _02: Update failed
@@ -2168,7 +2171,7 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
                   dispatch(
                     addUpdateAdvanceMeetingAgenda_success(
                       response.data.responseResult,
-                      ""
+                      "",
                     ),
                   );
                   const meetingId =
@@ -2502,7 +2505,20 @@ export const UpdateMeetingStatusApi = (
                               ? t("Meeting-ended-successfully")
                               : Data.StatusID === 7
                                 ? t("Meeting-deleted-successfully")
-                                : "",
+                                : (Data.StatusID === 1 &&
+                                      routePath ===
+                                        "publishMeetingFromdraftTable") ||
+                                    routePath ===
+                                      "publishMeetingFromParticipant" ||
+                                    routePath ===
+                                      "publishMeetingFromAgendaContributor" ||
+                                    routePath ===
+                                      "publishMeetingFromOrganizer" ||
+                                    routePath ===
+                                      "PublishMeetingFromMeetingMaterial" ||
+                                    routePath === "publishMeetingFromAgendaTab"
+                                  ? t("Meeting-published-successfully")
+                                  : "",
                       ),
                     );
                     const committeeInfo =
@@ -3508,7 +3524,10 @@ export const getViewMeetingByMeetingIdApi = (
                         break;
                     }
                   } catch (error) {
-                    console.error("src/store/actions/NewMeeting2.actions.js:", error);
+                    console.error(
+                      "src/store/actions/NewMeeting2.actions.js:",
+                      error,
+                    );
                   }
                 },
               // _02: No records found
@@ -3599,7 +3618,10 @@ export const listOfMeetingsApi = (navigate, t, Data, routePath, object) => {
                   dispatch(webnotificationGlobalFlag(true));
                 }
               } catch (error) {
-                console.error("src/store/actions/NewMeeting2.actions.js:", error);
+                console.error(
+                  "src/store/actions/NewMeeting2.actions.js:",
+                  error,
+                );
               }
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
@@ -4009,7 +4031,7 @@ export const scheduleMeetingFromProposedMeetingApi = (
               dispatch(
                 scheduleMeetingSuccess(
                   response.data.responseResult.responseMessage,
-      ""
+                  "",
                 ),
               );
               // Scheduling a proposed meeting moves it to Draft status —
@@ -4736,7 +4758,10 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                 //   dispatch(LeaveMeetingVideo(Data, navigate, t));
                 // }
               } catch (error) {
-                console.error("src/store/actions/NewMeeting2.actions.js:", error);
+                console.error(
+                  "src/store/actions/NewMeeting2.actions.js:",
+                  error,
+                );
               }
 
               // setViewFlag(false);
