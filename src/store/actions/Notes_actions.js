@@ -38,7 +38,6 @@ const getNotes_Fail = (message, response) => {
   };
 };
 const GetNotes = (navigate, Data, t) => {
-
   return (dispatch) => {
     dispatch(getNotes_Init());
     let form = new FormData();
@@ -56,7 +55,7 @@ const GetNotes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_SearchNotes_01".toLowerCase()
+                  "Notes_NotesServiceManager_SearchNotes_01".toLowerCase(),
                 )
             ) {
               dispatch(getNotes_Success(response.data.responseResult, ""));
@@ -64,7 +63,7 @@ const GetNotes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_SearchNotes_02".toLowerCase()
+                  "Notes_NotesServiceManager_SearchNotes_02".toLowerCase(),
                 )
             ) {
               let data = [];
@@ -73,7 +72,7 @@ const GetNotes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_SearchNotes_03".toLowerCase()
+                  "Notes_NotesServiceManager_SearchNotes_03".toLowerCase(),
                 )
             ) {
               dispatch(getNotes_Fail(t("Something-went-wrong")));
@@ -111,9 +110,8 @@ const saveNotes_Fail = (message) => {
   };
 };
 const SaveNotesAPI = (navigate, Data, t) => {
-
   return (dispatch) => {
-    dispatch(notesFromDashboardAction(1))
+    dispatch(notesFromDashboardAction(1));
     dispatch(saveNotes_Init());
     let form = new FormData();
     form.append("RequestMethod", SavesNotesRequestMethod.RequestMethod);
@@ -130,19 +128,18 @@ const SaveNotesAPI = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_SaveNotes_01".toLowerCase()
+                  "Notes_NotesServiceManager_SaveNotes_01".toLowerCase(),
                 )
             ) {
-
               dispatch(
                 saveNotes_Success(
                   response.data.responseResult.getNotes,
-                  t("Notes-saved-successfully")
-                )
+                  t("Notes-saved-successfully"),
+                ),
               );
               localStorage.setItem(
                 "notesID",
-                response.data.responseResult.notesID
+                response.data.responseResult.notesID,
               );
               //Create Update Notes Data Room Map
               let CreateUpdateDataRoomData = {
@@ -154,14 +151,14 @@ const SaveNotesAPI = (navigate, Data, t) => {
                 CreateUpdateNotesDataRoomMapAPI(
                   navigate,
                   CreateUpdateDataRoomData,
-                  t
-                )
+                  t,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_SaveNotes_03".toLowerCase()
+                  "Notes_NotesServiceManager_SaveNotes_03".toLowerCase(),
                 )
             ) {
               dispatch(saveNotes_Fail(t("Failed-to-save-notes")));
@@ -204,21 +201,8 @@ const UpdateNotesAPI = (
   t,
   setIsUpdateNote,
   setIsDeleteNote,
-  setUpdateNotes
+  setUpdateNotes,
 ) => {
-
-  let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
-  let notesPage = parseInt(localStorage.getItem("notesPage"));
-  let notesPagesize = parseInt(localStorage.getItem("notesPageSize"));
-
-  let searchData = {
-    UserID: parseInt(createrID),
-    OrganizationID: JSON.parse(OrganizationID),
-    Title: "",
-    PageNumber: notesPage,
-    Length: notesPagesize,
-  };
   return (dispatch) => {
     dispatch(UpdateNotes_Init());
     let form = new FormData();
@@ -236,8 +220,8 @@ const UpdateNotesAPI = (
               t,
               setIsUpdateNote,
               setIsDeleteNote,
-              setUpdateNotes
-            )
+              setUpdateNotes,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -245,14 +229,14 @@ const UpdateNotesAPI = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_UpdateNotes_01".toLowerCase()
+                  "Notes_NotesServiceManager_UpdateNotes_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 UpdateNotes_Success(
                   response.data.responseResult.getNotes,
-                  t("Notes-updated-successfully")
-                )
+                  t("Notes-updated-successfully"),
+                ),
               );
               //Create Update Notes Data Room Map
               let CreateUpdateDataRoomData = {
@@ -264,14 +248,14 @@ const UpdateNotesAPI = (
                 CreateUpdateNotesDataRoomMapAPI(
                   navigate,
                   CreateUpdateDataRoomData,
-                  t
-                )
+                  t,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_UpdateNotes_03".toLowerCase()
+                  "Notes_NotesServiceManager_UpdateNotes_03".toLowerCase(),
                 )
             ) {
               dispatch(UpdateNotes_Fail(t("Failed-to-update-notes")));
@@ -279,7 +263,7 @@ const UpdateNotesAPI = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_UpdateNotes_04".toLowerCase()
+                  "Notes_NotesServiceManager_UpdateNotes_04".toLowerCase(),
                 )
             ) {
               dispatch(UpdateNotes_Fail(t("Something-went-wrong")));
@@ -321,9 +305,8 @@ const GetNotesByIdAPI = (
   setViewModalShow,
   setUpdateModalShow,
   setUpdateNotesModalHomePage,
-  no
+  no,
 ) => {
-
   let Data = {
     NotesID: JSON.parse(NotesID),
   };
@@ -346,8 +329,8 @@ const GetNotesByIdAPI = (
               setViewModalShow,
               setUpdateModalShow,
               setUpdateNotesModalHomePage,
-              no
-            )
+              no,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -355,14 +338,13 @@ const GetNotesByIdAPI = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_GetNotesByNotesID_01".toLowerCase()
+                  "Notes_NotesServiceManager_GetNotesByNotesID_01".toLowerCase(),
                 )
             ) {
-              
               dispatch(notesFromDashboardAction(0));
 
               dispatch(
-                GetNotesById_Success(response.data.responseResult.getNotes, "")
+                GetNotesById_Success(response.data.responseResult.getNotes, ""),
               );
               // await dispatch(GetNotes(getNotesAPI, t))
               if (no === 1) {
@@ -388,45 +370,38 @@ const GetNotesByIdAPI = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_GetNotesByNotesID_02".toLowerCase()
+                  "Notes_NotesServiceManager_GetNotesByNotesID_02".toLowerCase(),
                 )
             ) {
               dispatch(GetNotesById_Fail(""));
               dispatch(notesFromDashboardAction(0));
-
-              
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_GetNotesByNotesID_03".toLowerCase()
+                  "Notes_NotesServiceManager_GetNotesByNotesID_03".toLowerCase(),
                 )
             ) {
-              
               dispatch(notesFromDashboardAction(0));
 
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             } else {
-              
               dispatch(notesFromDashboardAction(0));
 
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             }
           } else {
-            
             dispatch(notesFromDashboardAction(0));
 
             dispatch(GetNotesById_Fail(t("Something-went-wrong")));
           }
         } else {
-          
           dispatch(notesFromDashboardAction(0));
 
           dispatch(GetNotesById_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        
         dispatch(notesFromDashboardAction(0));
 
         dispatch(GetNotesById_Fail(t("Something-went-wrong")));
@@ -452,7 +427,6 @@ const deleteNotes_Fail = (message) => {
   };
 };
 const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
-
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let notesPage = parseInt(localStorage.getItem("notesPage"));
@@ -478,14 +452,14 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_DeleteNotes_01".toLowerCase()
+                  "Notes_NotesServiceManager_DeleteNotes_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 deleteNotes_Success(
                   response.data.responseResult,
-                  t("Notes-deleted-successfully")
-                )
+                  t("Notes-deleted-successfully"),
+                ),
               );
 
               let searchData = {
@@ -501,7 +475,7 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_DeleteNotes_02".toLowerCase()
+                  "Notes_NotesServiceManager_DeleteNotes_02".toLowerCase(),
                 )
             ) {
               dispatch(deleteNotes_Fail(t("Failed-to-delete-notes")));
@@ -509,7 +483,7 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_DeleteNotes_03".toLowerCase()
+                  "Notes_NotesServiceManager_DeleteNotes_03".toLowerCase(),
                 )
             ) {
               dispatch(deleteNotes_Fail(t("Something-went-wrong")));
@@ -556,13 +530,13 @@ const CreateUpadateNotesDataRoomMapFail = (message) => {
 };
 
 const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
-
   return (dispatch) => {
     dispatch(CreateUpadateNotesDataRoomMapInit());
     let form = new FormData();
     form.append("RequestMethod", CreateUpdateNotesDataRoomMap.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -573,96 +547,96 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_01".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 CreateUpadateNotesDataRoomMapSuccess(
                   response.data.responseResult.folderID,
-                  t("Folder-mapped-with-dataroom")
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_02".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                CreateUpadateNotesDataRoomMapFail(t("Unable-to-save-folder"))
+                CreateUpadateNotesDataRoomMapFail(t("Unable-to-save-folder")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_03".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 CreateUpadateNotesDataRoomMapSuccess(
                   response.data.responseResult.folderID,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_04".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                CreateUpadateNotesDataRoomMapFail(t("Unable-to-update-folder"))
+                CreateUpadateNotesDataRoomMapFail(t("Unable-to-update-folder")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_05".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_05".toLowerCase(),
                 )
             ) {
               dispatch(
                 CreateUpadateNotesDataRoomMapSuccess(
                   response.data.responseResult,
-                  t("New-mapping-created")
-                )
+                  t("New-mapping-created"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_06".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_CreateUpdateNotesDataRoomMap_06".toLowerCase(),
                 )
             ) {
               dispatch(
                 CreateUpadateNotesDataRoomMapFail(
-                  t("Failed-to-create-new-mapping")
-                )
+                  t("Failed-to-create-new-mapping"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_CreateUpdateNotesDataRoomMap_07".toLowerCase()
+                  "DataRoom_DataRoomManager_CreateUpdateNotesDataRoomMap_07".toLowerCase(),
                 )
             ) {
               dispatch(
-                CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong"))
+                CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong"))
+                CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong"))
+              CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong"))
+            CreateUpadateNotesDataRoomMapFail(t("Something-went-wrong")),
           );
         }
       })
@@ -701,9 +675,8 @@ const SaveNotesDocumentAPI = (
   setAddNotes,
   setCloseConfirmationBox,
   setUpdateNotes,
-  flag
+  flag,
 ) => {
-
   let UserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   return (dispatch) => {
@@ -711,7 +684,8 @@ const SaveNotesDocumentAPI = (
     let form = new FormData();
     form.append("RequestMethod", SaveNotesDocument.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -723,8 +697,8 @@ const SaveNotesDocumentAPI = (
               setAddNotes,
               setCloseConfirmationBox,
               setUpdateNotes,
-              flag
-            )
+              flag,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -732,17 +706,17 @@ const SaveNotesDocumentAPI = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_SaveNotesDocuments_01".toLowerCase()
+                  "DataRoom_DataRoomManager_SaveNotesDocuments_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 SaveNotesDocumentSuccess(
                   response.data.responseResult,
-                  t("List-updated-successfully")
-                )
+                  t("List-updated-successfully"),
+                ),
               );
               dispatch(CreateUpadateNotesDataRoomMapFail(""));
-              dispatch(notesFromDashboardAction(0))
+              dispatch(notesFromDashboardAction(0));
               if (flag === 1) {
                 setAddNotes(false);
 
@@ -766,7 +740,6 @@ const SaveNotesDocumentAPI = (
                 };
                 dispatch(GetNotes(navigate, Data, t));
               } else if (flag === 2) {
-                
                 let Data = {
                   UserID: parseInt(UserID),
                   OrganizationID: JSON.parse(OrganizationID),
@@ -793,37 +766,32 @@ const SaveNotesDocumentAPI = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_SaveNotesDocuments_02".toLowerCase()
+                  "DataRoom_DataRoomManager_SaveNotesDocuments_02".toLowerCase(),
                 )
             ) {
               dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
-              dispatch(notesFromDashboardAction(0))
+              dispatch(notesFromDashboardAction(0));
               dispatch(CreateUpadateNotesDataRoomMapFail(""));
-
             } else {
               dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
-              dispatch(notesFromDashboardAction(0))
+              dispatch(notesFromDashboardAction(0));
               dispatch(CreateUpadateNotesDataRoomMapFail(""));
-
             }
           } else {
             dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
             dispatch(CreateUpadateNotesDataRoomMapFail(""));
-            dispatch(notesFromDashboardAction(0))
-
+            dispatch(notesFromDashboardAction(0));
           }
         } else {
           dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
           dispatch(CreateUpadateNotesDataRoomMapFail(""));
-          dispatch(notesFromDashboardAction(0))
-
+          dispatch(notesFromDashboardAction(0));
         }
       })
       .catch((response) => {
         dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
-        dispatch(notesFromDashboardAction(0))
+        dispatch(notesFromDashboardAction(0));
         dispatch(CreateUpadateNotesDataRoomMapFail(""));
-
       });
   };
 };
@@ -851,13 +819,13 @@ const RetrieveNotesDocumentFailed = (message) => {
 };
 
 const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
-
   return (dispatch) => {
     dispatch(RetrieveNotesDocumentInit());
     let form = new FormData();
     form.append("RequestMethod", RetrieveNotesDocument.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -868,20 +836,17 @@ const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_ReteriveNotesDocuments_01".toLowerCase()
+                  "DataRoom_DataRoomManager_ReteriveNotesDocuments_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                RetrieveNotesDocumentSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                RetrieveNotesDocumentSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_ReteriveNotesDocuments_02".toLowerCase()
+                  "DataRoom_DataRoomManager_ReteriveNotesDocuments_02".toLowerCase(),
                 )
             ) {
               dispatch(RetrieveNotesDocumentFailed(t("No-data-available")));
@@ -889,7 +854,7 @@ const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_ReteriveNotesDocuments_03".toLowerCase()
+                  "DataRoom_DataRoomManager_ReteriveNotesDocuments_03".toLowerCase(),
                 )
             ) {
               dispatch(RetrieveNotesDocumentFailed(t("Something-went-wrong")));
@@ -937,7 +902,6 @@ const saveFilesNotes_fail = (message) => {
 
 // Save Files API for Resolution
 const saveFilesNotesApi = (navigate, t, data, folderID, newFolder) => {
-
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
@@ -962,29 +926,26 @@ const saveFilesNotesApi = (navigate, t, data, folderID, newFolder) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase(),
                 )
             ) {
-              
               try {
                 let fileIds = response.data.responseResult.fileID;
-                
-                fileIds.map((newFileID, index) => {
-                  
 
+                fileIds.map((newFileID, index) => {
                   return newFolder.push({ pK_FileID: newFileID.pK_FileID });
                 });
               } catch (error) {
                 console.error("src/store/actions/Notes_actions.js:", error);
               }
               await dispatch(
-                saveFilesNotes_success(response.data.responseResult, "")
+                saveFilesNotes_success(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase(),
                 )
             ) {
               dispatch(saveFilesNotes_fail(t("Failed-to-save-any-file")));
@@ -992,7 +953,7 @@ const saveFilesNotesApi = (navigate, t, data, folderID, newFolder) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase(),
                 )
             ) {
               dispatch(saveFilesNotes_fail(t("Something-went-wrong")));
@@ -1038,9 +999,8 @@ const uploadDocumentsNotesApi = (
   data,
   folderID,
   // newFolder,
-  newfile
+  newfile,
 ) => {
-
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -1048,7 +1008,8 @@ const uploadDocumentsNotesApi = (
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    await axiosInstance.post(dataRoomApi, form)
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1059,8 +1020,8 @@ const uploadDocumentsNotesApi = (
               data,
               folderID,
               // newFolder,
-              newfile
-            )
+              newfile,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1068,7 +1029,7 @@ const uploadDocumentsNotesApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase(),
                 )
             ) {
               newfile.push({
@@ -1082,23 +1043,23 @@ const uploadDocumentsNotesApi = (
                 FileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
               await dispatch(
-                uploadDocumentNotes_success(response.data.responseResult, "")
+                uploadDocumentNotes_success(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                uploadDocumentNotes_fail(t("Failed-to-update-document"))
+                uploadDocumentNotes_fail(t("Failed-to-update-document")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase(),
                 )
             ) {
               dispatch(uploadDocumentNotes_fail(t("Something-went-wrong")));
@@ -1139,19 +1100,18 @@ const DeleteNotesDocumentsFailed = (message) => {
 };
 
 const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes, id) => {
-
-
   return (dispatch) => {
     dispatch(DeleteNotesDocumentsInit());
     let form = new FormData();
     form.append("RequestMethod", DeleteNotesDocuments.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            DeleteNotesDocumentsAPI(navigate, Data, t, setUpdateNotes, id)
+            DeleteNotesDocumentsAPI(navigate, Data, t, setUpdateNotes, id),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1159,21 +1119,21 @@ const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes, id) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_DeleteNotesDocuments_01".toLowerCase()
+                  "DataRoom_DataRoomManager_DeleteNotesDocuments_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 DeleteNotesDocumentsSuccess(
                   response.data.responseResult,
-                  t("Notes-attachment-deleted-successfully")
-                )
+                  "",
+                ),
               );
               dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes, id));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_DeleteNotesDocuments_02".toLowerCase()
+                  "DataRoom_DataRoomManager_DeleteNotesDocuments_02".toLowerCase(),
                 )
             ) {
               dispatch(DeleteNotesDocumentsFailed(t("No-attachment-deleted")));
@@ -1182,7 +1142,7 @@ const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes, id) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_DeleteNotesDocuments_03".toLowerCase()
+                  "DataRoom_DataRoomManager_DeleteNotesDocuments_03".toLowerCase(),
                 )
             ) {
               dispatch(DeleteNotesDocumentsFailed(t("Something-went-wrong")));
