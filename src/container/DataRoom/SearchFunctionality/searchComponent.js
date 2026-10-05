@@ -1539,7 +1539,6 @@ const SearchComponent = ({
       setSearchDataFields({
         ...searchDataFields,
         isOwnedByMe: 3,
-        isNotOwnedByMe: true,
         isSpecificUser: false,
         UserIDToSearch: 0,
       });
@@ -1567,7 +1566,6 @@ const SearchComponent = ({
           2,
         ),
         isOwnedByMe: 3,
-        isNotOwnedByMe: true,
         isSpecificUser: false,
         UserIDToSearch: 0,
         sRow: 0,
@@ -2502,7 +2500,7 @@ const SearchComponent = ({
               className={"DataRoom_Table"}
               rows={searchAllData}
               pagination={false}
-              size={"middle"}
+              size={"small"}
               locale={{
                 emptyText: (
                   <Row>

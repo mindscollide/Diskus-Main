@@ -1066,7 +1066,7 @@
   "User-is-already-exist": "User is already exist",
   "Reschedule": "Reschedule",
   "items_per_page": "page",
-  "page": "",
+  "Page": "page",
   "Shared-by": "Shared by",
   "Share-date": "Share date",
   "Last-modified-by-me": "Last modified by me",
@@ -2946,5 +2946,9 @@
   "The-meeting-has-not-started-yet": "The Meeting Has Not Started Yet",
   "Waiting-for-organizer-to-start-the-meeting-please-try-again-shortly": "Waiting for Organizer to start the meeting  Please try again shortly.",
   "The-meeting-has-not-published-yet": "The Meeting Has Not Published Yet",
-  "Vote-deadline-expired": "Vote deadline expired"
+  "Vote-deadline-expired": "Vote deadline expired",
+  "This-file-type-is-not-supported": "This file type is not supported",
+  "This-file-is-empty": "This file is empty",
+  "File-size-must-not-exceed-10MB": "File size must not exceed 10MB",
+  "This-file-has-already-been-attached": "This file has already been attached"
 }

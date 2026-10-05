@@ -1064,7 +1064,7 @@
   "User-is-already-exist": "المستخدم موجود بالفعل",
   "Reschedule": "إعادة جدولة",
   "items_per_page": "الصفحة",
-  "page": "",
+  "Page": "صفحة",
   "Shared-by": "نشر بواسطة",
   "Share-date": "تاريخ المشاركة",
   "Last-modified-by-me": "آخر تعديل بواسطتي",
@@ -2940,5 +2940,9 @@
   "The-meeting-has-not-started-yet": "لم يبدأ الاجتماع بعد",
   "Waiting-for-organizer-to-start-the-meeting-please-try-again-shortly": "في انتظار بدء الاجتماع من قِبل المنظم، يُرجى المحاولة مرة أخرى بعد قليل",
   "The-meeting-has-not-published-yet": "لم يتم نشر الاجتماع بعد",
-  "Vote-deadline-expired": "Vote deadline expired"
+  "Vote-deadline-expired": "Vote deadline expired",
+  "This-file-type-is-not-supported": "This file type is not supported",
+  "This-file-is-empty": "This file is empty",
+  "File-size-must-not-exceed-10MB": "File size must not exceed 10MB",
+  "This-file-has-already-been-attached": "This file has already been attached"
 }

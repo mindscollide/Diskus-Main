@@ -344,22 +344,22 @@ const ChatMainBody = ({ chatMessageClass }) => {
     const ext = uploadedFile.name.split(".").pop().toLowerCase();
 
     if (!ALLOWED_ATTACHMENT_EXTENSIONS.includes(ext)) {
-      show(t("This file type is not supported."), "error");
+      show(t("This-file-type-is-not-supported"), "error");
       return;
     }
     if (uploadedFile.size === 0) {
-      show(t("This file is empty."), "error");
+      show(t("This-file-is-empty"), "error");
       return;
     }
     if (uploadedFile.size > MAX_ATTACHMENT_SIZE) {
-      show(t("File size must not exceed 10MB."), "error");
+      show(t("File-size-must-not-exceed-10MB"), "error");
       return;
     }
     const isDuplicate = tasksAttachments.TasksAttachments.some(
       (attachment) => attachment.DisplayAttachmentName === uploadedFile.name,
     );
     if (isDuplicate) {
-      show(t("This file has already been attached."), "error");
+      show(t("This-file-has-already-been-attached"), "error");
       return;
     }
 

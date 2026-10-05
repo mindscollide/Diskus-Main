@@ -127,7 +127,7 @@ const CustomPagination = ({
         itemRender={itemRender}
         showSizeChanger={false}
         
-        locale={{ page: ` ${"/"}${t("page")}` }}
+        locale={{ page: ` ${"/"}${t("Page")}` }}
       />
       {showSizer && (
         <Select

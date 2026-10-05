@@ -1039,12 +1039,13 @@ const SearchBarComponent = ({
       ...prevState, // Copy the existing state
       Location: event, // Update the Type field
     }));
+
     setSearchDataFields({
       ...searchDataFields,
       StatusID: parseInt(event.value),
+      isOwnedByMe :  event.value === 3 ? 1 : event.value ===  2 ? 3 : 1
     });
   };
-
   // handle Change input fields in search box
   const handleChangeInputFieldinSearchBox = (event) => {
     let { name, value } = event.target;
