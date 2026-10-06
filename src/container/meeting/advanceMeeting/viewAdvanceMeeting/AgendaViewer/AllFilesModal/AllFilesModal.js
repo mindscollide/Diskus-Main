@@ -173,11 +173,13 @@ const AllFilesModal = ({
                                 ),
                               )}
                               alt=''
-                              width={24}
-                              height={24}
+                              width={28}
+                              height={28}
                             />
                           </span>
-                          <span className={styles.fileName}>{filesData?.displayAttachmentName}</span>
+                          <span className={styles.fileName}>
+                            {filesData?.displayAttachmentName}
+                          </span>
                         </Col>
                         <Col
                           sm={12}
@@ -243,7 +245,7 @@ const AllFilesModal = ({
         }
         ModalFooter={
           <>
-            <Row >
+            <Row>
               <Col
                 lg={12}
                 md={12}

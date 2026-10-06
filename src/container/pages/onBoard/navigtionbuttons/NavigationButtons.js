@@ -41,7 +41,6 @@ const NavigationButtons = () => {
             dispatch(showModalStepsOnboard(false));
             dispatch(showModalOnboard(false));
             dispatch(showIsDetailOnboard(false));
-            
           }
         } else {
           dispatch(showIsDetailOnboard(false));
@@ -63,7 +62,6 @@ const NavigationButtons = () => {
         dispatch(showModalStepsOnboard(false));
         dispatch(showModalOnboard(false));
         dispatch(showIsDetailOnboard(false));
-        
       }
     }
   };
@@ -82,9 +80,7 @@ const NavigationButtons = () => {
       dispatch(showIsAttendeesOnboard(false));
     }
   };
-  useEffect(() => {
-    
-  }, [currentStep]);
+  useEffect(() => {}, [currentStep]);
   return (
     <>
       {currentStep !== 5 ? (
@@ -137,7 +133,7 @@ const NavigationButtons = () => {
           </Row>
           <Row>
             <Col
-              onClick={() => handleNavigation(navigate, null, false ,dispatch)}
+              onClick={() => handleNavigation(navigate, null, false, dispatch)}
               className='d-flex justify-content-center mt-2'>
               <h3 className={`tour-skip_demo ${currentLanguage}`}>
                 {t("Skip-demo")}

@@ -132,7 +132,7 @@ body[dir="rtl"] .event-details:hover {
 }
 
 .events-dateTime {
-  font-size: calc(16px - 24%) !important;
+  font-size: 0.7em !important;
   color: #000;
   font-weight: 600;
 }
@@ -166,7 +166,7 @@ body[dir="rtl"] .event-details:hover {
 } */
 
 .TodayViewMeetingButtonStyles {
-  width: 125px;
+  max-width: 125px;
   height: auto;
   font-size: 12px;
   background: #fff !important;

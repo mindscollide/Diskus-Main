@@ -99,7 +99,7 @@
     "xregexp": "^5.1.1"
   },
   "scripts": {
-    "start": "env-cmd -f .env.local vite",
+    "start": "env-cmd -f .env.local vite --host 0.0.0.0",
     "build:local": "env-cmd -f .env.local vite build",
     "build:pso": "env-cmd -f .env.pso vite build",
     "build:uat": "env-cmd -f .env.uat vite build",
