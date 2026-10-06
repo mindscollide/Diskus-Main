@@ -16,6 +16,7 @@ import {
   meetingAgendaContributorRemoved,
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
+  removeProposedMeeting,
 } from "../store/actions/NewMeetingActions";
 import { createGroupMeeting } from "../store/actions/GetMeetingUserId";
 import {
@@ -76,6 +77,10 @@ export const GroupsProvider = ({ children }) => {
 
   const meetingStatusProposedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
+  );
+
+  const removeProposedMeetingState = useSelector(
+    (state) => state.NewMeetingreducer.removeProposedMeetingFromList,
   );
 
   // ─── Tab State ───
@@ -291,6 +296,25 @@ export const GroupsProvider = ({ children }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MeetingStatusEnded]);
+
+  useEffect(() => {
+    try {
+      if (removeProposedMeetingState !== null) {
+        setGroupProposedMeetingData((records) => {
+          return records.filter(
+            (data, index) =>
+              data.pK_MDID !== removeProposedMeetingState.meeting.pK_MDID,
+          );
+        });
+        setGroupProposedMeetingDataRecord((prevRecord) =>
+          Math.max(0, prevRecord - 1),
+        );
+        dispatch(removeProposedMeeting(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [removeProposedMeetingState]);
 
   useEffect(() => {
     if (mqttMeetingDeleted !== null) {

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { mqttMeetingData } from "../hooks/meetingResponse/response";
 import { useTranslation } from "react-i18next";
+import { removeProposedMeeting } from "../store/actions/NewMeetingActions";
 
 /**
  * @context NewMeetingContext
@@ -15,6 +16,7 @@ export const NewMeetingContext = createContext();
 
 export const NewMeetingProvider = ({ children }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const userID = localStorage.getItem("userID");
 
   // ============================================================
@@ -141,6 +143,9 @@ export const NewMeetingProvider = ({ children }) => {
   );
   const mqttMeetingDeleted = useSelector(
     (state) => state.NewMeetingreducer.mqttMeetingDeleted,
+  );
+  const removeProposedMeetingState = useSelector(
+    (state) => state.NewMeetingreducer.removeProposedMeetingFromList,
   );
 
   // ============================================================
@@ -423,7 +428,7 @@ export const NewMeetingProvider = ({ children }) => {
    * list depending on whether the meeting already exists.
    */
   useEffect(() => {
-    if (allMeetingsSocketData == null) return;
+    if (allMeetingsSocketData === null) return;
 
     const updateMeeting = async () => {
       try {
@@ -662,6 +667,25 @@ export const NewMeetingProvider = ({ children }) => {
       console.error("src/context/NewMeetingContext.js:", error);
     }
   }, [getALlMeetingTypes?.meetingTypes, t]);
+
+  useEffect(() => {
+    try {
+      if (removeProposedMeetingState !== null) {
+        setProposedMeetingData((records) => {
+          return records.filter(
+            (data, index) =>
+              data.pK_MDID !== removeProposedMeetingState.meeting.pK_MDID,
+          );
+        });
+        setProposedMeetingDataRecord((prevRecord) =>
+          Math.max(0, prevRecord - 1),
+        );
+        dispatch(removeProposedMeeting(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [removeProposedMeetingState]);
 
   // ============================================================
   // ---------------------- CONTEXT VALUE -------------------------

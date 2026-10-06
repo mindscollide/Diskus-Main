@@ -4533,13 +4533,9 @@ const DeleteAgendaWiseMinutesApiFunc = (
                 MeetingID: currentMeeting,
               };
               dispatch(
-                GetAllAgendaWiseMinutesApiFunc(
-                  navigate,
-                  t,
-                  DeleteGetAll,
-                  "",
-                  {currentMeeting},
-                ),
+                GetAllAgendaWiseMinutesApiFunc(navigate, t, DeleteGetAll, "", {
+                  currentMeeting,
+                }),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -5647,9 +5643,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   "DataRoom_DataRoomManager_DeleteAgendaWiseMinuteDocuments_02".toLowerCase(),
                 )
             ) {
-              dispatch(
-                showDeleteAgendaWiseDocumentFailed(""),
-              );
+              dispatch(showDeleteAgendaWiseDocumentFailed(""));
               let AgendaWiseDelData = {
                 MinuteID: Number(id),
               };
@@ -9438,9 +9432,7 @@ const getMeetingRecordingFilesApi = (
                   "Meeting_MeetingServiceManager_GetMeetingRecordingFiles_03".toLowerCase(),
                 )
             ) {
-              dispatch(
-                getMeetingRecordingFiles_fail(""),
-              );
+              dispatch(getMeetingRecordingFiles_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -9593,7 +9585,15 @@ const deleteMeetingMQtt = (response) => {
   };
 };
 
+const removeProposedMeeting = (response) => {
+  return {
+    type: actions.REMOVE_PROPOSEDMEETINGFROMLISTING,
+    response,
+  };
+};
+
 export {
+  removeProposedMeeting,
   deleteMeetingMQtt,
   meetingMinutesDownloaded,
   requestMeetingRecordingTranscriptApi,

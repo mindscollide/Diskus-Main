@@ -31,6 +31,8 @@ const Stats = () => {
     (state) => state.SignatureWorkFlowReducer.getDashboardPendingApprovalData
   );
 
+
+  console.log(getDashboardTaskCountMQTT, "getDashboardTaskDatagetDashboardTaskData")
   const [counts, setCounts] = useState({
     totalMeetingCount: 0,
     upcomingMeetingCount: 0,

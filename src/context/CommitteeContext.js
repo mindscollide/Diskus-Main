@@ -8,6 +8,7 @@ import {
   meetingOrganizerAdded,
   meetingOrganizerRemoved,
   meetingStatusProposedMqtt,
+  removeProposedMeeting,
 } from "../store/actions/NewMeetingActions";
 import {
   getAllUnpublishedMeetingData,
@@ -71,6 +72,10 @@ export const CommitteeProvider = ({ children }) => {
   const meetingStatusProposedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
   );
+
+    const removeProposedMeetingState = useSelector(
+      (state) => state.NewMeetingreducer.removeProposedMeetingFromList,
+    );
 
   // =========================
   // STATE
@@ -509,8 +514,7 @@ export const CommitteeProvider = ({ children }) => {
           const { meeting, committeeID } =
             committeeProposedMeetingStatusProposedMqttData;
 
-          if (Number(committeeID) === Number(committeeInfo?.committeeID)) {
-          }
+     
 
           const indexToUpdate = committeeProposedMeetingData.findIndex(
             (obj) => obj.pK_MDID === meeting.pK_MDID,
@@ -652,7 +656,25 @@ export const CommitteeProvider = ({ children }) => {
       }
     }
   }, [meetingStatusProposedMqttData]);
-
+  
+ useEffect(() => {
+    try {
+      if (removeProposedMeetingState !== null) {
+        setCommitteeProposedMeetingData((records) => {
+          return records.filter(
+            (data, index) =>
+              data.pK_MDID !== removeProposedMeetingState.meeting.pK_MDID,
+          );
+        });
+        setCommitteeProposedMeetingDataRecord((prevRecord) =>
+          Math.max(0, prevRecord - 1),
+        );
+        dispatch(removeProposedMeeting(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [removeProposedMeetingState]);
   // useEffect(() => {
   //   if (MeetingProp !== null) {
   //     const callApi = async () => {

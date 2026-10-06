@@ -872,7 +872,7 @@ export const UpdateMeetingUserApi = (
                             MeetingID: Data.MeetingID,
                           },
                           "saveProposedMeeting",
-                          { sortedDates, sendResponseBtDateVal },
+                          { sortedDates, sendResponseBtDateVal, ...object },
                         ),
                       );
                       break;
@@ -896,7 +896,7 @@ export const UpdateMeetingUserApi = (
                             MeetingID: Data.MeetingID,
                           },
                           "updateProposedMeeting",
-                          { sortedDates, sendResponseBtDateVal },
+                          { sortedDates, sendResponseBtDateVal, ...object },
                         ),
                       );
                       break;
@@ -3966,9 +3966,6 @@ export const saveParcipantsProposeMeetingApi = (
                 ),
               );
               const { sortedDates, sendResponseBtDateVal } = object;
-              const meetingId =
-                store.getState().NewMeetingreducer?.currentMeetingInfo
-                  ?.meetingID;
 
               let Data2 = {
                 MeetingID: Data.MeetingID,
@@ -3983,7 +3980,7 @@ export const saveParcipantsProposeMeetingApi = (
                       t,
                       Data2,
                       "saveProposedMeeting",
-                      {},
+                      { ...object },
                       // setProposedNewMeeting,
                       // setSceduleMeeting,
                     ),
@@ -3996,7 +3993,7 @@ export const saveParcipantsProposeMeetingApi = (
                       t,
                       Data2,
                       "updateProposedMeeting",
-                      {},
+                      { ...object },
                       // setProposedNewMeeting,
                       // setSceduleMeeting,
                     ),

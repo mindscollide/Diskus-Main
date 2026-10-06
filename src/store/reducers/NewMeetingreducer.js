@@ -175,6 +175,7 @@ const initialState = {
   },
   activeCreateAndEditMeetingTab: "details",
   activeViewMeetingTab: "details",
+  removeProposedMeetingFromList: null,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2956,6 +2957,12 @@ const NewMeetingreducer = (state = initialState, action) => {
         return {
           ...state,
           mqttMeetingDeleted: action.response,
+        };
+      }
+      case "REMOVE_PROPOSEDMEETINGFROMLISTING": {
+        return {
+          ...state,
+          removeProposedMeetingFromList: action.response,
         };
       }
       default:

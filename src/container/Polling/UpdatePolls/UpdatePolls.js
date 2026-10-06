@@ -920,7 +920,7 @@ const UpdatePolls = () => {
                                   options={dropdowndata}
                                 />
                                 <Button
-                                  text={t("ADD")}
+                                  text={t("Add")}
                                   className={styles["ADD_Btn_CreatePool_Modal"]}
                                   onClick={handleAddUsers}
                                 />

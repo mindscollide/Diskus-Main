@@ -78,6 +78,7 @@ const GroupProposedMeetings = () => {
   const proposedMeetingParticipant = useSelector(
     (state) => state.NotificationRoutingReducer.MeetingProposedForParticipant,
   );
+  const removeProposedMeeting  = useSelector((state) => state.NewMeetingreducer.removeProposedMeetingFromList)
   let MeetingProp = localStorage.getItem("groups_meetingprop_action");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const currentLanguage = localStorage.getItem("i18nextLng");
@@ -211,6 +212,8 @@ const GroupProposedMeetings = () => {
       }
     }
   }, [proposedMeetingParticipant]);
+
+
 
 
 

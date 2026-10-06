@@ -54,11 +54,15 @@ import {
   listOfMeetingsApi,
   SaveMeetingDetailsApi,
 } from "../../../../store/actions/NewMeeting2.actions";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 const ProposedNewMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { editorRole, setSceduleMeeting, setEditorRole } = useMeetingContext();
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   const animatedComponents = makeAnimated();
   const userID = localStorage.getItem("userID");
   const calendRef = useRef();
@@ -771,6 +775,8 @@ const ProposedNewMeeting = () => {
             membersParticipants,
             sortedDates,
             sendResponseBtDateVal,
+            setCurrentCommitteeMeetingTabActive,
+            setCurrentGroupMeetingTabActive,
           }),
         );
 
@@ -873,6 +879,8 @@ const ProposedNewMeeting = () => {
             membersParticipants,
             sortedDates,
             sendResponseBtDateVal,
+            setCurrentCommitteeMeetingTabActive,
+            setCurrentGroupMeetingTabActive,
           }),
         );
 

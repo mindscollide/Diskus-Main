@@ -147,6 +147,7 @@ import {
   meetingTranscriptDownloaded,
   meetingMinutesDownloaded,
   deleteMeetingMQtt,
+  removeProposedMeeting,
 } from "../../store/actions/NewMeetingActions";
 import {
   meetingAgendaStartedMQTT,
@@ -2292,6 +2293,11 @@ const Dashboard = () => {
                   data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID,
                 ),
               );
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "MEETING_STATUS_EDITED_SCHEDULED".toLowerCase()
+            ) {
+              dispatch(removeProposedMeeting(data.payload));
             }
           } catch (error) {
             console.log(error);
@@ -2354,6 +2360,11 @@ const Dashboard = () => {
         ) {
         } else if (
           data.payload.message.toLowerCase() === "NEW_TODO_COUNT".toLowerCase()
+        ) {
+          dispatch(getDashboardTaskCountMQTT(data.payload));
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "TASK_COUNT_FOR_DASHBOARD".toLowerCase()
         ) {
           dispatch(getDashboardTaskCountMQTT(data.payload));
         } else if (
