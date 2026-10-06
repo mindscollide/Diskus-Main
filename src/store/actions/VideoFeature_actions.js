@@ -264,10 +264,14 @@ const participantAcceptandReject = (response) => {
   };
 };
 
-const participantPresentationAcceptandReject = (response) => {
+const participantPresentationAcceptandReject = (
+  response,
+  isRejected = false,
+) => {
   return {
     type: actions.PRESENTATION_ACCEPT_AND_REMOVE_PARTICIPANTS,
     payload: response,
+    isRejected,
   };
 };
 

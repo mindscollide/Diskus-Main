@@ -688,8 +688,7 @@ const VideoCallNormalHeader = ({
     if (
       Object.keys(newJoinPresenterParticipant).length > 0 &&
       presenterViewFlag &&
-      presenterViewHostFlag &&
-      priticipantListModalFlagForHost === false
+      presenterViewHostFlag
     ) {
       // Step 1: Remove any existing participant with the same userID or guid
       let dublicateData = [...getAllParticipantMain];

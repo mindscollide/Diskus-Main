@@ -53,9 +53,8 @@ import {
   participantAcceptandReject,
   participantPresentationAcceptandReject,
   participantWaitingListBox,
+  presentationParticipantLeftMqtt,
   presenterLeaveParticipant,
-  presenterNewParticipantJoin,
-  updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
 import {
   admitRejectAttendeeMainApi,
@@ -165,10 +164,10 @@ const VideoNewParticipantList = () => {
   const presentationWaitingParticipants = useSelector(
     (s) => s.videoFeatureReducer.presentationWaitingParticipantsList,
   );
-  // CR(0012249) — presentation ended entirely; used below to clear the
-  // presenter-host's own "Participants" panel (everyone left).
-  const presentationStoppedData = useSelector(
-    (s) => s.videoFeatureReducer.presentationStoppedData,
+  // CR(0012249) — presenter-host's roster. Lives in Redux (patched by the
+  // presentation MQTT handlers) so it survives this panel being closed/reopened.
+  const presentationRoster = useSelector(
+    (s) => s.videoFeatureReducer.presentationParticipantsList,
   );
 
   console.log(waitingParticipants, "waitingParticipantswaitingParticipants");
@@ -183,9 +182,6 @@ const VideoNewParticipantList = () => {
   );
   const presenterViewFlag = useSelector(
     (s) => s.videoFeatureReducer.presenterViewFlag,
-  );
-  const newJoinPresenterParticipant = useSelector(
-    (s) => s.videoFeatureReducer.newJoinPresenterParticipant,
   );
   const leavePresenterParticipant = useSelector(
     (s) => s.videoFeatureReducer.leavePresenterParticipant,
@@ -240,47 +236,58 @@ const VideoNewParticipantList = () => {
    */
   const [isForAll, setIsForAll] = useState(false);
 
+  // CR(0012249) — presenter-host rows: the Redux presentation roster, minus
+  // the presenter and minus requesters still in the waiting room (JOINED
+  // fires at request time, so they're in the roster before being admitted).
+  const presenterRoster = useMemo(() => {
+    const roster = Array.isArray(presentationRoster?.participantList)
+      ? presentationRoster.participantList
+      : [];
+    const waiting = presentationWaitingParticipants || [];
+    return roster.filter(
+      (p) =>
+        Number(p.userID) !== session.presenterHostUserID &&
+        !waiting.some(
+          (w) =>
+            (w.guid && p.guid && String(w.guid) === String(p.guid)) ||
+            (w.userID && p.userID && Number(w.userID) === Number(p.userID)),
+        ),
+    );
+  }, [
+    presentationRoster,
+    presentationWaitingParticipants,
+    session.presenterHostUserID,
+  ]);
+
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: Sync participant list from Redux
   // FIX: original used Object.keys(array).length which is always > 0 for
   // arrays; replaced with Array.isArray + length check.
   //
-  // CR(0012249): skipped in presenter-host context. getAllParticipantMain
-  // is fed by videoCallNormalPanel.js's call to getVideoCallParticipantsMainApi
-  // (the generic MEETING-VIDEO room roster) — that call also fires for a
-  // presenter-host, and its response isn't admit-gated the way the
-  // presentation flow requires (it can include someone who only sent a
-  // join request, never admitted). This effect used to unconditionally
-  // overwrite filteredParticipants with that generic roster every time it
-  // changed, silently undoing the presenter-specific admit/leave/stop
-  // effects below. In presenter-host context, those effects (driven by
-  // newJoinPresenterParticipant / leavePresenterParticipant, both properly
-  // gated to actual admits) are the sole source of truth instead.
+  // CR(0012249): presenter-host reads the presentation roster (Redux), NOT
+  // getAllParticipantMain — that one is the generic meeting-video roster and
+  // isn't admit-gated. Reading Redux (instead of building a local list from a
+  // one-shot MQTT slot) means reopening this panel never loses participants.
   // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
-    if (presenterViewFlag && presenterViewHostFlag) return;
-
-    if (Array.isArray(getAllParticipantMain) && getAllParticipantMain.length) {
+    if (presenterViewFlag && presenterViewHostFlag) {
+      setFilteredParticipants(presenterRoster);
+    } else if (
+      Array.isArray(getAllParticipantMain) &&
+      getAllParticipantMain.length
+    ) {
       setFilteredParticipants(getAllParticipantMain);
     } else {
       setFilteredParticipants([]);
     }
     // Reset search whenever the underlying list changes
     setSearchValue("");
-  }, [getAllParticipantMain, presenterViewFlag, presenterViewHostFlag]);
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // EFFECT: CR(0012249) — starting to present. filteredParticipants may
-  // still hold whatever the regular-meeting-video roster effect above last
-  // set it to (from before presenting started) — clear it so the
-  // presenter's list starts empty and is only ever built up by actual
-  // presentation admits from here on.
-  // ─────────────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (presenterViewFlag && presenterViewHostFlag) {
-      setFilteredParticipants([]);
-    }
-  }, [presenterViewFlag, presenterViewHostFlag]);
+  }, [
+    getAllParticipantMain,
+    presenterRoster,
+    presenterViewFlag,
+    presenterViewHostFlag,
+  ]);
 
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: Remove a participant who left (presenter view only)
@@ -308,53 +315,9 @@ const VideoNewParticipantList = () => {
     dispatch,
   ]);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // EFFECT: CR(0012249) — presentation ended entirely (MEETING_PRESENTATION_STOPPED).
-  // Everyone left, so clear the presenter-host's own "Participants" panel —
-  // without this, admitted attendees from before the stop stayed listed
-  // forever (nothing else ever clears filteredParticipants wholesale).
-  // ─────────────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (!presentationStoppedData || !presenterViewFlag || !presenterViewHostFlag)
-      return;
-
-    setFilteredParticipants([]);
-  }, [presentationStoppedData, presenterViewFlag, presenterViewHostFlag]);
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // EFFECT: Add / replace a participant who just joined (presenter view only)
-  // FIX: original used [...filteredParticipants] which captured a stale
-  // closure. Using the functional updater form instead.
-  // ─────────────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (
-      !newJoinPresenterParticipant ||
-      !Object.keys(newJoinPresenterParticipant).length ||
-      !presenterViewFlag ||
-      !presenterViewHostFlag
-    )
-      return;
-
-    setFilteredParticipants((prev) => {
-      // Remove stale entry for the same user (reconnect / tab-switch scenario)
-      const withoutStale = prev.filter(
-        (p) =>
-          p.userID !== newJoinPresenterParticipant.userID &&
-          p.guid !== newJoinPresenterParticipant.guid,
-      );
-      const updated = [...withoutStale, newJoinPresenterParticipant];
-      // Keep Redux in sync so other selectors that depend on this list are accurate
-      dispatch(updatedParticipantListForPresenter(updated));
-      return updated;
-    });
-
-    dispatch(presenterNewParticipantJoin([]));
-  }, [
-    newJoinPresenterParticipant,
-    presenterViewFlag,
-    presenterViewHostFlag,
-    dispatch,
-  ]);
+  // Join / stop need no local effect: JOINED and MEETING_PRESENTATION_STOPPED
+  // patch the Redux presentation roster (see reducer), which the sync effect
+  // above mirrors into filteredParticipants.
 
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: De-duplicate the waiting-room list
@@ -452,13 +415,15 @@ const VideoNewParticipantList = () => {
       const { value } = e.target;
       setSearchValue(value);
       const lower = value.toLowerCase();
+      const source =
+        presenterViewFlag && presenterViewHostFlag
+          ? presenterRoster
+          : getAllParticipantMain;
       setFilteredParticipants(
-        getAllParticipantMain.filter((p) =>
-          p.name.toLowerCase().includes(lower),
-        ),
+        source.filter((p) => p.name.toLowerCase().includes(lower)),
       );
     },
-    [getAllParticipantMain],
+    [getAllParticipantMain, presenterRoster, presenterViewFlag, presenterViewHostFlag],
   );
 
   /**
@@ -653,6 +618,13 @@ const VideoNewParticipantList = () => {
       setFilteredParticipants((prev) =>
         prev.filter((p) => p.guid !== usersData.guid),
       );
+      // Drop from the shared roster too, else the list re-syncs and shows them again.
+      dispatch(
+        presentationParticipantLeftMqtt({
+          guid: usersData.guid,
+          userID: usersData.userID,
+        }),
+      );
       dispatch(
         removeParticipantFromPresentationMainApi(navigate, t, {
           RoomID: String(session.acceptedRoomID),
@@ -699,6 +671,7 @@ const VideoNewParticipantList = () => {
               meetingID: session.currentMeetingID,
               guid: p.guid,
             })),
+            flag === 2,
           ),
         );
         return;
@@ -777,13 +750,16 @@ const VideoNewParticipantList = () => {
         );
 
         dispatch(
-          participantPresentationAcceptandReject([
-            {
-              ...participantInfo,
-              meetingID: meetingID,
-              guid: participantInfo.guid,
-            },
-          ]),
+          participantPresentationAcceptandReject(
+            [
+              {
+                ...participantInfo,
+                meetingID: meetingID,
+                guid: participantInfo.guid,
+              },
+            ],
+            flag === 2,
+          ),
         );
         return;
       }

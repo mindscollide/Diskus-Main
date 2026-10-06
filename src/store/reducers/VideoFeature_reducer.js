@@ -24,6 +24,25 @@ const dedupeParticipants = (list) => {
   return Array.from(map.values());
 };
 
+// Presentation roster helpers (presentationParticipantsList is `[]` until first fill).
+const getPresentationRoster = (state) =>
+  Array.isArray(state.presentationParticipantsList?.participantList)
+    ? state.presentationParticipantsList.participantList
+    : [];
+
+const withPresentationRoster = (state, participantList) => ({
+  ...(typeof state.presentationParticipantsList === "object" &&
+  !Array.isArray(state.presentationParticipantsList)
+    ? state.presentationParticipantsList
+    : {}),
+  participantList,
+});
+
+// True when roster row `p` is the person identified by `target` (guid or userID).
+const isSamePresentationUser = (p, target) =>
+  (p.guid && target?.guid && String(p.guid) === String(target.guid)) ||
+  (p.userID && target?.userID && Number(p.userID) === Number(target.userID));
+
 const initialState = {
   VideoChatPanel: false,
   ContactVideoFlag: false,
@@ -197,9 +216,20 @@ const videoFeatureReducer = (state = initialState, action) => {
             ),
         );
 
+      // A rejected requester was added to the roster on JOINED (request time);
+      // drop them so they don't show as a participant after the deny.
+      const roster = getPresentationRoster(state);
       return {
         ...state,
         presentationWaitingParticipantsList: filteredPresentationParticipants,
+        ...(action.isRejected
+          ? {
+              presentationParticipantsList: withPresentationRoster(
+                state,
+                roster.filter((r) => !payload.some((p) => isSamePresentationUser(r, p))),
+              ),
+            }
+          : {}),
       };
     }
 
@@ -1523,16 +1553,20 @@ const videoFeatureReducer = (state = initialState, action) => {
       )
         ? state.presentationParticipantsList.participantList
         : [];
-      const alreadyExists = existingList.some(
-        (p) =>
-          (p.guid && newParticipant?.guid && p.guid === newParticipant.guid) ||
-          (p.userID &&
-            newParticipant?.userID &&
-            Number(p.userID) === Number(newParticipant.userID)),
+      const alreadyExists = existingList.some((p) =>
+        isSamePresentationUser(p, newParticipant),
       );
-      const updatedList =
-        alreadyExists || !newParticipant
-          ? existingList
+      // Same user re-joining (new guid per request): refresh their row with the
+      // latest guid/state instead of keeping the stale one, so later
+      // mute/hand/left events (keyed by guid) still match.
+      const updatedList = !newParticipant
+        ? existingList
+        : alreadyExists
+          ? existingList.map((p) =>
+              isSamePresentationUser(p, newParticipant)
+                ? { ...p, ...newParticipant }
+                : p,
+            )
           : [...existingList, newParticipant];
       return {
         ...state,
@@ -1547,13 +1581,19 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PRESENTATION_PARTICIPANT_LEFT_MQTT: {
-      const leavingUid = action.response;
+      // Accepts a guid string (MQTT) or a {guid, userID} object (local removal).
+      const leaving =
+        action.response && typeof action.response === "object"
+          ? action.response
+          : { guid: action.response };
       const existingList = Array.isArray(
         state.presentationParticipantsList?.participantList,
       )
         ? state.presentationParticipantsList.participantList
         : [];
-      const updatedList = existingList.filter((p) => p.guid !== leavingUid);
+      const updatedList = existingList.filter(
+        (p) => !isSamePresentationUser(p, leaving),
+      );
       return {
         ...state,
         presentationParticipantsList: {
@@ -1628,6 +1668,12 @@ const videoFeatureReducer = (state = initialState, action) => {
           state.presentationWaitingParticipantsList.filter(
             (p) => String(p.guid) !== String(removedGuid),
           ),
+        presentationParticipantsList: withPresentationRoster(
+          state,
+          getPresentationRoster(state).filter(
+            (p) => !isSamePresentationUser(p, { guid: removedGuid }),
+          ),
+        ),
       };
     }
 
@@ -1638,6 +1684,9 @@ const videoFeatureReducer = (state = initialState, action) => {
         // Clear the waiting list too — nobody should still be shown as
         // "waiting" once the presentation itself has stopped.
         presentationWaitingParticipantsList: [],
+        // Real stop only (a null dispatch is just a stale-data reset): the
+        // presenter's roster must not carry over into the next presentation.
+        ...(action.response ? { presentationParticipantsList: [] } : {}),
       };
     }
 

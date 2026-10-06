@@ -25,10 +25,13 @@ import {
   getVideoCallParticipantsMainApi,
   guestJoinPopup,
   guestLeaveVideoMeeting,
+  joinPresenterViewMainApi,
   makeHostNow,
+  maxParticipantVideoCallPanel,
   participantAcceptandReject,
   participantVideoNavigationScreen,
   participantWaitingListBox,
+  presentationJoinFlowFlag,
   setAudioControlHost,
   setRaisedUnRaisedParticiant,
   setVideoControlHost,
@@ -866,6 +869,14 @@ const joinPresentationRequestFail = (message) => {
   };
 };
 
+const isInMeetingVideo = () => {
+  try {
+    return Boolean(JSON.parse(localStorage.getItem("isMeetingVideo")));
+  } catch {
+    return false;
+  }
+};
+
 const joinPresentationRequestMainApi = (navigate, t, data) => {
   return (dispatch) => {
     dispatch(joinPresentationRequestInit());
@@ -948,6 +959,33 @@ const joinPresentationRequestMainApi = (navigate, t, data) => {
       .catch((response) => {
         dispatch(joinPresentationRequestFail(t("Something-went-wrong")));
       });
+  };
+};
+
+// "Join Presentation" entry point.
+// In meeting video  -> no waiting room and no JoinPresentationRequest: call
+//                      JoinPresenterView directly.
+// Not in video      -> open maxParticipantVideoCallComponent (waiting room).
+const joinPresentationOrOpenWaitingRoom = (navigate, t, roomID) => {
+  return (dispatch) => {
+    if (isInMeetingVideo()) {
+      // Room saved from MEETING_PRESENTATION_STARTED (Dashboard.js).
+      const startedRoomID = localStorage.getItem("presentationRoomID");
+      localStorage.removeItem("callTypeID");
+      dispatch(
+        joinPresenterViewMainApi(navigate, t, {
+          VideoCallURL: String(localStorage.getItem("videoCallURL")),
+          WasInVideo: true,
+          RoomID: String(startedRoomID || roomID),
+          IsMuted: true,
+          HideVideo: true,
+        }),
+      );
+    } else {
+      localStorage.setItem("presentationRoomID", String(roomID));
+      dispatch(presentationJoinFlowFlag(true));
+      dispatch(maxParticipantVideoCallPanel(true));
+    }
   };
 };
 
@@ -1664,6 +1702,7 @@ export {
   transferMeetingHostMainApi,
   removeParticipantMeetingMainApi,
   joinPresentationRequestMainApi,
+  joinPresentationOrOpenWaitingRoom,
   admitRejectPresentationAttendeeMainApi,
   removeParticipantFromPresentationMainApi,
   setAdmittedParticipant,

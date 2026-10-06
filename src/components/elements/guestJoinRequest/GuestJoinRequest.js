@@ -167,6 +167,7 @@ const GuestJoinRequest = () => {
             meetingID: p.meetingID,
             userID: p.userID,
           })),
+          flag === 2,
         ),
       );
 

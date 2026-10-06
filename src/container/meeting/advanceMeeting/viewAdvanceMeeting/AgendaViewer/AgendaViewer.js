@@ -58,7 +58,6 @@ import {
   toggleParticipantsVisibility,
   disableZoomBeforeJoinSession,
   videoChatMessagesFlag,
-  presentationJoinFlowFlag,
 } from "@/store/actions/VideoFeature_actions";
 import emptyContributorState from "@/assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -108,7 +107,10 @@ import MaxParticipantVideoDeniedComponent from "../../../commonComponents/meetin
 import MaxParticipantVideoRemovedComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
-import { raiseUnRaisedHandMainApi } from "@/store/actions/Guest_Video";
+import {
+  joinPresentationOrOpenWaitingRoom,
+  raiseUnRaisedHandMainApi,
+} from "@/store/actions/Guest_Video";
 
 const AgendaViewer = () => {
   const { t } = useTranslation();
@@ -1128,13 +1130,11 @@ const onClickVideoIconOpenVideo = () => {
           setPresenterForOneToOneOrGroup(true);
           dispatch(nonMeetingVideoGlobalModal(true));
         } else {
-          // CR(0012249): "Join Presentation" now opens the waiting room
-          // instead of joining directly. joinPresenterViewMainApi is fired
-          // later, from maxParticipantVideoCallComponent.js, only once the
-          // host approves the join request (PRESENTATION_JOIN_REQUEST_APPROVED).
-          localStorage.setItem("presentationRoomID", String(RoomID));
-          dispatch(presentationJoinFlowFlag(true));
-          dispatch(maxParticipantVideoCallPanel(true));
+          // CR(0012249): in meeting video (WasInVideo true) -> request is sent
+          // directly, no modal; otherwise the waiting room
+          // (maxParticipantVideoCallComponent) opens. joinPresenterViewMainApi
+          // fires only after PRESENTATION_JOIN_REQUEST_APPROVED.
+          dispatch(joinPresentationOrOpenWaitingRoom(navigate, t, RoomID));
         }
       } else if (value === 3) {
         // if (alreadyInMeetingVideo) {

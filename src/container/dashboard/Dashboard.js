@@ -623,6 +623,11 @@ const Dashboard = () => {
       dispatch(maxParticipantVideoDenied(false));
 
       if (String(meetingVideoID) === String(payload?.meetingID)) {
+        // Keep the room the presentation started in; an in-video user's later
+        // "Join Presentation" sends it to JoinPresenterView.
+        if (payload?.roomID) {
+          localStorage.setItem("presentationRoomID", String(payload.roomID));
+        }
         if (maxParticipantVideoRemovedFlag) {
           // remove Screen Should be closed when presentation is started
           await dispatch(maxParticipantVideoRemoved(false));
@@ -689,6 +694,21 @@ const Dashboard = () => {
           } else {
             console.log("mqtt mqmqmqmqmqmq");
             dispatch(stopScreenShareOnPresenterStarting(true));
+            // CR(0012249): in meeting video -> no waiting room; tell the
+            // backend via JoinPresenterView with the room this presentation
+            // started in (from MEETING_PRESENTATION_STARTED).
+            localStorage.removeItem("callTypeID");
+            dispatch(
+              joinPresenterViewMainApi(navigate, t, {
+                VideoCallURL: String(currentMeetingVideoURL || ""),
+                WasInVideo: true,
+                RoomID: String(
+                  payload?.roomID ?? localStorage.getItem("presentationRoomID"),
+                ),
+                IsMuted: true,
+                HideVideo: true,
+              }),
+            );
             // let newRoomID = localStorage.getItem("newRoomId");
             // let activeRoomID = localStorage.getItem("activeRoomID");
             // if (newRoomID) {
@@ -1926,8 +1946,9 @@ const Dashboard = () => {
                     localStorage.setItem("hostUrl", refinedVideoUrl);
                     localStorage.setItem("participantRoomId", newRoomId);
                     localStorage.setItem("participantUID", isGuid);
-                    localStorage.setItem("isMeetingVideoHostCheck", false);
+                    localStorage.removeItem("isMeetingVideoHostCheck");
                     localStorage.setItem("isHost", false);
+                    console.log("check 22");
                     // localStorage.removeItem("isGuid");
                     dispatch(participantWaitingListBox(false));
                     dispatch(toggleParticipantsVisibility(false));
@@ -2139,6 +2160,8 @@ const Dashboard = () => {
               // below is for that group.
               stopPresenterView(data.payload);
               dispatch(presentationStoppedMqtt(data.payload));
+              // This presentation's room is no longer joinable.
+              localStorage.removeItem("presentationRoomID");
               setNotification({
                 ...notification,
                 notificationShow: true,
@@ -2171,8 +2194,8 @@ const Dashboard = () => {
             ) {
               // CR(0012249): sent to the requesting participant once the
               // host admits them. Per the API doc, JoinPresenterView should
-              // be called ONLY after this arrives — that trigger wiring is
-              // a later step; for now this just surfaces the payload.
+              // be called ONLY after this arrives (the waiting-room modal's
+              // own effect does that).
               dispatch(presentationJoinRequestApprovedMqtt(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
