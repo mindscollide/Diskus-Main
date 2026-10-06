@@ -298,8 +298,8 @@ const Agenda = () => {
   /* --------------------------------------------------------------------------
    * Redux selectors
    * ------------------------------------------------------------------------ */
-  const meetingId = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo.meetingID,
+  const { meetingID, mapFolderId } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector((s) => s);
   const getAllMeetingDetails = useSelector(
@@ -372,7 +372,7 @@ const Agenda = () => {
    * Initial data load — fires once on mount
    * ------------------------------------------------------------------------ */
   useEffect(() => {
-    const payload = { MeetingID: meetingId ?? 0 };
+    const payload = { MeetingID: meetingID ?? 0 };
     dispatch(GetAdvanceMeetingAgendabyMeetingIdApi(navigate, t, payload));
     dispatch(getAllAgendaContributorsApi(navigate, t, payload));
     dispatch(GetAllMeetingUserApiFunc(payload, navigate, t));
@@ -391,7 +391,7 @@ const Agenda = () => {
           getMeetingDetailsByMeetingIdApi(
             navigate,
             t,
-            { MeetingID: meetingId },
+            { MeetingID: meetingID },
             "getMeetingDetailsFromAgendaTab",
             {},
           ),
@@ -399,9 +399,12 @@ const Agenda = () => {
         return;
       }
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/Agenda.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/Agenda.js:",
+        error,
+      );
     }
-  }, [getAllMeetingDetails, dispatch, meetingId, navigate, t]);
+  }, [getAllMeetingDetails, dispatch, meetingID, navigate, t]);
 
   useEffect(() => {
     if (!meetingTime.meetingStartTime) return;
@@ -539,6 +542,7 @@ const Agenda = () => {
       await dispatch(
         SaveMeetingAgendaFilesApi(navigate, t, newfile, "saveFilesFromAgenda", {
           newFolder,
+          folderID: mapFolderId,
         }),
       );
     }
@@ -576,7 +580,7 @@ const Agenda = () => {
 
     // ---- Step 5: dispatch the final save/publish API ----------------------
     const payload = capitalizeKeys({
-      MeetingID: meetingId,
+      MeetingID: meetingID,
       AgendaList: updatedData,
     });
 
@@ -738,7 +742,10 @@ const Agenda = () => {
       setRows(hydrated);
       setIsPublishedState(MeetingAgendaData.isPublished);
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/Agenda.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/Agenda.js:",
+        error,
+      );
     }
     // We intentionally omit allSavedPresenters/allUsersRC: hydration should
     // run when server data arrives, not whenever the dropdowns refresh.
@@ -826,14 +833,14 @@ const Agenda = () => {
   useEffect(() => {
     const mqtt = MeetingAgendaReducer.MeetingAgendaUpdatedMqtt;
     if (!mqtt) return;
-    if (meetingId !== mqtt.meetingID) return;
+    if (meetingID !== mqtt.meetingID) return;
     dispatch(
-      GetAdvanceMeetingAgendabyMeetingID({ MeetingID: meetingId }, navigate, t),
+      GetAdvanceMeetingAgendabyMeetingID({ MeetingID: meetingID }, navigate, t),
     );
   }, [
     MeetingAgendaReducer.MeetingAgendaUpdatedMqtt,
     dispatch,
-    meetingId,
+    meetingID,
     navigate,
     t,
   ]);
@@ -1034,7 +1041,7 @@ const Agenda = () => {
                   // Can't publish until the meeting has an ID and the agenda
                   // has actually been saved at least once.
                   disableBtn={
-                    Number(meetingId) === 0 || isPublishedState === false
+                    Number(meetingID) === 0 || isPublishedState === false
                   }
                   text={t("Publish")}
                   className={styles["Save_Agenda_btn"]}
