@@ -1042,12 +1042,11 @@ span.SubAgenda_Description {
   background: #f6f9fc !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 13px !important;
-  font-style: normal !important;
   font-size: 12px !important;
   text-decoration-line: underline !important;
   color: #5a5a5c !important;
-  font-weight: 500 !important;
-  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  /* text-transform: uppercase !important; */
   height: 30px !important;
   width: 85px !important;
   margin-top: 10px;
