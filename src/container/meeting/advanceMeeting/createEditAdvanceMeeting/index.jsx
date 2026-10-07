@@ -104,8 +104,8 @@ const CreateEditAdvanceMeeting = () => {
       ) {
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
       }
-      await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-      await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
+      // await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+      // await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
     } catch (error) {
       console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/index.jsx:", error);
     }
@@ -115,6 +115,8 @@ const CreateEditAdvanceMeeting = () => {
     if (meetingID === 0) {
       apiCallsForComponentMound();
     }
+    dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+    dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
     return () => {
       // dispatch(resetViewGroupDetails());
       // dispatch(resetViewCommitteeDetails());

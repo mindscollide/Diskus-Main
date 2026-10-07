@@ -163,13 +163,10 @@ const MainMeeting = () => {
     ) {
       dispatch(GetAllMeetingTypesNewFunction(navigate, t));
     }
-
-    // Persist the tab resolved above; hardcoding Published here overwrote the
-    // tab set by flows that swap this screen out and back (e.g. Cancel on the
-    // participant proposed-dates screen sets Proposed before remounting).
     localStorage.setItem("MeetingCurrentView", currentView);
+
     localStorage.setItem("MeetingPageRows", 30);
-    localStorage.setItem("MeetingPageCurrent", currentView);
+    localStorage.setItem("MeetingPageCurrent", 1);
 
     return () => {
       localStorage.removeItem("MeetingCurrentView");

@@ -237,7 +237,7 @@ const ParentAgenda = ({
           (editorRole.role === "Agenda Contributor" ||
             editorRole.role === "Participant")
             ? "d-none"
-            : ""
+            : "mt-2"
         }>
         <span className='position-relative'>
           <Row key={data.id} className=' mt-2 mx-0 p-0'>
