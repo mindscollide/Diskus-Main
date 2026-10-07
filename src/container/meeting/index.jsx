@@ -161,8 +161,8 @@ const MainMeeting = () => {
     ) {
       dispatch(GetAllMeetingTypesNewFunction(navigate, t));
     }
+    localStorage.setItem("MeetingCurrentView", currentView);
 
-    localStorage.setItem("MeetingCurrentView", MEETING_VIEWS.PUBLISHED);
     localStorage.setItem("MeetingPageRows", 30);
     localStorage.setItem("MeetingPageCurrent", currentView);
 

@@ -107,8 +107,8 @@ const CreateEditAdvanceMeeting = () => {
       ) {
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
       }
-      await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-      await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
+      // await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+      // await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
     } catch (error) {
       console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/index.jsx:", error);
     }
@@ -118,6 +118,8 @@ const CreateEditAdvanceMeeting = () => {
     if (meetingID === 0) {
       apiCallsForComponentMound();
     }
+    dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+    dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
     return () => {
       // dispatch(resetViewGroupDetails());
       // dispatch(resetViewCommitteeDetails());
@@ -343,7 +345,7 @@ const CreateEditAdvanceMeeting = () => {
                       onClick={showMinutes}
                       disableBtn={
                         Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
+                          Number(editorRole.status) === 9
                           ? false
                           : true
                       }
@@ -360,7 +362,7 @@ const CreateEditAdvanceMeeting = () => {
                         onClick={showActions}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
+                            Number(editorRole.status) === 9
                             ? false
                             : true
                         }
@@ -378,7 +380,7 @@ const CreateEditAdvanceMeeting = () => {
                         onClick={ShowPolls}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
+                            Number(editorRole.status) === 9
                             ? false
                             : true
                         }
