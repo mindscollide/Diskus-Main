@@ -3031,7 +3031,7 @@ export const handleNavigation = (
     const groups_meetingStr_action = localStorage.getItem(
       "groups_meetingStr_action",
     );
-    const group_UserMeetPropoDatPoll = localStorage.getItem("group_UserMeetPropoDatPoll")
+    const groups_UserMeetPropoDatPoll = localStorage.getItem("groups_UserMeetPropoDatPoll")
     if (isFirstLogin) {
       // if (adminRights) {
       //   navigate("/Admin/ManageUsers");
@@ -3101,7 +3101,7 @@ export const handleNavigation = (
         groups_meetingStr_action !== null ||
         groups_meetingUpd_action !== null ||
         groups_meetingprop_action !== null ||
-        groups_viewMeeting_action !== null || group_UserMeetPropoDatPoll !== null
+        groups_viewMeeting_action !== null || groups_UserMeetPropoDatPoll !== null
       ) {
         navigate("/Diskus/groups");
       } else if (taskListView_Id !== null || taskListView !== null) {

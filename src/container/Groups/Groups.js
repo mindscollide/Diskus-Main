@@ -528,6 +528,8 @@ const Groups = () => {
               )(dispatch); // Ensure you're passing dispatch here
 
             if (getApiResponse) {
+
+              console.log(getApiResponse)
               setGroupOrganizerProposedMeetingEmailRouteData(getApiResponse);
               dispatch(
                 viewGroupDetails({
@@ -537,7 +539,7 @@ const Groups = () => {
               );
               setCurrentViewGroupTabs(4);
               localStorage.setItem(
-                "ViewCommitteeID",
+                "ViewGroupID",
                 getApiResponse.commmitteeGroupID,
               );
               setViewGroupPage(true);
