@@ -3247,7 +3247,7 @@ const Dashboard = () => {
           dispatch(notifyPollingSocket(data.payload));
           setNotificationID(id);
         } else if (
-          data.payload.message.toLowerCase() === "POLL_UPDATED".toLowerCase()
+          data.payload.message.toLowerCase() === "POLL_EDITED".toLowerCase()
         ) {
           if (data.viewable) {
             setNotification({

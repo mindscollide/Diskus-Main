@@ -2950,5 +2950,7 @@
   "This-file-type-is-not-supported": "This file type is not supported",
   "This-file-is-empty": "This file is empty",
   "File-size-must-not-exceed-10MB": "File size must not exceed 10MB",
-  "This-file-has-already-been-attached": "This file has already been attached"
+  "This-file-has-already-been-attached": "This file has already been attached",
+  "Year": "Year",
+  "Due": "Due"
 }
