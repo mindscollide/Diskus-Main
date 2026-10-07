@@ -2066,7 +2066,7 @@ export const SaveMeetingAgendaFilesApi = (
   routePath,
   object,
 ) => {
-  const { folderID, newFolder } = object;
+  const { folderID = 0, newFolder } = object;
   const createrID = localStorage.getItem("userID");
   const Data = {
     FolderID: folderID !== null ? folderID : 0,

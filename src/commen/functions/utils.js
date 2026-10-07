@@ -266,9 +266,9 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
 
     localStorage.setItem("isTrial", response.isTrial);
     if (response.isTrial && response.hasAdminRights) {
-      await dispatch(
-        getPackageExpiryDetail(navigate, response.organizationID, t),
-      );
+      // await dispatch(
+      //   getPackageExpiryDetail(navigate, response.organizationID, t),
+      // );
     }
 
     localStorage.setItem(
