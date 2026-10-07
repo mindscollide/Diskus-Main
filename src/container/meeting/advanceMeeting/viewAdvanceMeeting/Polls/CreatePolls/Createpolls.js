@@ -709,7 +709,7 @@ const Createpolls = ({ setCreatepoll }) => {
                           filterOption={customFilter}
                         />
                         <Button
-                          text={t("ADD")}
+                          text={t("Add")}
                           className={styles["ADD_Btn_CreatePool_Modal"]}
                           onClick={handleAddUsers}
                         />

@@ -222,6 +222,7 @@ const ProposedMeeting = () => {
       }
     }
   };
+  
   const handleCLickView = (record) => {
     if (record.isOrganizer) {
       dispatch(

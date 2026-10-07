@@ -212,7 +212,28 @@ const PrivateRoutes = () => {
           localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
         }
-
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes(
+              "Diskus/committee?Usermeetingproposedatespoll_action=".toLowerCase(),
+            )
+        ) {
+          //
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("committee_UserMeetPropoDatPoll", parts);
+        }
+        if (
+          currentUrl
+            .toLowerCase()
+            .includes(
+              "Diskus/groups?Usermeetingproposedatespoll_action=".toLowerCase(),
+            )
+        ) {
+          const parts = currentUrl.split("action=")[1];
+          localStorage.setItem("groups_UserMeetPropoDatPoll", parts);
+          //
+        }
         // Action: Poll Expire
         if (
           currentUrl

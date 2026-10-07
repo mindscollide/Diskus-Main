@@ -837,7 +837,6 @@ const PublishedMeetingList = () => {
           if (record.isQuickMeeting && meetingType === 1)
             return t("Quick-meeting");
 
-          console.log(matchedFilter, "matchedFiltermatchedFilter")
           return matchedFilter ? (
             <span className={styles.columnValue}>
               <Tooltip

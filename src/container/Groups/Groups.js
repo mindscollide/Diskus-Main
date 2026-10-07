@@ -66,7 +66,11 @@ import {
 } from "../../store/actions/ModalStates_actions";
 import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
-import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
+import {
+  validateStringEmailApi,
+  validateStringParticipantProposedApi,
+  validateStringUserMeetingProposedDatesPollsApi,
+} from "../../store/actions/NewMeetingActions";
 
 const Groups = () => {
   const { t } = useTranslation();
@@ -88,6 +92,11 @@ const Groups = () => {
     setCurrentViewGroupTabs,
     currentViewGroupTabs,
     setCurrentGroupMeetingTabActive,
+
+    groupParticipantProposedMeetingEmailRouteData,
+    setGroupParticipantProposedMeetingEmailRouteData,
+    groupOrganizerProposedMeetingEmailRouteData,
+    setGroupOrganizerProposedMeetingEmailRouteData,
   } = useGroupsContext();
   const [show, SnackBar] = useSnackbar();
   const GroupsReducerrealtimeGroupStatus = useSelector(
@@ -169,7 +178,10 @@ const Groups = () => {
 
   //Current Organization
   let currentOrganizationId = localStorage.getItem("organizationID");
-
+  const group_meetingprop = localStorage.getItem("groups_meetingprop_action");
+  const group_meetingpropOrganizer = localStorage.getItem(
+    "groups_UserMeetPropoDatPoll",
+  );
   useEffect(() => {
     const groupList = localStorage.getItem("groupList");
     const groupListViewId = localStorage.getItem("groupView_Id");
@@ -419,6 +431,149 @@ const Groups = () => {
     }
   }, [state]);
 
+  useEffect(() => {
+    if (group_meetingprop !== null) {
+      try {
+        const callApi = async () => {
+          try {
+            let getApiResponse = await validateStringParticipantProposedApi(
+              group_meetingprop,
+              navigate,
+              t,
+            )(dispatch); // Ensure you're passing dispatch
+            if (getApiResponse) {
+              setGroupParticipantProposedMeetingEmailRouteData(getApiResponse);
+              console.log(
+                getApiResponse,
+                "getApiResponsegetApiResponsegetApiResponse",
+              );
+              dispatch(
+                viewGroupDetails({
+                  groupID: getApiResponse.commmitteeGroupID,
+                  groupTitle: getApiResponse.committeeGroupTitle,
+                }),
+              );
+              setCurrentViewGroupTabs(4);
+              localStorage.setItem(
+                "ViewGroupID",
+                getApiResponse.commmitteeGroupID,
+              );
+              setViewGroupPage(true);
+              setCurrentGroupMeetingTabActive(2);
+              dispatch(viewGroupPageFlag(true));
+              // dispatch(viewCommitteePageFlag(true));
+              // dispatch(
+              //   getMeetingDetailsByMeetingIdApi(
+              //     navigate,
+              //     t,
+              //     { MeetingID: getApiResponse.meetingID },
+              //     "ProposedMeetingViewForParticipant",
+              //     {
+              //       responseDeadline: getApiResponse.deadline,
+              //       meetingId: getApiResponse.meetingID,
+              //       setResponseByDate,
+              //     },
+              //   ),
+              // );
+              // localStorage.setItem(
+              //   "viewProposeDatePollMeetingID",
+              //   getApiResponse.meetingID,
+              // );
+              localStorage.removeItem("group_meetingprop_action");
+
+              // setResponseByDate(getApiResponse.deadline);
+              // dispatch(
+              //   GetAllProposedMeetingDateApi(
+              //     navigate,
+              //     t,
+              //     { MeetingID: getApiResponse.meetingID },
+              //     "",
+              //     {},
+              //   ),
+              // );
+              // dispatch(toggleIsParticipantProposedMeetingDates(true));
+            }
+          } catch (error) {
+            localStorage.removeItem("group_meetingprop_action");
+          }
+        };
+
+        callApi();
+        //         dispatch(
+        //   viewCommitteeDetails({
+        //     committeeID: data.committeeID,
+        //     committeeTitle: data.committeesTitle,
+        //   }),
+        // );
+        // setCurrentViewCommitteeTabs(4);
+        // localStorage.setItem("ViewCommitteeID", data.committeeID);
+        // setViewCommitteePage(true);
+        // dispatch(viewCommitteePageFlag(true));
+      } catch (error) {
+        console.error("src/container/Committee/Committee.js:", error);
+      }
+    }
+  }, [group_meetingprop]);
+
+  useEffect(() => {
+    if (group_meetingpropOrganizer !== null) {
+      try {
+        const callApi1 = async () => {
+          try {
+            let getApiResponse =
+              await validateStringUserMeetingProposedDatesPollsApi(
+                group_meetingpropOrganizer,
+                navigate,
+                t,
+              )(dispatch); // Ensure you're passing dispatch here
+
+            if (getApiResponse) {
+              setGroupOrganizerProposedMeetingEmailRouteData(getApiResponse);
+              dispatch(
+                viewGroupDetails({
+                  groupID: getApiResponse.commmitteeGroupID,
+                  groupTitle: getApiResponse.committeeGroupTitle,
+                }),
+              );
+              setCurrentViewGroupTabs(4);
+              localStorage.setItem(
+                "ViewCommitteeID",
+                getApiResponse.commmitteeGroupID,
+              );
+              setViewGroupPage(true);
+              setCurrentGroupMeetingTabActive(2);
+              dispatch(viewGroupPageFlag(true));
+
+              localStorage.removeItem("group_UserMeetPropoDatPoll");
+              //  localStorage.setItem(
+              //    "viewProposeDatePollMeetingID",
+              //    getApiResponse.meetingID,
+              //  );
+              //  localStorage.removeItem("UserMeetPropoDatPoll");
+              //  dispatch(
+              //    getUserWiseProposedDatesForOrganizerApi(
+              //      navigate,
+              //      t,
+              //      { MeetingID: getApiResponse.meetingID },
+              //      "",
+              //      {},
+              //    ),
+              //  );
+            }
+          } catch (error) {
+            localStorage.removeItem("group_UserMeetPropoDatPoll");
+          }
+        };
+
+        callApi1();
+      } catch (error) {
+        console.error(
+          "src/container/meeting/proposedMeetingFlow/index.jsx:",
+          error,
+        );
+      }
+    }
+  }, [group_meetingpropOrganizer]);
   const handleClickMeetingTab = (data) => {
     dispatch(
       viewGroupDetails({

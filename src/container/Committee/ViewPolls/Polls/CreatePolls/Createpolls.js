@@ -566,7 +566,7 @@ const Createpolls = ({ setCreatepoll }) => {
                           onChange={handleSelectValue}
                         />
                         <Button
-                          text={t("ADD")}
+                          text={t("Add")}
                           className={styles["ADD_Btn_CreatePool_Modal"]}
                           onClick={handleAddUsers}
                         />

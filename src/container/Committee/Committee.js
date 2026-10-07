@@ -56,7 +56,10 @@ import ProposedNewMeeting from "../meeting/proposedMeetingFlow/ProposedNewMeetin
 import ViewProposedMeetingModal from "../meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import ViewParticipantsDates from "../meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
 import { useCommitteeContext } from "../../context/CommitteeContext";
-import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
+import {
+  getMeetingDetailsByMeetingIdApi,
+  resetCurrentMeetingInfo,
+} from "../../store/actions/NewMeeting2.actions";
 import {
   resetCreateEditTabs,
   resetViewTabs,
@@ -67,7 +70,12 @@ import {
   toggleIsParticipantProposedMeetingDates,
 } from "../../store/actions/ModalStates_actions";
 import { useMeetingContext } from "../../context/MeetingContext";
-import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
+import {
+  validateStringEmailApi,
+  validateStringParticipantProposedApi,
+  validateStringUserMeetingProposedDatesPollsApi,
+} from "../../store/actions/NewMeetingActions";
+import { useNewMeetingContext } from "../../context/NewMeetingContext";
 
 const Committee = () => {
   const { t } = useTranslation();
@@ -75,6 +83,7 @@ const Committee = () => {
   const navigate = useNavigate();
   const { state, pathname } = useLocation();
   const { setEditorRole } = useMeetingContext();
+  const { setResponseByDate } = useNewMeetingContext();
   let currentPage = localStorage.getItem("CocurrentPage");
   const {
     ViewCommitteePage,
@@ -84,6 +93,10 @@ const Committee = () => {
     setCurrentViewCommitteeTabs,
     currentViewCommitteeTabs,
     setCurrentCommitteeMeetingTabActive,
+    setParticipantProposedMeetingEmailRouteData,
+    participantProposedMeetingEmailRouteData,
+    organizerProposedMeetingEmailRouteData,
+    setOrganizerProposedMeetingEmailRouteData,
   } = useCommitteeContext();
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
@@ -169,6 +182,9 @@ const Committee = () => {
   );
   const committee_meetingprop = localStorage.getItem(
     "committee_meetingprop_action",
+  );
+  const committee_meetingpropOrganizer = localStorage.getItem(
+    "committee_UserMeetPropoDatPoll",
   );
 
   useEffect(() => {
@@ -418,11 +434,146 @@ const Committee = () => {
   useEffect(() => {
     if (committee_meetingprop !== null) {
       try {
+        const callApi = async () => {
+          try {
+            let getApiResponse = await validateStringParticipantProposedApi(
+              committee_meetingprop,
+              navigate,
+              t,
+            )(dispatch); // Ensure you're passing dispatch
+            if (getApiResponse) {
+              setParticipantProposedMeetingEmailRouteData(getApiResponse);
+              console.log(
+                getApiResponse,
+                "getApiResponsegetApiResponsegetApiResponse",
+              );
+              dispatch(
+                viewCommitteeDetails({
+                  committeeID: getApiResponse.commmitteeGroupID,
+                  committeeTitle: getApiResponse.committeeGroupTitle,
+                }),
+              );
+              setCurrentViewCommitteeTabs(4);
+              localStorage.setItem(
+                "ViewCommitteeID",
+                getApiResponse.commmitteeGroupID,
+              );
+              setViewCommitteePage(true);
+              setCurrentCommitteeMeetingTabActive(2);
+              dispatch(viewCommitteePageFlag(true));
+              // dispatch(viewCommitteePageFlag(true));
+              // dispatch(
+              //   getMeetingDetailsByMeetingIdApi(
+              //     navigate,
+              //     t,
+              //     { MeetingID: getApiResponse.meetingID },
+              //     "ProposedMeetingViewForParticipant",
+              //     {
+              //       responseDeadline: getApiResponse.deadline,
+              //       meetingId: getApiResponse.meetingID,
+              //       setResponseByDate,
+              //     },
+              //   ),
+              // );
+              // localStorage.setItem(
+              //   "viewProposeDatePollMeetingID",
+              //   getApiResponse.meetingID,
+              // );
+              localStorage.removeItem("committee_meetingprop_action");
+
+              // setResponseByDate(getApiResponse.deadline);
+              // dispatch(
+              //   GetAllProposedMeetingDateApi(
+              //     navigate,
+              //     t,
+              //     { MeetingID: getApiResponse.meetingID },
+              //     "",
+              //     {},
+              //   ),
+              // );
+              // dispatch(toggleIsParticipantProposedMeetingDates(true));
+            }
+          } catch (error) {
+            localStorage.removeItem("committee_meetingprop_action");
+          }
+        };
+
+        callApi();
+        //         dispatch(
+        //   viewCommitteeDetails({
+        //     committeeID: data.committeeID,
+        //     committeeTitle: data.committeesTitle,
+        //   }),
+        // );
+        // setCurrentViewCommitteeTabs(4);
+        // localStorage.setItem("ViewCommitteeID", data.committeeID);
+        // setViewCommitteePage(true);
+        // dispatch(viewCommitteePageFlag(true));
       } catch (error) {
         console.error("src/container/Committee/Committee.js:", error);
       }
     }
   }, [committee_meetingprop]);
+
+  useEffect(() => {
+    if (committee_meetingpropOrganizer !== null) {
+      try {
+        const callApi1 = async () => {
+          try {
+            let getApiResponse =
+              await validateStringUserMeetingProposedDatesPollsApi(
+                committee_meetingpropOrganizer,
+                navigate,
+                t,
+              )(dispatch); // Ensure you're passing dispatch here
+
+            if (getApiResponse) {
+              setOrganizerProposedMeetingEmailRouteData(getApiResponse);
+              dispatch(
+                viewCommitteeDetails({
+                  committeeID: getApiResponse.commmitteeGroupID,
+                  committeeTitle: getApiResponse.committeeGroupTitle,
+                }),
+              );
+              setCurrentViewCommitteeTabs(4);
+              localStorage.setItem(
+                "ViewCommitteeID",
+                getApiResponse.commmitteeGroupID,
+              );
+              setViewCommitteePage(true);
+              setCurrentCommitteeMeetingTabActive(2);
+              dispatch(viewCommitteePageFlag(true));
+
+              localStorage.removeItem("committee_UserMeetPropoDatPoll");
+              //  localStorage.setItem(
+              //    "viewProposeDatePollMeetingID",
+              //    getApiResponse.meetingID,
+              //  );
+              //  localStorage.removeItem("UserMeetPropoDatPoll");
+              //  dispatch(
+              //    getUserWiseProposedDatesForOrganizerApi(
+              //      navigate,
+              //      t,
+              //      { MeetingID: getApiResponse.meetingID },
+              //      "",
+              //      {},
+              //    ),
+              //  );
+            }
+          } catch (error) {
+            localStorage.removeItem("committee_UserMeetPropoDatPoll");
+          }
+        };
+
+        callApi1();
+      } catch (error) {
+        console.error(
+          "src/container/meeting/proposedMeetingFlow/index.jsx:",
+          error,
+        );
+      }
+    }
+  }, [committee_meetingpropOrganizer]);
 
   // useEffect(() => {
   //   try {
@@ -1086,7 +1237,9 @@ const Committee = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className={"pagination-groups-table d-flex justify-content-center"}>
+                  className={
+                    "pagination-groups-table d-flex justify-content-center"
+                  }>
                   <CustomPagination
                     total={totalRecords}
                     current={JSON.parse(currentPage)}

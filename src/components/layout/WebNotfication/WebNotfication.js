@@ -57,6 +57,7 @@ import {
   MeetingProposedForParticipantProposed,
   ViewMeetingDetails,
 } from "../../../store/actions/NotificationRouting_actions.js";
+import { useCommitteeContext } from "../../../context/CommitteeContext.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -80,7 +81,9 @@ const WebNotfication = ({
 
   const { setResultresolution } = useResolutionContext();
   //Groups Context
-  const { setViewGroupPage, setShowModal } = useGroupsContext();
+  const { setViewGroupPage, setShowModal, setCurrentGroupMeetingTabActive } =
+    useGroupsContext();
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
   //Compliance Context — used to deep-link a Task_Reminder_* notification
   //click straight into that task's Compliance record (see comptask_action
   //email deep-link, same mechanism reused here without the decrypt step
@@ -170,7 +173,10 @@ const WebNotfication = ({
         });
       }
     } catch (error) {
-      console.error("src/components/layout/WebNotfication/WebNotfication.js:", error);
+      console.error(
+        "src/components/layout/WebNotfication/WebNotfication.js:",
+        error,
+      );
     }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
@@ -207,7 +213,10 @@ const WebNotfication = ({
         setGroupedNotifications(groupNotificationsData);
       }
     } catch (error) {
-      console.error("src/components/layout/WebNotfication/WebNotfication.js:", error);
+      console.error(
+        "src/components/layout/WebNotfication/WebNotfication.js:",
+        error,
+      );
     }
   }, [webNotificationData, todayDate]);
 
@@ -240,6 +249,14 @@ const WebNotfication = ({
         4: "/Diskus/Groups",
       };
       const path = routeByMeetingType[standardMeetingType];
+
+      if (routeByMeetingType === 2) {
+        localStorage.setItem("MeetingCurrentView", 2);
+      } else if (routeByMeetingType === 3) {
+        setCurrentCommitteeMeetingTabActive(2);
+      } else if (routeByMeetingType === 4) {
+        setCurrentGroupMeetingTabActive(2);
+      }
       if (path) {
         navigate(path, {
           state: {
