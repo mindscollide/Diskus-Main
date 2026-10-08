@@ -2864,13 +2864,13 @@
   "Payment-date-range": "نطاق تاريخ الدفع",
   "Compliance": "الامتثال",
   "Notes": "ملحوظات",
-  "Voting-started": "Voting Started",
-  "Voting-ended": "Voting Ended",
-  "Please-select-package": "Please select package",
+  "Voting-started": "بدأ التصويت",
+  "Voting-ended": "انتهى التصويت",
+  "Please-select-package": "يرجى اختيار الحزمة",
   "Call-has-ended-by-the-host": "أنهى المضيف المكالمة",
-  "You-have-missed-calls": "You have missedcalls",
+  "You-have-missed-calls": "لديك مكالمات فائتة",
   "Recording...": "جاري التسجيل...",
-  "Reopen-date-and-reason": "Reopen date and reason",
+  "Reopen-date-and-reason": "تاريخ إعادة الفتح والسبب",
   "Overdue": "متأخر",
   "Secondary": "ثانوي",
   "Done": "تم",
@@ -2939,5 +2939,6 @@
   "The-meeting-has-not-started-yet": "لم يبدأ الاجتماع بعد",
   "Waiting-for-organizer-to-start-the-meeting-please-try-again-shortly": "في انتظار بدء الاجتماع من قِبل المنظم، يُرجى المحاولة مرة أخرى بعد قليل",
   "The-meeting-has-not-published-yet": "لم يتم نشر الاجتماع بعد",
-  "Page": "صفحة"
+  "Page": "صفحة",
+  "Due": "مستحق"
 }
