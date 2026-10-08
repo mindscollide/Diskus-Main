@@ -541,7 +541,6 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 600 !important;
-  margin-left: 4px;
 }
 
 body[dir="rtl"] .modal-createMeeting-addagendaBtn {
@@ -552,7 +551,6 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 600 !important;
-  margin-right: 5px;
 }
 
 .modal-createMeeting-addagendaBtn_Next {
@@ -563,7 +561,6 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 600 !important;
-  margin-right: 5px;
 }
 
 body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
@@ -574,7 +571,6 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 600 !important;
-  margin-left: 4px;
 }
 
 .modal-createMeeting-publish {
@@ -585,7 +581,6 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 600 !important;
-  margin-right: 7px;
 }
 
 .editAgendaGridBtn {

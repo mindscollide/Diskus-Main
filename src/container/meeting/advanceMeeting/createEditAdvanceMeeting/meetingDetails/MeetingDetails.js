@@ -1064,7 +1064,7 @@ const MeetingDetails = () => {
                     <span className={styles["steric"]}>*</span>
                   </span>
                   <div className={styles["meetingType_Value"]}>
-                    {meetingDetails.MeetingType.Type === "Board Meetings"
+                    {meetingDetails.MeetingType.Type === "Board Meeting"
                       ? t("Board-meeting")
                       : meetingDetails.MeetingType.Type === "Group Meeting"
                         ? t("Group-meeting")

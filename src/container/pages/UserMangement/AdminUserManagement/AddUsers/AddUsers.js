@@ -243,26 +243,28 @@ const AddUsers = () => {
       });
     }
 
-    if (name === "Contact" && value !== "") {
-      if (/^\d+$/.test(value)) {
+    if (name === "Contact") {
+      if (value !== "") {
+        if (/^\d+$/.test(value)) {
+          setAddUserFreeTrial({
+            ...addUserFreeTrial,
+            Contact: {
+              value: value.trimStart(),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else {
         setAddUserFreeTrial({
           ...addUserFreeTrial,
           Contact: {
-            value: value.trimStart(),
+            value: "",
             errorMessage: "",
             errorStatus: false,
           },
         });
       }
-    } else {
-      setAddUserFreeTrial({
-        ...addUserFreeTrial,
-        Contact: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
     }
   };
 
