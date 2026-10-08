@@ -966,23 +966,45 @@ const joinPresentationRequestMainApi = (navigate, t, data) => {
 // In meeting video  -> no waiting room and no JoinPresentationRequest: call
 //                      JoinPresenterView directly.
 // Not in video      -> open maxParticipantVideoCallComponent (waiting room).
+const isValidRoomID = (id) =>
+  Boolean(id) && !["null", "undefined", "0"].includes(String(id));
+
 const joinPresentationOrOpenWaitingRoom = (navigate, t, roomID) => {
   return (dispatch) => {
+    // Room saved from MEETING_PRESENTATION_STARTED / JoinMeeting (kept until
+    // the presentation stops); the caller's roomID is only a fallback.
+    const presentationRoomID = [
+      localStorage.getItem("presentationRoomID"),
+      roomID,
+    ].find(isValidRoomID);
+
     if (isInMeetingVideo()) {
-      // Room saved from MEETING_PRESENTATION_STARTED (Dashboard.js).
-      const startedRoomID = localStorage.getItem("presentationRoomID");
       localStorage.removeItem("callTypeID");
+      // this user's meeting-video guid (host: isGuid, else participantUID)
+      let isHostCheck = false;
+      try {
+        isHostCheck = Boolean(
+          JSON.parse(localStorage.getItem("isMeetingVideoHostCheck")),
+        );
+      } catch {}
+      const guid = isHostCheck
+        ? localStorage.getItem("isGuid")
+        : localStorage.getItem("participantUID");
       dispatch(
         joinPresenterViewMainApi(navigate, t, {
           VideoCallURL: String(localStorage.getItem("videoCallURL")),
           WasInVideo: true,
-          RoomID: String(startedRoomID || roomID),
+          RoomID: String(presentationRoomID),
           IsMuted: true,
           HideVideo: true,
+          UID: String(guid),
         }),
       );
     } else {
-      localStorage.setItem("presentationRoomID", String(roomID));
+      // Never overwrite a good room with null/"null".
+      if (presentationRoomID) {
+        localStorage.setItem("presentationRoomID", String(presentationRoomID));
+      }
       dispatch(presentationJoinFlowFlag(true));
       dispatch(maxParticipantVideoCallPanel(true));
     }

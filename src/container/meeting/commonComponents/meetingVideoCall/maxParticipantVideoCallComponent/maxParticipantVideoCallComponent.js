@@ -287,7 +287,8 @@ const ParticipantVideoCallComponent = () => {
       dispatch(joinPresenterViewMainApi(navigate, t, data));
       dispatch(presentationJoinFlowFlag(false));
       dispatch(maxParticipantVideoCallPanel(false));
-      localStorage.removeItem("presentationRoomID");
+      // presentationRoomID is kept (removed only when the presentation stops)
+      // so a re-join after leaving still has the room.
       dispatch(presentationJoinRequestApprovedMqtt(null));
     }
   }, [presentationJoinApprovedData]);

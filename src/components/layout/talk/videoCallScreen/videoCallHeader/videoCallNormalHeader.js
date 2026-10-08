@@ -453,7 +453,11 @@ const VideoCallNormalHeader = ({
 
   // API for check getGroupVideoCall Participants Data
   useEffect(() => {
-    if (currentCallType === 2 && !isMeetingVideo) {
+    // A presentation viewer is not in a group call (a stale CallType === 2
+    // from an earlier meeting video must not trigger the group roster).
+    const isPresentationViewer =
+      presenterViewFlag && presenterViewJoinFlag && !presenterViewHostFlag;
+    if (currentCallType === 2 && !isMeetingVideo && !isPresentationViewer) {
       console.log("Check is currentCallType coming");
       let data = {
         RoomID: isCaller ? String(initiateRoomID) : String(roomID),
@@ -1803,14 +1807,22 @@ const VideoCallNormalHeader = ({
 
   const raiseUnRaiseForParticipant = (flag) => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
-      const RoomID = localStorage.getItem("groupCallRoomId");
-      const UID = isCaller
-        ? localStorage.getItem("callerGuid")
-        : localStorage.getItem("receipentGuid");
+      // Group call keeps its own room/guid keys; meeting video and
+      // presentation participants use the room/uid computed above.
+      const isGroupCallHand =
+        callTypeID === 2 && !presenterViewFlag && !isMeetingVideo;
+      const handRoomID = isGroupCallHand
+        ? localStorage.getItem("groupCallRoomId")
+        : RoomID;
+      const handUID = isGroupCallHand
+        ? isCaller
+          ? localStorage.getItem("callerGuid")
+          : localStorage.getItem("receipentGuid")
+        : UID;
       dispatch(
         raiseUnRaisedHandMainApi(navigate, t, {
-          RoomID: String(RoomID),
-          UID: String(UID),
+          RoomID: String(handRoomID),
+          UID: String(handUID),
           IsHandRaised: flag,
         }),
       );

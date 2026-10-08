@@ -43,6 +43,20 @@ const isSamePresentationUser = (p, target) =>
   (p.guid && target?.guid && String(p.guid) === String(target.guid)) ||
   (p.userID && target?.userID && Number(p.userID) === Number(target.userID));
 
+// A guid is "<hex>_<userID>". A user gets a different guid at request time
+// and at join time, so a mute/hide MQTT's uid may not equal the roster row's
+// guid; match on guid first, then on the userID the uid ends with.
+const rosterRowMatchesUid = (p, uid) => {
+  if (!uid) return false;
+  if (p.guid === uid) return true;
+  const s = String(uid);
+  const i = s.lastIndexOf("_");
+  return i >= 0 && p.userID != null && String(p.userID) === s.slice(i + 1);
+};
+
+// Backend ids grow with each join, so the higher id is the newer row.
+const rowIdOf = (p) => Number(p?.videoCallParticipantsID || 0);
+
 const initialState = {
   VideoChatPanel: false,
   ContactVideoFlag: false,
@@ -657,7 +671,9 @@ const videoFeatureReducer = (state = initialState, action) => {
           ? state.presentationParticipantsList.participantList
           : [];
         const updatedMuteList = existingMuteList.map((p) =>
-          p.guid === payload.uid ? { ...p, mute: payload.isMuted } : p,
+          rosterRowMatchesUid(p, payload.uid)
+            ? { ...p, mute: payload.isMuted }
+            : p,
         );
 
         return {
@@ -792,7 +808,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         ? state.presentationParticipantsList.participantList
         : [];
       const updatedHideList = existingHideList.map((p) =>
-        p.guid === payload.uid
+        rosterRowMatchesUid(p, payload.uid)
           ? { ...p, hideCamera: payload.isVideoHidden }
           : p,
       );
@@ -921,6 +937,16 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         isPresentationJoinFlow: action.response,
+        // Opening the waiting room: drop approved/rejected/stopped data left
+        // over from an earlier presentation, else the modal's own effects see
+        // it on mount and close the room immediately.
+        ...(action.response
+          ? {
+              presentationJoinApprovedData: null,
+              presentationJoinRejectedData: null,
+              presentationStoppedData: null,
+            }
+          : {}),
       };
     }
     case actions.ACTIVE_PRESENTATION_MEETING_ID: {
@@ -1513,13 +1539,21 @@ const videoFeatureReducer = (state = initialState, action) => {
       const rawList = Array.isArray(action.response?.participantList)
         ? action.response.participantList
         : [];
-      const seenKeys = new Set();
-      const dedupedList = rawList.filter((p) => {
-        const key = p.guid || String(p.userID);
-        if (!key || seenKeys.has(key)) return false;
-        seenKeys.add(key);
-        return true;
+      // One row per user. The backend keeps a row per request/join, so a user
+      // can come back twice with different guids and stale mute/hideCamera;
+      // keep the newest row so the mic/camera icons reflect the current state.
+      const byUser = new Map();
+      rawList.forEach((p) => {
+        const key = p.userID
+          ? `u:${Number(p.userID)}`
+          : p.guid
+            ? `g:${p.guid}`
+            : null;
+        if (!key) return;
+        const existing = byUser.get(key);
+        if (!existing || rowIdOf(p) >= rowIdOf(existing)) byUser.set(key, p);
       });
+      const dedupedList = Array.from(byUser.values());
       return {
         ...state,
         Loading: false,
@@ -1563,7 +1597,8 @@ const videoFeatureReducer = (state = initialState, action) => {
         ? existingList
         : alreadyExists
           ? existingList.map((p) =>
-              isSamePresentationUser(p, newParticipant)
+              isSamePresentationUser(p, newParticipant) &&
+              rowIdOf(newParticipant) >= rowIdOf(p)
                 ? { ...p, ...newParticipant }
                 : p,
             )

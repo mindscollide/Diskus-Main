@@ -484,7 +484,9 @@ const VideoPanelNormal = () => {
       (presenterViewFlag && presenterViewHostFlag)
     ) {
       console.log("Check new");
-      if (!leavePresenterOrJoinOtherCalls) {
+      // A presentation viewer's roster comes from GetPresentationParticipants
+      // (above); the generic video-call roster isn't needed for them.
+      if (!leavePresenterOrJoinOtherCalls && !joiningPresentationView) {
         let Data = {
           RoomID: String(
             presenterViewFlag ? callAcceptedRoomID : participantRoomIds,
@@ -1238,6 +1240,11 @@ const VideoPanelNormal = () => {
     let activeRoomID = localStorage.getItem("activeRoomID");
     let isGuid = localStorage.getItem("isGuid");
     let participantUID = localStorage.getItem("participantUID");
+    // Fresh read: WasInVideo is true only when the user is in meeting video.
+    let wasInVideo = false;
+    try {
+      wasInVideo = Boolean(JSON.parse(localStorage.getItem("isMeetingVideo")));
+    } catch {}
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
@@ -1249,6 +1256,7 @@ const VideoPanelNormal = () => {
           : callAcceptedRoomID,
       ),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
+      WasInVideo: wasInVideo,
     };
     sessionStorage.removeItem("nonPresenter");
     dispatch(participanMuteUnMuteMeeting(true, true, true, true, 1));
@@ -2247,7 +2255,12 @@ const VideoPanelNormal = () => {
                             </Col>
                           ) : null}
                         </>
-                      ) : isMeeting && isMeetingVideo && !isMeetingHost ? (
+                      ) : isMeeting &&
+                        isMeetingVideo &&
+                        !isMeetingHost &&
+                        !joiningPresentationView ? (
+                        // (a presentation viewer, even one who is also in
+                        // meeting video, uses the presentation list below)
                         <>
                           {participantsVisible && (
                             <div className="Participants-Lists">

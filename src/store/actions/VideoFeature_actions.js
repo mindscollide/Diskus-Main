@@ -1692,6 +1692,46 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase(),
                   )
               ) {
+                // Presenter who is also the meeting-video host: reload the
+                // participant + waiting list now that presenting has stopped.
+                // Kept above the ref line so callers that don't pass
+                // stopApiCalledRef still reach it. Skipped for flag 3 (leaving
+                // meeting video for a 1:1/group call).
+                try {
+                  const inMeetingVideo = JSON.parse(
+                    localStorage.getItem("isMeetingVideo"),
+                  );
+                  const meetingVideoHost = JSON.parse(
+                    localStorage.getItem("isMeetingVideoHostCheck"),
+                  );
+                  const hostRoomID =
+                    localStorage.getItem("newRoomId") || data.RoomID;
+                  if (inMeetingVideo && meetingVideoHost && flag !== 3) {
+                    if (hostRoomID && String(hostRoomID) !== "null") {
+                      dispatch(
+                        participantListWaitingListMainApi(
+                          { RoomID: String(hostRoomID) },
+                          navigate,
+                          t,
+                        ),
+                      );
+                    }
+                  } else if (inMeetingVideo && !meetingVideoHost && flag !== 3) {
+                    // Non-host participant who presented: reload the participant
+                    // list (getAllParticipantMain) for their meeting-video room.
+                    const participantRoomID =
+                      localStorage.getItem("participantRoomId") || data.RoomID;
+                    if (participantRoomID && String(participantRoomID) !== "null") {
+                      dispatch(
+                        getVideoCallParticipantsMainApi(
+                          { RoomID: String(participantRoomID) },
+                          navigate,
+                          t,
+                        ),
+                      );
+                    }
+                  }
+                } catch {}
                 stopApiCalledRef.current = false; // 🔓 UNLOCK
                 let alreadyInMeetingVideo = JSON.parse(
                   sessionStorage.getItem("alreadyInMeetingVideo")

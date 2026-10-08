@@ -112,6 +112,7 @@ import { getMeetingByCommitteeIdApi } from "./Committee_actions";
 import { getMeetingbyGroupIdApi } from "./Groups_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import store from "../store";
+import { rememberPresentationRoomID } from "../../commen/functions/presentationRoom";
 import { resetViewTabs, toggleViewMeetingModal } from "./ModalStates_actions";
 import {
   listOfMeetingsApi,
@@ -7228,9 +7229,9 @@ const JoinCurrentMeeting = (
                 // CR(0012249): opening this meeting revealed a presentation
                 // is already active — no longer joins directly, opens the
                 // waiting room instead (same as clicking "Join Presentation").
-                localStorage.setItem(
-                  "presentationRoomID",
-                  String(response.data.responseResult.roomID),
+                rememberPresentationRoomID(
+                  Data.FK_MDID,
+                  response.data.responseResult.roomID,
                 );
                 dispatch(presentationJoinFlowFlag(true));
                 dispatch(maxParticipantVideoCallPanel(true));

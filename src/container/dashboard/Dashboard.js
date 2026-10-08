@@ -1,6 +1,10 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  clearPresentationRoom,
+  savePresentationRoom,
+} from "../../commen/functions/presentationRoom";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "@/container/meeting/commonComponents/closeMeetingTab/CancelModal";
 import {
@@ -707,6 +711,8 @@ const Dashboard = () => {
                 ),
                 IsMuted: true,
                 HideVideo: true,
+                // this user's meeting-video guid (host: isGuid, else participantUID)
+                UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
               }),
             );
             // let newRoomID = localStorage.getItem("newRoomId");
@@ -2142,6 +2148,12 @@ const Dashboard = () => {
               // to show "Join Presentation" instead of "Start Presentation"
               // for someone who hasn't been admitted (or was rejected) yet.
               dispatch(activePresentationMeetingID(data.payload?.meetingID));
+              // Remember this meeting's presentation room even if the user
+              // hasn't opened the meeting yet; JoinMeeting reads it later.
+              savePresentationRoom(
+                data.payload?.meetingID,
+                data.payload?.roomID,
+              );
               startPresenterView(data.payload);
               // Dispatch action with all UIDs
             } else if (
@@ -2162,6 +2174,7 @@ const Dashboard = () => {
               dispatch(presentationStoppedMqtt(data.payload));
               // This presentation's room is no longer joinable.
               localStorage.removeItem("presentationRoomID");
+              clearPresentationRoom(data.payload?.meetingID);
               setNotification({
                 ...notification,
                 notificationShow: true,

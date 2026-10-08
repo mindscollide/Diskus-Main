@@ -45,6 +45,7 @@ import {
 } from "./NewMeetingActions";
 import { RefreshToken } from "./Auth_action";
 import store from "../store";
+import { rememberPresentationRoomID } from "../../commen/functions/presentationRoom";
 import { editMeetingFlag, saveMeetingFlag } from "./MeetingOrganizers_action";
 
 // Fix: import Redux tab actions to replace individual xxxGlobalFlag dispatches
@@ -3283,9 +3284,9 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                   // presentation is already active — opens the waiting
                   // room instead of joining directly (see the matching fix
                   // in NewMeetingActions.js).
-                  localStorage.setItem(
-                    "presentationRoomID",
-                    String(response.data.responseResult.roomID),
+                  rememberPresentationRoomID(
+                    Data.FK_MDID,
+                    response.data.responseResult.roomID,
                   );
                   dispatch(presentationJoinFlowFlag(true));
                   dispatch(maxParticipantVideoCallPanel(true));
