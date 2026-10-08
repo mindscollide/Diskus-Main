@@ -2944,5 +2944,6 @@
   "File-size-must-not-exceed-10MB": "يجب ألا يتجاوز حجم الملف 10 ميجابايت",
   "This-file-has-already-been-attached": "تم إرفاق هذا الملف بالفعل",
   "Year": "سنة",
+  "The-meeting-has-not-published-yet": "لم يتم نشر الاجتماع بعد",
   "Due": "مستحق"
 }

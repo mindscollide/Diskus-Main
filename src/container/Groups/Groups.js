@@ -546,7 +546,7 @@ const Groups = () => {
               setCurrentGroupMeetingTabActive(2);
               dispatch(viewGroupPageFlag(true));
 
-              localStorage.removeItem("group_UserMeetPropoDatPoll");
+              localStorage.removeItem("groups_UserMeetPropoDatPoll");
               //  localStorage.setItem(
               //    "viewProposeDatePollMeetingID",
               //    getApiResponse.meetingID,
@@ -563,7 +563,7 @@ const Groups = () => {
               //  );
             }
           } catch (error) {
-            localStorage.removeItem("group_UserMeetPropoDatPoll");
+            localStorage.removeItem("groups_UserMeetPropoDatPoll");
           }
         };
 
