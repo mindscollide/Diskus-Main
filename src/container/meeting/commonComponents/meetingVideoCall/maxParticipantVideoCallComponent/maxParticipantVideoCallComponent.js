@@ -164,37 +164,50 @@ const ParticipantVideoCallComponent = () => {
     let cancelled = false;
     const enableWebCamAndMic = async () => {
       try {
-        // Access video and audio streams
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        });
-        if (cancelled) {
-          // Screen already closed before permission resolved
-          mediaStream.getTracks().forEach((track) => track.stop());
+        // CR(0012249): this is the meeting-video waiting room's own
+        // self-preview — it unconditionally calls getUserMedia to show you
+        // your own camera before joining. For a presentation join, mic/cam
+        // must never turn on at all (the toggleAudio/toggleVideo guards and
+        // the disabled-icon styling already block the BUTTONS, but this
+        // effect was still separately grabbing the camera regardless,
+        // which is why the camera light stayed on even with those buttons
+        // disabled).
+        if (isPresentationJoinFlow) {
           return;
         }
+        if (!isWebCamEnabled) {
+          // Access video and audio streams
+          const mediaStream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          });
+          if (cancelled) {
+            // Screen already closed before permission resolved
+            mediaStream.getTracks().forEach((track) => track.stop());
+            return;
+          }
 
-        // Set up video playback. A rejected play() (e.g. Safari autoplay
-        // policy) must not drop the stream, or it would never be released.
-        if (videoRef.current) {
-          videoRef.current.srcObject = mediaStream;
-          videoRef.current.muted = true;
-          videoRef.current.play().catch(() => {});
-        }
-        localStorage.setItem("isWebCamEnabled", false);
-        setStream(mediaStream); // Store the video and audio stream
-        sessionStorage.setItem("streamOnOff", JSON.stringify(true));
-        sessionStorage.setItem("videoStreamId", mediaStream.id); // Save video stream ID
+          // Set up video playback. A rejected play() (e.g. Safari autoplay
+          // policy) must not drop the stream, or it would never be released.
+          if (videoRef.current) {
+            videoRef.current.srcObject = mediaStream;
+            videoRef.current.muted = true;
+            videoRef.current.play().catch(() => {});
+          }
+          localStorage.setItem("isWebCamEnabled", false);
+          setStream(mediaStream); // Store the video and audio stream
+          sessionStorage.setItem("streamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("videoStreamId", mediaStream.id); // Save video stream ID
 
-        // Handle microphone setup
-        localStorage.setItem("isMicEnabled", false);
-        const audioTrack = mediaStream.getAudioTracks()[0];
-        if (audioTrack) {
-          const audioStream = new MediaStream([audioTrack]);
-          setStreamAudio(audioStream);
-          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
-          sessionStorage.setItem("audioStreamId", audioStream.id);
+          // Handle microphone setup
+          localStorage.setItem("isMicEnabled", false);
+          const audioTrack = mediaStream.getAudioTracks()[0];
+          if (audioTrack) {
+            const audioStream = new MediaStream([audioTrack]);
+            setStreamAudio(audioStream);
+            sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
+            sessionStorage.setItem("audioStreamId", audioStream.id);
+          }
         }
       } catch (error) {
         alert(`Error accessing media devices: ${error.message}`);

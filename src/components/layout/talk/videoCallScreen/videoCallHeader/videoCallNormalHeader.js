@@ -360,8 +360,14 @@ const VideoCallNormalHeader = ({
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let recepientGuid = localStorage.getItem("receipentGuid");
 
+  // callTypeID / callerID / acceptedRoomID outlive a group call ("0" / null /
+  // 0 once it ends). The group-call values are used only when they are real;
+  // otherwise (e.g. an advance / quick meeting video after an earlier group
+  // call) fall through to the meeting-video room and guid.
+  const isUsableId = (v) =>
+    Boolean(v) && !["null", "undefined", "0"].includes(String(v));
   let RoomID =
-    callTypeID === 2
+    callTypeID === 2 && isUsableId(roomID)
       ? roomID
       : presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
         ? roomID
@@ -369,9 +375,9 @@ const VideoCallNormalHeader = ({
           ? newRoomID
           : participantRoomId;
   let UID =
-    callTypeID === 2 && callerID !== 0
+    callTypeID === 2 && callerID !== 0 && isUsableId(callerGuid)
       ? callerGuid
-      : callTypeID === 2 && recipentCalledID !== 0
+      : callTypeID === 2 && recipentCalledID !== 0 && isUsableId(recepientGuid)
         ? recepientGuid
         : presenterViewFlag && presenterViewJoinFlag && !presenterViewHostFlag
           ? participantUID

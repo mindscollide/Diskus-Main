@@ -2143,11 +2143,11 @@ const VideoPanelNormal = () => {
     activeVideoIcon || ActiveChatBoxGS
       ? `${baseClass} more-zindexwithChatOpen`
       : baseClass;
-  // A maximised MEETING call covers the whole window at every resolution
-  // (.meeting-full-window in videoCallNormalPanel.css). 1:1 / group talk calls
-  // and the docked/minimised states keep their original size.
+  // A maximised call (meeting, 1:1 or group) covers the whole window at every
+  // resolution (.meeting-full-window in videoCallNormalPanel.css). The
+  // docked/minimised states keep their original size.
   const finalClass =
-    isMeetingVideo === true && baseClass.trim() === "max-video-panel"
+    baseClass.trim() === "max-video-panel"
       ? `${chatClass} meeting-full-window`
       : chatClass;
 
