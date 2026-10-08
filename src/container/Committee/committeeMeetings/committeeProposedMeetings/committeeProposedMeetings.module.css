@@ -176,7 +176,7 @@ body[dir="rtl"] .ResetOkBtn {
   font-size: 0.8em;
   border-radius: 4px !important;
   white-space: nowrap;
-  gap: 4px ;
+  gap: 10px;
 }
 
 .VoteMeetingButton{
