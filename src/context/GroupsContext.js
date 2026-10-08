@@ -129,6 +129,10 @@ export const GroupsProvider = ({ children }) => {
 
   const [currentViewGroupTabs, setCurrentViewGroupTabs] = useState(1);
 
+    const [groupParticipantProposedMeetingEmailRouteData, setGroupParticipantProposedMeetingEmailRouteData]= useState(null);
+  
+     const [groupOrganizerProposedMeetingEmailRouteData, setGroupOrganizerProposedMeetingEmailRouteData]= useState(null)
+
   // =========================
   // HELPERS
   // =========================
@@ -772,6 +776,10 @@ export const GroupsProvider = ({ children }) => {
         setCurrentPageDraftGroupMeeting,
         currentLengthDraftGroupMeeting,
         setCurrentLengthDraftGroupMeeting,
+
+        groupParticipantProposedMeetingEmailRouteData, setGroupParticipantProposedMeetingEmailRouteData,
+        groupOrganizerProposedMeetingEmailRouteData,
+        setGroupOrganizerProposedMeetingEmailRouteData
       }}>
       {children}
     </GroupContext.Provider>

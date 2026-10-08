@@ -573,57 +573,99 @@ export const NewMeetingProvider = ({ children }) => {
         setPublishedMeetingData([]);
         setDraftMeetingData([]);
         setProposedMeetingData([]);
+
+        setPublishedMeetingDataRecord(0);
+        setDraftMeetingDataRecord(0);
+        setProposedMeetingDataRecord(0);
+
         return;
       }
 
       const view = Number(localStorage.getItem("MeetingCurrentView"));
       const meetings = searchMeetings.meetings || [];
 
+      // Status 12 = Proposed
+      // Status 11 = Draft
+      // Anything else = Published
+      const publishedMeetings = meetings.filter(
+        (meeting) =>
+          Number(meeting.status) !== 12 && Number(meeting.status) !== 11,
+      );
+
+      const proposedMeetings = meetings.filter(
+        (meeting) => Number(meeting.status) === 12,
+      );
+
+      const draftMeetings = meetings.filter(
+        (meeting) => Number(meeting.status) === 11,
+      );
+
       switch (view) {
         case 1: {
           // Published Meetings
+          setPublishedMeetingData(publishedMeetings);
           setPublishedMeetingDataRecord(searchMeetings.totalRecords || 0);
+
           setMinutesAgo(searchMeetings.meetingStartedMinuteAgo || 0);
 
-          setPublishedMeetingData(meetings);
-          setDraftMeetingDataRecord(0);
           setDraftMeetingData([]);
-          setProposedMeetingDataRecord(0);
+          setDraftMeetingDataRecord(0);
+
           setProposedMeetingData([]);
+          setProposedMeetingDataRecord(0);
+
           break;
         }
 
         case 2: {
           // Proposed Meetings
+          setProposedMeetingData(proposedMeetings);
           setProposedMeetingDataRecord(searchMeetings.totalRecords || 0);
+
           setMinutesAgo(searchMeetings.meetingStartedMinuteAgo || 0);
-          setProposedMeetingData(meetings);
+
           setPublishedMeetingData([]);
           setPublishedMeetingDataRecord(0);
-          setDraftMeetingDataRecord(0);
+
           setDraftMeetingData([]);
+          setDraftMeetingDataRecord(0);
+
           break;
         }
 
         case 3: {
           // Draft Meetings
+          setDraftMeetingData(draftMeetings);
           setDraftMeetingDataRecord(searchMeetings.totalRecords || 0);
+
           setMinutesAgo(searchMeetings.meetingStartedMinuteAgo || 0);
-          setDraftMeetingData(meetings);
+
           setPublishedMeetingData([]);
           setPublishedMeetingDataRecord(0);
-          setProposedMeetingDataRecord(0);
+
           setProposedMeetingData([]);
+          setProposedMeetingDataRecord(0);
+
           break;
         }
 
-        default:
+        default: {
+          setPublishedMeetingData([]);
+          setDraftMeetingData([]);
+          setProposedMeetingData([]);
+
+          setPublishedMeetingDataRecord(0);
+          setDraftMeetingDataRecord(0);
+          setProposedMeetingDataRecord(0);
+
           break;
+        }
       }
     } catch (error) {
       setPublishedMeetingData([]);
       setDraftMeetingData([]);
       setProposedMeetingData([]);
+
       setPublishedMeetingDataRecord(0);
       setDraftMeetingDataRecord(0);
       setProposedMeetingDataRecord(0);
@@ -649,18 +691,16 @@ export const NewMeetingProvider = ({ children }) => {
         { value: "0", text: t("Quick-meeting") },
         ...types.map((data) => ({
           text:
-            data.type === "Board Meetings"
-              ? t("Board-meetings")
-              : "Committee Meeting"
+            data.type === "Board Meeting"
+              ? t("Board-meeting")
+              : data.type === "Committee Meeting"
                 ? t("Committee-meeting")
-                : "Group Meeting"
+                : data.type === "Group Meeting"
                   ? t("Group-meeting")
                   : data.type,
           value: String(data.pK_MTID),
         })),
       ];
-
-      console.log(meetingtypeFilter, "meetingtypeFiltermeetingtypeFilter");
 
       setMeetingTypeFilter(meetingtypeFilter);
     } catch (error) {

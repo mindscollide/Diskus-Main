@@ -1509,7 +1509,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               <Button
                                 className={styles["ADD-Committee-btn"]}
                                 onClick={handleAddAttendees}
-                                text={t("ADD")}
+                                text={t("Add")}
                               />
                             </Col>
                           </Row>

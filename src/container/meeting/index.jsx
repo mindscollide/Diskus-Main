@@ -296,6 +296,9 @@ const MainMeeting = () => {
 
   useEffect(() => {
     if (state !== null) {
+
+      console.log("state?.key", state?.key, state?.value, state);
+
       try {
         const { message = "", response = null } = state;
 
@@ -375,13 +378,12 @@ const MainMeeting = () => {
 
   useEffect(() => {
     if (state !== null) {
-      try {
-        const {
-          key,
-          value: { meetingStatusId, isQuickMeeting, meetingID, attendeeId },
-        } = state;
 
-        if (key === "viewMeeting_action") {
+      console.log("state?.key", state?.key, state?.value, state);
+      try {
+        if (state?.key === "viewMeeting_action") {
+
+          const { meetingStatusId = 0, isQuickMeeting = false, meetingID = 0, attendeeId = 0 } = state?.value;
           // If the meeting is Published State
           if (meetingStatusId === 1) {
             // If the is Quick Meeting, then open the Quick Meeting View Modal

@@ -81,7 +81,9 @@ const CommitteeProposedMeetings = () => {
     setCurrentPageProposedCommitteeMeeting,
     currentLengthProposedCommitteeMeeting,
     setCurrentLengthProposedCommitteeMeeting,
-  } = useCommitteeContext();
+    participantProposedMeetingEmailRouteData,
+    setParticipantProposedMeetingEmailRouteData,
+    organizerProposedMeetingEmailRouteData, setOrganizerProposedMeetingEmailRouteData } = useCommitteeContext();
 
   const currentLanguage = localStorage.getItem("i18nextLng");
   const {
@@ -213,6 +215,62 @@ const CommitteeProposedMeetings = () => {
       }
     }
   }, [proposedMeetingOrganizer]);
+
+  useEffect(() => {
+    if (participantProposedMeetingEmailRouteData !== null) {
+      try {
+        dispatch(
+          getMeetingDetailsByMeetingIdApi(
+            navigate,
+            t,
+            { MeetingID: participantProposedMeetingEmailRouteData.meetingID },
+            "ProposedMeetingViewForParticipant",
+            {
+              responseDeadline: participantProposedMeetingEmailRouteData.deadline,
+              meetingId: participantProposedMeetingEmailRouteData.meetingID,
+              setResponseByDate,
+            },
+          ),
+        );
+        setParticipantProposedMeetingEmailRouteData(null);
+        localStorage.setItem(
+          "viewProposeDatePollMeetingID",
+          participantProposedMeetingEmailRouteData.meetingID,
+        );
+      } catch (error) {
+        setParticipantProposedMeetingEmailRouteData(null);
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
+    }
+  }, [participantProposedMeetingEmailRouteData]);
+
+  useEffect(() => {
+    if (organizerProposedMeetingEmailRouteData !== null) {
+      try {
+
+        // localStorage.setItem(
+        //   "viewProposeDatePollMeetingID",
+        //   organizerProposedMeetingEmailRouteData.meetingID,
+        // );
+        // localStorage.removeItem("UserMeetPropoDatPoll");
+        dispatch(
+          getUserWiseProposedDatesForOrganizerApi(
+            navigate,
+            t,
+            { MeetingID: organizerProposedMeetingEmailRouteData.meetingID },
+            "",
+            {},
+          ),
+        );
+        setOrganizerProposedMeetingEmailRouteData(null)
+
+      } catch (error) {
+        setOrganizerProposedMeetingEmailRouteData(null)
+
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
+    }
+  }, [organizerProposedMeetingEmailRouteData]);
 
   const handelChangePagination = async (current, PageSize) => {
     setCurrentPageProposedCommitteeMeeting(current);

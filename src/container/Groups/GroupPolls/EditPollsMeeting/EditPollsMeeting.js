@@ -567,7 +567,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                     filterOption={customFilter}
                   />
                   <Button
-                    text={t("ADD")}
+                    text={t("Add")}
                     className={styles["ADD_Btn_CreatePool_Modal"]}
                     disableBtn={checkForPollStatus}
                     onClick={handleAddUsers}

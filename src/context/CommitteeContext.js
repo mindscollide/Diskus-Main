@@ -140,6 +140,10 @@ export const CommitteeProvider = ({ children }) => {
 
   const [startMeetingButton, setStartMeetingButton] = useState([]);
 
+  const [participantProposedMeetingEmailRouteData, setParticipantProposedMeetingEmailRouteData]= useState(null);
+
+   const [organizerProposedMeetingEmailRouteData, setOrganizerProposedMeetingEmailRouteData]= useState(null)
+
   // =========================
   // HELPERS (same pattern)
   // =========================
@@ -788,6 +792,9 @@ export const CommitteeProvider = ({ children }) => {
         setCurrentLengthDraftCommitteeMeeting,
 
         loadCommitteeMeetings,
+        setParticipantProposedMeetingEmailRouteData,
+        participantProposedMeetingEmailRouteData,
+        organizerProposedMeetingEmailRouteData, setOrganizerProposedMeetingEmailRouteData
       }}>
       {children}
     </CommitteeContext.Provider>
