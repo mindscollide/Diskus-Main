@@ -66,6 +66,8 @@ import { useSnackbar } from "@/components/elements";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 
 const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //For Localization
@@ -83,6 +85,11 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const dispatch = useDispatch();
   const { isQuickMeetingUpdate, setIsQuickMeetingUpdate } =
     useNewMeetingContext();
+  // Publishing a quick meeting from Committee/Group's Draft tab should move
+  // the user to the Published tab, regardless of which tab they were on —
+  // threaded through to the refetch action so it can switch it on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   const assigneesViewMeetingDetails = useSelector(
     (state) => state.assignees.ViewMeetingDetails,
   );
@@ -421,6 +428,10 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         newData,
         2,
         setIsQuickMeetingUpdate,
+        {
+          setCurrentCommitteeMeetingTabActive,
+          setCurrentGroupMeetingTabActive,
+        },
       ),
     );
     await setObjMeetingAgenda({
@@ -828,7 +839,12 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         });
       });
       setReminderOptions(reminderOptions);
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:",
+        error,
+      );
+    }
   }, [assigneesRemindersData]);
 
   const callApi = async () => {
@@ -1008,9 +1024,19 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
             return;
           }
           setAllPresenters(PresenterData);
-        } catch (error) {}
+        } catch (error) {
+          console.error(
+            "src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:",
+            error,
+          );
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:",
+        error,
+      );
+    }
   }, [assigneesuser, checkFlag]);
 
   useEffect(() => {
@@ -1292,7 +1318,12 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         }
         // meeting Members
       }
-    } catch {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:",
+        error,
+      );
+    }
   }, [checkFlag]);
 
   // for fetch data for edit from grid
@@ -1459,7 +1490,12 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
 
         setAttendeesParticipant(membersData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:",
+        error,
+      );
+    }
   }, [
     assigneesuser,
     checkFlag,
@@ -1617,7 +1653,12 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
               setAddedParticipantNameList(List);
             }
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error(
+            "src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:",
+            error,
+          );
+        }
         try {
           viewData.meetingAgendas.forEach((atchmenData, index) => {
             let opData = {
@@ -1648,7 +1689,12 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {}
+        } catch (error) {
+          console.error(
+            "src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:",
+            error,
+          );
+        }
         try {
           viewData.minutesOfMeeting.forEach((minutesOfMeetingData) => {
             minutesOfMeetings.push({
@@ -1713,7 +1759,12 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         });
         setMinutesOfMeeting(minutesOfMeetings);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/UpdateQuickMeeting/UpdateQuickMeeting.js:",
+        error,
+      );
+    }
   }, [assigneesViewMeetingDetails]);
 
   const editGrid = (datarecord, dataindex) => {
@@ -1933,7 +1984,6 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         MeetingAttendees: createMeeting.MeetingAttendees,
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
-      console.log(newData, "UpdateMeetingUpdateMeetingUpdateMeeting");
       await dispatch(
         UpdateMeeting(
           navigate,
@@ -2501,8 +2551,8 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     <Button
                       className={
                         isDetails
-                          ? "  isDetail-Update-btn"
-                          : "   isDetail-Update-Outline-btn"
+                          ? "UpdateQuickMeetingTabActive"
+                          : "UpdateQuickMeetingTabNotActive"
                       }
                       variant={"Primary"}
                       text={t("Details")}
@@ -2511,8 +2561,8 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     <Button
                       className={
                         isAttendees
-                          ? "  isDetail-Update-btn"
-                          : "   isDetail-Update-Outline-btn"
+                          ? "UpdateQuickMeetingTabActive"
+                          : "UpdateQuickMeetingTabNotActive"
                       }
                       variant={"Primary"}
                       text={t("Participants")}
@@ -2522,11 +2572,11 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     <Button
                       className={
                         isAgenda
-                          ? "  isDetail-Update-btn"
-                          : "   isDetail-Update-Outline-btn"
+                          ? "UpdateQuickMeetingTabActive"
+                          : "UpdateQuickMeetingTabNotActive"
                       }
                       variant={"Primary"}
-                      text={t("Agendas")}
+                      text={t("Agenda")}
                       onClick={changeSelectAgenda}
                       datatut='show-agenda'
                     />
@@ -2534,8 +2584,8 @@ const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       <Button
                         className={
                           isMinutes
-                            ? "  isDetail-Update-btn"
-                            : "   isDetail-Update-Outline-btn"
+                            ? "UpdateQuickMeetingTabActive"
+                            : "UpdateQuickMeetingTabNotActive"
                         }
                         variant={"Primary"}
                         text={t("Minutes")}

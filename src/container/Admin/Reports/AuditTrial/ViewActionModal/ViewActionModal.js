@@ -40,7 +40,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
         setAuditActionsData([]);
       }
     } catch (error) {
-      
+      console.error("src/container/Admin/Reports/AuditTrial/ViewActionModal/ViewActionModal.js:", error);
     }
     return () => {
       setAuditActionsData([]);
@@ -109,10 +109,10 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
                   <span>
                     :&nbsp;
                     {viewActionModalDataState.deviceID === "1"
-                      ? "Web"
+                      ? t("Web")
                       : viewActionModalDataState.deviceID === "2"
-                      ? "Mobile"
-                      : "Tablet"}
+                      ? t("Mobile")
+                      : t("Tablet")}
                   </span>
                 </span>
               </Col>

@@ -20,12 +20,14 @@ import {
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option";
 import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
-
+import EmptyStates from "../../../../../assets/images/No-Meetings.png";
+import { formatNumber } from "../../../../../commen/functions/utils";
 const Recording = () => {
   const meetingRecordingFiles = useSelector(
     (state) => state.NewMeetingreducer.meetingRecordingFiles,
   );
-  const { advanceMeetingModalID } = useMeetingContext();
+  const { advanceMeetingModalID, handleCloseMeeting, editorRole } =
+    useMeetingContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -98,7 +100,9 @@ const Recording = () => {
 
         setData(MeetingData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/recording/Recording.js:", error);
+    }
   }, [meetingRecordingFiles]);
 
   const handleClickTranscribe = (record) => {
@@ -141,10 +145,7 @@ const Recording = () => {
         return (
           <>
             <span className={styles["RecordingTable___size"]}>
-              {`${convertToArabicNumerals(
-                text,
-                localStorage.getItem("i18nextLng"),
-              )} MB`}
+              {`${formatNumber(text)} MB`}
             </span>
           </>
         );
@@ -166,12 +167,12 @@ const Recording = () => {
                 className='d-flex justify-content-end gap-3'>
                 <Button
                   className={styles["DownloadBtn"]}
-                  text={"Transcribe"}
+                  text={t("Transcribe")}
                   onClick={() => handleClickTranscribe(record)}
                 />
                 <Button
                   className={styles["DownloadBtn"]}
-                  text={"Download"}
+                  text={t("Download")}
                   onClick={() => DownloadRecording(record)}
                 />
               </Col>
@@ -190,7 +191,7 @@ const Recording = () => {
                 className='d-flex justify-content-end gap-3'>
                 <Button
                   className={styles["DownloadBtn"]}
-                  text={"Download"}
+                  text={t("Download")}
                   onClick={() => DownloadRecording(record)}
                 />
               </Col>
@@ -237,11 +238,60 @@ const Recording = () => {
     // dispatch(DataRoomDownloadFileWithFooterApiFunc(navigate, data, t, record.fileName));
   };
   return (
-    <Row>
-      <Col sm={12} md={12} lg={12}>
-        <Table rows={data} column={columns} pagination={false} />
-      </Col>
-    </Row>
+    <>
+      <Row>
+        <Col sm={12} md={12} lg={12}>
+          <Table
+            rows={data}
+            column={columns}
+            pagination={false}
+            locale={{
+              emptyText: (
+                <section className='d-flex justify-content-center align-items-center h-100 flex-column pt-5'>
+                  <Row className='mt-0'>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex justify-content-center'>
+                      <img
+                        alt=''
+                        draggable={false}
+                        src={EmptyStates}
+                        width={200}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className='mt-2'>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex justify-content-center'>
+                      <span className={"Empty-State_Heading"}>
+                        {t("No-meeting-recordings")}
+                      </span>
+                    </Col>
+                  </Row>
+              
+                </section>
+              ), //
+            }}
+          />
+        </Col>
+      </Row>
+      {Number(editorRole.status) !== 10 && (
+        <Row className='mt-3'>
+          <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+            <Button
+              text={t("Close")}
+              className={styles["CloseMeetingButton"]}
+              onClick={handleCloseMeeting}
+            />
+          </Col>
+        </Row>
+      )}
+    </>
   );
 };
 

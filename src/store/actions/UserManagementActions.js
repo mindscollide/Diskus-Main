@@ -22,7 +22,6 @@ import {
   DownloadBoarddeckPDF,
   BoardDeckSendEmail,
   validateVideoRecordingURL,
-  getMinutesPublishedStatus,
   GetMeetingBoardDeckCredentialsStatus,
 } from "../../commen/apis/Api_config";
 import {
@@ -2615,7 +2614,9 @@ const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
               response.data = JSON.parse(
                 new TextDecoder().decode(new Uint8Array(response.data)),
               );
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/UserManagementActions.js:", error);
+            }
           }
 
           if (response.data.responseCode === 400) {

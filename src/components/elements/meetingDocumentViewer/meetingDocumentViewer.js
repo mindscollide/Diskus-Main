@@ -102,7 +102,9 @@ const MeetingDocumentViewer = () => {
        }
  
        return clearLocalStorage;
-     } catch (error) {}
+     } catch (error) {
+       console.error("src/components/elements/meetingDocumentViewer/meetingDocumentViewer.js:", error);
+     }
    }, [attachmentID]);
  
    // Handle File Removal via MQTT
@@ -373,7 +375,9 @@ const MeetingDocumentViewer = () => {
        }
        // Reset the unsaved changes flag after successful save
        setHasUnsavedChanges(false);
-     } catch (error) {}
+     } catch (error) {
+       console.error("src/components/elements/meetingDocumentViewer/meetingDocumentViewer.js:", error);
+     }
    };
  
    const setPermissions = (instance) => {

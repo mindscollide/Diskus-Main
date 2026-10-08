@@ -607,7 +607,7 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
                   "ToDoList_ToDoListServiceManager_RemoveTaskMeetingMapping_01".toLowerCase(),
                 )
             ) {
-              dispatch(removeMapTaskSuccess(t("Delete-successfully")));
+              dispatch(removeMapTaskSuccess(t("Task-deleted-successfully")));
 
               let userID = localStorage.getItem("userID");
               let meetingpageRow = localStorage.getItem("MeetingPageRows");

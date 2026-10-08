@@ -201,7 +201,7 @@ const ViewPoll = () => {
                   <Col lg={12} md={12} sm={12} className="m-0 p-0">
                     <span className={styles["Multiple_viewModal"]}>
                       {viewPollsDetails.allowmultipleanswers === true
-                        ? "Multiple Answers Allowed"
+                        ? t("Multiple-answers-allowed")
                         : ""}
                     </span>
                   </Col>

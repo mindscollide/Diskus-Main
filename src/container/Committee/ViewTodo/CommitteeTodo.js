@@ -86,7 +86,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         };
         dispatch(getTaskCommitteeIDApi(navigate, t, newData));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewTodo/CommitteeTodo.js:", error);
+    }
   }, []);
 
   // Remove task from mqtt response
@@ -118,7 +120,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewTodo/CommitteeTodo.js:", error);
+    }
   }, [toDoListReducersocketTodoStatusData]);
 
   //get todolist reducer
@@ -148,7 +152,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         setRowToDo([]);
         setOriginalData([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewTodo/CommitteeTodo.js:", error);
+    }
   }, [PollsReducergetTodoCommitteeTask]);
 
   useEffect(() => {
@@ -160,7 +166,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         }
         dispatch(createTaskCommitteeMQTT(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewTodo/CommitteeTodo.js:", error);
+    }
   }, [toDoListReducercreateTaskCommittee]);
 
   // SET STATUS VALUES
@@ -499,8 +507,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -605,7 +613,9 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           setRemoveTodo(0);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/ViewTodo/CommitteeTodo.js:", error);
+    }
   }, [getTodosStatusUpdateTodoStatusMessage, removeTodo]);
 
   const scroll = {

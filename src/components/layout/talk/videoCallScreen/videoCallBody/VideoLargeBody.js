@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
 import './VideoLargeBody.css'
 import {
   endIndexUrl,
@@ -9,6 +10,7 @@ import {
 } from '../../../../../commen/functions/urlVideoCalls'
 
 const VideoLargeBody = () => {
+  const { t } = useTranslation()
   let currentUserID = Number(localStorage.getItem('userID'))
   let initiateCallRoomID = localStorage.getItem('initiateCallRoomID')
   let callAcceptedRoomID = localStorage.getItem('acceptedRoomID')
@@ -64,7 +66,7 @@ const VideoLargeBody = () => {
                     ? participantURL
                     : callerURL
                 }
-                title="Live Video"
+                title={t('Live-video')}
                 width="100%"
                 height="100%"
                 frameBorder="0"

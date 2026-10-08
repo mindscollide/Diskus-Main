@@ -41,7 +41,6 @@ const SignInUserManagement = () => {
 
   const emailRef = useRef();
 
-
   const UserManagementModalsmobileAppPopUpData = useSelector(
     (state) => state.UserManagementModals.mobileAppPopUp,
   );
@@ -139,38 +138,41 @@ const SignInUserManagement = () => {
     const vendor = navigator.vendor?.toLowerCase() || "";
 
     const detectBrowser = async () => {
-      // ✅ Step 1: Try identifying Brave by its built-in API
+      // ✅ Step 1: Brave check (Brave ka UA "Chrome" jaisa hota hai isliye pehle exclude zaroori hai)
       if (navigator.brave && (await navigator.brave.isBrave?.())) {
         return "Brave";
       }
 
-      // ✅ Step 2: Fallbacks using userAgent and vendor (for other browsers)
+      // ✅ Step 2: Other Chromium-based browsers pehle check karo, taake wo galti se "Chrome" na ban jayein
+      if (userAgent.includes("edg")) return "Edge";
+      if (userAgent.includes("opr") || userAgent.includes("opera"))
+        return "Opera";
+      if (userAgent.includes("samsungbrowser")) return "Samsung Internet";
+      if (userAgent.includes("vivaldi")) return "Vivaldi";
+      if (userAgent.includes("ucbrowser")) return "UC Browser";
+      if (userAgent.includes("duckduckgo")) return "DuckDuckGo";
+      if (userAgent.includes("yabrowser")) return "Yandex Browser";
+      if (userAgent.includes("maxthon")) return "Maxthon";
+      if (userAgent.includes("puffin")) return "Puffin";
+
+      // ✅ Step 3: Ab Chrome ki HAR variant catch karo — desktop, Android, iOS (CriOS)
       if (
-        vendor.includes("google") &&
-        userAgent.includes("chrome") &&
-        !userAgent.includes("edg") &&
-        !userAgent.includes("opr")
-      )
+        userAgent.includes("crios") || // iPhone/iPad Chrome
+        (userAgent.includes("chrome") && vendor.includes("google")) // Desktop + Android Chrome
+      ) {
         return "Chrome";
-      if (userAgent.includes("edg") || userAgent.includes("edge"))
-        return "Edge";
+      }
+
+      // ✅ Step 4: Baaki browsers
       if (userAgent.includes("firefox") || userAgent.includes("fxios"))
         return "Firefox";
       if (
         userAgent.includes("safari") &&
         !userAgent.includes("chrome") &&
-        !userAgent.includes("chromium")
+        !userAgent.includes("crios")
       )
         return "Safari";
-      if (userAgent.includes("opr") || userAgent.includes("opera"))
-        return "Opera";
-      if (userAgent.includes("vivaldi")) return "Vivaldi";
-      if (userAgent.includes("ucbrowser")) return "UC Browser";
-      if (userAgent.includes("samsungbrowser")) return "Samsung Internet";
-      if (userAgent.includes("duckduckgo")) return "DuckDuckGo";
-      if (userAgent.includes("yabrowser")) return "Yandex Browser";
-      if (userAgent.includes("maxthon")) return "Maxthon";
-      if (userAgent.includes("puffin")) return "Puffin";
+
       return "Unknown";
     };
 
@@ -382,11 +384,7 @@ const SignInUserManagement = () => {
                   </Col>
                 </span>
               </Col>
-              <Col
-                lg={8}
-                md={8}
-                sm={8}
-                className='position-relative d-flex'>
+              <Col lg={8} md={8} sm={8} className='position-relative d-flex'>
                 <Col
                   md={8}
                   lg={8}

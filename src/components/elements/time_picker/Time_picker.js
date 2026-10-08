@@ -7,10 +7,9 @@ import { ConfigProvider } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
 import en_US from "antd/es/locale/en_GB";
 import fr_FR from "antd/es/locale/fr_FR";
-require("moment/locale/ar");
-require("moment/locale/fr");
-require("moment/locale/en-gb");
-
+import "moment/dist/locale/ar";
+import "moment/dist/locale/fr";
+import "moment/dist/locale/en-gb";
 /**
  * @component TimePickers
  * @description An internationalised time picker built on Ant Design's TimePicker and

@@ -56,7 +56,10 @@ import ProposedNewMeeting from "../meeting/proposedMeetingFlow/ProposedNewMeetin
 import ViewProposedMeetingModal from "../meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import ViewParticipantsDates from "../meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
 import { useCommitteeContext } from "../../context/CommitteeContext";
-import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
+import {
+  getMeetingDetailsByMeetingIdApi,
+  resetCurrentMeetingInfo,
+} from "../../store/actions/NewMeeting2.actions";
 import {
   resetCreateEditTabs,
   resetViewTabs,
@@ -67,14 +70,20 @@ import {
   toggleIsParticipantProposedMeetingDates,
 } from "../../store/actions/ModalStates_actions";
 import { useMeetingContext } from "../../context/MeetingContext";
-import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
+import {
+  validateStringEmailApi,
+  validateStringParticipantProposedApi,
+  validateStringUserMeetingProposedDatesPollsApi,
+} from "../../store/actions/NewMeetingActions";
+import { useNewMeetingContext } from "../../context/NewMeetingContext";
 
 const Committee = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state, pathname } = useLocation();
   const { setEditorRole } = useMeetingContext();
+  const { setResponseByDate } = useNewMeetingContext();
   let currentPage = localStorage.getItem("CocurrentPage");
   const {
     ViewCommitteePage,
@@ -84,6 +93,10 @@ const Committee = () => {
     setCurrentViewCommitteeTabs,
     currentViewCommitteeTabs,
     setCurrentCommitteeMeetingTabActive,
+    setParticipantProposedMeetingEmailRouteData,
+    participantProposedMeetingEmailRouteData,
+    organizerProposedMeetingEmailRouteData,
+    setOrganizerProposedMeetingEmailRouteData,
   } = useCommitteeContext();
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
@@ -170,6 +183,9 @@ const Committee = () => {
   const committee_meetingprop = localStorage.getItem(
     "committee_meetingprop_action",
   );
+  const committee_meetingpropOrganizer = localStorage.getItem(
+    "committee_UserMeetPropoDatPoll",
+  );
 
   useEffect(() => {
     try {
@@ -226,35 +242,56 @@ const Committee = () => {
       dispatch(resetViewTabs());
       setShowModal(false); // Reset modal visibility
       dispatch(viewCommitteePageFlag(false));
+      // Reset the Published/Draft/Proposed tab selection too — without
+      // this, leaving Committee Meetings on the Draft/Proposed tab and
+      // coming back (e.g. via the sidebar) reopened on that same tab
+      // instead of defaulting back to Published (1).
+      setCurrentCommitteeMeetingTabActive(1);
     };
   }, []); // Empty dependency array ensures the effect runs only once on mount
   useEffect(() => {
     if (state !== null) {
       try {
-        const {
-          message,
-          response: { committeeGroupMeetingID, committeeGroupTitle },
-        } = state;
+        const { message, response } = state;
+
+        console.log(message, response, "response")
+        // response.committeeGroupMeetingID/committeeGroupTitle never
+        // existed on this object — routeMeetingTypeNotification only ever
+        // populated it with the meeting-status API result plus
+        // MeetingID/isQuickMeeting, so this was always undefined, which
+        // corrupted ViewCommitteeID in localStorage to the literal string
+        // "undefined" on every web-notification click and broke every
+        // subsequent API call that read it. Use the fields that actually
+        // exist: CommitteeID (forwarded from the notification payload) and
+        // meetingTitle (from the meeting-status result itself).
+        const committeeID = response?.CommitteeID;
+        const committeeTitle = response?.meetingTitle;
         if (message === "proposedmeeting") {
           setCurrentCommitteeMeetingTabActive(2);
-        } else {
         }
-        dispatch(
-          viewCommitteeDetails({
-            committeeID: committeeGroupMeetingID,
-            committeeTitle: committeeGroupTitle,
-          }),
-        );
-        setCurrentViewCommitteeTabs(4);
-
-        localStorage.setItem("ViewCommitteeID", committeeGroupMeetingID);
-        setViewCommitteePage(true);
-        dispatch(viewCommitteePageFlag(true));
-      } catch (error) {}
+        if (committeeID) {
+          dispatch(
+            viewCommitteeDetails({
+              committeeID,
+              committeeTitle,
+            }),
+          );
+          setCurrentViewCommitteeTabs(4);
+          localStorage.setItem("ViewCommitteeID", committeeID);
+          setViewCommitteePage(true);
+          dispatch(viewCommitteePageFlag(true));
+        }
+        // Clear the routing state once consumed — otherwise it survives
+        // navigating away and back (or a second click reusing the same
+        // location.state) and this effect re-fires with stale data,
+        // matching the pattern already used by meeting/index.jsx for the
+        // same notification flow.
+        navigate(pathname, { replace: true, state: null });
+      } catch (error) {
+        console.error("src/container/Committee/Committee.js:", error);
+      }
     }
   }, [state]);
-
-
 
   useEffect(() => {
     if (committeeViewId !== null) {
@@ -337,7 +374,9 @@ const Committee = () => {
       } else {
         setGetCommitteeData([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerGetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
@@ -397,9 +436,146 @@ const Committee = () => {
   useEffect(() => {
     if (committee_meetingprop !== null) {
       try {
-      } catch (error) {}
+        const callApi = async () => {
+          try {
+            let getApiResponse = await validateStringParticipantProposedApi(
+              committee_meetingprop,
+              navigate,
+              t,
+            )(dispatch); // Ensure you're passing dispatch
+            if (getApiResponse) {
+              setParticipantProposedMeetingEmailRouteData(getApiResponse);
+              console.log(
+                getApiResponse,
+                "getApiResponsegetApiResponsegetApiResponse",
+              );
+              dispatch(
+                viewCommitteeDetails({
+                  committeeID: getApiResponse.commmitteeGroupID,
+                  committeeTitle: getApiResponse.committeeGroupTitle,
+                }),
+              );
+              setCurrentViewCommitteeTabs(4);
+              localStorage.setItem(
+                "ViewCommitteeID",
+                getApiResponse.commmitteeGroupID,
+              );
+              setViewCommitteePage(true);
+              setCurrentCommitteeMeetingTabActive(2);
+              dispatch(viewCommitteePageFlag(true));
+              // dispatch(viewCommitteePageFlag(true));
+              // dispatch(
+              //   getMeetingDetailsByMeetingIdApi(
+              //     navigate,
+              //     t,
+              //     { MeetingID: getApiResponse.meetingID },
+              //     "ProposedMeetingViewForParticipant",
+              //     {
+              //       responseDeadline: getApiResponse.deadline,
+              //       meetingId: getApiResponse.meetingID,
+              //       setResponseByDate,
+              //     },
+              //   ),
+              // );
+              // localStorage.setItem(
+              //   "viewProposeDatePollMeetingID",
+              //   getApiResponse.meetingID,
+              // );
+              localStorage.removeItem("committee_meetingprop_action");
+
+              // setResponseByDate(getApiResponse.deadline);
+              // dispatch(
+              //   GetAllProposedMeetingDateApi(
+              //     navigate,
+              //     t,
+              //     { MeetingID: getApiResponse.meetingID },
+              //     "",
+              //     {},
+              //   ),
+              // );
+              // dispatch(toggleIsParticipantProposedMeetingDates(true));
+            }
+          } catch (error) {
+            localStorage.removeItem("committee_meetingprop_action");
+          }
+        };
+
+        callApi();
+        //         dispatch(
+        //   viewCommitteeDetails({
+        //     committeeID: data.committeeID,
+        //     committeeTitle: data.committeesTitle,
+        //   }),
+        // );
+        // setCurrentViewCommitteeTabs(4);
+        // localStorage.setItem("ViewCommitteeID", data.committeeID);
+        // setViewCommitteePage(true);
+        // dispatch(viewCommitteePageFlag(true));
+      } catch (error) {
+        console.error("src/container/Committee/Committee.js:", error);
+      }
     }
   }, [committee_meetingprop]);
+
+  useEffect(() => {
+    if (committee_meetingpropOrganizer !== null) {
+      try {
+        const callApi1 = async () => {
+          try {
+            let getApiResponse =
+              await validateStringUserMeetingProposedDatesPollsApi(
+                committee_meetingpropOrganizer,
+                navigate,
+                t,
+              )(dispatch); // Ensure you're passing dispatch here
+
+            if (getApiResponse) {
+              setOrganizerProposedMeetingEmailRouteData(getApiResponse);
+              dispatch(
+                viewCommitteeDetails({
+                  committeeID: getApiResponse.commmitteeGroupID,
+                  committeeTitle: getApiResponse.committeeGroupTitle,
+                }),
+              );
+              setCurrentViewCommitteeTabs(4);
+              localStorage.setItem(
+                "ViewCommitteeID",
+                getApiResponse.commmitteeGroupID,
+              );
+              setViewCommitteePage(true);
+              setCurrentCommitteeMeetingTabActive(2);
+              dispatch(viewCommitteePageFlag(true));
+
+              localStorage.removeItem("committee_UserMeetPropoDatPoll");
+              //  localStorage.setItem(
+              //    "viewProposeDatePollMeetingID",
+              //    getApiResponse.meetingID,
+              //  );
+              //  localStorage.removeItem("UserMeetPropoDatPoll");
+              //  dispatch(
+              //    getUserWiseProposedDatesForOrganizerApi(
+              //      navigate,
+              //      t,
+              //      { MeetingID: getApiResponse.meetingID },
+              //      "",
+              //      {},
+              //    ),
+              //  );
+            }
+          } catch (error) {
+            localStorage.removeItem("committee_UserMeetPropoDatPoll");
+          }
+        };
+
+        callApi1();
+      } catch (error) {
+        console.error(
+          "src/container/meeting/proposedMeetingFlow/index.jsx:",
+          error,
+        );
+      }
+    }
+  }, [committee_meetingpropOrganizer]);
 
   // useEffect(() => {
   //   try {
@@ -551,7 +727,9 @@ const Committee = () => {
 
         dispatch(realtimeCommitteeStatusResponse(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerrealtimeCommitteeStatus]);
 
   useEffect(() => {
@@ -573,7 +751,9 @@ const Committee = () => {
 
         dispatch(realtimeCommitteeResponse(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerrealtimeCommitteeCreateResponse]);
 
   useEffect(() => {
@@ -598,7 +778,9 @@ const Committee = () => {
           }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/Committee.js:", error);
+    }
   }, [CommitteeReducerremoveCommitteeMember]);
 
   const archivedmodaluser = async (e) => {
@@ -1052,29 +1234,21 @@ const Committee = () => {
               </Col>
             </Row>
             {getcommitteedata.length > 0 && (
-              <Row className='mt-2'>
+              <Row>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-center '>
-                  <Container className={styles["PaginationStyle-Committee"]}>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={"pagination-groups-table"}>
-                        <CustomPagination
-                          total={totalRecords}
-                          current={JSON.parse(currentPage)}
-                          pageSize={8}
-                          onChange={handlechange}
-                          showSizer={false}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
+                  className={
+                    "pagination-groups-table d-flex justify-content-center"
+                  }>
+                  <CustomPagination
+                    total={totalRecords}
+                    current={JSON.parse(currentPage)}
+                    pageSize={8}
+                    onChange={handlechange}
+                    showSizer={false}
+                  />
                 </Col>
               </Row>
             )}

@@ -7,6 +7,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Progress } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { viewVotesDetailsModal } from "../../../store/actions/Polls_actions";
+import { formatNumber } from "../../../commen/functions/utils";
 const PollDetails = () => {
   const dispatch = useDispatch();
   const PollsReducerviewVotes = useSelector(
@@ -152,7 +153,7 @@ const PollDetails = () => {
                               <span className={styles["No-of-Yes-Answers"]}>
                                 {data.answer} -{" "}
                                 <span className={styles["no-Of-Yes"]}>
-                                  {data.votePercentage}%
+                                  {formatNumber(data.votePercentage)}%
                                 </span>
                               </span>
                             </Col>
@@ -160,7 +161,7 @@ const PollDetails = () => {
                           <Row>
                             <Col lg={12} md={12} sm={12} className="m-0 p-0">
                               <Progress
-                                percent={data.votePercentage}
+                                percent={formatNumber(data.votePercentage)}
                                 className="pollsDetailsProgress"
                                 status="active"
                               />

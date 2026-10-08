@@ -31,6 +31,8 @@ const Stats = () => {
     (state) => state.SignatureWorkFlowReducer.getDashboardPendingApprovalData
   );
 
+
+  console.log(getDashboardTaskCountMQTT, "getDashboardTaskDatagetDashboardTaskData")
   const [counts, setCounts] = useState({
     totalMeetingCount: 0,
     upcomingMeetingCount: 0,
@@ -47,8 +49,8 @@ const Stats = () => {
         dispatch(getDashbardTaskDataApi(navigate, t));
       }
       dispatch(getDashbardPendingApprovalDataApi(navigate, t));
-    } catch {
-      
+    } catch (error) {
+      console.error("src/container/NewDashboardLayout/Stats/Stats.js:", error);
     }
   }, []);
 
@@ -86,7 +88,9 @@ const Stats = () => {
           totalTaskCount: totalNumberOfToDoList,
           upComingTaskCount: totalNumberOfAssignedToDoList,
         }));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/NewDashboardLayout/Stats/Stats.js:", error);
+      }
     }
   }, [getDashboardTaskCountMQTT]);
 

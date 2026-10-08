@@ -1,3 +1,13 @@
+.CloseMeetingButton {
+  min-width: 88px !important;
+  min-height: 39px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
 .BackGround_Agenda {
   width: 100% !important;
   height: auto !important;
@@ -192,8 +202,11 @@ body[dir="rtl"] .SubajendaBox {
 }
 
 .Scroller_Agenda {
-  min-height: 52vh !important;
+  max-height: 62vh !important;
   overflow-x: hidden !important;
+  overflow-y: auto !important;
+  margin: 0 !important;
+  margin-top: 10px !important;
 }
 
 .Scroller_Agenda::-webkit-scrollbar {
@@ -357,7 +370,7 @@ body[dir="rtl"] .BackGroundNewImplemented {
   right: 0;
   top: 10px;
   width: 40px;
-  z-index: 9 !important;
+  z-index: 1 !important; /* below the meeting video panel (z-index 1, later in DOM) */
 }
 
 body[dir="rtl"] .Arrow {
@@ -369,7 +382,7 @@ body[dir="rtl"] .Arrow {
   top: 10px;
   left: 0;
   width: 40px;
-  z-index: 9 !important;
+  z-index: 1 !important; /* below the meeting video panel (z-index 1, later in DOM) */
 }
 
 .SubAgendaArrow {
@@ -389,7 +402,7 @@ body[dir="rtl"] .SubAgendaArrow {
   right: 0;
   top: 10px;
   width: 40px;
-  z-index: 9 !important;
+  z-index: 1 !important; /* below the meeting video panel (z-index 1, later in DOM) */
 }
 
 body[dir="rtl"] .Arrow_Expanded {
@@ -398,7 +411,7 @@ body[dir="rtl"] .Arrow_Expanded {
   top: 10px;
   left: 0;
   width: 40px;
-  z-index: 9 !important;
+  z-index: 1 !important; /* below the meeting video panel (z-index 1, later in DOM) */
 }
 
 .subAgendaArrowExpand {
@@ -1029,12 +1042,11 @@ span.SubAgenda_Description {
   background: #f6f9fc !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 13px !important;
-  font-style: normal !important;
   font-size: 12px !important;
   text-decoration-line: underline !important;
   color: #5a5a5c !important;
-  font-weight: 500 !important;
-  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  /* text-transform: uppercase !important; */
   height: 30px !important;
   width: 85px !important;
   margin-top: 10px;
@@ -1158,4 +1170,8 @@ body[dir="rtl"] .disabled-box-agenda-camera {
 .Stop-presenter-view-class p {
   margin: 0;
   display: inline-block;
+}
+.AgendaViewer_wrapper{
+    max-height: 62vh !important;
+  overflow-x: hidden !important;
 }

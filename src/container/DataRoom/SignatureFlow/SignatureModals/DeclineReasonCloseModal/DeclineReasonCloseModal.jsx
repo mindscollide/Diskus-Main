@@ -47,7 +47,7 @@ const DeclineReasonCloseModal = ({ show, setShow }) => {
           <Row>
             <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
               <Button
-                text="Close"
+                text={t("Close")}
                 className={styles["declineReasonCancelBtn"]}
                 onClick={() => window.close()}
               />

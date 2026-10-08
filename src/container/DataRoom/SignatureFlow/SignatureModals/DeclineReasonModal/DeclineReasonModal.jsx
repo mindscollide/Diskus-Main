@@ -82,7 +82,7 @@ const DeclineReasonModal = ({
               <TextField
                 as={"textarea"}
                 applyClass={"DeclineReasonInput"}
-                placeholder={"Reason"}
+                placeholder={t("Reason")}
                 labelclass={"d-none"}
                 rows={6}
                 value={declineReasonMessage}

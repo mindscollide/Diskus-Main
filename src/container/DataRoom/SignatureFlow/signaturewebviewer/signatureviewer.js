@@ -487,7 +487,9 @@ const SignatureViewer = () => {
       } else {
         setUserAnnotations(revertXmlField(listOfFields));
       }
-    } catch (err) {}
+    } catch (err) {
+      console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.js:", err);
+    }
   }, [getAllFieldsByWorkflowID, getWorkfFlowByFileId]);
 
   // ─── getWorkfFlowByFileId ────────────────────────────────────────────────
@@ -550,7 +552,9 @@ const SignatureViewer = () => {
         creatorID: workFlow.creatorID,
         isCreator: workFlow.isCreator,
       }));
-    } catch (err) {}
+    } catch (err) {
+      console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.js:", err);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getWorkfFlowByFileId]);
 
@@ -607,7 +611,9 @@ const SignatureViewer = () => {
       setParticipants(listOfUsers);
       setSelectedUser(listOfUsers[0]?.pk_UID ?? null);
       setUserAnnotations(selectedList);
-    } catch (err) {}
+    } catch (err) {
+      console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.js:", err);
+    }
   }, [saveWorkFlowResponse]);
 
   // ─── Assignees → Select options ──────────────────────────────────────────
@@ -690,7 +696,9 @@ const SignatureViewer = () => {
       try {
         await annotationManager.importAnnotations(modified);
         annotationManager.redrawAnnotation();
-      } catch (err) {}
+      } catch (err) {
+        console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.js:", err);
+      }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participants]);
@@ -1062,7 +1070,9 @@ const SignatureViewer = () => {
         if (pdfXfdfRef.current) {
           try {
             await annotationManager.importAnnotations(pdfXfdfRef.current);
-          } catch (err) {}
+          } catch (err) {
+            console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.js:", err);
+          }
         }
       });
 
@@ -1120,7 +1130,9 @@ const SignatureViewer = () => {
                 applyActorColour(ann, r, g, b);
               }
             });
-          } catch (err) {}
+          } catch (err) {
+            console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.js:", err);
+          }
 
           const xfdfString = await annotationManager.exportAnnotations();
           const snapshot = userAnnotationsRef.current.map((u) => ({
@@ -1305,7 +1317,7 @@ const SignatureViewer = () => {
                     applyClass="signatureflow_input"
                     placeholder={t("Email")}
                     value={signerForm.EmailAddress}
-                    label="Email"
+                    label={t("Email")}
                   />
                 </Col>
               </Row>
@@ -1353,7 +1365,7 @@ const SignatureViewer = () => {
                                           applyClass="signatureflow_input"
                                           placeholder={t("Name")}
                                           value={signer.Name}
-                                          label="Name"
+                                          label={t("Name")}
                                         />
                                       </Col>
                                       <Col sm={6}>
@@ -1366,7 +1378,7 @@ const SignatureViewer = () => {
                                           applyClass="signatureflow_input"
                                           placeholder={t("Email")}
                                           value={signer.EmailAddress}
-                                          label="Email"
+                                          label={t("Email")}
                                         />
                                       </Col>
                                     </Row>

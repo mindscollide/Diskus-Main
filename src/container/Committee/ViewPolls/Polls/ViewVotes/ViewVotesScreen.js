@@ -6,6 +6,7 @@ import { Progress } from "antd";
 import { Button } from "../../../../../components/elements";
 import { useEffect } from "react";
 import { usePollsContext } from "../../../../../context/PollsContext";
+import { formatNumber } from "../../../../../commen/functions/utils";
 
 const ViewVotesScreen = () => {
   const viewVotes = useSelector((state) => state.PollsReducer.viewVotes);
@@ -84,7 +85,7 @@ const ViewVotesScreen = () => {
                                     className={styles["Messege_span_Class"]}
                                   >
                                     {data.answer}
-                                    {""} <span>({data.totalVotes})</span>
+                                <span>({formatNumber(data.totalVotes)})</span>
                                   </span>
                                 </Col>
                               </Row>
@@ -98,7 +99,7 @@ const ViewVotesScreen = () => {
                                       className="d-flex gap-3"
                                     >
                                       <Progress
-                                        percent={data.votePercentage}
+                                        percent={formatNumber(data.votePercentage)}
                                         status="active"
                                         className="pollsDetailsProgress"
                                       />

@@ -61,7 +61,7 @@ const MinutesReducer = (state = initialState, action) => {
           errorSeverity: "success",
         };
       } catch (error) {
-
+        console.error("src/store/reducers/Minutes_reducer.js:", error);
       }
     }
 

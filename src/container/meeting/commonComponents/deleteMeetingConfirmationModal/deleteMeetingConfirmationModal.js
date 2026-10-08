@@ -80,7 +80,7 @@ const DeleteMeetingConfirmationModal = () => {
               <Col sm={12} md={12} lg={12} className="mt-4">
                 <TextField
                   type={showPassword ? "text" : "password"}
-                  label={"Password"}
+                  label={t("Password")}
                   value={passwordValue}
                   change={(e) => setPasswordValue(e.target.value)}
                   width={"100%"}
@@ -95,12 +95,14 @@ const DeleteMeetingConfirmationModal = () => {
                         src={PasswordEyeIcon}
                         width={20}
                         style={{ cursor: "pointer" }}
+                        alt=""
                         onClick={() => setShowPassword(!showPassword)}
                       />
                     ) : (
                       <img
                         src={PasswordHideEyeIcon}
                         width={20}
+                            alt=""
                         style={{ cursor: "pointer" }}
                         onClick={() => setShowPassword(!showPassword)}
                       />

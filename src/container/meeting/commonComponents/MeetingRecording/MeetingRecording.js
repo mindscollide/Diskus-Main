@@ -14,7 +14,10 @@ import {
   requestMeetingRecordingTranscriptApi,
   requestMeetingRecordingTranscript_clear,
 } from "../../../../store/actions/NewMeetingActions";
-import { DataRoomDownloadFileApiFunc, DataRoomDownloadFileWithFooterApiFunc } from "../../../../store/actions/DataRoom_actions";
+import {
+  DataRoomDownloadFileApiFunc,
+  DataRoomDownloadFileWithFooterApiFunc,
+} from "../../../../store/actions/DataRoom_actions";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import {
   getFileExtension,
@@ -40,7 +43,7 @@ const MeetingRecording = ({ title }) => {
   const meetingMinutesDownloaded = useSelector(
     (state) => state.NewMeetingreducer.meetingMinutesDownload,
   );
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -107,7 +110,9 @@ const MeetingRecording = ({ title }) => {
 
         setData(MeetingData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/commonComponents/MeetingRecording/MeetingRecording.js:", error);
+    }
   }, [meetingRecordingFiles]);
 
   useEffect(() => {
@@ -143,7 +148,7 @@ const MeetingRecording = ({ title }) => {
         dispatch(meetingTranscriptDownloaded(null));
         
       } catch (error) {
-        
+        console.error("src/container/meeting/commonComponents/MeetingRecording/MeetingRecording.js:", error);
       }
     }
   }, [meetingTranscriptDownload]);
@@ -166,15 +171,14 @@ const MeetingRecording = ({ title }) => {
         dispatch(meetingMinutesDownloaded(null));
         
       } catch (error) {
-        
+        console.error("src/container/meeting/commonComponents/MeetingRecording/MeetingRecording.js:", error);
       }
     }
   }, [meetingMinutesDownloaded]);
 
   const handleClickTranscribe = (record) => {
-    
     let Data = { MeetingID: record.meetingID, MeetingTitle: title };
-    
+
     dispatch(requestMeetingRecordingTranscriptApi(Data, navigate, t));
   };
 
@@ -190,8 +194,8 @@ const MeetingRecording = ({ title }) => {
           <span className={styles["RecordingTable___title"]}>
             <img
               src={getIconSource(getFileExtension(text))}
-              alt=""
-              className="me-2"
+              alt=''
+              className='me-2'
               width={"17px"}
               height={"17px"}
             />
@@ -230,8 +234,7 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-end gap-3"
-              >
+                className='d-flex justify-content-end gap-3'>
                 <Button
                   className={styles["DownloadBtn"]}
                   text={t("Transcribe")}
@@ -255,8 +258,7 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-end gap-3"
-              >
+                className='d-flex justify-content-end gap-3'>
                 <Button
                   className={styles["DownloadBtn"]}
                   text={t("Download")}
@@ -272,8 +274,7 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-center align-items-center gap-3"
-              >
+                className='d-flex justify-content-center align-items-center gap-3'>
                 <span className={styles["TranscibingLabel"]}>
                   {`${t("Transcribing")}...`}
                 </span>
@@ -289,7 +290,7 @@ const MeetingRecording = ({ title }) => {
       },
     },
   ];
-  
+
   const DownloadRecording = async (record) => {
     let data = {
       FileID: Number(record.fileID),
@@ -312,8 +313,8 @@ const MeetingRecording = ({ title }) => {
                 <img
                   src={BackArrow}
                   onClick={() => setStepDownloadModal(1)}
-                  className="cursor-pointer"
-                  alt=""
+                  className='cursor-pointer'
+                  alt=''
                 />{" "}
                 {t("Meeting-recording")}
               </span>
@@ -326,7 +327,7 @@ const MeetingRecording = ({ title }) => {
                 pagination={false}
               />
             </Col>
-            <div className="d-flex justify-content-center align-items-center"></div>
+            <div className='d-flex justify-content-center align-items-center'></div>
           </Row>
         </>
       }
@@ -337,8 +338,7 @@ const MeetingRecording = ({ title }) => {
               sm={12}
               md={12}
               lg={12}
-              className={"d-flex justify-content-end p-0 m-0"}
-            >
+              className={"d-flex justify-content-end p-0 m-0"}>
               <Button
                 className={styles["Download___cancelBtn"]}
                 text={t("Cancel")}

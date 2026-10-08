@@ -104,7 +104,9 @@ const ShoutEditPanel = ({ broadcastId, channelId, onClose }) => {
           setOrgUsers(talkStateData.AllUsers.AllUsersData.allUsers);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/talkChatBox/chatMain/ShoutEditPanel.js:", error);
+    }
   };
 
   const editShoutTitle = () => setShowEditShoutNameField(true);
@@ -205,7 +207,7 @@ const ShoutEditPanel = ({ broadcastId, channelId, onClose }) => {
               searchShoutEditUser(e.target.value);
             }}
             value={searchValue}
-            placeholder="Search Users"
+            placeholder={t("Search-users")}
             labelclass={"d-none"}
           />
         </Col>

@@ -191,7 +191,9 @@ const CreateAddtionalUsersModal = () => {
             },
           }));
         }
-      } catch {}
+      } catch (error) {
+        console.error("src/container/pages/UserMangement/ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal.js:", error);
+      }
     } else {
       // Optionally handle the case where Name or Email is empty
       // e.g., set error messages in createAddionalUsers

@@ -5,6 +5,10 @@
   width: auto;
   top: 7px;
 }
+body[dir="rtl"] .SearchIconClass{
+  right: auto !important;
+  left: 13px !important;
+}
 .SearchBoxAuthority {
   width: 100% !important;
   height: auto !important;

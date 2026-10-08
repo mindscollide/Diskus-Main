@@ -52,6 +52,7 @@ import {
 import {
   getViewMeetingByMeetingIdApi,
   joinMeetingApi,
+  resetCurrentMeetingInfo,
   setCurrentMeetingInfo,
 } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
@@ -161,10 +162,10 @@ const MainMeeting = () => {
     ) {
       dispatch(GetAllMeetingTypesNewFunction(navigate, t));
     }
+    localStorage.setItem("MeetingCurrentView", currentView);
 
-    localStorage.setItem("MeetingCurrentView", MEETING_VIEWS.PUBLISHED);
     localStorage.setItem("MeetingPageRows", 30);
-    localStorage.setItem("MeetingPageCurrent", currentView);
+    localStorage.setItem("MeetingPageCurrent", 1);
 
     return () => {
       localStorage.removeItem("MeetingCurrentView");
@@ -295,6 +296,9 @@ const MainMeeting = () => {
 
   useEffect(() => {
     if (state !== null) {
+
+      console.log("state?.key", state?.key, state?.value, state);
+
       try {
         const { message = "", response = null } = state;
 
@@ -366,19 +370,20 @@ const MainMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/index.jsx:", error);
+      }
     }
   }, [state]);
 
   useEffect(() => {
     if (state !== null) {
-      try {
-        const {
-          key,
-          value: { meetingStatusId, isQuickMeeting, meetingID, attendeeId },
-        } = state;
 
-        if (key === "viewMeeting_action") {
+      console.log("state?.key", state?.key, state?.value, state);
+      try {
+        if (state?.key === "viewMeeting_action") {
+
+          const { meetingStatusId = 0, isQuickMeeting = false, meetingID = 0, attendeeId = 0 } = state?.value;
           // If the meeting is Published State
           if (meetingStatusId === 1) {
             // If the is Quick Meeting, then open the Quick Meeting View Modal
@@ -421,7 +426,9 @@ const MainMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/index.jsx:", error);
+      }
     }
   }, [state]);
 
@@ -607,8 +614,20 @@ const MainMeeting = () => {
     setSearchText("");
   };
 
-  const HandleCloseSearchModalMeeting = () => {
+  const HandleCloseSearchModalMeeting = async () => {
     setSearchMeeting(false);
+
+    // A search is currently applied: closing must undo it, not just hide the
+    // form. Previously the fields were cleared but the API was never called, so
+    // the list stayed filtered while the modal looked reset. handleClearSearch
+    // hits the API with empty filters and clears the fields, top box and ✕.
+    if (entereventIcon) {
+      await handleClearSearch();
+      return;
+    }
+
+    // Nothing was searched (fields may just have been typed into) — the list is
+    // not filtered, so there is nothing to reset on the server.
     setSearchFeilds({
       ...searchFields,
       Date: "",
@@ -643,7 +662,7 @@ const MainMeeting = () => {
         navigate,
         t,
         {
-          Date: createConvert(new Date(searchFields.Date)).slice(0, 8),
+          Date: searchFields.Date !== "" ? createConvert(new Date(searchFields.Date)).slice(0, 8) : "",
           Title: searchFields.MeetingTitle,
           HostName: searchFields.OrganizerName,
           UserID: Number(localStorage.getItem("userID")),
@@ -656,6 +675,27 @@ const MainMeeting = () => {
       ),
     );
     console.log(searchFields, searchText, "handleClickSearch");
+
+    // The search is now applied, so tidy up the UI to match:
+    //  - `entereventIcon` doubles as "a search is applied" (it is what shows
+    //    the reset ✕ in the top box). Without it, once this modal closes there
+    //    was no way to see or undo the filter. It stays off when every field
+    //    was empty, because that request just returns the unfiltered list.
+    //  - clear the modal's fields and the top box, so nothing stale is left
+    //    behind for the next search, then close the modal.
+    const hasCriteria =
+      searchFields.MeetingTitle.trim() !== "" ||
+      searchFields.OrganizerName.trim() !== "" ||
+      searchFields.Date !== "";
+    setentereventIcon(hasCriteria);
+    setSearchText("");
+    setSearchFeilds({
+      MeetingTitle: "",
+      Date: "",
+      OrganizerName: "",
+      DateView: "",
+    });
+    setSearchMeeting(false);
   };
 
   const handleClickReset = async () => {
@@ -681,12 +721,17 @@ const MainMeeting = () => {
     );
 
     setSearchText("");
+    // The list is unfiltered again, so the "search applied" ✕ must go too.
+    setentereventIcon(false);
     setSearchFeilds({
       MeetingTitle: "",
       Date: "",
       OrganizerName: "",
       DateView: "",
     });
+    // Close the modal as well, matching what Search does — Reset used to leave
+    // an empty form sitting open.
+    setSearchMeeting(false);
   };
 
   // ─── Create Handlers ──────────────────────────────────────────────────
@@ -694,6 +739,13 @@ const MainMeeting = () => {
   const handleCreateAdvanceMeeting = () => {
     dispatch(setAdvanceMeetingRoute(1));
     dispatch(toggleCreateEditMeetingModal(true));
+    setEditorRole({
+      status: "11",
+      role: "Organizer",
+      isPrimaryOrganizer: true,
+    });
+    dispatch(resetCurrentMeetingInfo())
+    
   };
 
   const handleCreateProposedMeeting = () => {

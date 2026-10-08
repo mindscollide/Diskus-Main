@@ -13,6 +13,7 @@ import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../commen/functions/date_formater";
 import { useMeetingContext } from "../../../../context/MeetingContext";
 import { useGroupsContext } from "../../../../context/GroupsContext";
+import { formatNumber } from "../../../../commen/functions/utils";
 
 const ViewPollsPublishedScreen = () => {
   const { setViewPublishedPoll } = useMeetingContext();
@@ -56,7 +57,9 @@ const ViewPollsPublishedScreen = () => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/GroupPolls/ViewPollsPublishedScreen/ViewPollsPublishedScreen.js:", error);
+    }
   }, [Allpolls]);
 
   const handleCancelButton = () => {
@@ -107,7 +110,7 @@ const ViewPollsPublishedScreen = () => {
                                           }
                                         >
                                           {data.answer}{" "}
-                                          <span>{data.totalVotes}</span>
+                                          <span>{formatNumber(data.totalVotes)}</span>
                                         </span>
                                       </Col>
                                     </Row>
@@ -123,7 +126,7 @@ const ViewPollsPublishedScreen = () => {
                                             <Checkbox disabled={true} />
                                             <Progress
                                               className="Progress_bar_Polls"
-                                              percent={data.votePercentage}
+                                              percent={formatNumber(data.votePercentage)}
                                               status="active"
                                             />
                                           </Col>

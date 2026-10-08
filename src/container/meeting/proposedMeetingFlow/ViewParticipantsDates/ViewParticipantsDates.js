@@ -33,6 +33,13 @@ const ViewParticipantsDates = () => {
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket,
   );
+
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
   const { responseByDate } = useNewMeetingContext();
   const { currentGroupMeetingTabActive } = useGroupsContext();
   const { currentCommitteeMeetingTabActive } = useCommitteeContext();
@@ -59,6 +66,8 @@ const ViewParticipantsDates = () => {
     MeetingDiscription: "",
     MeetingID: 0,
   });
+
+  console.log(meetingDeatils, "meetingDeatilsmeetingDeatils");
   const [selectAll, setSelectAll] = useState(false);
   let currentMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID"),
@@ -229,7 +238,12 @@ const ViewParticipantsDates = () => {
         // });
       } else {
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:",
+        error,
+      );
+    }
   }, [userWiseMeetingProposed]);
 
   //Fetching All Saved Data
@@ -246,7 +260,12 @@ const ViewParticipantsDates = () => {
             getAllMeetingDetails.advanceMeetingDetails.description,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:",
+        error,
+      );
+    }
   }, [getAllMeetingDetails]);
 
   // onChange function for CheckBoxes
@@ -356,6 +375,13 @@ const ViewParticipantsDates = () => {
   };
 
   const handleCancel = () => {
+    dispatch(toggleIsParticipantProposedMeetingDates(false));
+    if (committeeInfo !== null) {
+      return;
+    }
+    if (groupInfo !== null) {
+      return;
+    }
     let searchData = {
       Date: "",
       Title: "",
@@ -368,7 +394,6 @@ const ViewParticipantsDates = () => {
     };
     dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
     localStorage.setItem("MeetingCurrentView", 2);
-    dispatch(toggleIsParticipantProposedMeetingDates(false));
   };
 
   useEffect(() => {
@@ -379,9 +404,17 @@ const ViewParticipantsDates = () => {
           MeetingStatusSocket.message === "MEETING_STATUS_EDITED_CANCELLED" &&
           meetingID === meetingDeatils.MeetingID
         ) {
-          localStorage.setItem("MeetingCurrentView", 2);
           dispatch(toggleIsParticipantProposedMeetingDates(false));
           dispatch(viewProposeDateMeetingPageFlag(false));
+
+          if (committeeInfo !== null) {
+            return;
+          }
+          if (groupInfo !== null) {
+            return;
+          }
+          localStorage.setItem("MeetingCurrentView", 2);
+
           let searchData = {
             Date: "",
             Title: "",
@@ -395,7 +428,12 @@ const ViewParticipantsDates = () => {
 
           dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error(
+          "src/container/meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates.js:",
+          error,
+        );
+      }
     }
   }, [MeetingStatusSocket]);
 
@@ -425,7 +463,15 @@ const ViewParticipantsDates = () => {
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Staff_meeting_Heading"]}>
-                  {meetingDeatils.MeetingType}
+                  {meetingDeatils.MeetingType.trim() === "Board Meetings".trim()
+                    ? t("Board-meetings")
+                    : meetingDeatils.MeetingType.trim() ===
+                        "Group Meeting".trim()
+                      ? t("Group-meeting")
+                      : meetingDeatils.MeetingType.trim() ===
+                          "Committee Meeting".trim()
+                        ? t("Committee-meeting")
+                        : null}
                   {meetingDeatils.MeetingLocation !== "" &&
                   meetingDeatils.MeetingLocation !== null &&
                   meetingDeatils.MeetingLocation !== undefined ? (
@@ -537,7 +583,7 @@ const ViewParticipantsDates = () => {
                 md={2}
                 sm={2}
                 className='d-flex justify-content-center mt-4'>
-                <span className={styles["OR_Heading"]}>{"OR"}</span>
+                <span className={styles["OR_Heading"]}>{t("Or")}</span>
               </Col>
 
               <Col lg={4} md={4} sm={4}>

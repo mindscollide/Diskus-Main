@@ -4,6 +4,7 @@ import styles from "./ComplianceCard.module.css";
 import GoToIcon from "./../../../assets/images/GoToIcon.png";
 import AttachmentIcon from "./../../../assets/images/AttachmentIcon.png";
 import { useTranslation } from "react-i18next";
+import { formatNumber } from "../../../commen/functions/utils";
 
 /* 🔹 Criticality Style Logic */
 const getCriticalityConfig = (id) => {
@@ -129,7 +130,8 @@ const ComplianceCard = ({
           <Col span={24}>
             {description && (
               <span className={styles.boldLabel}>
-                t{"Reopen-date-and-reason"}
+                {t("Reopen-date-and-reason")}
+
                 <span className={styles.description}>
                   {" "}
                   {description}{" "}
@@ -149,7 +151,9 @@ const ComplianceCard = ({
           <Row>
             <Col span={24}>
               <div className={styles.progressWrapper}>
-                <div className={styles.progressLabel}>{progress}%</div>
+                <div className={styles.progressLabel}>
+                  {formatNumber(progress)}%
+                </div>
                 <Progress
                   percent={progress}
                   className='complianceProgressBarColor'

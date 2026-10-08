@@ -399,7 +399,7 @@ body[dir="rtl"] .goBackChevRon {
   margin: 40px auto;
   padding: 5px;
   color: #5a5a5a !important;
-  font-size: calc(16px -20%);
+  font-size: calc(16px - 20%);
   font-weight: 600 !important;
 }
 
@@ -440,7 +440,7 @@ body[dir="rtl"] .languageSelector {
   width: auto;
   margin: 30px 0;
   padding: 8px 30px !important;
-  font-size: calc(16px -20%);
+  font-size: calc(16px - 20%);
   font-weight: 600 !important;
   background-color: #6172d6 !important;
 }

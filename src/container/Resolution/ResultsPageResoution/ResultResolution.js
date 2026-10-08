@@ -140,7 +140,9 @@ const ResultResolution = ({
           setDesicionDateExpiry(false);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Resolution/ResultsPageResoution/ResultResolution.js:", error);
+    }
   }, [ResolutionReducergetResolutionResult]);
   return (
     <section>

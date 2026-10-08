@@ -75,55 +75,55 @@ const ParticipantVideoCallComponent = () => {
   const { setViewGroupPage, setShowModal } = useGroupsContext();
 
   const webNotificationData = useSelector(
-    (state) => state.settingReducer.webNotificationDataVideoIntimination
+    (state) => state.settingReducer.webNotificationDataVideoIntimination,
   );
   const closeQuickMeetingVideoReducer = useSelector(
     (state) =>
-      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag,
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
-    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
   );
   const isAudioGlobalStream = useSelector(
-    (state) => state.videoFeatureReducer.isAudioGlobalStream
+    (state) => state.videoFeatureReducer.isAudioGlobalStream,
   );
 
   const isVideoGlobalStream = useSelector(
-    (state) => state.videoFeatureReducer.isVideoGlobalStream
+    (state) => state.videoFeatureReducer.isVideoGlobalStream,
   );
 
   const allNavigatorVideoStream = useSelector(
-    (state) => state.videoFeatureReducer.allNavigatorVideoStream
+    (state) => state.videoFeatureReducer.allNavigatorVideoStream,
   );
 
   // CR(0012249) — false for every existing meeting-video usage of this
   // component; only true when this same modal is opened for a
   // Presentation join instead.
   const isPresentationJoinFlow = useSelector(
-    (state) => state.videoFeatureReducer.isPresentationJoinFlow
+    (state) => state.videoFeatureReducer.isPresentationJoinFlow,
   );
 
   const presentationJoinApprovedData = useSelector(
-    (state) => state.videoFeatureReducer.presentationJoinApprovedData
+    (state) => state.videoFeatureReducer.presentationJoinApprovedData,
   );
   const presentationJoinRejectedData = useSelector(
-    (state) => state.videoFeatureReducer.presentationJoinRejectedData
+    (state) => state.videoFeatureReducer.presentationJoinRejectedData,
   );
   const presentationStoppedData = useSelector(
-    (state) => state.videoFeatureReducer.presentationStoppedData
+    (state) => state.videoFeatureReducer.presentationStoppedData,
   );
 
   const leaveMeetingVideoOnLogoutResponse = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse,
   );
 
   const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag,
   );
 
   const closeVideoStreamForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.closeVideoStreamForParticipant
+    (state) => state.videoFeatureReducer.closeVideoStreamForParticipant,
   );
 
   let meetingId = localStorage.getItem("currentMeetingID");
@@ -147,49 +147,52 @@ const ParticipantVideoCallComponent = () => {
   // local state for Video Html Tag event state
   const [canVideoPlay, setCanVideoPlay] = useState(false);
 
-  
+  // Latest streams for the unmount cleanup (state in a closure would be stale)
+  const streamRef = useRef(null);
+  const streamAudioRef = useRef(null);
+  useEffect(() => {
+    streamRef.current = stream;
+  }, [stream]);
+  useEffect(() => {
+    streamAudioRef.current = streamAudio;
+  }, [streamAudio]);
 
   useEffect(() => {
-    // Enable webcam and microphone when isWebCamEnabled is true
+    // Enable webcam and microphone once on mount; later toggles are handled by
+    // toggleVideo / toggleAudio (re-running this leaked a second stream and
+    // reset the stored mic state).
+    let cancelled = false;
     const enableWebCamAndMic = async () => {
       try {
-        // CR(0012249): this is the meeting-video waiting room's own
-        // self-preview — it unconditionally calls getUserMedia to show you
-        // your own camera before joining. For a presentation join, mic/cam
-        // must never turn on at all (the toggleAudio/toggleVideo guards and
-        // the disabled-icon styling already block the BUTTONS, but this
-        // effect was still separately grabbing the camera regardless,
-        // which is why the camera light stayed on even with those buttons
-        // disabled).
-        if (isPresentationJoinFlow) {
+        // Access video and audio streams
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        if (cancelled) {
+          // Screen already closed before permission resolved
+          mediaStream.getTracks().forEach((track) => track.stop());
           return;
         }
-        if (!isWebCamEnabled) {
-          // Access video and audio streams
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          });
 
-          // Set up video playback
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-            videoRef.current.muted = true;
-            await videoRef.current.play();
-          }
-          localStorage.setItem("isWebCamEnabled", false);
-          setStream(stream); // Store the video and audio stream
+        // Set up video playback. A rejected play() (e.g. Safari autoplay
+        // policy) must not drop the stream, or it would never be released.
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {});
+        }
+        localStorage.setItem("isWebCamEnabled", false);
+        setStream(mediaStream); // Store the video and audio stream
+        sessionStorage.setItem("streamOnOff", JSON.stringify(true));
+        sessionStorage.setItem("videoStreamId", mediaStream.id); // Save video stream ID
 
-          // Handle microphone setup
-          const audioStream = new MediaStream([stream.getAudioTracks()[0]]);
-          if (streamAudio) {
-            // Stop any existing audio tracks
-            streamAudio.getTracks().forEach((track) => track.stop());
-          }
-          localStorage.setItem("isMicEnabled", false);
+        // Handle microphone setup
+        localStorage.setItem("isMicEnabled", false);
+        const audioTrack = mediaStream.getAudioTracks()[0];
+        if (audioTrack) {
+          const audioStream = new MediaStream([audioTrack]);
           setStreamAudio(audioStream);
-          sessionStorage.setItem("streamOnOff", JSON.stringify(true));
-          sessionStorage.setItem("videoStreamId", stream.id); // Save video stream ID
           sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
           sessionStorage.setItem("audioStreamId", audioStream.id);
         }
@@ -200,23 +203,16 @@ const ParticipantVideoCallComponent = () => {
 
     enableWebCamAndMic();
 
-    // Cleanup on unmount or when isWebCamEnabled changes
+    // Release the camera/mic on unmount so the call iframe can use them
     return () => {
+      cancelled = true;
       if (videoRef.current) {
         videoRef.current.srcObject = null; // Clear the video source
       }
-
-      // Stop video stream
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-
-      // Stop audio stream
-      if (streamAudio) {
-        streamAudio.getTracks().forEach((track) => track.stop());
-      }
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamAudioRef.current?.getTracks().forEach((track) => track.stop());
     };
-  }, [isWebCamEnabled, isPresentationJoinFlow]);
+  }, []);
 
   useEffect(() => {
     if (allNavigatorVideoStream === 1) {
@@ -293,7 +289,7 @@ const ParticipantVideoCallComponent = () => {
     }
   }, [presentationJoinApprovedData]);
 
-  // CR(0012249) — host rejected this participant's presentation join request. 
+  // CR(0012249) — host rejected this participant's presentation join request.
   useEffect(() => {
     if (isPresentationJoinFlow && presentationJoinRejectedData) {
       if (!presentationStoppedData) {
@@ -409,9 +405,7 @@ const ParticipantVideoCallComponent = () => {
           if (videoRef.current) {
             videoRef.current.srcObject = videoStream;
             videoRef.current.muted = true;
-            videoRef.current.play().catch((error) => {
-              
-            });
+            videoRef.current.play().catch((error) => {});
           }
           setStream(videoStream);
           setIsWebCamEnabled(enable);
@@ -474,8 +468,8 @@ const ParticipantVideoCallComponent = () => {
         data,
         setIsWaiting,
         setGetReady,
-        setJoinButton
-      )
+        setJoinButton,
+      ),
     );
   };
 
@@ -483,22 +477,16 @@ const ParticipantVideoCallComponent = () => {
   useEffect(() => {
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
-      videoRef.current.play().catch((error) => {
-        
-      });
+      videoRef.current.play().catch((error) => {});
     }
   }, [minimizeState]);
 
   useEffect(() => {
-    
     if (closeVideoStreamForParticipant && stream) {
-      
       if (stream) {
-        
         stream.getVideoTracks().forEach((track) => track.stop());
         setStream(null); // Clear the stream from state
         if (videoRef.current) {
-          
           videoRef.current.srcObject = null; // Clear the video source
         }
 
@@ -506,7 +494,6 @@ const ParticipantVideoCallComponent = () => {
         sessionStorage.removeItem("videoStreamId");
       }
       if (streamAudio) {
-        
         streamAudio.getAudioTracks().forEach((track) => track.stop());
         setStreamAudio(null); // Clear the stream from state
       }
@@ -515,10 +502,10 @@ const ParticipantVideoCallComponent = () => {
       dispatch(participantVideoButtonState(false));
 
       setIsMicEnabled(false);
-      
+
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let currentMeetingVideoURL = JSON.parse(
-        sessionStorage.getItem("currentMeetingVideoURL")
+        sessionStorage.getItem("currentMeetingVideoURL"),
       );
       let leaveRoomId = getJoinMeetingParticipantorHostrequest
         ? getJoinMeetingParticipantorHostrequest.roomID
@@ -530,7 +517,6 @@ const ParticipantVideoCallComponent = () => {
       let newName = localStorage.getItem("name");
       let currentMeetingID = localStorage.getItem("currentMeetingID");
       sessionStorage.removeItem("isWaiting");
-      
 
       let Data = {
         RoomID: leaveRoomId,
@@ -539,7 +525,6 @@ const ParticipantVideoCallComponent = () => {
         IsHost: false,
         MeetingID: Number(currentMeetingID),
       };
-      
 
       let data = {
         VideoCallURL: String(currentMeetingVideoURL || ""),
@@ -547,7 +532,7 @@ const ParticipantVideoCallComponent = () => {
         WasInVideo: Boolean(isMeetingVideo),
       };
       dispatch(closeWaitingParticipantVideoStream(false));
-      
+
       dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
     }
   }, [closeVideoStreamForParticipant]);
@@ -630,7 +615,7 @@ const ParticipantVideoCallComponent = () => {
     }
 
     const webNotifactionDataRoutecheckFlag = JSON.parse(
-      localStorage.getItem("webNotifactionDataRoutecheckFlag")
+      localStorage.getItem("webNotifactionDataRoutecheckFlag"),
     );
     try {
       if (webNotifactionDataRoutecheckFlag) {
@@ -652,11 +637,14 @@ const ParticipantVideoCallComponent = () => {
           setAdvanceMeetingModalID,
           setResultresolution,
           isMeeting,
-          setPolls
+          setPolls,
         );
       }
     } catch (error) {
-      
+      console.error(
+        "src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:",
+        error,
+      );
     }
   };
 
@@ -665,7 +653,12 @@ const ParticipantVideoCallComponent = () => {
       if (leaveMeetingVideoOnLogoutResponse) {
         onClickEndVideoCall(true, false, false);
       }
-    } catch {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:",
+        error,
+      );
+    }
   }, [leaveMeetingVideoOnLogoutResponse]);
 
   useEffect(() => {
@@ -673,7 +666,12 @@ const ParticipantVideoCallComponent = () => {
       if (closeQuickMeetingVideoReducer) {
         onClickEndVideoCall(false, true, false);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:",
+        error,
+      );
+    }
   }, [closeQuickMeetingVideoReducer]);
 
   useEffect(() => {
@@ -681,7 +679,12 @@ const ParticipantVideoCallComponent = () => {
       if (leaveMeetingVideoOnEndStatusMqttFlag) {
         onClickEndVideoCall(false, false, true);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:",
+        error,
+      );
+    }
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
 
   const isEndCallEnabled = !joinButton || isWaiting || getReady;
@@ -693,8 +696,8 @@ const ParticipantVideoCallComponent = () => {
           minimizeState
             ? "max-minimize-videoParticipantsvideo-panel"
             : isNormalPanel
-            ? "max-videoParticipantsvideo-panel"
-            : "max-videoParticipant-panel"
+              ? "max-videoParticipantsvideo-panel"
+              : "max-videoParticipant-panel"
         }
       >
         <Row>
@@ -812,8 +815,8 @@ const ParticipantVideoCallComponent = () => {
                   minimizeState
                     ? t("Expand")
                     : NormalizeIcon && isNormalPanel
-                    ? t("Expand")
-                    : t("Collapse")
+                      ? t("Expand")
+                      : t("Collapse")
                 }
               >
                 <img
@@ -822,8 +825,8 @@ const ParticipantVideoCallComponent = () => {
                     minimizeState
                       ? MinToNormalIcon
                       : NormalizeIcon && isNormalPanel
-                      ? ExpandIcon
-                      : NormalizeIcon
+                        ? ExpandIcon
+                        : NormalizeIcon
                   }
                   onClick={onClickToNormalParticipantPanel}
                   alt="ExpandIcon"
@@ -868,8 +871,8 @@ const ParticipantVideoCallComponent = () => {
                       height: minimizeState
                         ? "7vh"
                         : isNormalPanel
-                        ? "44vh"
-                        : "78vh",
+                          ? "44vh"
+                          : "78vh",
                       backgroundPosition: "center center",
                     }}
                   >
@@ -877,12 +880,14 @@ const ParticipantVideoCallComponent = () => {
                       <div className="avatar-class">
                         <video
                           ref={videoRef}
+                          playsInline
+                          muted
                           className={
                             minimizeState
                               ? "video-max-minimize-videoParticipant-panel"
                               : isNormalPanel
-                              ? "video-max-videoParticipantsvideo-panel"
-                              : "video-max-Participant"
+                                ? "video-max-videoParticipantsvideo-panel"
+                                : "video-max-Participant"
                           }
                         />
                       </div>

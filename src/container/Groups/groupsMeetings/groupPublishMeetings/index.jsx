@@ -89,6 +89,7 @@ import {
   clearGetMeetingbyGroupID,
 } from "../../../../store/actions/Groups_actions";
 import { validateStringEmail_success, validateStringMeetingEmail_clear } from "../../../../store/actions/NewMeetingActions";
+import store from "../../../../store/store";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -178,6 +179,9 @@ const GroupPublishedMeetingList = () => {
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  // Scrolling the table left the "More" popover open and floating in its
+  // old position — close it as soon as the user scrolls.
+
   const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
@@ -189,6 +193,26 @@ const GroupPublishedMeetingList = () => {
   const [downloadMeetingRecord] = useState(null);
   const [meetingTypeSort, setMeetingTypeSort] = useState(null);
 
+
+  useEffect(() => {
+    let searchData = {
+      GroupID: Number(localStorage.getItem("ViewGroupID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: true,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+
+    return () => {
+      dispatch(clearGetMeetingbyGroupID());
+
+    }
+  }, [])
   const {
     handleViewMeeting,
     handleJoinMeeting,
@@ -285,9 +309,30 @@ const GroupPublishedMeetingList = () => {
     }
 
     const allChatMessages = talkStateDataAllUserChats.AllUserChatsData.allMessages;
-    const foundRecord =
+    let foundRecord =
       Array.isArray(allChatMessages) &&
       allChatMessages.find((item) => item.id === data.talkGroupID);
+
+    // The chats reducer can be stale (e.g. a chat group created after it
+    // was last loaded) — refetch from the API before concluding the chat
+    // doesn't exist, instead of only ever trusting the cached reducer.
+    if (!foundRecord) {
+      await dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(localStorage.getItem("userID")),
+          parseInt(currentOrganizationId),
+          t,
+        ),
+      );
+      const refreshedAllChatMessages =
+        store.getState().talkStateData.AllUserChats.AllUserChatsData
+          .allMessages;
+      foundRecord =
+        Array.isArray(refreshedAllChatMessages) &&
+        refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
+    }
+
     if (!foundRecord) {
       show(t("No-talk-group-created"), "error");
       return;
@@ -478,7 +523,7 @@ const GroupPublishedMeetingList = () => {
     if (state !== null && DetailsWebNotificationViewMeeting !== null) {
       try {
         const meetingNotificationRouting = async () => {
-          const { message = ""} = state;
+          const { message = "" } = state;
 
           let obj = {
             isQuickMeeting: DetailsWebNotificationViewMeeting.isQuickMeeting,
@@ -533,9 +578,11 @@ const GroupPublishedMeetingList = () => {
           });
         };
         meetingNotificationRouting();
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/groupsMeetings/groupPublishMeetings/index.jsx:", error);
+      }
     }
-  }, [state,DetailsWebNotificationViewMeeting]);
+  }, [state, DetailsWebNotificationViewMeeting]);
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
 
@@ -564,8 +611,9 @@ const GroupPublishedMeetingList = () => {
     const canShow = {
       edit:
         (status === STATUS.UPCOMING ||
-          status === STATUS.ACTIVE ||
-          status === STATUS.NOT_CONDUCTED) &&
+          status === STATUS.ACTIVE
+          //  || status === STATUS.NOT_CONDUCTED
+        ) &&
         isOrganizer,
       cancel: status === STATUS.UPCOMING && isOrganizer,
       contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
@@ -1100,17 +1148,17 @@ const GroupPublishedMeetingList = () => {
           }
 
           // NOT CONDUCTED
-          if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
-            return (
-              <div className="d-flex justify-content-center align-items-center">
-                <CustomButton
-                  text={t("Edit-meeting")}
-                  className={styles.EditMeetingButton}
-                  onClick={() => handleClick("EDIT_MEETING")}
-                />
-              </div>
-            );
-          }
+          // if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
+          //   return (
+          //     <div className="d-flex justify-content-center align-items-center">
+          //       <CustomButton
+          //         text={t("Edit-meeting")}
+          //         className={styles.EditMeetingButton}
+          //         onClick={() => handleClick("EDIT_MEETING")}
+          //       />
+          //     </div>
+          //   );
+          // }
 
           return null;
         },
@@ -1138,7 +1186,7 @@ const GroupPublishedMeetingList = () => {
             <div className="d-flex justify-content-center align-items-center">
               <Popover
                 content={moreButtons(record)}
-                trigger="click"
+                trigger="hover"
                 overlayClassName="MoreButtons_overlay"
                 className="moreOptionsPopover"
                 showArrow={false}
@@ -1148,11 +1196,13 @@ const GroupPublishedMeetingList = () => {
                   handelChangePopoverOpen(record.pK_MDID, isOpen)
                 }
               >
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text={t("More")}
-                  icon2={<img src={ChevronDownIcon} width={10} alt="" />}
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text={t("More")}
+                    icon2={<img src={ChevronDownIcon} width={10} alt="" />}
+                  />
+                </span>
               </Popover>
             </div>
           );
@@ -1220,24 +1270,21 @@ const GroupPublishedMeetingList = () => {
           />
         </Col>
         {groupPublishedMeetingData.length > 0 && (
+
           <Col
             sm={12}
             md={12}
             lg={12}
-            className={
-              "pagination-groups-table position-absolute bottom-20 d-flex justify-content-center"
-            }
+            className="d-flex justify-content-center my-3 pagination-groups-table"
           >
-            <span className="PaginationStyle-TodoList">
-              <CustomPagination
-                current={currentPagePublishGroupMeeting}
-                showSizer={true}
-                onChange={handleChangePaginationPublishedMeeting}
-                pageSizeOptionsValues={["30", "50", "100"]}
-                total={groupPublishedMeetingDataRecord}
-                pageSize={currentLengthPublishGroupMeeting}
-              />
-            </span>
+            <CustomPagination
+              current={currentPagePublishGroupMeeting}
+              showSizer={true}
+              onChange={handleChangePaginationPublishedMeeting}
+              pageSizeOptionsValues={["30", "50", "100"]}
+              total={groupPublishedMeetingDataRecord}
+              pageSize={currentLengthPublishGroupMeeting}
+            />
           </Col>
         )}
       </Row>

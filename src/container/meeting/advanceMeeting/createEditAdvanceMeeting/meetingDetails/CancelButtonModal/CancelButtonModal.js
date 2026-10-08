@@ -15,8 +15,7 @@ import {
   listOfMeetingsApi,
   resetCurrentMeetingInfo,
 } from "../../../../../../store/actions/NewMeeting2.actions";
-import { resetViewCommitteeDetails } from "../../../../../../store/actions/Committee_actions";
-import { resetViewGroupDetails } from "../../../../../../store/actions/Groups_actions";
+
 const CancelButtonModal = ({ setRows }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

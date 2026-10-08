@@ -66,11 +66,15 @@ import {
 } from "../../store/actions/ModalStates_actions";
 import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
-import { validateStringEmailApi } from "../../store/actions/NewMeetingActions";
+import {
+  validateStringEmailApi,
+  validateStringParticipantProposedApi,
+  validateStringUserMeetingProposedDatesPollsApi,
+} from "../../store/actions/NewMeetingActions";
 
 const Groups = () => {
   const { t } = useTranslation();
-  const { state } = useLocation();
+  const { state, pathname } = useLocation();
   const { setEditorRole } = useMeetingContext();
 
   const groupsMeetingView = localStorage.getItem("groups_viewMeeting_action");
@@ -88,6 +92,11 @@ const Groups = () => {
     setCurrentViewGroupTabs,
     currentViewGroupTabs,
     setCurrentGroupMeetingTabActive,
+
+    groupParticipantProposedMeetingEmailRouteData,
+    setGroupParticipantProposedMeetingEmailRouteData,
+    groupOrganizerProposedMeetingEmailRouteData,
+    setGroupOrganizerProposedMeetingEmailRouteData,
   } = useGroupsContext();
   const [show, SnackBar] = useSnackbar();
   const GroupsReducerrealtimeGroupStatus = useSelector(
@@ -169,7 +178,10 @@ const Groups = () => {
 
   //Current Organization
   let currentOrganizationId = localStorage.getItem("organizationID");
-
+  const group_meetingprop = localStorage.getItem("groups_meetingprop_action");
+  const group_meetingpropOrganizer = localStorage.getItem(
+    "groups_UserMeetPropoDatPoll",
+  );
   useEffect(() => {
     const groupList = localStorage.getItem("groupList");
     const groupListViewId = localStorage.getItem("groupView_Id");
@@ -248,6 +260,11 @@ const Groups = () => {
       dispatch(toggleViewProposedMeetingModal(false));
       dispatch(toggleIsParticipantProposedMeetingDates(false));
       dispatch(resetViewTabs());
+      // Reset the Published/Draft/Proposed tab selection too — without
+      // this, leaving Group Meetings on the Draft/Proposed tab and coming
+      // back (e.g. via the sidebar) reopened on that same tab instead of
+      // defaulting back to Published (1).
+      setCurrentGroupMeetingTabActive(1);
     };
   }, []);
 
@@ -314,7 +331,9 @@ const Groups = () => {
 
         // Reset reducer
         dispatch(realtimeGroupStatusResponse(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/Groups.js:", error);
+      }
     }
   }, [GroupsReducerrealtimeGroupStatus]);
 
@@ -373,29 +392,190 @@ const Groups = () => {
   useEffect(() => {
     if (state !== null) {
       try {
-        const {
-          message,
-          response: { committeeGroupMeetingID, committeeGroupTitle },
-        } = state;
+        const { message, response } = state;
+        // response.committeeGroupMeetingID/committeeGroupTitle never
+        // existed on this object — routeMeetingTypeNotification only ever
+        // populated it with the meeting-status API result plus
+        // MeetingID/isQuickMeeting, so this was always undefined, which
+        // corrupted ViewGroupID in localStorage to the literal string
+        // "undefined" on every web-notification click and broke every
+        // subsequent API call that read it. Use the fields that actually
+        // exist: GroupID (forwarded from the notification payload) and
+        // meetingTitle (from the meeting-status result itself).
+        const groupID = response?.GroupID;
+        const groupTitle = response?.meetingTitle;
         if (message === "proposedmeeting") {
           setCurrentGroupMeetingTabActive(2);
         }
-        dispatch(
-          viewGroupDetails({
-            groupID: committeeGroupMeetingID,
-            groupTitle: committeeGroupTitle,
-          }),
-        );
-        localStorage.setItem("ViewGroupID", committeeGroupMeetingID);
-        setCurrentViewGroupTabs(4);
-        setViewGroupPage(true);
-        dispatch(viewGroupPageFlag(true));
+        if (groupID) {
+          dispatch(
+            viewGroupDetails({
+              groupID,
+              groupTitle,
+            }),
+          );
+          localStorage.setItem("ViewGroupID", groupID);
+          setCurrentViewGroupTabs(4);
+          setViewGroupPage(true);
+          dispatch(viewGroupPageFlag(true));
+        }
+        // Clear the routing state once consumed — otherwise it survives
+        // navigating away and back (or a second click reusing the same
+        // location.state) and this effect re-fires with stale data,
+        // matching the pattern already used by meeting/index.jsx for the
+        // same notification flow.
+        navigate(pathname, { replace: true, state: null });
       } catch (error) {
         console.log(error);
       }
     }
   }, [state]);
 
+  useEffect(() => {
+    if (group_meetingprop !== null) {
+      try {
+        const callApi = async () => {
+          try {
+            let getApiResponse = await validateStringParticipantProposedApi(
+              group_meetingprop,
+              navigate,
+              t,
+            )(dispatch); // Ensure you're passing dispatch
+            if (getApiResponse) {
+              setGroupParticipantProposedMeetingEmailRouteData(getApiResponse);
+              console.log(
+                getApiResponse,
+                "getApiResponsegetApiResponsegetApiResponse",
+              );
+              dispatch(
+                viewGroupDetails({
+                  groupID: getApiResponse.commmitteeGroupID,
+                  groupTitle: getApiResponse.committeeGroupTitle,
+                }),
+              );
+              setCurrentViewGroupTabs(4);
+              localStorage.setItem(
+                "ViewGroupID",
+                getApiResponse.commmitteeGroupID,
+              );
+              setViewGroupPage(true);
+              setCurrentGroupMeetingTabActive(2);
+              dispatch(viewGroupPageFlag(true));
+              // dispatch(viewCommitteePageFlag(true));
+              // dispatch(
+              //   getMeetingDetailsByMeetingIdApi(
+              //     navigate,
+              //     t,
+              //     { MeetingID: getApiResponse.meetingID },
+              //     "ProposedMeetingViewForParticipant",
+              //     {
+              //       responseDeadline: getApiResponse.deadline,
+              //       meetingId: getApiResponse.meetingID,
+              //       setResponseByDate,
+              //     },
+              //   ),
+              // );
+              // localStorage.setItem(
+              //   "viewProposeDatePollMeetingID",
+              //   getApiResponse.meetingID,
+              // );
+              localStorage.removeItem("group_meetingprop_action");
+
+              // setResponseByDate(getApiResponse.deadline);
+              // dispatch(
+              //   GetAllProposedMeetingDateApi(
+              //     navigate,
+              //     t,
+              //     { MeetingID: getApiResponse.meetingID },
+              //     "",
+              //     {},
+              //   ),
+              // );
+              // dispatch(toggleIsParticipantProposedMeetingDates(true));
+            }
+          } catch (error) {
+            localStorage.removeItem("group_meetingprop_action");
+          }
+        };
+
+        callApi();
+        //         dispatch(
+        //   viewCommitteeDetails({
+        //     committeeID: data.committeeID,
+        //     committeeTitle: data.committeesTitle,
+        //   }),
+        // );
+        // setCurrentViewCommitteeTabs(4);
+        // localStorage.setItem("ViewCommitteeID", data.committeeID);
+        // setViewCommitteePage(true);
+        // dispatch(viewCommitteePageFlag(true));
+      } catch (error) {
+        console.error("src/container/Committee/Committee.js:", error);
+      }
+    }
+  }, [group_meetingprop]);
+
+  useEffect(() => {
+    if (group_meetingpropOrganizer !== null) {
+      try {
+        const callApi1 = async () => {
+          try {
+            let getApiResponse =
+              await validateStringUserMeetingProposedDatesPollsApi(
+                group_meetingpropOrganizer,
+                navigate,
+                t,
+              )(dispatch); // Ensure you're passing dispatch here
+
+            if (getApiResponse) {
+
+              console.log(getApiResponse)
+              setGroupOrganizerProposedMeetingEmailRouteData(getApiResponse);
+              dispatch(
+                viewGroupDetails({
+                  groupID: getApiResponse.commmitteeGroupID,
+                  groupTitle: getApiResponse.committeeGroupTitle,
+                }),
+              );
+              setCurrentViewGroupTabs(4);
+              localStorage.setItem(
+                "ViewGroupID",
+                getApiResponse.commmitteeGroupID,
+              );
+              setViewGroupPage(true);
+              setCurrentGroupMeetingTabActive(2);
+              dispatch(viewGroupPageFlag(true));
+
+              localStorage.removeItem("groups_UserMeetPropoDatPoll");
+              //  localStorage.setItem(
+              //    "viewProposeDatePollMeetingID",
+              //    getApiResponse.meetingID,
+              //  );
+              //  localStorage.removeItem("UserMeetPropoDatPoll");
+              //  dispatch(
+              //    getUserWiseProposedDatesForOrganizerApi(
+              //      navigate,
+              //      t,
+              //      { MeetingID: getApiResponse.meetingID },
+              //      "",
+              //      {},
+              //    ),
+              //  );
+            }
+          } catch (error) {
+            localStorage.removeItem("groups_UserMeetPropoDatPoll");
+          }
+        };
+
+        callApi1();
+      } catch (error) {
+        console.error(
+          "src/container/meeting/proposedMeetingFlow/index.jsx:",
+          error,
+        );
+      }
+    }
+  }, [group_meetingpropOrganizer]);
   const handleClickMeetingTab = (data) => {
     dispatch(
       viewGroupDetails({
@@ -467,7 +647,9 @@ const Groups = () => {
       } else {
         setgroupsData([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/Groups.js:", error);
+    }
   }, [GroupsReducergetAllGroupsResponse]);
 
   useEffect(() => {
@@ -480,7 +662,9 @@ const Groups = () => {
           });
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/Groups.js:", error);
+    }
   }, [GroupsReducerremoveGroupMember]);
 
   const handlechange = (value) => {
@@ -873,15 +1057,13 @@ const Groups = () => {
                   className={
                     "pagination-groups-table d-flex justify-content-center"
                   }>
-                  <span className={styles["PaginationStyle-Committee"]}>
-                    <CustomPagination
-                      total={totalLength}
-                      current={currentPage}
-                      pageSize={8}
-                      onChange={handlechange}
-                      showSizer={false}
-                    />
-                  </span>
+                  <CustomPagination
+                    total={totalLength}
+                    current={currentPage}
+                    pageSize={8}
+                    onChange={handlechange}
+                    showSizer={false}
+                  />
                 </Col>
               </Row>
             )}

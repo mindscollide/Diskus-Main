@@ -46,7 +46,7 @@ const SubscriptionDetailsUserManagement = () => {
     try {
       dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
     }
   }, []);
 
@@ -59,7 +59,7 @@ const SubscriptionDetailsUserManagement = () => {
         setSubscriptionDetails(data.organizationSubscriptions);
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
     }
   }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
@@ -76,7 +76,7 @@ const SubscriptionDetailsUserManagement = () => {
       }
       return total;
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
     }
   }, 0);
 
@@ -94,7 +94,7 @@ const SubscriptionDetailsUserManagement = () => {
         }
         return total;
       } catch (error) {
-        
+        console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
       }
     },
     0
@@ -113,7 +113,7 @@ const SubscriptionDetailsUserManagement = () => {
       }
       return total;
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
     }
   }, 0);
 
@@ -148,7 +148,7 @@ const SubscriptionDetailsUserManagement = () => {
         }
         return total;
       } catch (error) {
-        
+        console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
       }
     }, 0);
 
@@ -195,7 +195,7 @@ const SubscriptionDetailsUserManagement = () => {
             );
           }
         } catch (error) {
-          
+          console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
         }
       },
     },
@@ -231,7 +231,7 @@ const SubscriptionDetailsUserManagement = () => {
             );
           }
         } catch (error) {
-          
+          console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
         }
       },
     },
@@ -263,7 +263,7 @@ const SubscriptionDetailsUserManagement = () => {
             );
           }
         } catch (error) {
-          
+          console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
         }
       },
     },
@@ -292,7 +292,7 @@ const SubscriptionDetailsUserManagement = () => {
             );
           }
         } catch (error) {
-          
+          console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
         }
       },
     },
@@ -334,7 +334,7 @@ const SubscriptionDetailsUserManagement = () => {
             );
           }
         } catch (error) {
-          
+          console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
         }
       },
     },
@@ -379,7 +379,7 @@ const SubscriptionDetailsUserManagement = () => {
             );
           }
         } catch (error) {
-          
+          console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
         }
       },
     },
@@ -421,7 +421,7 @@ const SubscriptionDetailsUserManagement = () => {
             );
           }
         } catch (error) {
-          
+          console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
         }
       },
     },
@@ -482,7 +482,7 @@ const SubscriptionDetailsUserManagement = () => {
             );
           }
         } catch (error) {
-          
+          console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
         }
       },
     },
@@ -516,7 +516,7 @@ const SubscriptionDetailsUserManagement = () => {
             );
           }
         } catch (error) {
-          
+          console.error("src/container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement.js:", error);
         }
       },
     },

@@ -217,7 +217,9 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
           (a, b) =>  a.name.localeCompare(b.name)
         );
         setmemberSelect(sortAssginersArr);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/GroupPolls/CreatePolls/CreateGrouppolls.js:", error);
+      }
     }
   }, [getGroupByGroupIdResponse]);
 
@@ -264,7 +266,9 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
               }
             }
           });
-        } catch {}
+        } catch (error) {
+          console.error("src/container/Groups/GroupPolls/CreatePolls/CreateGrouppolls.js:", error);
+        }
 
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
@@ -274,7 +278,9 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
       } else {
         // setopen notionation work here
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/GroupPolls/CreatePolls/CreateGrouppolls.js:", error);
+    }
   };
 
   // for create polls
@@ -567,7 +573,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                           filterOption={customFilter}
                         />
                         <Button
-                          text={t("ADD")}
+                          text={t("Add")}
                           className={styles["ADD_Btn_CreatePool_Modal"]}
                           onClick={handleAddUsers}
                         />

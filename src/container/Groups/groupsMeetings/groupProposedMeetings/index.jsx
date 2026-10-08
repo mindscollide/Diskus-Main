@@ -54,6 +54,9 @@ import {
   MeetingProposedForOrganizerProposed,
   MeetingProposedForParticipantProposed,
 } from "../../../../store/actions/NotificationRouting_actions";
+import { clearGetMeetingbyGroupID } from "../../../../store/actions/Groups_actions";
+import { getTodayYYYYMMDD } from "../../../../commen/functions/utils";
+import { useSnackbar } from "../../../../components/elements";
 const GroupProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -66,8 +69,14 @@ const GroupProposedMeetings = () => {
     setCurrentPageProposedGroupMeeting,
     currentLengthProposedGroupMeeting,
     setCurrentLengthProposedGroupMeeting,
-  } = useGroupsContext();
 
+    
+    groupParticipantProposedMeetingEmailRouteData,
+    setGroupParticipantProposedMeetingEmailRouteData,
+    groupOrganizerProposedMeetingEmailRouteData,
+    setGroupOrganizerProposedMeetingEmailRouteData,
+  } = useGroupsContext();
+  const [show, Snackbar] = useSnackbar()
   const { pathname } = useLocation();
   const proposedMeetingOrganizer = useSelector(
     (state) => state.NotificationRoutingReducer.MeetingProposedForOrganizer,
@@ -75,6 +84,7 @@ const GroupProposedMeetings = () => {
   const proposedMeetingParticipant = useSelector(
     (state) => state.NotificationRoutingReducer.MeetingProposedForParticipant,
   );
+  const removeProposedMeeting  = useSelector((state) => state.NewMeetingreducer.removeProposedMeetingFromList)
   let MeetingProp = localStorage.getItem("groups_meetingprop_action");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const currentLanguage = localStorage.getItem("i18nextLng");
@@ -95,6 +105,26 @@ const GroupProposedMeetings = () => {
   const meetingStatusProposedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
   );
+
+  useEffect(() => {
+    let searchData = {
+      GroupID: Number(localStorage.getItem("ViewGroupID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: true,
+    };
+    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+
+    return () => {
+      dispatch(clearGetMeetingbyGroupID());
+
+    }
+  }, [])
 
   const handleClickActions = (record) => {
     if (record.isParticipant) {
@@ -145,7 +175,9 @@ const GroupProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/groupsMeetings/groupProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingOrganizer]);
 
@@ -157,6 +189,12 @@ const GroupProposedMeetings = () => {
           responseResult: { sendResponseByDeadline },
         } = proposedMeetingParticipant;
 
+        if (String(sendResponseByDeadline).slice(0, 8) < getTodayYYYYMMDD()) {
+          dispatch(MeetingProposedForParticipantProposed(null));
+          navigate(pathname, { replace: true, state: null });
+          show(t("Vote-deadline-expired"), "success");
+          return;
+        }
         dispatch(
           getMeetingDetailsByMeetingIdApi(
             navigate,
@@ -175,11 +213,15 @@ const GroupProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Groups/groupsMeetings/groupProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingParticipant]);
 
-  
+
+
+
 
   const handelChangePagination = async (current, PageSize) => {
     setCurrentPageProposedGroupMeeting(current);
@@ -201,6 +243,11 @@ const GroupProposedMeetings = () => {
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState("descend");
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
+  };
+
 
   // Handle table sorting and filtering changes
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -418,7 +465,7 @@ const GroupProposedMeetings = () => {
             value === maxValue && value === 0 && maxValue === 0
               ? null
               : record.meetingPoll?.totalNoOfDirectors ===
-                record.meetingPoll?.totalNoOfDirectorsVoted;
+              record.meetingPoll?.totalNoOfDirectorsVoted;
           if (record.meetingPoll) {
             return allVoterVotedCompleted ? (
               <>
@@ -436,10 +483,10 @@ const GroupProposedMeetings = () => {
                 {currentLanguage === "en"
                   ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
                   : `${convertToArabicNumerals(
-                      record.meetingPoll?.totalNoOfDirectorsVoted,
-                    )} / ${convertToArabicNumerals(
-                      record.meetingPoll?.totalNoOfDirectors,
-                    )}`}
+                    record.meetingPoll?.totalNoOfDirectorsVoted,
+                  )} / ${convertToArabicNumerals(
+                    record.meetingPoll?.totalNoOfDirectors,
+                  )}`}
               </span>
             );
           } else {
@@ -480,21 +527,27 @@ const GroupProposedMeetings = () => {
                 <div>
                   <Popover
                     content={moreButtons(record)}
-                    trigger='click'
+                    trigger='hover'
                     overlayClassName='MoreButtons_overlay'
                     showArrow={false}
-                    placement='bottomRight'>
-                    <CustomButton
-                      className={styles.MoreMeetingButton}
-                      text='More'
-                      icon2={
-                        <img
-                          src={ChevronDownIcon}
-                          alt='Chevron Down'
-                          width={10}
-                        />
-                      }
-                    />
+                    placement='bottomRight'
+                    open={openPopoverMeetingID === record.pK_MDID}
+                    onOpenChange={(isOpen) =>
+                      handelChangePopoverOpen(record.pK_MDID, isOpen)
+                    }>
+                    <span>
+                      <CustomButton
+                        className={styles.MoreMeetingButton}
+                        text='More'
+                        icon2={
+                          <img
+                            src={ChevronDownIcon}
+                            alt='Chevron Down'
+                            width={10}
+                          />
+                        }
+                      />
+                    </span>
                   </Popover>
                 </div>
               </div>
@@ -503,70 +556,127 @@ const GroupProposedMeetings = () => {
         },
       },
     ];
-  }, [meetingTitleSort, meetingDateSort]);
-
-  //
+  }, [meetingTitleSort, meetingDateSort, openPopoverMeetingID]);
 
   useEffect(() => {
-    if (MeetingProp !== null) {
-      const callApi = async () => {
-        try {
-          let getApiResponse = await validateStringParticipantProposedApi(
-            MeetingProp,
+    if (groupParticipantProposedMeetingEmailRouteData !== null) {
+      try {
+        dispatch(
+          getMeetingDetailsByMeetingIdApi(
             navigate,
             t,
-          )(dispatch); // Ensure you're passing dispatch here
-          if (getApiResponse) {
-            localStorage.setItem(
-              "viewProposeDatePollMeetingID",
-              getApiResponse.meetingID,
-            );
-            localStorage.removeItem("meetingprop");
-            setResponseByDate(getApiResponse.deadline);
-            dispatch(toggleIsParticipantProposedMeetingDates(true));
-          }
-        } catch (error) {
-          localStorage.removeItem("meetingprop");
-        }
-      };
-
-      callApi();
+            { MeetingID: groupParticipantProposedMeetingEmailRouteData.meetingID },
+            "ProposedMeetingViewForParticipant",
+            {
+              responseDeadline: groupParticipantProposedMeetingEmailRouteData.deadline,
+              meetingId: groupParticipantProposedMeetingEmailRouteData.meetingID,
+              setResponseByDate,
+            },
+          ),
+        );
+        setGroupParticipantProposedMeetingEmailRouteData(null);
+        localStorage.setItem(
+          "viewProposeDatePollMeetingID",
+          groupParticipantProposedMeetingEmailRouteData.meetingID,
+        );
+      } catch (error) {
+        setGroupParticipantProposedMeetingEmailRouteData(null);
+        console.error("src/container/Groups/groupsMeetings/groupProposedMeetings/index.jsx:", error);
+      }
     }
-  }, [MeetingProp]); // Add `dispatch` to the dependency array
+  }, [groupParticipantProposedMeetingEmailRouteData]);
 
   useEffect(() => {
-    if (UserMeetPropoDatPoll !== null) {
+    if (groupOrganizerProposedMeetingEmailRouteData !== null) {
       try {
-        const callApi1 = async () => {
-          try {
-            let getApiResponse =
-              await validateStringUserMeetingProposedDatesPollsApi(
-                UserMeetPropoDatPoll,
-                navigate,
-                t,
-              )(dispatch); // Ensure you're passing dispatch here
 
-            if (getApiResponse) {
-              localStorage.setItem(
-                "viewProposeDatePollMeetingID",
-                getApiResponse.meetingID,
-              );
-              localStorage.removeItem("UserMeetPropoDatPoll");
-              dispatch(toggleIsOrganizerProposedMeetingDates(true));
-            }
-          } catch (error) {
-            localStorage.removeItem("UserMeetPropoDatPoll");
-          }
-        };
+        // localStorage.setItem(
+        //   "viewProposeDatePollMeetingID",
+        //   organizerProposedMeetingEmailRouteData.meetingID,
+        // );
+        // localStorage.removeItem("UserMeetPropoDatPoll");
+        dispatch(
+          getUserWiseProposedDatesForOrganizerApi(
+            navigate,
+            t,
+            { MeetingID: groupOrganizerProposedMeetingEmailRouteData.meetingID },
+            "",
+            {},
+          ),
+        );
+        setGroupOrganizerProposedMeetingEmailRouteData(null)
 
-        callApi1();
-      } catch (error) {}
+      } catch (error) {
+        setGroupOrganizerProposedMeetingEmailRouteData(null)
+
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
     }
-  }, [UserMeetPropoDatPoll]);
+  }, [groupOrganizerProposedMeetingEmailRouteData]);
+
+  // useEffect(() => {
+  //   if (MeetingProp !== null) {
+  //     const callApi = async () => {
+  //       try {
+  //         let getApiResponse = await validateStringParticipantProposedApi(
+  //           MeetingProp,
+  //           navigate,
+  //           t,
+  //         )(dispatch); // Ensure you're passing dispatch here
+  //         if (getApiResponse) {
+  //           localStorage.setItem(
+  //             "viewProposeDatePollMeetingID",
+  //             getApiResponse.meetingID,
+  //           );
+  //           localStorage.removeItem("meetingprop");
+  //           setResponseByDate(getApiResponse.deadline);
+  //           dispatch(toggleIsParticipantProposedMeetingDates(true));
+  //         }
+  //       } catch (error) {
+  //         localStorage.removeItem("meetingprop");
+  //       }
+  //     };
+
+  //     callApi();
+  //   }
+  // }, [MeetingProp]); // Add `dispatch` to the dependency array
+
+  // useEffect(() => {
+  //   if (UserMeetPropoDatPoll !== null) {
+  //     try {
+  //       const callApi1 = async () => {
+  //         try {
+  //           let getApiResponse =
+  //             await validateStringUserMeetingProposedDatesPollsApi(
+  //               UserMeetPropoDatPoll,
+  //               navigate,
+  //               t,
+  //             )(dispatch); // Ensure you're passing dispatch here
+
+  //           if (getApiResponse) {
+  //             localStorage.setItem(
+  //               "viewProposeDatePollMeetingID",
+  //               getApiResponse.meetingID,
+  //             );
+  //             localStorage.removeItem("UserMeetPropoDatPoll");
+  //             dispatch(toggleIsOrganizerProposedMeetingDates(true));
+  //           }
+  //         } catch (error) {
+  //           localStorage.removeItem("UserMeetPropoDatPoll");
+  //         }
+  //       };
+
+  //       callApi1();
+  //     } catch (error) {
+  //       console.error("src/container/Groups/groupsMeetings/groupProposedMeetings/index.jsx:", error);
+  //     }
+  //   }
+  // }, [UserMeetPropoDatPoll]);
+
   return (
     <>
       <Row>
-        <Col lg={12} md={12} sm={12} className='w-100'>
+        <Col lg={12} md={12} sm={12} className={styles["MainMeetingTablePublished"]}>
           <Table
             onChange={handleChangeMeetingTable}
             className='MeetingTable'
@@ -584,31 +694,29 @@ const GroupProposedMeetings = () => {
           />
         </Col>{" "}
         {groupProposedMeetingData.length > 0 && (
-          <Col className={styles["ProposedMeeting_Pagination"]}>
-            <div className='d-flex justify-content-center mt-2 '>
-              <Row className={styles["PaginationStyle-Committee"]}>
-                <Col
-                  className={"pagination-groups-table"}
-                  sm={12}
-                  md={12}
-                  lg={12}>
-                  <CustomPagination
-                    current={currentPageProposedGroupMeeting}
-                    pageSize={currentLengthProposedGroupMeeting}
-                    onChange={handelChangePagination}
-                    total={groupProposedMeetingDataRecord}
-                    showSizer={true}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                  />
-                </Col>
-              </Row>
-            </div>
-          </Col>
+          <Row>
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className="d-flex justify-content-center my-3 pagination-groups-table"
+            >
+              <CustomPagination
+                current={currentPageProposedGroupMeeting}
+                pageSize={currentLengthProposedGroupMeeting}
+                onChange={handelChangePagination}
+                total={groupProposedMeetingDataRecord}
+                showSizer={true}
+                pageSizeOptionsValues={["30", "50", "100", "200"]}
+              />
+            </Col>
+          </Row>
         )}
       </Row>
       {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
       {deleteMeetingModal && <DeleteMeetingModal />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+      {Snackbar}
     </>
   );
 };

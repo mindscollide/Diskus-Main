@@ -262,15 +262,15 @@ const SearchComplianceReportModal = () => {
                           }
                           options={[
                             {
-                              label: "End of Compliance",
+                              label: t("End-of-compliance"),
                               value: 1,
                             },
                             {
-                              label: "Quarterly",
+                              label: t("Quarterly"),
                               value: 2,
                             },
                             {
-                              label: "Accumulative",
+                              label: t("Accumulative"),
                               value: 3,
                             },
                           ]}
@@ -295,7 +295,7 @@ const SearchComplianceReportModal = () => {
                       <Col lg={6} md={6} sm={6} xs={6}>
                         <DatePicker.RangePicker
                           format="DD/MM/YYYY"
-                          placeholder={["Start Date", "End Date"]}
+                          placeholder={[t("Start-date"), t("End-date")]}
                           allowEmpty={[true, true]}
                           className="custom-range-picker"
                           separator="-"

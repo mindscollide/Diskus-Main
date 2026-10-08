@@ -10,7 +10,6 @@ import {
   leavePresenterView,
   muteUnMuteParticipant,
   openPresenterView,
-  OpenPresenterView,
   participantOfGroupCall,
   startPresenterView,
   stopPresenterView,
@@ -671,7 +670,12 @@ const getParticipantMeetingJoinMainApi = (
                 setIsWaiting(true);
                 setGetReady(false);
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
+              }
               await dispatch(
                 getParticipantMeetingJoinSuccess(
                   response.data.responseResult,
@@ -731,7 +735,12 @@ const getParticipantMeetingJoinMainApi = (
               );
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -743,7 +752,12 @@ const getParticipantMeetingJoinMainApi = (
               await dispatch(videoIconOrButtonState(false));
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
+              }
               await dispatch(
                 getParticipantMeetingJoinFail(
                   t("invalid-video-call-url-provided"),
@@ -760,7 +774,12 @@ const getParticipantMeetingJoinMainApi = (
               await dispatch(videoIconOrButtonState(false));
               try {
                 setJoinButton(false);
-              } catch {}
+              } catch (error) {
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
+              }
               await dispatch(
                 getParticipantMeetingJoinFail(t("Could-not-join-call")),
               );
@@ -775,7 +794,12 @@ const getParticipantMeetingJoinMainApi = (
                 setJoinButton(false);
                 dispatch(participantVideoButtonState(false));
                 dispatch(videoIconOrButtonState(false));
-              } catch {}
+              } catch (error) {
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
+              }
               await dispatch(
                 getParticipantMeetingJoinFail(t("Something-went-wrong")),
               );
@@ -815,7 +839,12 @@ const getParticipantMeetingJoinMainApi = (
                 setJoinButton(false);
                 dispatch(participantVideoButtonState(false));
                 dispatch(videoIconOrButtonState(false));
-              } catch {}
+              } catch (error) {
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
+              }
               await dispatch(
                 getParticipantMeetingJoinFail(t("Something-went-wrong")),
               );
@@ -825,7 +854,12 @@ const getParticipantMeetingJoinMainApi = (
               setJoinButton(false);
               dispatch(participantVideoButtonState(false));
               dispatch(videoIconOrButtonState(false));
-            } catch {}
+            } catch (error) {
+              console.error(
+                "src/store/actions/VideoFeature_actions.js:",
+                error,
+              );
+            }
             await dispatch(
               getParticipantMeetingJoinFail(t("Something-went-wrong")),
             );
@@ -835,7 +869,9 @@ const getParticipantMeetingJoinMainApi = (
             setJoinButton(false);
             dispatch(participantVideoButtonState(false));
             dispatch(videoIconOrButtonState(false));
-          } catch {}
+          } catch (error) {
+            console.error("src/store/actions/VideoFeature_actions.js:", error);
+          }
           await dispatch(
             getParticipantMeetingJoinFail(t("Something-went-wrong")),
           );
@@ -846,7 +882,9 @@ const getParticipantMeetingJoinMainApi = (
           setJoinButton(false);
           dispatch(participantVideoButtonState(false));
           dispatch(videoIconOrButtonState(false));
-        } catch {}
+        } catch (error) {
+          console.error("src/store/actions/VideoFeature_actions.js:", error);
+        }
         dispatch(getParticipantMeetingJoinFail(t("Something-went-wrong")));
       });
   };
@@ -1555,7 +1593,12 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
+              }
 
               dispatch(presenterStartedMainFlag(true));
               await dispatch(
@@ -1658,6 +1701,14 @@ const stopPresenterViewMainApi = (
     RoomID: data.RoomID,
     VideoCallUrl: videoCallURL,
   };
+  // Several callers (AgendaViewer, Header2 logout, NewEndMeetingModal) don't
+  // pass the lock ref, so guard every unlock; unlock on every terminal outcome
+  // so a failed stop can't block later stops until reload.
+  const releaseStopLock = () => {
+    if (stopApiCalledRef) {
+      stopApiCalledRef.current = false; // 🔓 UNLOCK
+    }
+  };
   return (dispatch) => {
     dispatch(stopPresenterInit());
     let form = new FormData();
@@ -1678,6 +1729,7 @@ const stopPresenterViewMainApi = (
               setLeaveMeetingVideoForOneToOneOrGroup,
               setJoiningOneToOneAfterLeavingPresenterView,
               setLeavePresenterViewToJoinOneToOne,
+              stopApiCalledRef,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -1716,12 +1768,19 @@ const stopPresenterViewMainApi = (
                         ),
                       );
                     }
-                  } else if (inMeetingVideo && !meetingVideoHost && flag !== 3) {
+                  } else if (
+                    inMeetingVideo &&
+                    !meetingVideoHost &&
+                    flag !== 3
+                  ) {
                     // Non-host participant who presented: reload the participant
                     // list (getAllParticipantMain) for their meeting-video room.
                     const participantRoomID =
                       localStorage.getItem("participantRoomId") || data.RoomID;
-                    if (participantRoomID && String(participantRoomID) !== "null") {
+                    if (
+                      participantRoomID &&
+                      String(participantRoomID) !== "null"
+                    ) {
                       dispatch(
                         getVideoCallParticipantsMainApi(
                           { RoomID: String(participantRoomID) },
@@ -1733,6 +1792,7 @@ const stopPresenterViewMainApi = (
                   }
                 } catch {}
                 stopApiCalledRef.current = false; // 🔓 UNLOCK
+                releaseStopLock();
                 let alreadyInMeetingVideo = JSON.parse(
                   sessionStorage.getItem("alreadyInMeetingVideo")
                     ? sessionStorage.getItem("alreadyInMeetingVideo")
@@ -1874,7 +1934,7 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_02".toLowerCase(),
                   )
               ) {
-                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                releaseStopLock();
                 await dispatch(stopPresenterFail(t("UnSuccessful")));
               } else if (
                 response.data.responseResult.responseMessage
@@ -1883,7 +1943,7 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_03".toLowerCase(),
                   )
               ) {
-                stopApiCalledRef.current = false; // 🔓 UNLOCK
+                releaseStopLock();
                 await dispatch(
                   stopPresenterFail(t("Error-while-stop-presentation")),
                 );
@@ -1894,22 +1954,30 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_04".toLowerCase(),
                   )
               ) {
+                releaseStopLock();
+                await dispatch(stopPresenterFail(t("Something-went-wrong")));
+              } else {
+                releaseStopLock();
                 await dispatch(stopPresenterFail(t("Something-went-wrong")));
               }
             } else {
+              releaseStopLock();
               await dispatch(stopPresenterFail(t("Something-went-wrong")));
             }
           } catch (error) {
+            releaseStopLock();
             console.error(
               "Error processing stopPresenterViewMainApi response:",
               error,
             );
           }
         } else {
+          releaseStopLock();
           await dispatch(stopPresenterFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
+        releaseStopLock();
         dispatch(stopPresenterFail(t("Something-went-wrong")));
       });
   };
@@ -2839,7 +2907,9 @@ const getVideoCallStatusToRejoinGroupCallMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getVideoCallStatusToRejoinGroupCallMainApi(navigate, t, data));
+          dispatch(
+            getVideoCallStatusToRejoinGroupCallMainApi(navigate, t, data),
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2880,7 +2950,9 @@ const getVideoCallStatusToRejoinGroupCallMainApi = (navigate, t, data) => {
             }
           } else {
             await dispatch(
-              getVideoCallStatusToRejoinGroupCallFail(t("Something-went-wrong")),
+              getVideoCallStatusToRejoinGroupCallFail(
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {

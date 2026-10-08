@@ -65,10 +65,14 @@ import { DataRoomDownloadFileWithFooterApiFunc } from "@/store/actions/DataRoom_
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   // checkFlag 6 is for Committee
   // checkFlag 7 is for Group
   // checkFlag 5 is for Create Meeting
+  // check 1 is for when user open meeting from header component
+  // check 2 is for when user open meeting from Calendar component
 
   //For Localization
   const [notify, SnackBar] = useSnackbar();
@@ -76,13 +80,19 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isQuickMeetingCreate, setIsQuickMeetingCreate } =
-    useNewMeetingContext();
-
-  const assigneesRemindersData = useSelector(
-    (state) => state.assignees.RemindersData,
-  );
-  const assigneesuser = useSelector((state) => state.assignees?.user);
+  const {
+    isQuickMeetingCreate,
+    setIsQuickMeetingCreate,
+    isQuickMeetingFromHeader,
+    setIsQuickMeetingFromHeader,
+    isQuickMeetingFromCalendar,
+    setIsQuickMeetingFromCalendar,
+  } = useNewMeetingContext();
+  // Creating a quick meeting publishes it immediately — switch to the
+  // Published tab on success regardless of which tab (e.g. Draft) was
+  // active when it was created.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   const CommitteeReducergetCommitteeByCommitteeID = useSelector(
     (state) => state.CommitteeReducer?.getCommitteeByCommitteeID,
   );
@@ -92,6 +102,10 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   const UserProfileData = useSelector(
     (state) => state.settingReducer?.UserProfileData,
   );
+  const assigneesRemindersData = useSelector(
+    (state) => state.assignees.RemindersData,
+  );
+  const assigneesuser = useSelector((state) => state.assignees?.user);
   const {
     userName = "",
     organizationName = "",
@@ -825,7 +839,9 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
         });
       });
       setReminderOptions(reminderOptions);
-    } catch (error) {}
+    } catch (error) {
+      console.error("CreateQuickMeeting.js:", error);
+    }
   }, [assigneesRemindersData]);
 
   // for attendies Role handler
@@ -855,6 +871,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
     return () => {
       setModalField(false);
       setIsQuickMeetingCreate(false);
+      setIsQuickMeetingFromHeader(false);
+      setIsQuickMeetingFromCalendar(false);
       setIsDetails(true);
       setCurrentStep(1);
 
@@ -1953,15 +1971,17 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-
+    let forModalCloseState =
+      checkFlag === 1
+        ? setIsQuickMeetingFromHeader
+        : checkFlag === 2
+          ? setIsQuickMeetingFromCalendar
+          : setIsQuickMeetingCreate;
     await dispatch(
-      ScheduleNewMeeting(
-        navigate,
-        t,
-        checkFlag,
-        newData,
-        setIsQuickMeetingCreate,
-      ),
+      ScheduleNewMeeting(navigate, t, checkFlag, newData, forModalCloseState, {
+        setCurrentCommitteeMeetingTabActive,
+        setCurrentGroupMeetingTabActive,
+      }),
     );
   };
 
@@ -2069,11 +2089,14 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
       setIsAgenda(true);
       setIsAttendees(false);
       setCurrentStep(3);
+      setCloseConfirmationModal(false);
     }
   };
 
   const handleCloseUpdateMeeting = () => {
     setIsQuickMeetingCreate(false);
+    setIsQuickMeetingFromHeader(false);
+    setIsQuickMeetingFromCalendar(false);
   };
 
   const handleChangePresenter = (value) => {
@@ -2149,9 +2172,17 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   return (
     <>
       <Modal
-        show={isQuickMeetingCreate}
+        show={
+          isQuickMeetingCreate ||
+          isQuickMeetingFromHeader ||
+          isQuickMeetingFromCalendar
+        }
         onHide={onHideHandleModal}
-        setShow={setIsQuickMeetingCreate}
+        setShow={
+          setIsQuickMeetingCreate ||
+          setIsQuickMeetingFromHeader ||
+          setIsQuickMeetingFromCalendar
+        }
         className={
           closeConfirmationModal === true
             ? null
@@ -2198,8 +2229,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   <Button
                     className={
                       isDetails
-                        ? "isDetail-Schedule-top-btn_active"
-                        : "isDetail-Schedule-top-btn-NonActive"
+                        ? "CreateQuickMeetingTabActive"
+                        : "CreateQuickMeetingTabNotActive"
                     }
                     text={t("Details")}
                     onClick={changeSelectDetails}
@@ -2207,8 +2238,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   <Button
                     className={
                       isAttendees
-                        ? "isAttendee-Schedule-top-btn_active"
-                        : "isAttendee-Schedule-top-btn-NonActive"
+                        ? "CreateQuickMeetingTabActive"
+                        : "CreateQuickMeetingTabNotActive"
                     }
                     text={t("Participants")}
                     datatut='show-meeting-attendees'
@@ -2217,8 +2248,8 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   <Button
                     className={
                       isAgenda
-                        ? "isAgenda-Schedule-top-btn_active"
-                        : "isAgenda-Schedule-top-btn-NonActive"
+                        ? "CreateQuickMeetingTabActive"
+                        : "CreateQuickMeetingTabNotActive"
                     }
                     text={t("Agenda")}
                     onClick={changeSelectAgenda}
@@ -2337,7 +2368,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                     <Col
                       lg={1}
                       md={1}
-                      sm={12}
+                      sm={1}
                       xs={12}
                       className='CreateMeetingInput'>
                       <Button
@@ -2370,7 +2401,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                   <Col
                     lg={7}
                     md={7}
-                    sm={12}
+                    sm={7}
                     xs={12}
                     className='location-textbox CreateMeetingInput'>
                     <TextField
@@ -2450,6 +2481,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       <Col
                         lg={7}
                         md={7}
+                        sm={7}
                         xs={12}
                         className='agenda-title-field CreateMeetingAgenda'>
                         <TextField
@@ -2462,7 +2494,12 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                           placeholder={t("Agenda-title") + "*"}
                         />
                       </Col>
-                      <Col lg={5} md={5} xs={12} className='agenda-title-field'>
+                      <Col
+                        lg={5}
+                        md={5}
+                        sm={5}
+                        xs={12}
+                        className='agenda-title-field'>
                         <Select
                           options={allPresenters.filter((p) =>
                             createMeeting.MeetingAttendees.some(
@@ -2669,7 +2706,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
             ) : isAttendees ? (
               <>
                 <Row className=' mt-4'>
-                  <Col lg={6} md={6} sm={12} xs={12}>
+                  <Col lg={6} md={6} sm={6} xs={12}>
                     <Select
                       options={attendeesParticipant.filter(
                         (p) => p.value !== Number(createrID),
@@ -2686,7 +2723,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       }
                     />
                   </Col>
-                  <Col lg={4} md={4} sm={12} xs={12}>
+                  <Col lg={4} md={4} sm={4} xs={12}>
                     <Select
                       placeholder={t("Participant") + "*"}
                       onChange={assigntRoleAttendies}
@@ -2694,7 +2731,7 @@ const CreateQuickMeeting = ({ ModalTitle, checkFlag }) => {
                       options={participantRoles}
                     />
                   </Col>
-                  <Col lg={2} md={2} sm={12} xs={12}>
+                  <Col lg={2} md={2} sm={2} xs={12}>
                     <Button
                       className={"addattendees-btn"}
                       text={t("Add")}

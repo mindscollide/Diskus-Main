@@ -357,7 +357,9 @@ const getbyGroupID = (
                     setViewGroupPage(true);
                   dispatch(viewGroupPageFlag(true));
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Groups_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1259,7 +1261,9 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                     displayFileName: newFileID.displayFileName,
                   });
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Groups_actions.js:", error);
+              }
               await dispatch(
                 saveFiles_success(response.data.responseResult, ""),
               );
@@ -1366,7 +1370,9 @@ const SaveGroupsDocumentsApiFunc = (
               try {
                 setCreategrouppage(false);
                 setViewGroupPage(false);
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Groups_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1884,6 +1890,14 @@ const getMeetingbyGroupIdApi = (navigate, t, Data) => {
                 meetings: getMeetingData,
                 pageNumbers: response.data.responseResult.pageNumbers,
                 totalRecords: response.data.responseResult.totalRecords,
+                // Which tab this response was requested for (1 Published,
+                // 2 Proposed, 3 Draft) so GroupsContext can ignore a stale
+                // response left over from a different tab.
+                requestedTab: Data.ProposedMeetings
+                  ? 2
+                  : Data.PublishedMeetings
+                    ? 1
+                    : 3,
               };
               dispatch(getMeetingbyGroup_success(newMeetingData, ""));
             } else if (
@@ -1968,6 +1982,41 @@ const setMeetingByGroupIdApi = (navigate, t, Data, routePath, object) => {
                   dispatch(setCreateEditTab("organizers"));
                   break;
 
+                case "saveProposedMeetingFromGroup":
+                  // Refetch the Proposed list so the meeting just created/
+                  // updated actually shows up — the active tab was already
+                  // switched to Proposed (2) by the caller before this ran.
+                  object.tabSetters.setCurrentGroupMeetingTabActive?.(2);
+                  // dispatch(
+                  //   getMeetingbyGroupIdApi(navigate, t, {
+                  //     GroupID: Number(Data.GroupID),
+                  //     Date: "",
+                  //     Title: "",
+                  //     HostName: "",
+                  //     UserID: Number(localStorage.getItem("userID")),
+                  //     PageNumber: 1,
+                  //     Length: 30,
+                  //     PublishedMeetings: false,
+                  //     ProposedMeetings: true,
+                  //   }),
+                  // );
+                  break;
+                case "CreateQuickmeetingFromGroup":
+                  object.tabSetters.setCurrentGroupMeetingTabActive?.(1);
+                  // dispatch(
+                  //   getMeetingbyGroupIdApi(navigate, t, {
+                  //     GroupID: Number(Data.GroupID),
+                  //     Date: "",
+                  //     Title: "",
+                  //     HostName: "",
+                  //     UserID: Number(localStorage.getItem("userID")),
+                  //     PageNumber: 1,
+                  //     Length: 30,
+                  //     PublishedMeetings: true,
+                  //     ProposedMeetings: false,
+                  //   }),
+                  // );
+                  break;
                 default:
                   break;
               }

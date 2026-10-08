@@ -88,7 +88,9 @@ const DocumentViewer = () => {
       }
 
       return clearLocalStorage;
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/elements/webviewer/DocumentViewer.js:", error);
+    }
   }, [attachmentID]);
 
   // Handle File Removal via MQTT
@@ -373,7 +375,9 @@ const DocumentViewer = () => {
       }
       // Reset the unsaved changes flag after successful save
       setHasUnsavedChanges(false);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/elements/webviewer/DocumentViewer.js:", error);
+    }
   };
 
   const setPermissions = (instance) => {

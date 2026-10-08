@@ -802,7 +802,9 @@ const SearchComponent = ({
         setTotalRecords(0);
         setSRowsData(0);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.js:", error);
+    }
   }, [
     DataRoomReducer.SearchFilesAndFoldersResponse,
     DataRoomReducer.SearchFileListCount,
@@ -837,7 +839,9 @@ const SearchComponent = ({
         );
         setAssignessList(filteredApiResponse);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.js:", error);
+    }
   }, [assignees.user]);
 
   // api call onscroll
@@ -1435,7 +1439,8 @@ const SearchComponent = ({
         2,
       ),
       UserIDToSearch: 0,
-      isOwnedByMe: searchDataFields.isOwnedByMe,
+      // isOwnedByMe: searchDataFields.isOwnedByMe,
+      isOwnedByMe: Number(event.value),
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
       Length: 10,
@@ -1534,7 +1539,6 @@ const SearchComponent = ({
       setSearchDataFields({
         ...searchDataFields,
         isOwnedByMe: 3,
-        isNotOwnedByMe: true,
         isSpecificUser: false,
         UserIDToSearch: 0,
       });
@@ -1562,7 +1566,6 @@ const SearchComponent = ({
           2,
         ),
         isOwnedByMe: 3,
-        isNotOwnedByMe: true,
         isSpecificUser: false,
         UserIDToSearch: 0,
         sRow: 0,
@@ -2497,7 +2500,7 @@ const SearchComponent = ({
               className={"DataRoom_Table"}
               rows={searchAllData}
               pagination={false}
-              size={"middle"}
+              size={"small"}
               locale={{
                 emptyText: (
                   <Row>

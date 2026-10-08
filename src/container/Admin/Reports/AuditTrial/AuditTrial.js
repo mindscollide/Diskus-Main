@@ -91,7 +91,9 @@ const AuditTrial = () => {
         Length: 10,
       };
       dispatch(GetAuditListingAPI(navigate, Data, t));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Admin/Reports/AuditTrial/AuditTrial.js:", error);
+    }
     return () => {
       setAuditTrialSearch({
         userName: "",
@@ -527,7 +529,9 @@ const AuditTrial = () => {
           label: "",
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Admin/Reports/AuditTrial/AuditTrial.js:", error);
+    }
   };
 
   //handle Cross Icon Pressed Enter
@@ -564,7 +568,9 @@ const AuditTrial = () => {
           label: "",
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Admin/Reports/AuditTrial/AuditTrial.js:", error);
+    }
   };
 
   //handle  Pressed Enter TextField
@@ -628,7 +634,9 @@ const AuditTrial = () => {
           label: "",
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Admin/Reports/AuditTrial/AuditTrial.js:", error);
+    }
   };
 
   //Handle Scroll Function
@@ -720,7 +728,7 @@ const AuditTrial = () => {
                           width={"100%"}
                           value={auditTrialSearch.userName}
                           iconclassname={"d-block"}
-                          placeholder={`${t("UserName")}...`}
+                          placeholder={t("Username")}
                           name={"UserName"}
                           change={handeSearchBoxTextField}
                         />

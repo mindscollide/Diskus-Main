@@ -355,7 +355,9 @@ const Minutes = () => {
         setFileAttachments([]);
         setPreviousFileIDs([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Minutes/Minutes.js:", error);
+    }
   }, [generalMinutesDocument]);
 
   const handleAgendaWiseClick = () => {
@@ -474,6 +476,8 @@ const Minutes = () => {
   }, [addMinuteID]);
 
   const handleRemovingTheMinutes = (MinuteData) => {
+
+    console.log(MinuteData, "MinuteDataMinuteDataMinuteData")
     let Data = {
       MDID: meetingID,
       MeetingGeneralMinutesID: MinuteData.minuteID,

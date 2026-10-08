@@ -11,6 +11,7 @@ import ViewVotesScreen from "../ViewVotes/ViewVotesScreen";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 import { viewVotesApi } from "../../../../../../store/actions/Polls_actions";
+import { formatNumber } from "../../../../../../commen/functions/utils";
 
 const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
   const { t } = useTranslation();
@@ -54,7 +55,9 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Polls/ViewPollsPublishedScreen/ViewPollsPublishedScreen.js:", error);
+    }
   }, [Allpolls]);
 
   const handleCancelButton = () => {
@@ -111,7 +114,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                                           }
                                         >
                                           {data.answer}{" "}
-                                          <span>{data.totalVotes}</span>
+                                   <span>({formatNumber(data.totalVotes)})</span>
                                         </span>
                                       </Col>
                                     </Row>
@@ -127,7 +130,7 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                                             <Checkbox disabled={true} />
                                             <Progress
                                               className="Progress_bar_Polls"
-                                              percent={data.votePercentage}
+                                              percent={formatNumber(data.votePercentage)}
                                               status="active"
                                             />
                                           </Col>

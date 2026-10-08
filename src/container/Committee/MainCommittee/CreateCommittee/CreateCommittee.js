@@ -110,7 +110,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       dispatch(getCommitteeTypes(navigate, Data, t));
       dispatch(getCommitteeMembersRole(navigate, Data, t));
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
     }
   }, [chcekFlag]);
 
@@ -134,7 +134,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setCommitteeMembersRolesOptions(committeeMembersRoleOptions);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
     }
   }, [CommitteeReducergetCommitteeMembersRoles]);
 
@@ -152,7 +152,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setNewCommitteeTypeOptions(committeeTypeOptions);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
     }
   }, [CommitteeReducergetCommitteeTypes]);
 
@@ -408,7 +408,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         });
         setAllPresenters(newData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
+    }
   }, [assigneesuser]);
 
   const checkGroupMembers = (GroupMembers) => {
@@ -493,7 +495,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         documentsUploadCall(folderIdCreated);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
     }
   }, [CommitteeReducercreateUpdateCommitteeDataroom]);
 
@@ -636,7 +638,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           <Form.Control
                             ref={CommitteeTitle}
                             type="text"
-                            placeholder={t("Committee-title-Committee")}
+                            placeholder={t("Committee-title")}
                             required={true}
                             name="committeetitle"
                             className={styles["create_committee_title"]}
@@ -674,7 +676,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             maxLength={500}
                             value={createCommitteeDetails.CommitteesDescription}
                             rows="4"
-                            placeholder={t("Group-Description")}
+                            placeholder={t("Description")}
                             required={true}
                             name="committeedescription"
                             change={onChangeFunc}
@@ -1599,7 +1601,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Attachments_Heading"]}>
-                            {"Attachment"}
+                            {t("Attachments")}
                           </span>
                         </Col>
                       </Row>

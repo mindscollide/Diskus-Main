@@ -58,7 +58,9 @@ const getUserInfo = (data, currentUserId, currentSource) => {
         userInfo.isPrimaryOrganizer = true;
       }
     }
-  } catch {}
+  } catch (error) {
+    console.error("src/hooks/meetingResponse/response.js:", error);
+  }
 
   return userInfo;
 };

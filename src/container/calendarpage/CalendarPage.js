@@ -139,7 +139,13 @@ const CalendarPage = () => {
     (state) => state.calendarReducer.microsoftEventDelete,
   );
 
-  const { isQuickMeetingView, setIsQuickMeetingView } = useNewMeetingContext();
+  const {
+    isQuickMeetingView,
+    setIsQuickMeetingView,
+    isQuickMeetingFromCalendar,
+    setIsQuickMeetingFromCalendar,
+  } = useNewMeetingContext();
+
   const [meetingModalShow, setMeetingModalShow] = useState(false);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
   const [meetingData, setMeetingData] = useState(null);
@@ -245,7 +251,9 @@ const CalendarPage = () => {
       if (!getEventTypeIds?.length > 0) {
         await dispatch(getEventsTypes(navigate, t));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/calendarpage/CalendarPage.js:", error);
+    }
   };
 
   // calling Api for getting data for calendar
@@ -423,7 +431,9 @@ const CalendarPage = () => {
         });
         setCalenderDatae([...calenderData, newData]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/calendarpage/CalendarPage.js:", error);
+    }
   }, [googleEventCreate]);
 
   useEffect(() => {
@@ -446,7 +456,9 @@ const CalendarPage = () => {
           }),
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/calendarpage/CalendarPage.js:", error);
+    }
   }, [googleEventUpdate]);
 
   useEffect(() => {
@@ -456,7 +468,9 @@ const CalendarPage = () => {
         // Remove Existing Event in State
         setCalenderDatae(removeEventById(googleEventDelete.calendarEventID));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/calendarpage/CalendarPage.js:", error);
+    }
   }, [googleEventDelete]);
 
   useEffect(() => {
@@ -471,7 +485,9 @@ const CalendarPage = () => {
         });
         setCalenderDatae([...calenderData, newData]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/calendarpage/CalendarPage.js:", error);
+    }
   }, [microsoftEventCreate]);
 
   useEffect(() => {
@@ -494,7 +510,9 @@ const CalendarPage = () => {
           }),
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/calendarpage/CalendarPage.js:", error);
+    }
   }, [microsoftEventUpdate]);
 
   useEffect(() => {
@@ -504,7 +522,9 @@ const CalendarPage = () => {
         // Remove Existing Event in State
         setCalenderDatae(removeEventById(microsoftEventDelete.calendarEventID));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/calendarpage/CalendarPage.js:", error);
+    }
   }, [microsoftEventDelete]);
 
   useEffect(() => {
@@ -560,11 +580,13 @@ const CalendarPage = () => {
         setCalenderDatae([...calenderData, MeetingData]);
         dispatch(meetingStatusPublishedMqtt(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/calendarpage/CalendarPage.js:", error);
+    }
   }, [MeetingPublishData]);
 
   const handleCreateMeeting = () => {
-    setMeetingModalShow(true);
+    setIsQuickMeetingFromCalendar(true);
   };
 
   const handleCreateTodo = () => {
@@ -651,12 +673,10 @@ const CalendarPage = () => {
       </div>
       {isQuickMeetingView && <MeetingViewModalCalendar data={meetingData} />}
 
-      {meetingModalShow && (
+      {isQuickMeetingFromCalendar  && (
         <CreateQuickMeeting
           // this is check from where its called 2 is from Calendar
           checkFlag={2}
-          show={meetingModalShow}
-          setShow={setMeetingModalShow}
         />
       )}
       {todolistModalShow && (

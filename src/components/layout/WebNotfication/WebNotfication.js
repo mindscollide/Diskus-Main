@@ -57,6 +57,7 @@ import {
   MeetingProposedForParticipantProposed,
   ViewMeetingDetails,
 } from "../../../store/actions/NotificationRouting_actions.js";
+import { useCommitteeContext } from "../../../context/CommitteeContext.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -80,7 +81,9 @@ const WebNotfication = ({
 
   const { setResultresolution } = useResolutionContext();
   //Groups Context
-  const { setViewGroupPage, setShowModal } = useGroupsContext();
+  const { setViewGroupPage, setShowModal, setCurrentGroupMeetingTabActive } =
+    useGroupsContext();
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
   //Compliance Context — used to deep-link a Task_Reminder_* notification
   //click straight into that task's Compliance record (see comptask_action
   //email deep-link, same mechanism reused here without the decrypt step
@@ -169,7 +172,12 @@ const WebNotfication = ({
           return [...newData, ...prevData]; // Add new unique notifications to the front of the list
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/components/layout/WebNotfication/WebNotfication.js:",
+        error,
+      );
+    }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
   // Group notifications whenever webNotificationData changes
@@ -204,7 +212,12 @@ const WebNotfication = ({
         );
         setGroupedNotifications(groupNotificationsData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/components/layout/WebNotfication/WebNotfication.js:",
+        error,
+      );
+    }
   }, [webNotificationData, todayDate]);
 
   // Fetches the meeting's current status, records it for the destination
@@ -236,6 +249,14 @@ const WebNotfication = ({
         4: "/Diskus/Groups",
       };
       const path = routeByMeetingType[standardMeetingType];
+
+      if (routeByMeetingType === 2) {
+        localStorage.setItem("MeetingCurrentView", 2);
+      } else if (routeByMeetingType === 3) {
+        setCurrentCommitteeMeetingTabActive(2);
+      } else if (routeByMeetingType === 4) {
+        setCurrentGroupMeetingTabActive(2);
+      }
       if (path) {
         navigate(path, {
           state: {
@@ -244,6 +265,14 @@ const WebNotfication = ({
               ...responseData.responseResult,
               MeetingID: PayLoadData.MeetingID,
               isQuickMeeting: PayLoadData?.isQuickMeeting,
+              // Committee.js/Groups.js need to know WHICH committee/group
+              // this meeting belongs to (GetMeetingStatusData's own result
+              // doesn't carry that — only the meeting itself). Forward it
+              // from the notification payload, where it's already used the
+              // same way by the other committee/group notification
+              // branches (see notificationActionID 16/21 above).
+              CommitteeID: responseData?.responseResult?.committeeGroupMeetingID,
+              GroupID: responseData?.responseResult?.committeeGroupMeetingID,
             },
           },
         });

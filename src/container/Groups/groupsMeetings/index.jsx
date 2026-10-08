@@ -34,6 +34,8 @@ import GroupDraftMeetings from "./groupDraftMeetings";
 import GroupPublishedMeetingList from "./groupPublishMeetings";
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 import { Plus } from "react-bootstrap-icons";
+import { resetCurrentMeetingInfo } from "../../../store/actions/NewMeeting2.actions";
+import { useMeetingContext } from "../../../context/MeetingContext";
 
 const GroupMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
@@ -57,26 +59,28 @@ const GroupMeetingTab = ({ groupStatus }) => {
     isQuickMeetingUpdate,
     isQuickMeetingView,
   } = useNewMeetingContext();
+
+  const { setEditorRole } = useMeetingContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
   let userID = localStorage.getItem("userID");
 
   let ViewGroupID = localStorage.getItem("ViewGroupID");
 
-  useEffect(() => {
-    let searchData = {
-      GroupID: Number(ViewGroupID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: currentGroupMeetingTabActive === 1 ? true : false,
-      ProposedMeetings: currentGroupMeetingTabActive === 2 ? true : false,
-    };
-    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
-  }, []);
+  // useEffect(() => {
+  //   let searchData = {
+  //     GroupID: Number(ViewGroupID),
+  //     Date: "",
+  //     Title: "",
+  //     HostName: "",
+  //     UserID: Number(userID),
+  //     PageNumber: 1,
+  //     Length: 30,
+  //     PublishedMeetings: currentGroupMeetingTabActive === 1 ? true : false,
+  //     ProposedMeetings: currentGroupMeetingTabActive === 2 ? true : false,
+  //   };
+  //   dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+  // }, []);
 
   const handleClickTabNavigate = (value) => {
     setCurrentGroupMeetingTabActive(value);
@@ -86,20 +90,20 @@ const GroupMeetingTab = ({ groupStatus }) => {
     setCurrentLengthDraftGroupMeeting(30);
     setCurrentPageProposedGroupMeeting(1);
     setCurrentLengthProposedGroupMeeting(30);
-
-    let searchData = {
-      GroupID: Number(ViewGroupID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: value === 1 ? true : false,
-      ProposedMeetings: value === 2 ? true : false,
-    };
     dispatch(clearGetMeetingbyGroupID());
-    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+
+    // let searchData = {
+    //   GroupID: Number(ViewGroupID),
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: Number(userID),
+    //   PageNumber: 1,
+    //   Length: 30,
+    //   PublishedMeetings: value === 1 ? true : false,
+    //   ProposedMeetings: value === 2 ? true : false,
+    // };
+    // dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
   };
 
   const [talkGroupID, setTalkGroupID] = useState(0);
@@ -130,6 +134,12 @@ const GroupMeetingTab = ({ groupStatus }) => {
   const handleCreateAdvanceMeeting = () => {
     dispatch(setAdvanceMeetingRoute(1));
     dispatch(toggleCreateEditMeetingModal(true));
+    setEditorRole({
+      status: "11",
+      role: "Organizer",
+      isPrimaryOrganizer: true,
+    });
+    dispatch(resetCurrentMeetingInfo())
   };
 
   const openProposedNewMeetingPage = () => {
@@ -195,7 +205,7 @@ const GroupMeetingTab = ({ groupStatus }) => {
           {groupStatus === 3 && (
             <ReactBootstrapDropdown
               className='SceduleMeetingButton d-inline-block position-relative ms-2'
-              // onClick={eventClickHandler}
+            // onClick={eventClickHandler}
             >
               <ReactBootstrapDropdown.Toggle title={t("Schedule-a-meeting")}>
                 <Row>
@@ -262,41 +272,7 @@ const GroupMeetingTab = ({ groupStatus }) => {
           ) : null}
         </Col>
       </Row>
-      {/* <Row>
-        <Col sm={12} md={12} lg={12}>
-          <Table
-            column={MeetingColoumns}
-            scroll={scroll}
-            rows={rows}
-            pagination={false}
-            size='small'
-            className='newMeetingTable'
-            locale={{
-              emptyText: emptyText(),
-            }}
-          />
-        </Col>
-        {rows && rows.length > 0 ? (
-          <Col
-            sm={12}
-            md={12}
-            lg={12}
-            className={
-              "pagination-groups-table position-absolute bottom-20  d-flex justify-content-center"
-            }>
-            <span className='PaginationStyle-TodoList'>
-              <CustomPagination
-                current={Number(currentPage)}
-                showSizer={true}
-                onChange={handleChangePagination}
-                pageSizeOptionsValues={["30", "50", "100", "200"]}
-                total={totalRecords}
-                pageSize={pageSize}
-              />
-            </span>
-          </Col>
-        ) : null}
-      </Row> */}
+
     </>
   );
 };

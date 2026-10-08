@@ -285,7 +285,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         });
         setAllPresenters(newData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/MainGroup/UpdateGroup/UpdateGroupPage.js:", error);
+    }
   }, [assigneesuserData]);
 
   // for api response of list group roles

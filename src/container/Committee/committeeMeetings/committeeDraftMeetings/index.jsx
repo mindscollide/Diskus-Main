@@ -39,8 +39,9 @@ import {
 } from "@/store/actions/ModalStates_actions";
 import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
-import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
+import { clearGetMeetingByCommitteeID, getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
+import { useMeetingListActions } from "../../../meeting/commonComponents/useMeetingListActions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -61,6 +62,24 @@ const CommitteeDraftMeetings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTitle, setMeetingTitle] = useState("");
+
+
+
+  const {
+    handleViewMeeting,
+  } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
+  })
+
   const {
     committeeDraftMeetingData,
     committeeDraftMeetingDataRecord,
@@ -68,6 +87,7 @@ const CommitteeDraftMeetings = () => {
     setCurrentPageDraftCommitteeMeeting,
     currentLengthDraftCommitteeMeeting,
     setCurrentLengthDraftCommitteeMeeting,
+    setCurrentCommitteeMeetingTabActive,
   } = useCommitteeContext();
 
   // ─── Context ───
@@ -83,11 +103,37 @@ const CommitteeDraftMeetings = () => {
     setVideoTalk,
   } = useMeetingContext();
 
-  // ─── Local state ───
-  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [organizerNameSort, setOrganizerNameSort] = useState(null);
-  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  // Matches the same controlled-Popover pattern already used on the
+  // Published tab, extended here so it can also be closed on scroll.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
+  };
+
+
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    return () => {
+      dispatch(clearGetMeetingByCommitteeID());
+
+    }
+  }, [])
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -148,7 +194,7 @@ const CommitteeDraftMeetings = () => {
             t,
             { MeetingID: record.pK_MDID },
             context,
-            { role, callFunc: () => {} },
+            { role, callFunc: () => { } },
           ),
         );
       }
@@ -171,7 +217,7 @@ const CommitteeDraftMeetings = () => {
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          { setEditorRole },
+          { setEditorRole, setCurrentCommitteeMeetingTabActive },
         ),
       );
     };
@@ -213,6 +259,8 @@ const CommitteeDraftMeetings = () => {
   };
 
   const handleClickTitle = (record) => {
+    handleViewMeeting(record)
+
     dispatch(toggleViewMeetingModal(true));
     dispatch(setViewTab("meetingDetails"));
     dispatch(
@@ -253,8 +301,8 @@ const CommitteeDraftMeetings = () => {
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
-        render: (text) => (
-          <span onClick={handleClickTitle} className={styles.tableRow}>
+        render: (text, record) => (
+          <span onClick={() => handleClickTitle(record)} className={styles.tableRow}>
             {text}
           </span>
         ),
@@ -368,16 +416,22 @@ const CommitteeDraftMeetings = () => {
             <div>
               <Popover
                 content={moreButtons(record)}
-                trigger='click'
+                trigger='hover'
                 overlayClassName='MoreButtons_overlay'
                 className='moreOptionsPopover'
                 showArrow={false}
-                placement='bottomRight'>
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text='More'
-                  icon2={<img src={ChevronDownIcon} width={10} />}
-                />
+                placement='bottomRight'
+                open={openPopoverMeetingID === record.pK_MDID}
+                onOpenChange={(isOpen) =>
+                  handelChangePopoverOpen(record.pK_MDID, isOpen)
+                }>
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text='More'
+                    icon2={<img src={ChevronDownIcon} width={10} />}
+                  />
+                </span>
               </Popover>
             </div>
           </div>
@@ -390,6 +444,7 @@ const CommitteeDraftMeetings = () => {
     meetingTimeSort,
     meetingDateSort,
     isMeetingTypeFilter,
+    openPopoverMeetingID,
   ]);
 
   return (
@@ -416,26 +471,23 @@ const CommitteeDraftMeetings = () => {
             />
           </Col>
           {committeeDraftMeetingData.length > 0 && (
-            <Col className={styles["Meeting_Pagination"]}>
-              <div className='d-flex justify-content-center mt-2 '>
-                <Row className={styles["PaginationStyle-Meeting"]}>
-                  <Col
-                    className={"pagination-groups-table"}
-                    sm={12}
-                    md={12}
-                    lg={12}>
-                    <CustomPagination
-                      current={currentPageDraftCommitteeMeeting}
-                      pageSize={currentLengthDraftCommitteeMeeting}
-                      onChange={handelChangePagination}
-                      total={committeeDraftMeetingDataRecord}
-                      showSizer={true}
-                      pageSizeOptionsValues={["30", "50", "100", "200"]}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex justify-content-center my-3 pagination-groups-table"
+              >
+                <CustomPagination
+                  current={currentPageDraftCommitteeMeeting}
+                  pageSize={currentLengthDraftCommitteeMeeting}
+                  onChange={handelChangePagination}
+                  total={committeeDraftMeetingDataRecord}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
+                />
+              </Col>
+            </Row>
           )}
         </Row>
       </div>

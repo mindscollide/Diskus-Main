@@ -29,10 +29,10 @@ import {
 } from "../../../commen/functions/date_formater";
 import { getCalendarDataResponse } from "../../../store/actions/GetDataForCalendar";
 import CalendarFooter from "./calender_footer";
-require("moment/locale/ar");
-require("moment/locale/ar-sa");
-require("moment/locale/fr");
-require("moment/locale/en-gb");
+import "moment/dist/locale/ar";
+import "moment/dist/locale/ar-sa";
+import "moment/dist/locale/fr";
+import "moment/dist/locale/en-gb";
 moment.locale("en-US");
 const localizer = momentLocalizer(moment);
 

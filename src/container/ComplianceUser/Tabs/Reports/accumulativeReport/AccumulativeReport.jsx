@@ -95,7 +95,7 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
               className={`${styles.iconTextWrapperDownload} d-flex gap-2`}>
               <img src={ComplianceCalendar} alt='ComplianceCalendar' />
               <div>
-                <label>{t("Start-dates")}:</label>
+                <label>{t("Start-date")}:</label>
                 <p>
                   <span className={styles.dateText}>
                     {formatDateToYMDLong(reportData?.quarterStartDate)}
@@ -105,7 +105,7 @@ const AccumulativePdfLayout = ({ data, reportData, t }) => {
             </Col>
             <Col lg={5} xs='auto'>
               <div>
-                <label>{t("End-dates")}:</label>
+                <label>{t("End-date")}:</label>
                 <p>
                   <span className={styles.dateText}>
                     {formatDateToYMDLong(reportData?.quarterEndDate)}
@@ -435,6 +435,7 @@ const AccumulativeReport = () => {
         window.__PDF_CHUNK_DATA__ = null;
       }
     } catch (err) {
+      console.error("src/container/ComplianceUser/Tabs/Reports/accumulativeReport/AccumulativeReport.jsx:", err);
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);
@@ -450,6 +451,7 @@ const AccumulativeReport = () => {
       setAutoPdfDownload(false);
       setHasDownloaded(false);
     } catch (error) {
+      console.error("src/container/ComplianceUser/Tabs/Reports/accumulativeReport/AccumulativeReport.jsx:", error);
     } finally {
       setIsGenerating(false);
     }
@@ -536,7 +538,7 @@ const AccumulativeReport = () => {
                     </p>
                     <div className={styles.metaRow}>
                       <div>
-                        <span>{t("Start-dates")}:</span>
+                        <span>{t("Start-date")}:</span>
                         <p>
                           {formatDateToYMD(
                             GetAccumulativeReport?.header?.reportStartDate,
@@ -544,7 +546,7 @@ const AccumulativeReport = () => {
                         </p>
                       </div>
                       <div>
-                        <span>{t("End-dates")}:</span>
+                        <span>{t("End-date")}:</span>
                         <p>
                           {formatDateToYMD(
                             GetAccumulativeReport?.header?.reportEndDate,

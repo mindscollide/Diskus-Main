@@ -29,6 +29,7 @@ const Attendees = () => {
     setEditorRole,
     advanceMeetingModalID,
     setAttendees,
+    handleCloseMeeting,
   } = useMeetingContext();
 
   const [Attending, setAttending] = useState(0);
@@ -76,7 +77,9 @@ const Attendees = () => {
         setMayBe(tentativeCount);
         setNotAttending(declinedCount);
         setNotResponded(awaitingCount);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/attendees/Attendees.js:", error);
+      }
     }
   }, [getMeetingUsersRSVP]);
 
@@ -289,6 +292,19 @@ const Attendees = () => {
           className={styles["CancelAttendeesBtn"]}
         />
       </Col> */}
+      {Number(editorRole.status) !== 10 && (
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className='d-flex justify-content-end mt-3'>
+          <Button
+            text={t("Close")}
+            className={styles["CloseMeetingButton"]}
+            onClick={handleCloseMeeting}
+          />
+        </Col>
+      )}
     </Row>
   );
 };

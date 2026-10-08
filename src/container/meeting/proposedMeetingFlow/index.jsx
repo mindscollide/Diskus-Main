@@ -55,11 +55,13 @@ import {
   MeetingProposedForOrganizerProposed,
   MeetingProposedForParticipantProposed,
 } from "../../../store/actions/NotificationRouting_actions";
-
+import { getTodayYYYYMMDD } from "../../../commen/functions/utils";
+import { useSnackbar } from "../../../components/elements";
 const ProposedMeeting = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [show, Snackbar] = useSnackbar();
   const {
     isMeetingTypeFilter,
     setProposedMeetingData,
@@ -105,6 +107,14 @@ const ProposedMeeting = () => {
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [meetingDateSort, setMeetingDateSort] = useState("descend");
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  // Matches the same controlled-Popover pattern already used on the
+  // Published tab, extended here so it can also be closed on scroll.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
+  };
 
   useEffect(() => {
     if (proposedMeetingParticipant !== null) {
@@ -113,7 +123,12 @@ const ProposedMeeting = () => {
           meetingID,
           responseResult: { sendResponseByDeadline },
         } = proposedMeetingParticipant;
-
+      if (String(sendResponseByDeadline).slice(0, 8) < getTodayYYYYMMDD()) {
+          dispatch(MeetingProposedForParticipantProposed(null));
+          navigate(pathname, { replace: true, state: null });
+          show(t("Vote-deadline-expired"), "success");
+          return;
+        }
         dispatch(
           getMeetingDetailsByMeetingIdApi(
             navigate,
@@ -132,7 +147,9 @@ const ProposedMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [proposedMeetingParticipant]);
 
@@ -155,7 +172,9 @@ const ProposedMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [proposedMeetingOrganizer]);
 
@@ -211,6 +230,7 @@ const ProposedMeeting = () => {
       }
     }
   };
+  
   const handleCLickView = (record) => {
     if (record.isOrganizer) {
       dispatch(
@@ -388,9 +408,8 @@ const ProposedMeeting = () => {
 
         filterIcon: (filtered) => (
           <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
+            className={`filter-chevron-icon-todolist ${filtered ? "active" : ""
+              }`}
           />
         ),
 
@@ -481,7 +500,7 @@ const ProposedMeeting = () => {
             value === maxValue && value === 0 && maxValue === 0
               ? null
               : record.meetingPoll?.totalNoOfDirectors ===
-                record.meetingPoll?.totalNoOfDirectorsVoted;
+              record.meetingPoll?.totalNoOfDirectorsVoted;
           if (record.meetingPoll) {
             return allVoterVotedCompleted ? (
               <>
@@ -499,10 +518,10 @@ const ProposedMeeting = () => {
                 {currentLanguage === "en"
                   ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
                   : `${convertToArabicNumerals(
-                      record.meetingPoll?.totalNoOfDirectorsVoted,
-                    )} / ${convertToArabicNumerals(
-                      record.meetingPoll?.totalNoOfDirectors,
-                    )}`}
+                    record.meetingPoll?.totalNoOfDirectorsVoted,
+                  )} / ${convertToArabicNumerals(
+                    record.meetingPoll?.totalNoOfDirectors,
+                  )}`}
               </span>
             );
           } else {
@@ -543,21 +562,27 @@ const ProposedMeeting = () => {
                 <div>
                   <Popover
                     content={moreButtons(record)}
-                    trigger='click'
+                    trigger={"hover"}
                     overlayClassName='MoreButtons_overlay'
                     showArrow={false}
-                    placement='bottomRight'>
-                    <CustomButton
-                      className={styles.MoreMeetingButton}
-                      text='More'
-                      icon2={
-                        <img
-                          src={ChevronDownIcon}
-                          alt='Chevron Down'
-                          width={10}
-                        />
-                      }
-                    />
+                    placement='bottomRight'
+                    open={openPopoverMeetingID === record.pK_MDID}
+                    onOpenChange={(isOpen) =>
+                      handelChangePopoverOpen(record.pK_MDID, isOpen)
+                    }>
+                    <span>
+                      <CustomButton
+                        className={styles.MoreMeetingButton}
+                        text={t('More')}
+                        icon2={
+                          <img
+                            src={ChevronDownIcon}
+                            alt='Chevron Down'
+                            width={10}
+                          />
+                        }
+                      />
+                    </span>
                   </Popover>
                 </div>
               </div>
@@ -566,7 +591,12 @@ const ProposedMeeting = () => {
         },
       },
     ];
-  }, [meetingTitleSort, meetingDateSort, isMeetingTypeFilter]);
+  }, [
+    meetingTitleSort,
+    meetingDateSort,
+    isMeetingTypeFilter,
+    openPopoverMeetingID,
+  ]);
 
   //
 
@@ -596,7 +626,25 @@ const ProposedMeeting = () => {
           if (indexToUpdate !== -1) {
             let updatedRows = [...proposedMeetingData];
 
-            updatedRows[indexToUpdate] = getMeetingData;
+            // This poll-response event is broadcast to every connected
+            // user, not just the one who voted. The vote count in
+            // getMeetingData is correct for everyone, but its isVoted flag
+            // reflects the sender's vote — applying it as-is would flip
+            // other users' Vote button to Voted too. Only trust isVoted
+            // when the logged-in user is the one who actually voted.
+            let currentUserID = Number(localStorage.getItem("userID"));
+            let mergedMeetingData =
+              Number(meetingData.senderID) !== currentUserID
+                ? {
+                    ...getMeetingData,
+                    meetingPoll: {
+                      ...getMeetingData.meetingPoll,
+                      isVoted: updatedRows[indexToUpdate]?.meetingPoll?.isVoted,
+                    },
+                  }
+                : getMeetingData;
+
+            updatedRows[indexToUpdate] = mergedMeetingData;
 
             setProposedMeetingData(updatedRows);
           } else {
@@ -608,7 +656,9 @@ const ProposedMeeting = () => {
         };
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [meetingStatusProposedMqttData]);
 
@@ -695,7 +745,9 @@ const ProposedMeeting = () => {
         };
 
         callApi1();
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [UserMeetPropoDatPoll]);
   return (
@@ -719,37 +771,34 @@ const ProposedMeeting = () => {
           />
         </Col>{" "}
         {proposedMeetingData.length > 0 && (
-          <Col className={styles["Meeting_Pagination"]}>
-            <div className='d-flex justify-content-center mt-2 '>
-              <Row className={styles["PaginationStyle-Committee"]}>
-                <Col
-                  className={"pagination-groups-table"}
-                  sm={12}
-                  md={12}
-                  lg={12}>
-                  <CustomPagination
-                    current={
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1
-                    }
-                    pageSize={
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50
-                    }
-                    onChange={handelChangeProposedMeetingPagination}
-                    total={proposedMeetingDataRecord}
-                    showSizer={true}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                  />
-                </Col>
-              </Row>
-            </div>
-          </Col>
+          <Row >
+            <Col
+              className={"pagination-groups-table d-flex justify-content-center"}
+              sm={12}
+              md={12}
+              lg={12}>
+              <CustomPagination
+                current={
+                  meetingPageCurrent !== null
+                    ? Number(meetingPageCurrent)
+                    : 1
+                }
+                pageSize={
+                  meetingpageRow !== null ? Number(meetingpageRow) : 50
+                }
+                onChange={handelChangeProposedMeetingPagination}
+                total={proposedMeetingDataRecord}
+                showSizer={true}
+                pageSizeOptionsValues={["30", "50", "100", "200"]}
+              />
+            </Col>
+          </Row>
         )}
       </Row>
       {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
       {deleteMeetingModal && <DeleteMeetingModal />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+      {Snackbar}
     </section>
   );
 };

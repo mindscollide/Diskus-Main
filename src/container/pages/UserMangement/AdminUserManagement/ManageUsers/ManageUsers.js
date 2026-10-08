@@ -32,7 +32,7 @@ import {
   getOrganizationPackageUserStatsAPI,
 } from "../../../../../store/actions/UserManagementActions";
 
-import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+import { checkFeatureIDAvailability, formatNumber } from "../../../../../commen/functions/utils";
 
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
 
@@ -1173,7 +1173,7 @@ const ManageUsers = () => {
                   <span className={styles["RedStripContent"]}>
                     {t("Maximum")}
                     &nbsp;
-                    <span>{headCount}</span>
+                    <span>{formatNumber(headCount)}</span>
                     &nbsp;
                     <span>{t("Users-can-be-created-in-trial-version")}</span>
                   </span>

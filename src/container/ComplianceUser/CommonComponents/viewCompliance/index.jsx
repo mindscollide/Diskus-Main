@@ -17,6 +17,7 @@ import {
   ViewComplianceDetailsByViewTypeAPI,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
+import { formatNumber } from "../../../../commen/functions/utils";
 
 const ViewCompliance = () => {
   const { t } = useTranslation();
@@ -143,7 +144,9 @@ const ViewCompliance = () => {
         // setSelectAuthority(authority);
         // setSelectCriticality(criticalityLevel);
         // setComplianceDueDate(dueDate);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/CommonComponents/viewCompliance/index.jsx:", error);
+      }
     }
   }, [viewComplianceByMeDetails]);
 
@@ -192,7 +195,9 @@ const ViewCompliance = () => {
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/CommonComponents/viewCompliance/index.jsx:", error);
+      }
     }
   }, [complainceRespnseMessage, complainceSeverityMessage]);
 
@@ -312,7 +317,7 @@ const ViewCompliance = () => {
                             )}
                           </span>
                           <span className={styles["progressBarHeading"]}>
-                            {`${complianceDetailsState.progressPercent}%`}
+                            {`${formatNumber(complianceDetailsState.progressPercent)}%`}
                           </span>
                         </div>
                         <ProgressLoader

@@ -46,6 +46,8 @@ const ViewProposedMeetingModal = () => {
     MeetingType: "",
     meetingId: 0,
   });
+
+  console.log(basicmeetingTitle, "basicmeetingTitlebasicmeetingTitle")
   const [sendResponseByDate, setSendResponseByDate] = useState("");
   const [partcipatns, setParticipants] = useState([]);
   const [meetingProposedDates, setMeetingProposedDates] = useState([]);
@@ -76,7 +78,7 @@ const ViewProposedMeetingModal = () => {
         });
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal.js:", error);
     }
   }, [getAllMeetingDetails]);
 
@@ -90,7 +92,7 @@ const ViewProposedMeetingModal = () => {
         setParticipants(getAllSavedparticipantsData);
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal.js:", error);
     }
   }, [getAllSavedparticipantsData]);
 
@@ -107,7 +109,7 @@ const ViewProposedMeetingModal = () => {
       } else {
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal.js:", error);
     }
   }, [getAllProposedDatesData]);
 

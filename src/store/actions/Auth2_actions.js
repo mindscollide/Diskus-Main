@@ -601,8 +601,6 @@ const enterPasswordvalidation = (
             navigate,
             response.data.responseResult,
             response.data.responseResult.authToken.isFirstLogIn,
-            response.data.responseResult.userFeatures,
-            response.data.responseResult.adminFeatures,
             dispatch,
           );
           await mqttConnection(
@@ -647,8 +645,6 @@ const enterPasswordvalidation = (
             navigate,
             response.data.responseResult,
             response.data.responseResult.authToken.isFirstLogIn,
-            response.data.responseResult.userFeatures,
-            response.data.responseResult.adminFeatures,
             dispatch,
           );
 
@@ -1979,8 +1975,6 @@ const createPasswordAction = (value, navigate, t) => {
             navigate,
             response.data.responseResult,
             response.data.responseResult.authToken.isFirstLogIn,
-            response.data.responseResult.userFeatures,
-            response.data.responseResult.adminFeatures,
             dispatch,
           );
           dispatch(createPasswordSuccess(response.data.responseResult, ""));
@@ -3285,7 +3279,9 @@ const updatePasswordAction = (value, navigate, t) => {
                 );
                 localStorage.removeItem("updatePasswordCheck");
                 navigate("/updatepassword");
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Auth2_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

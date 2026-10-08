@@ -436,8 +436,8 @@ const ReviewSignature = () => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}
         >
           <div />
         </Dropdown>
@@ -516,7 +516,9 @@ const ReviewSignature = () => {
           setReviewAndSignatureStatus(statusValues);
           setDefaultReviewAndSignatureStatus(defaultStatus);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature.js:", error);
+      }
     }
   }, [getAllPendingApprovalStatuses]);
 
@@ -526,7 +528,9 @@ const ReviewSignature = () => {
         let { data } = getAllPendingForApprovalStats;
 
         setApprovalStats(data);
-      } catch {}
+      } catch (error) {
+        console.error("src/container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature.js:", error);
+      }
     }
   }, [getAllPendingForApprovalStats]);
 
@@ -557,7 +561,9 @@ const ReviewSignature = () => {
             setOriginalData(pendingApprovals);
           }
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature.js:", error);
+      }
     }
   }, [listOfPendingForApprovalSignatures]);
 
@@ -582,7 +588,9 @@ const ReviewSignature = () => {
           setTotalDataLength((prev) => prev + 1);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature.js:", error);
+    }
   }, [workflowsignaturedocument]);
 
   useEffect(() => {
@@ -602,7 +610,9 @@ const ReviewSignature = () => {
           ),
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature.js:", error);
+    }
   }, [workflowsignaturedocumentActionByMe]);
   useEffect(() => {
     try {
@@ -620,7 +630,9 @@ const ReviewSignature = () => {
           ),
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature.js:", error);
+    }
   }, [signatureDocumentStatusChangeForSignees]);
 
   return (

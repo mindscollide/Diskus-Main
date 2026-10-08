@@ -206,7 +206,9 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
                     displayFileName: newFileID.displayFileName,
                   });
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Committee_actions.js:", error);
+              }
 
               await dispatch(
                 saveFiles_success(
@@ -575,7 +577,9 @@ const getCommitteesbyCommitteeId = (
                     setViewGroupPage(true);
                   dispatch(viewCommitteePageFlag(true));
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/Committee_actions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1885,6 +1889,14 @@ const getMeetingByCommitteeIdApi = (navigate, t, Data) => {
                 meetings: getMeetingData,
                 pageNumbers: response.data.responseResult.pageNumbers,
                 totalRecords: response.data.responseResult.totalRecords,
+                // Which tab this response was requested for (1 Published,
+                // 2 Proposed, 3 Draft) so CommitteeContext can ignore a stale
+                // response left over from a different tab.
+                requestedTab: Data.ProposedMeetings
+                  ? 2
+                  : Data.PublishedMeetings
+                    ? 1
+                    : 3,
               };
               dispatch(getMeetingByCommitteeID_success(newMeetingData, ""));
             } else if (
@@ -1924,11 +1936,12 @@ const setMeetingbyCommitteeID_init = () => {
     type: actions.SETMEETINGBYCOMMITTEEID_INIT,
   };
 };
-const setMeetingbyCommitteeID_success = (response, message) => {
+const setMeetingbyCommitteeID_success = (response, message, loader = false) => {
   return {
     type: actions.SETMEETINGBYCOMMITTEEID_SUCCESS,
     response: response,
     message: message,
+    loader
   };
 };
 const setMeetingbyCommitteeID_fail = (message) => {
@@ -1964,13 +1977,48 @@ const setMeetingbyCommitteeIdApi = (navigate, t, Data, routePath, object) => {
                 setMeetingbyCommitteeID_success(
                   response.data.responseResult,
                   "",
+                  false
                 ),
               );
               switch (routePath) {
                 case "fromCommitteeAdvanceMeeting":
                   dispatch(setCreateEditTab("organizers"));
                   break;
+                case "saveProposedMeetingFromCommittee":
+                  // Refetch the Proposed list so the meeting just created/
+                  // updated actually shows up — the active tab was already
+                  // switched to Proposed (2) by the caller before this ran.
+                  // dispatch(
+                  //   getMeetingByCommitteeIdApi(navigate, t, {
+                  //     CommitteeID: Number(Data.CommitteeID),
+                  //     Date: "",
+                  //     Title: "",
+                  //     HostName: "",
+                  //     UserID: Number(localStorage.getItem("userID")),
+                  //     PageNumber: 1,
+                  //     Length: 30,
+                  //     PublishedMeetings: false,
+                  //     ProposedMeetings: true,
+                  //   }),
+                  // );
+                  break;
+                case "CreateQuickmeetingFromCommittee":
+                  object.tabSetters.setCurrentCommitteeMeetingTabActive?.(1);
 
+                  // dispatch(
+                  //   getMeetingByCommitteeIdApi(navigate, t, {
+                  //     CommitteeID: Number(Data.CommitteeID),
+                  //     Date: "",
+                  //     Title: "",
+                  //     HostName: "",
+                  //     UserID: Number(localStorage.getItem("userID")),
+                  //     PageNumber: 1,
+                  //     Length: 30,
+                  //     PublishedMeetings: true,
+                  //     ProposedMeetings: false,
+                  //   }),
+                  // );
+                  break;
                 default:
                   // dispatch(
                   //   getMeetingByCommitteeIdApi(navigate, t, {

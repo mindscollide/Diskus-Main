@@ -77,7 +77,9 @@ const ModalViewNote = ({
           username: GetNotesByNotesId.username,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/notes/modalViewNote/ModalViewNote.js:", error);
+    }
   }, [GetNotesByNotesId]);
 
   //UseEffect Extracting the Files Data
@@ -86,7 +88,9 @@ const ModalViewNote = ({
       if (RetrieveDocsNotes && RetrieveDocsNotes !== null) {
         setAttachments(RetrieveDocsNotes.data);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/notes/modalViewNote/ModalViewNote.js:", error);
+    }
   }, [RetrieveDocsNotes]);
 
   const handleCloseViewModal = () => {

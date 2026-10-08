@@ -46,6 +46,7 @@ import {
   setViewTab,
   toggleViewMeetingModal,
 } from "../../../store/actions/ModalStates_actions";
+import { useMeetingListActions } from "../commonComponents/useMeetingListActions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -67,6 +68,22 @@ const DraftMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTitle, setMeetingTitle] = useState("");
+
+  const {
+    handleViewMeeting,
+  } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
+  })
 
   // ─── Context ───
   const {
@@ -102,10 +119,16 @@ const DraftMeetingList = () => {
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   // ─── Local state ───
-  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [organizerNameSort, setOrganizerNameSort] = useState(null);
-  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+
+  // Tracks which row's "More" Popover is open, by record ID — not a plain
+  // boolean, since a shared boolean would open every row's popover at once.
+  // Matches the same controlled-Popover pattern already used on the
+  // Published tab, extended here so it can also be closed on scroll.
+  const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  const handelChangePopoverOpen = (recordId, isOpen) => {
+    setOpenPopoverMeetingID(isOpen ? recordId : null);
+  };
+
 
   // ─── MQTT: Agenda Contributor Added ───
   useEffect(() => {
@@ -116,7 +139,9 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {}
+          } catch (error) {
+            console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+          }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -124,7 +149,9 @@ const DraftMeetingList = () => {
         }
       };
       callAddAgendaContributor();
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+    }
   }, [mqttMeetingAcAdded]);
 
   // ─── MQTT: Agenda Contributor Removed ───
@@ -140,7 +167,9 @@ const DraftMeetingList = () => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch (error) {
+        console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+      }
     }
   }, [mqttMeetingAcRemoved]);
 
@@ -153,7 +182,9 @@ const DraftMeetingList = () => {
           try {
             let getData = await mqttMeetingData(newObj, 2);
             setDraftMeetingData((prevData) => [getData, ...prevData]);
-          } catch (error) {}
+          } catch (error) {
+            console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+          }
           dispatch(meetingAgendaContributorAdded(null));
           dispatch(meetingAgendaContributorRemoved(null));
           dispatch(meetingOrganizerAdded(null));
@@ -161,7 +192,9 @@ const DraftMeetingList = () => {
         }
       };
       callAddOrganizer();
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+    }
   }, [mqttMeetingOrgAdded]);
 
   // ─── MQTT: Organizer Removed ───
@@ -177,7 +210,9 @@ const DraftMeetingList = () => {
         dispatch(meetingAgendaContributorRemoved(null));
         dispatch(meetingOrganizerAdded(null));
         dispatch(meetingOrganizerRemoved(null));
-      } catch {}
+      } catch (error) {
+        console.error("src/container/meeting/draftMeeting/index.jsx:", error);
+      }
     }
   }, [mqttMeetingOrgRemoved]);
 
@@ -240,7 +275,7 @@ const DraftMeetingList = () => {
             t,
             { MeetingID: record.pK_MDID },
             context,
-            { role, callFunc: () => {} },
+            { role, callFunc: () => { } },
           ),
         );
       }
@@ -303,7 +338,10 @@ const DraftMeetingList = () => {
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
+
+
   const handleClickTitle = (record) => {
+    handleViewMeeting(record)
     dispatch(toggleViewMeetingModal(true));
     dispatch(setViewTab("meetingDetails"));
     dispatch(
@@ -344,8 +382,8 @@ const DraftMeetingList = () => {
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
-        render: (text) => (
-          <span onClick={handleClickTitle} className={styles.tableRow}>
+        render: (text, record) => (
+          <span onClick={() => handleClickTitle(record)} className={styles.tableRow}>
             {text}
           </span>
         ),
@@ -469,9 +507,8 @@ const DraftMeetingList = () => {
           Number(record.meetingType) === Number(value),
         filterIcon: (filtered) => (
           <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
+            className={`filter-chevron-icon-todolist ${filtered ? "active" : ""
+              }`}
           />
         ),
         render: (_, record) => {
@@ -509,17 +546,23 @@ const DraftMeetingList = () => {
             <div>
               <Popover
                 content={moreButtons(record)}
-                trigger="click"
+                trigger="hover"
                 overlayClassName="MoreButtons_overlay"
                 className="moreOptionsPopover"
                 showArrow={false}
                 placement="bottomRight"
+                open={openPopoverMeetingID === record.pK_MDID}
+                onOpenChange={(isOpen) =>
+                  handelChangePopoverOpen(record.pK_MDID, isOpen)
+                }
               >
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text="More"
-                  icon2={<img src={ChevronDownIcon} width={10} />}
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text={t("More")}
+                    icon2={<img src={ChevronDownIcon} width={10} />}
+                  />
+                </span>
               </Popover>
             </div>
           </div>
@@ -532,6 +575,7 @@ const DraftMeetingList = () => {
     meetingTimeSort,
     meetingDateSort,
     isMeetingTypeFilter,
+    openPopoverMeetingID,
   ]);
 
   return (
@@ -558,33 +602,29 @@ const DraftMeetingList = () => {
             />
           </Col>
           {draftMeetingData.length > 0 && (
-            <Col className={styles["Meeting_Pagination"]}>
-              <div className="d-flex justify-content-center mt-2 ">
-                <Row className={styles["PaginationStyle-Meeting"]}>
-                  <Col
-                    className={"pagination-groups-table"}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                  >
-                    <CustomPagination
-                      current={
-                        meetingPageCurrent !== null
-                          ? Number(meetingPageCurrent)
-                          : 1
-                      }
-                      pageSize={
-                        meetingpageRow !== null ? Number(meetingpageRow) : 30
-                      }
-                      onChange={handelChangePagination}
-                      total={draftMeetingDataRecord}
-                      showSizer={true}
-                      pageSizeOptionsValues={["30", "50", "100", "200"]}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+            <Row>
+              <Col
+                className={"pagination-groups-table d-flex justify-content-center "}
+                sm={12}
+                md={12}
+                lg={12}
+              >
+                <CustomPagination
+                  current={
+                    meetingPageCurrent !== null
+                      ? Number(meetingPageCurrent)
+                      : 1
+                  }
+                  pageSize={
+                    meetingpageRow !== null ? Number(meetingpageRow) : 30
+                  }
+                  onChange={handelChangePagination}
+                  total={draftMeetingDataRecord}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
+                />
+              </Col>
+            </Row>
           )}
         </Row>
       </div>

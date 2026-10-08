@@ -167,6 +167,7 @@ const MainCompliance = () => {
             );
           }
         } catch (error) {
+          console.error("src/container/ComplianceUser/index.jsx:", error);
         } finally {
           localStorage.removeItem("comptaskView");
         }

@@ -246,7 +246,9 @@ const Polling = () => {
         setRows([]);
         setDublicatedrows([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Polling/Polling.js:", error);
+    }
   }, [PollsReducerSearchPolls]);
 
   useEffect(() => {
@@ -284,7 +286,9 @@ const Polling = () => {
           });
           dispatch(notifyPollingSocket(null));
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Polling/Polling.js:", error);
+      }
     }
   }, [PollsReducerpollingSocket]);
 
@@ -300,7 +304,9 @@ const Polling = () => {
         });
         dispatch(deletePollsMQTT(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Polling/Polling.js:", error);
+    }
   }, [PollsReducernewPollDelete]);
 
   const dispatchViewPollById = (pollID, check) => {
@@ -558,8 +564,8 @@ const Polling = () => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -1141,32 +1147,26 @@ const Polling = () => {
             />
           </Col>
         </Row>
-        <Row className='mt-4'>
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className='d-flex justify-content-center'>
-            {rows.length > 0 && (
-              <Row className={styles["PaginationStyle-Committee"]}>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={"pagination-groups-table"}>
-                  <CustomPagination
-                    current={currentPage !== null ? currentPage : 1}
-                    pageSize={currentPageSize !== null ? currentPageSize : 50}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                    showSizer={true}
-                    onChange={handleChangePagination}
-                    total={isTotalRecords}
-                  />
-                </Col>
-              </Row>
-            )}
-          </Col>
-        </Row>
+        {rows.length > 0 && (
+          <Row className='mt-4'>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className={
+                "pagination-groups-table d-flex justify-content-center"
+              }>
+              <CustomPagination
+                current={currentPage !== null ? currentPage : 1}
+                pageSize={currentPageSize !== null ? currentPageSize : 50}
+                pageSizeOptionsValues={["30", "50", "100", "200"]}
+                showSizer={true}
+                onChange={handleChangePagination}
+                total={isTotalRecords}
+              />
+            </Col>
+          </Row>
+        )}
       </section>
       {PollsReducercreatePollmodal && <CreatePolling />}
       {PollsReducereditpollmodal && <UpdatePolls />}

@@ -240,7 +240,9 @@ const ViewComplianceDetails = () => {
       }
 
       //  DATA HERE
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/ComplianceUser/CommonComponents/viewCompliance/VIewComplianceDetails/index.jsx:", error);
+    }
   };
 
   useEffect(() => {

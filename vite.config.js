@@ -180,7 +180,10 @@ export default defineConfig(({ mode }) => {
          */
         {
           find: /^moment$/,
-          replacement: path.resolve(__dirname, "node_modules/moment/dist/moment.js"),
+          replacement: path.resolve(
+            __dirname,
+            "node_modules/moment/dist/moment.js",
+          ),
         },
       ],
     },

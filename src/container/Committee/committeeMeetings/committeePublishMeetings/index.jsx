@@ -83,8 +83,9 @@ import {
 } from "@/store/actions/NewMeeting2.actions";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
+import store from "../../../../store/store";
 import CustomPagination from "../../../../commen/functions/customPagination/Paginations";
-import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
+import { clearGetMeetingByCommitteeID, getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 import {
   buildEditorRole,
   buildVideoTalk,
@@ -180,10 +181,6 @@ const CommitteePublishedMeetingList = () => {
     loadCommitteeMeetings,
   } = useCommitteeContext();
 
-  console.log(
-    committeePublishedMeetingData,
-    "committeePublishedMeetingDatacommitteePublishedMeetingData",
-  );
 
   const { setIsQuickMeetingView } = useNewMeetingContext();
 
@@ -191,6 +188,9 @@ const CommitteePublishedMeetingList = () => {
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  // Scrolling the table left the "More" popover open and floating in its
+  // old position — close it as soon as the user scrolls.
+
   const [selectedValues, setSelectedValues] = useState(DEFAULT_STATUS_VALUES);
 
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
@@ -236,7 +236,6 @@ const CommitteePublishedMeetingList = () => {
 
   const userID = localStorage.getItem("userID");
   const currentOrganizationId = localStorage.getItem("organizationID");
-
   const statusFilters = useMemo(
     () => [
       { value: "10", text: t("Active") },
@@ -247,6 +246,42 @@ const CommitteePublishedMeetingList = () => {
     ],
     [t],
   );
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: true,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+  }, [])
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: true,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    return () => {
+          dispatch(clearGetMeetingByCommitteeID());
+      
+    }
+  }, [])
+
 
   useEffect(() => {
     if (!validatencryptedstringState) return;
@@ -459,7 +494,9 @@ const CommitteePublishedMeetingList = () => {
           });
         };
         meetingNotificationRouting();
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Committee/committeeMeetings/committeePublishMeetings/index.jsx:", error);
+      }
     }
   }, [state]);
 
@@ -472,9 +509,30 @@ const CommitteePublishedMeetingList = () => {
     }
 
     const allChatMessages = talkStateDataAllUserChats.AllUserChatsData.allMessages;
-    const foundRecord =
+    let foundRecord =
       Array.isArray(allChatMessages) &&
       allChatMessages.find((item) => item.id === data.talkGroupID);
+
+    // The chats reducer can be stale (e.g. a chat group created after it
+    // was last loaded) — refetch from the API before concluding the chat
+    // doesn't exist, instead of only ever trusting the cached reducer.
+    if (!foundRecord) {
+      await dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(localStorage.getItem("userID")),
+          parseInt(currentOrganizationId),
+          t,
+        ),
+      );
+      const refreshedAllChatMessages =
+        store.getState().talkStateData.AllUserChats.AllUserChatsData
+          .allMessages;
+      foundRecord =
+        Array.isArray(refreshedAllChatMessages) &&
+        refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
+    }
+
     if (!foundRecord) {
       show(t("No-talk-group-created"), "error");
       return;
@@ -558,7 +616,9 @@ const CommitteePublishedMeetingList = () => {
             : "Organizer",
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/committeeMeetings/committeePublishMeetings/index.jsx:", error);
+    }
   };
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
@@ -589,8 +649,9 @@ const CommitteePublishedMeetingList = () => {
     const canShow = {
       edit:
         (status === STATUS.UPCOMING ||
-          status === STATUS.ACTIVE ||
-          status === STATUS.NOT_CONDUCTED) &&
+          status === STATUS.ACTIVE
+          // || status === STATUS.NOT_CONDUCTED
+        ) &&
         isOrganizer,
       cancel: status === STATUS.UPCOMING && isOrganizer,
       contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
@@ -1130,17 +1191,17 @@ const CommitteePublishedMeetingList = () => {
           }
 
           // NOT CONDUCTED
-          if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
-            return (
-              <div className='d-flex justify-content-center align-items-center'>
-                <CustomButton
-                  text={t("Edit-meeting")}
-                  className={styles.EditMeetingButton}
-                  onClick={() => handleClick("EDIT_MEETING")}
-                />
-              </div>
-            );
-          }
+          // if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
+          //   return (
+          //     <div className='d-flex justify-content-center align-items-center'>
+          //       <CustomButton
+          //         text={t("Edit-meeting")}
+          //         className={styles.EditMeetingButton}
+          //         onClick={() => handleClick("EDIT_MEETING")}
+          //       />
+          //     </div>
+          //   );
+          // }
 
           return null;
         },
@@ -1168,7 +1229,7 @@ const CommitteePublishedMeetingList = () => {
             <div className='d-flex justify-content-center align-items-center'>
               <Popover
                 content={moreButtons(record)}
-                trigger='click'
+                trigger='hover'
                 overlayClassName='MoreButtons_overlay'
                 className='moreOptionsPopover'
                 showArrow={false}
@@ -1177,11 +1238,13 @@ const CommitteePublishedMeetingList = () => {
                 onOpenChange={(isOpen) =>
                   handelChangePopoverOpen(record.pK_MDID, isOpen)
                 }>
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text={t("More")}
-                  icon2={<img src={ChevronDownIcon} width={10} alt='' />}
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text={t("More")}
+                    icon2={<img src={ChevronDownIcon} width={10} alt='' />}
+                  />
+                </span>
               </Popover>
             </div>
           );
@@ -1247,26 +1310,23 @@ const CommitteePublishedMeetingList = () => {
             />
           </Col>
           {committeePublishedMeetingData.length > 0 && (
-            <Col className={styles["Meeting_Publish_Pagination"]}>
-              <div className='d-flex justify-content-center mt-2 '>
-                <Row className={styles["PaginationStyle-Meeting"]}>
-                  <Col
-                    className={"pagination-groups-table"}
-                    sm={12}
-                    md={12}
-                    lg={12}>
-                    <CustomPagination
-                      current={currentPagePublishCommitteeMeeting}
-                      showSizer={true}
-                      onChange={handleChangePaginationPublishedMeeting}
-                      pageSizeOptionsValues={["30", "50", "100"]}
-                      total={committeePublishedMeetingDataRecord}
-                      pageSize={currentLengthPublishCommitteeMeeting}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
+            <Row>
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="d-flex justify-content-center my-3 pagination-groups-table"
+              >
+                <CustomPagination
+                  current={currentPagePublishCommitteeMeeting}
+                  showSizer={true}
+                  onChange={handleChangePaginationPublishedMeeting}
+                  pageSizeOptionsValues={["30", "50", "100"]}
+                  total={committeePublishedMeetingDataRecord}
+                  pageSize={currentLengthPublishCommitteeMeeting}
+                />
+              </Col>
+            </Row>
           )}
         </Row>
 

@@ -1,3 +1,14 @@
+.CloseMeetingButton {
+  min-width: 88px !important;
+  min-height: 39px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
 .BackGround_Agenda {
   width: 100% !important;
   height: auto !important;
@@ -166,7 +177,7 @@
 }
 
 .Scroller_Agenda {
-  min-height: 52vh !important;
+  max-height: 62vh !important;
   overflow-x: hidden !important;
 }
 

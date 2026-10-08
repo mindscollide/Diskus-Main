@@ -93,6 +93,7 @@ import {
   UpdateMeetingStatusApi,
 } from "../../../store/actions/NewMeeting2.actions";
 import { useMeetingListActions } from "@/container/meeting/commonComponents/useMeetingListActions";
+import store from "@/store/store";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -172,6 +173,9 @@ const PublishedMeetingList = () => {
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   const [openPopoverMeetingID, setOpenPopoverMeetingID] = useState(null);
+  // Scrolling the table left the "More" popover open and floating in its
+  // old position — close it as soon as the user scrolls.
+
   const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [organizerNameSort, setOrganizerNameSort] = useState(null);
   const [meetingTimeSort, setMeetingTimeSort] = useState(null);
@@ -259,9 +263,30 @@ const PublishedMeetingList = () => {
     if (data.talkGroupID !== 0) {
       let allChatMessages =
         talkStateDataAllUserChats.AllUserChatsData.allMessages;
-      const foundRecord =
+      let foundRecord =
         Array.isArray(allChatMessages) &&
         allChatMessages.find((item) => item.id === data.talkGroupID);
+
+      // The chats reducer can be stale (e.g. a chat group created after it
+      // was last loaded) — refetch from the API before concluding the chat
+      // doesn't exist, instead of only ever trusting the cached reducer.
+      if (!foundRecord) {
+        await dispatch(
+          GetAllUserChats(
+            navigate,
+            parseInt(localStorage.getItem("userID")),
+            parseInt(currentOrganizationId),
+            t,
+          ),
+        );
+        const refreshedAllChatMessages =
+          store.getState().talkStateData.AllUserChats.AllUserChatsData
+            .allMessages;
+        foundRecord =
+          Array.isArray(refreshedAllChatMessages) &&
+          refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
+      }
+
       if (foundRecord) {
         dispatch(activeChat(foundRecord));
         localStorage.setItem("activeOtoChatID", data.talkGroupID);
@@ -357,7 +382,9 @@ const PublishedMeetingList = () => {
             : "Organizer",
         isPrimaryOrganizer: record.isPrimaryOrganizer,
       }));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/publishMeeting/index.jsx:", error);
+    }
   };
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
 
@@ -386,8 +413,9 @@ const PublishedMeetingList = () => {
     const canShow = {
       edit:
         (status === STATUS.UPCOMING ||
-          status === STATUS.ACTIVE ||
-          status === STATUS.NOT_CONDUCTED) &&
+          status === STATUS.ACTIVE
+          //  || status === STATUS.NOT_CONDUCTED
+        ) &&
         isOrganizer,
       cancel: status === STATUS.UPCOMING && isOrganizer,
       contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
@@ -620,6 +648,7 @@ const PublishedMeetingList = () => {
         key: "title",
         width: 300,
         ellipsis: true,
+        align: "start",
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
         render: (text, record) => (
@@ -796,9 +825,8 @@ const PublishedMeetingList = () => {
           Number(record.meetingType) === Number(value),
         filterIcon: (filtered) => (
           <ChevronDown
-            className={`filter-chevron-icon-todolist ${
-              filtered ? "active" : ""
-            }`}
+            className={`filter-chevron-icon-todolist ${filtered ? "active" : ""
+              }`}
           />
         ),
         render: (_, record) => {
@@ -808,6 +836,7 @@ const PublishedMeetingList = () => {
           );
           if (record.isQuickMeeting && meetingType === 1)
             return t("Quick-meeting");
+
           return matchedFilter ? (
             <span className={styles.columnValue}>
               <Tooltip
@@ -852,12 +881,24 @@ const PublishedMeetingList = () => {
           const isButtonShown = startMeetingButton.find(
             (btn) => Number(btn.meetingID) === Number(pK_MDID),
           );
-          const canStartMeeting =
-            (meetingCurrentStatus === STATUS.UPCOMING &&
-              isOrganizer &&
-              minutesDifference < minutesAgo) ||
-            (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
 
+          const canStartMeeting =
+            meetingCurrentStatus === STATUS.UPCOMING &&
+            isOrganizer &&
+            (
+              minutesDifference < minutesAgo ||
+              (
+                pK_MDID === isButtonShown?.meetingID &&
+                isButtonShown?.showButton &&
+                minutesDifference < minutesAgo
+              )
+            );
+          // const canStartMeeting =
+          //   (meetingCurrentStatus === STATUS.UPCOMING &&
+          //     isOrganizer &&
+          //     minutesDifference < minutesAgo) ||
+          //   (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
+          console.log(canStartMeeting, minutesDifference, minutesAgo, "")
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);
 
@@ -939,17 +980,17 @@ const PublishedMeetingList = () => {
           }
 
           // NOT CONDUCTED
-          if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
-            return (
-              <div className='d-flex justify-content-center align-items-center'>
-                <CustomButton
-                  text={t("Edit-meeting")}
-                  className={styles.EditMeetingButton}
-                  onClick={() => handleClick("EDIT_MEETING")}
-                />
-              </div>
-            );
-          }
+          // if (meetingCurrentStatus === STATUS.NOT_CONDUCTED && isOrganizer) {
+          //   return (
+          //     <div className='d-flex justify-content-center align-items-center'>
+          //       <CustomButton
+          //         text={t("Edit-meeting")}
+          //         className={styles.EditMeetingButton}
+          //         onClick={() => handleClick("EDIT_MEETING")}
+          //       />
+          //     </div>
+          //   );
+          // }
 
           return null;
         },
@@ -980,17 +1021,19 @@ const PublishedMeetingList = () => {
                 overlayClassName='MoreButtons_overlay'
                 className='moreOptionsPopover'
                 showArrow={false}
-                trigger={"click"}
+                trigger={"hover"}
                 placement='bottomRight'
                 open={openPopoverMeetingID === record.pK_MDID}
                 onOpenChange={(isOpen) =>
                   handelChangePopoverOpen(record.pK_MDID, isOpen)
                 }>
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text={t("More")}
-                  icon2={<img src={ChevronDownIcon} width={10} alt='' />}
-                />
+                <span>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text={t("More")}
+                    icon2={<img src={ChevronDownIcon} width={10} alt='' />}
+                  />
+                </span>
               </Popover>
             </div>
           );
@@ -1062,34 +1105,29 @@ const PublishedMeetingList = () => {
         </Col>
         <Col>
           {publishedMeetingData.length > 0 && (
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className={`${styles["Meeting_Pagination"]} d-flex justify-content-center`}>
-              <Row className={styles["PaginationStyle-Meeting"]}>
-                <Col
-                  className='pagination-groups-table'
-                  sm={12}
-                  md={12}
-                  lg={12}>
-                  <CustomPagination
-                    current={
-                      meetingPageCurrent !== null
-                        ? Number(meetingPageCurrent)
-                        : 1
-                    }
-                    pageSize={
-                      meetingpageRow !== null ? Number(meetingpageRow) : 50
-                    }
-                    onChange={handelChangePagination}
-                    total={publishedMeetingDataRecord}
-                    showSizer={true}
-                    pageSizeOptionsValues={["30", "50", "100", "200"]}
-                  />
-                </Col>
-              </Row>
-            </Col>
+
+            <Row >
+              <Col
+                className='pagination-groups-table d-flex justify-content-center'
+                sm={12}
+                md={12}
+                lg={12}>
+                <CustomPagination
+                  current={
+                    meetingPageCurrent !== null
+                      ? Number(meetingPageCurrent)
+                      : 1
+                  }
+                  pageSize={
+                    meetingpageRow !== null ? Number(meetingpageRow) : 50
+                  }
+                  onChange={handelChangePagination}
+                  total={publishedMeetingDataRecord}
+                  showSizer={true}
+                  pageSizeOptionsValues={["30", "50", "100", "200"]}
+                />
+              </Col>
+            </Row>
           )}
         </Col>
       </Row>

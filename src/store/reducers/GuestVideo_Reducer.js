@@ -452,13 +452,25 @@ const GuestVideoReducer = (state = initialState, action) => {
 
     case actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_SUCCESS: {
       let data = [];
+      // The list is null after a failed fetch, so guard before spreading
+      const existingParticipants = Array.isArray(state.getAllParticipantGuest)
+        ? state.getAllParticipantGuest
+        : [];
       if (action.flag === 2) {
-        data = [...state.getAllParticipantGuest];
-        data.push(action.response);
+        // Accepts one participant or an array; replaces entries with the same guid
+        const incoming = (
+          Array.isArray(action.response) ? action.response : [action.response]
+        ).filter(Boolean);
+        const incomingGuids = new Set(incoming.map((p) => p.guid));
+        data = [
+          ...existingParticipants.filter((p) => !incomingGuids.has(p.guid)),
+          ...incoming,
+        ];
       } else if (action.flag === 3) {
-        let dublicate = [...state.getAllParticipantGuest];
-
-        data = removeParticipantByGuid(dublicate, action.response);
+        data = removeParticipantByGuid(
+          [...existingParticipants],
+          action.response,
+        );
       } else {
         data = action.response;
       }

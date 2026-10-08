@@ -56,7 +56,9 @@ const LanguageSelector = () => {
       ) {
         dispatch(getAllLanguages(navigate, t));
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/elements/languageSelector/Language-selector.js:", error);
+    }
   }, []);
 
   useEffect(() => {
@@ -184,7 +186,7 @@ const LanguageSelector = () => {
   return (
     <Popover
       content={languageContent}
-      trigger='click'
+      trigger='hover'
       open={open}
       showArrow={false}
       // openClassName=""

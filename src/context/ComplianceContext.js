@@ -60,8 +60,6 @@ export const ComlianceProvider = ({ children }) => {
     (state) => state.ComplainceSettingReducerReducer.complianceCreatedMqttData,
   );
 
-  
-
   const complianceCheckListMqttData = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer.complianceCheckListMqttData,
@@ -95,8 +93,6 @@ export const ComlianceProvider = ({ children }) => {
     (state) => state.ComplainceSettingReducerReducer.taskStatusChangeUserMqtt,
   );
 
-  
-
   const [createEditCompliance, setCreateEditComplaince] = useState(false);
   const [complianceInfo, setComplianceInfo] = useState({
     complianceId: 0,
@@ -110,8 +106,6 @@ export const ComlianceProvider = ({ children }) => {
   });
   const [complianceAddEditViewState, setComplianceAddEditViewState] =
     useState(0);
-
-  
 
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
   const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
@@ -303,8 +297,6 @@ export const ComlianceProvider = ({ children }) => {
   /** Controlled filter values for the Report Type column (("End-of-Compliance-Reports") === value: 1, ("Quarterly-reports") === value: 2, ("Accumulative-reports") === value: 3 ). */
   const [reportTypeFilter, setReportTypeFilter] = useState([1, 2, 3]);
 
-  
-
   const resetModalStates = () => {
     setSubmitForApprovalModal(false);
     setComplianceOnHoldModal(false);
@@ -328,7 +320,6 @@ export const ComlianceProvider = ({ children }) => {
   };
 
   const emptyComplianceState = () => {
-    
     dispatch(clearComplianceDetailsData());
     setComplianceInfo({
       complianceId: 0,
@@ -415,14 +406,17 @@ export const ComlianceProvider = ({ children }) => {
     {
       label: t("High"),
       value: 1,
+      labelString: "High",
     },
     {
       label: t("Medium"),
       value: 2,
+      labelString: "Medium",
     },
     {
       label: t("Low"),
       value: 3,
+      labelString: "Low",
     },
   ];
   const [checkAnyChecklistOnPendingState, setCheckAnyChecklistOnPendingState] =
@@ -438,9 +432,6 @@ export const ComlianceProvider = ({ children }) => {
     [],
   );
 
-  
-
-  
   const [searchbox, setsearchbox] = useState(false);
 
   // View Type for Compliance Dashboard Manager View Type is 1 which is by default User View is 2
@@ -526,7 +517,6 @@ export const ComlianceProvider = ({ children }) => {
       viewComplianceByMeDetails !== null &&
       complianceAddEditViewState === 3
     ) {
-      
       try {
         const {
           allowedComplianceStatuses,
@@ -554,7 +544,7 @@ export const ComlianceProvider = ({ children }) => {
         });
 
         const selectedCriticality = criticalityOptions.find(
-          (item) => item.label === criticalityLevel,
+          (item) => item.labelString === criticalityLevel,
         );
 
         setComplianceDetailsViewState((prev) => ({
@@ -633,7 +623,7 @@ export const ComlianceProvider = ({ children }) => {
           setCheckAnyTaskInProgress(false);
         }
       } catch (error) {
-        
+        console.error("src/context/ComplianceContext.js:", error);
       }
     }
   }, [viewComplianceByMeDetails, complianceAddEditViewState]);
@@ -662,6 +652,9 @@ export const ComlianceProvider = ({ children }) => {
         );
 
         if (findIsExist === undefined) {
+          let criticalityObj = criticalityOptions.find(
+            (data, index) => data.value === criticality,
+          );
           // Your logic here
           let complianceObj = {
             complianceId: complianceID,
@@ -669,7 +662,7 @@ export const ComlianceProvider = ({ children }) => {
             authorityId: authorityId,
             organizationId: localStorage.getItem("organizationID"),
             description: description,
-            criticality: criticality,
+            criticality: criticalityObj !== undefined ? criticality : null,
             complianceStatusId: 1,
             complianceStatusTitle: "Not Started",
             dueDate: dueDate,
@@ -683,7 +676,7 @@ export const ComlianceProvider = ({ children }) => {
           setComplianceByMeTotal((prev) => prev + 1);
         }
       } catch (error) {
-        
+        console.error("src/context/ComplianceContext.js:", error);
       }
     }
   }, [complianceCreatedMqttData]);
@@ -730,7 +723,7 @@ export const ComlianceProvider = ({ children }) => {
         ]);
       }
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceCheckListMqttData]);
 
@@ -759,7 +752,7 @@ export const ComlianceProvider = ({ children }) => {
         ),
       );
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceCheckListUpdatedMqttData]);
 
@@ -769,18 +762,16 @@ export const ComlianceProvider = ({ children }) => {
 
     try {
       const data = complianceCheckListDeletedMqttData;
-      
 
       const { checklistId } = data || {};
       if (!checklistId) return;
-      
 
       // 🔥 Remove checklist from state
       setAllCheckListByComplianceId((prev) =>
         prev.filter((item) => Number(item.checklistId) !== Number(checklistId)),
       );
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceCheckListDeletedMqttData]);
 
@@ -823,7 +814,7 @@ export const ComlianceProvider = ({ children }) => {
           totalTasks,
           newStatusId,
         } = requestData || {};
-        
+
         setComplianceInfo({
           complianceId: complianceId,
           complianceName: complianceTitle,
@@ -833,8 +824,6 @@ export const ComlianceProvider = ({ children }) => {
           (item) => item.value === criticality,
         );
 
-        
-
         const { currentStatus, allowedStatuses } =
           getAllowedStatuses(newStatusId);
 
@@ -843,8 +832,6 @@ export const ComlianceProvider = ({ children }) => {
               typeof tag === "string" ? { tagTitle: tag, tagID: tag } : tag,
             )
           : [];
-
-        
 
         // Set state directly, no remap
         setComplianceDetailsViewState((prev) => ({
@@ -908,7 +895,9 @@ export const ComlianceProvider = ({ children }) => {
           //   ),
           // );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/ComplianceContext.js:", error);
+      }
 
       setComplianceByMeList((prev) =>
         prev.map((item) =>
@@ -935,18 +924,17 @@ export const ComlianceProvider = ({ children }) => {
         };
       });
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceUpdateMqttData]);
 
   // WHEN COMPLIANCE_REOPEN_MQTT comes
   useEffect(() => {
     if (!complianceReopenMqttData) return;
-    
+
     try {
       const data = complianceReopenMqttData;
       const { complianceId, complianceStatusChangeHistory } = data || {};
-      
 
       if (!complianceId || !complianceStatusChangeHistory) return;
 
@@ -966,7 +954,7 @@ export const ComlianceProvider = ({ children }) => {
         };
       });
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [complianceReopenMqttData]);
 
@@ -975,8 +963,6 @@ export const ComlianceProvider = ({ children }) => {
     if (!taskStatusChangedMqttData) return;
 
     try {
-      
-
       const checklistList = taskStatusChangedMqttData?.checklistList;
 
       if (!checklistList || checklistList.length === 0) return;
@@ -996,7 +982,7 @@ export const ComlianceProvider = ({ children }) => {
         });
       });
     } catch (error) {
-      
+      console.error("src/context/ComplianceContext.js:", error);
     }
   }, [taskStatusChangedMqttData]);
 
@@ -1155,8 +1141,7 @@ export const ComlianceProvider = ({ children }) => {
         setCriticalityFilterForMe,
         reportTypeFilter,
         setReportTypeFilter,
-      }}
-    >
+      }}>
       {children}
     </ComplianceContext.Provider>
   );

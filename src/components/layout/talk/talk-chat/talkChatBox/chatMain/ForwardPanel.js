@@ -77,7 +77,9 @@ const ForwardPanel = ({
           setAllUsersGroupsRooms(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/talkChatBox/chatMain/ForwardPanel.js:", error);
+    }
   };
 
 const forwardUsersCheckedHandler = (data) => {

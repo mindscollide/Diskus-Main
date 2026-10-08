@@ -32,6 +32,8 @@ import CommitteeDraftMeetings from "./committeeDraftMeetings";
 import { useCommitteeContext } from "../../../context/CommitteeContext";
 import { activeChat } from "../../../store/actions/Talk_action";
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
+import { resetCurrentMeetingInfo } from "../../../store/actions/NewMeeting2.actions";
+import { useMeetingContext } from "../../../context/MeetingContext";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
@@ -55,6 +57,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     isQuickMeetingView,
     setIsQuickMeetingCreate,
   } = useNewMeetingContext();
+
+  const { setEditorRole } = useMeetingContext()
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
   let userID = localStorage.getItem("userID");
@@ -62,25 +66,29 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
   const [talkGroupID, setTalkGroupID] = useState(0);
 
-  
+
 
   useEffect(() => {
-    let searchData = {
-      CommitteeID: Number(ViewCommitteeID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: currentCommitteeMeetingTabActive === 1 ? true : false,
-      ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
-    };
-    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
-
-    // return () => {
-    //   setCurrentCommitteeMeetingTabActive(1);
+    // let searchData = {
+    //   CommitteeID: Number(ViewCommitteeID),
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: Number(userID),
+    //   PageNumber: 1,
+    //   Length: 30,
+    //   PublishedMeetings: currentCommitteeMeetingTabActive === 1 ? true : false,
+    //   ProposedMeetings: currentCommitteeMeetingTabActive === 2 ? true : false,
     // };
+    // dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    // Resetting the tab here on every unmount was too broad: Committee.js
+    // swaps its whole render tree to CreateEditAdvanceMeeting/ViewMeetingModal/
+    // ProposedNewMeeting while those flows are active, which unmounts this
+    // component too — so creating/scheduling/publishing a proposed meeting
+    // reset the tab to Published before this component even remounted.
+    // Committee.js's own top-level unmount cleanup already resets the tab
+    // when actually leaving the Committee module, so this isn't needed here.
   }, []);
 
   const handleClickTabNavigate = (value) => {
@@ -91,20 +99,20 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     setCurrentLengthDraftCommitteeMeeting(30);
     setCurrentPageProposedCommitteeMeeting(1);
     setCurrentLengthProposedCommitteeMeeting(30);
-
-    let searchData = {
-      CommitteeID: Number(ViewCommitteeID),
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: 1,
-      Length: 30,
-      PublishedMeetings: value === 2 ? false : value === 1 ? true : false,
-      ProposedMeetings: value === 2 ? true : false,
-    };
     dispatch(clearGetMeetingByCommitteeID());
-    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    // let searchData = {
+    //   CommitteeID: Number(ViewCommitteeID),
+    //   Date: "",
+    //   Title: "",
+    //   HostName: "",
+    //   UserID: Number(userID),
+    //   PageNumber: 1,
+    //   Length: 30,
+    //   PublishedMeetings: value === 2 ? false : value === 1 ? true : false,
+    //   ProposedMeetings: value === 2 ? true : false,
+    // };
+    // dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
   };
 
   useEffect(() => {
@@ -133,6 +141,12 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   const handleCreateAdvanceMeeting = () => {
     dispatch(setAdvanceMeetingRoute(1));
     dispatch(toggleCreateEditMeetingModal(true));
+    setEditorRole({
+      status: "11",
+      role: "Organizer",
+      isPrimaryOrganizer: true,
+    });
+    dispatch(resetCurrentMeetingInfo())
   };
 
   const openProposedNewMeetingPage = () => {
@@ -152,7 +166,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
       {isQuickMeetingUpdate && (
         <UpdateQuickMeeting
           // this is check from where its called 6 is from committee create
-          checkFlag={6}
+          checkFlag={9}
         />
       )}
       <Row>
@@ -198,7 +212,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           {committeeStatus === 3 && (
             <ReactBootstrapDropdown
               className='SceduleMeetingButton d-inline-block position-relative ms-2'
-              // onClick={eventClickHandler}
+            // onClick={eventClickHandler}
             >
               <ReactBootstrapDropdown.Toggle title={t("Schedule-a-meeting")}>
                 <Row>
@@ -265,41 +279,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           ) : null}
         </Col>
       </Row>
-      {/* <Row>
-        <Col sm={12} md={12} lg={12}>
-          <Table
-            column={MeetingColoumns}
-            scroll={scroll}
-            rows={rows}
-            pagination={false}
-            size='small'
-            className='newMeetingTable'
-            locale={{
-              emptyText: emptyText(),
-            }}
-          />
-        </Col>
-        {rows && rows.length > 0 ? (
-          <Col
-            sm={12}
-            md={12}
-            lg={12}
-            className={
-              "pagination-groups-table position-absolute bottom-20  d-flex justify-content-center"
-            }>
-            <span className='PaginationStyle-TodoList'>
-              <CustomPagination
-                current={Number(currentPage)}
-                showSizer={true}
-                onChange={handleChangePagination}
-                pageSizeOptionsValues={["30", "50", "100", "200"]}
-                total={totalRecords}
-                pageSize={pageSize}
-              />
-            </span>
-          </Col>
-        ) : null}
-      </Row> */}
+
     </>
   );
 };

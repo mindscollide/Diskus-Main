@@ -107,7 +107,7 @@ const ParentAgenda = ({
     };
     await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
 
-    dispatch(showCastVoteAgendaModal(true));
+    // dispatch(showCastVoteAgendaModal(true));
     dispatch(GetCurrentAgendaDetails(record));
   };
 
@@ -237,10 +237,10 @@ const ParentAgenda = ({
           (editorRole.role === "Agenda Contributor" ||
             editorRole.role === "Participant")
             ? "d-none"
-            : ""
+            : "mt-2"
         }>
         <span className='position-relative'>
-          <Row key={data.id} className='mt-4 m-0 p-0'>
+          <Row key={data.id} className=' mt-2 mx-0 p-0'>
             <img
               draggable={false}
               src={CollapseIcon}
@@ -409,26 +409,64 @@ const ParentAgenda = ({
                         data.selectedRadio === 1 &&
                         Object.keys(data.files).length > 0 ? (
                           <div className={styles["filesParentClass"]}>
+                    
                             {data.files
                               .slice(0, 3)
-                              .map((filesData, fileIndex) => (
-                                <AttachmentViewer
-                                  handleClickDownload={() =>
-                                    downloadDocument(filesData)
-                                  }
-                                  data={filesData}
-                                  name={filesData?.displayAttachmentName}
-                                  id={Number(filesData.originalAttachmentName)}
-                                  handleEyeIcon={() =>
-                                    pdfData(
-                                      filesData,
-                                      getFileExtension(
-                                        filesData?.displayAttachmentName,
-                                      ),
-                                    )
-                                  }
-                                />
-                              ))}
+                              .map((filesData, fileIndex) => {
+                                return (
+                                  <AttachmentViewer
+                                    handleClickDownload={() =>
+                                      downloadDocument(filesData)
+                                    }
+                                    data={filesData}
+                                    name={filesData?.displayAttachmentName}
+                                    id={Number(
+                                      filesData.originalAttachmentName,
+                                    )}
+                                    handleEyeIcon={() =>
+                                      pdfData(
+                                        filesData,
+                                        getFileExtension(
+                                          filesData?.displayAttachmentName,
+                                        ),
+                                      )
+                                    }
+                                  />
+                                );
+                              })}
+                            {data.files.length > 3 && (
+                              <Button
+                                text={`${data.files.length - 3}+ ${t("More")}`}
+                                className={styles["Show_More_Button"]}
+                                onClick={() =>
+                                  showMoreFiles(data.files, data.title, index)
+                                }
+                              />
+                            )}
+                            {/* {data.files
+                              .slice(0, 3)
+                              .map((filesData, fileIndex) => {
+                                return (
+                                  <AttachmentViewer
+                                    handleClickDownload={() =>
+                                      downloadDocument(filesData)
+                                    }
+                                    data={filesData}
+                                    name={filesData?.displayAttachmentName}
+                                    id={Number(
+                                      filesData.originalAttachmentName,
+                                    )}
+                                    handleEyeIcon={() =>
+                                      pdfData(
+                                        filesData,
+                                        getFileExtension(
+                                          filesData?.displayAttachmentName,
+                                        ),
+                                      )
+                                    }
+                                  />
+                                );
+                              })}
                             {data.files.length > 3 && (
                               <Button
                                 text={t("More")}
@@ -437,7 +475,7 @@ const ParentAgenda = ({
                                   showMoreFiles(data.files, data.title, index)
                                 }
                               />
-                            )}
+                            )} */}
                           </div>
                         ) : data.selectedRadio === 1 &&
                           Object.keys(data.files).length === 0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>

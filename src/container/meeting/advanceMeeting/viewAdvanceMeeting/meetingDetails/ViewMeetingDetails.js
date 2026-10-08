@@ -100,6 +100,7 @@ const ViewMeetingDetails = () => {
     setDataroomMapFolderId,
     setMeetingMaterial,
     setAgenda,
+    handleCloseMeeting,
   } = useMeetingContext();
 
   const { meetingID, meetingTitle, mapFolderId } = useSelector(
@@ -448,7 +449,12 @@ const ViewMeetingDetails = () => {
         }
         setRows(newDateTimeData);
       }
-    } catch {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/advanceMeeting/viewAdvanceMeeting/meetingDetails/ViewMeetingDetails.js:",
+        error,
+      );
+    }
   }, [getAllMeetingDetails]);
 
   const leaveCallHost = () => {
@@ -877,7 +883,7 @@ const ViewMeetingDetails = () => {
                           className={styles["CopyLinkButton"]}
                           onClick={() => copyToClipboardd()}
                           disableBtn={
-                            editorRole.status !== 10 || editorRole.status !== 1
+                            Number(editorRole.status) === 10 || Number(editorRole.status) === 1
                               ? false
                               : true
                           }
@@ -1003,6 +1009,15 @@ const ViewMeetingDetails = () => {
                 </Row>
               </Col>
             </Row>
+          </Col>
+          <Col className='d-flex justify-content-end'>
+            {Number(editorRole.status) !== 10 && (
+              <Button
+                text={t("Close")}
+                className={styles["CloseMeetingButton"]}
+                onClick={handleCloseMeeting}
+              />
+            )}
           </Col>
         </Row>
         {endMeetingConfirmationModal && (

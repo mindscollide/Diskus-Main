@@ -319,8 +319,8 @@ const Card = ({
               {Number(creatorId) === Number(creatorID) && (
                 <Popover
                   placement='bottomRight'
-                  trigger='click'
-                  overlayClassName="editDropdownPopoverOverLay"
+                  trigger='hover'
+                  overlayClassName='editDropdownPopoverOverLay'
                   open={openEditPopoverId === CardID}
                   onOpenChange={(visible) => {
                     setOpenEditPopoverId(visible ? CardID : null);
@@ -328,38 +328,43 @@ const Card = ({
                   }}
                   showArrow={false}
                   content={renderEditContent()}>
-                  <img
-                    src={editicon}
-                    width='21px'
-                    height='21px'
-                    alt={t("Edit")}
-                    className={styles["Edit_icon_styles"]}
-                    style={{ cursor: "pointer" }}
-                  />
+                  <span>
+                    <img
+                      src={editicon}
+                      width='21px'
+                      height='21px'
+                      alt={t("Edit")}
+                      className={styles["Edit_icon_styles"]}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </span>
                 </Popover>
               )}
 
               {/* Dots Popover */}
               <Popover
                 placement='bottomRight'
-                trigger='click'
+                trigger='hover'
                 open={openPopoverId === CardID}
                 className='threeDottedDropdownPopover'
-                overlayClassName="threeDottedDropdownPopoverOverlay"
+                overlayClassName='threeDottedDropdownPopoverOverlay'
                 onOpenChange={(visible) => {
                   setOpenPopoverId(visible ? CardID : null);
                   if (visible) setOpenEditPopoverId(null);
                 }}
                 showArrow={false}
                 content={renderThreeDotsContent}>
-                <img
-                  src={doticon}
-                  width='21px'
-                  height='21px'
-                  className={styles["dot_icon_styles"]}
-                  alt={t("More")}
-                  style={{ cursor: "pointer" }}
-                />
+                <span>
+                  {" "}
+                  <img
+                    src={doticon}
+                    width='21px'
+                    height='21px'
+                    className={styles["dot_icon_styles"]}
+                    alt={t("More")}
+                    style={{ cursor: "pointer" }}
+                  />
+                </span>
               </Popover>
             </Col>
           </Row>

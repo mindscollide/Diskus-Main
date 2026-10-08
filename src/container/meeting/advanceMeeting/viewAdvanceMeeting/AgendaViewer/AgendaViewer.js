@@ -45,7 +45,6 @@ import {
   videoIconOrButtonState,
   participantVideoButtonState,
   clearMessegesVideoFeature,
-  startOrStopPresenterGlobal,
   presenterViewGlobalState,
   openPresenterViewMainApi,
   stopPresenterViewMainApi,
@@ -142,6 +141,7 @@ const AgendaViewer = () => {
     stopRecordingState,
     viewMeetingAgendaViewerRowData,
     setViewMeetingAgendaViewerRowData,
+    handleCloseMeeting,
   } = useMeetingContext();
 
   const [talkGroupID, setTalkGroupID] = useState(0);
@@ -1154,7 +1154,9 @@ const onClickVideoIconOpenVideo = () => {
         // }
       }
       // }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/AgendaViewer/AgendaViewer.js:", error);
+    }
   };
   return (
     <>
@@ -1192,7 +1194,7 @@ const onClickVideoIconOpenVideo = () => {
         </>
       ) : null}
       <>
-        <section>
+        <section >
           {emptyStateRows === true &&
           (editorRole.role === "Agenda Contributor" ||
             editorRole.role === "Participant") ? null : (
@@ -1466,6 +1468,18 @@ const onClickVideoIconOpenVideo = () => {
                 </Row>
               </DragDropContext>
             </>
+          )}
+
+          {Number(editorRole.status) !== 10 && (
+            <Row className='mt-3'>
+              <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+                <Button
+                  text={t("Close")}
+                  className={styles["CloseMeetingButton"]}
+                  onClick={handleCloseMeeting}
+                />
+              </Col>
+            </Row>
           )}
         </section>
       </>

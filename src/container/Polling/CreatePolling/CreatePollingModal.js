@@ -31,6 +31,7 @@ import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import { validateInput } from "../../../commen/functions/regex";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import { formatNumber } from "../../../commen/functions/utils";
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -288,7 +289,9 @@ const CreatePolling = () => {
           } else {
           }
         });
-      } catch {}
+      } catch (error) {
+        console.error("src/container/Polling/CreatePolling/CreatePollingModal.js:", error);
+      }
 
       const uniqueData = new Set(tem.map(JSON.stringify));
 
@@ -313,7 +316,9 @@ const CreatePolling = () => {
         ...createPollData,
         date: DateDate,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Polling/CreatePolling/CreatePollingModal.js:", error);
+    }
   };
 
   // for create polls
@@ -570,12 +575,7 @@ const CreatePolling = () => {
                                           <Col lg={12} md={12} sm={12}>
                                             <span className='position-relative'>
                                               <TextField
-                                                placeholder={
-                                                  "Option" +
-                                                  " " +
-                                                  parseInt(index + 1) +
-                                                  "*"
-                                                }
+                                                placeholder={`${t("Option")} ${formatNumber(index + 1)} *`}
                                                 applyClass={
                                                   "PollingCreateModal"
                                                 }
@@ -595,12 +595,7 @@ const CreatePolling = () => {
                                           <Col lg={12} md={12} sm={12}>
                                             <span className='position-relative'>
                                               <TextField
-                                                placeholder={
-                                                  "Option" +
-                                                  " " +
-                                                  parseInt(index + 1) +
-                                                  "*"
-                                                }
+                                                placeholder={`${t("Option")} ${formatNumber(index + 1)}`}
                                                 applyClass={
                                                   "PollingCreateModal"
                                                 }
@@ -771,7 +766,7 @@ const CreatePolling = () => {
                                 options={dropdowndata}
                               />
                               <Button
-                                text={t("ADD")}
+                                text={t("Add")}
                                 className={styles["ADD_Btn_CreatePool_Modal"]}
                                 onClick={handleAddUsers}
                               />

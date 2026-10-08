@@ -567,9 +567,12 @@ const toDoListReducer = (state = initialState, action) => {
     }
     case actions.GETTASKCOUNT_DASHBOARD_MQTT: {
       let newRecords = {
-        totalNumberOfToDoList: action?.payload?.totalNumberOfToDoListInThisWeek,
+        totalNumberOfToDoList:
+          action?.payload?.totalNumberOfToDoListInThisWeek ||
+          action?.payload?.totalNumberOfToDoList,
         totalNumberOfAssignedToDoList:
-          action?.payload?.totalNumberOfAssignedToDoListInThisWeek,
+          action?.payload?.totalNumberOfAssignedToDoListInThisWeek ||
+          action?.payload?.totalNumberOfAssignedToDoList,
       };
       return {
         ...state,

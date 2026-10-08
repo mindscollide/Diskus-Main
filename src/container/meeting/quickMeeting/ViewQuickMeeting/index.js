@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
+import { createPortal } from "react-dom";
 import "./ModalView.css";
 import {
   EditmeetingDateFormat,
@@ -410,7 +411,12 @@ const ModalView = ({ ModalTitle }) => {
             }
           }
           setAddedParticipantNameList(List);
-        } catch (error) {}
+        } catch (error) {
+          console.error(
+            "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+            error,
+          );
+        }
 
         try {
           viewData.meetingAgendas.forEach((atchmenData, index) => {
@@ -448,7 +454,12 @@ const ModalView = ({ ModalTitle }) => {
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {}
+        } catch (error) {
+          console.error(
+            "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+            error,
+          );
+        }
         try {
           viewData.minutesOfMeeting.forEach((minutesOfMeetingData, index) => {
             minutesOfMeeting.push({
@@ -615,7 +626,12 @@ const ModalView = ({ ModalTitle }) => {
             }
           }
           setAddedParticipantNameList(List);
-        } catch (error) {}
+        } catch (error) {
+          console.error(
+            "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+            error,
+          );
+        }
 
         try {
           calendarMeetingData.meetingAgendas.forEach((atchmenData, index) => {
@@ -653,7 +669,12 @@ const ModalView = ({ ModalTitle }) => {
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {}
+        } catch (error) {
+          console.error(
+            "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+            error,
+          );
+        }
         try {
           calendarMeetingData.minutesOfMeeting.forEach(
             (minutesOfMeetingData, index) => {
@@ -711,7 +732,12 @@ const ModalView = ({ ModalTitle }) => {
 
         setAllMeetingDetails(calendarMeetingData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+        error,
+      );
+    }
   }, [calendarReducereventsDetails]);
 
   //  Update Meeting Status Cancelled and Start Meeting
@@ -751,7 +777,12 @@ const ModalView = ({ ModalTitle }) => {
         //   updateCalendarData(true, meetingID);
         // }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+        error,
+      );
+    }
   }, [MeetingStatusSocket]);
 
   useEffect(() => {
@@ -1125,7 +1156,12 @@ const ModalView = ({ ModalTitle }) => {
 
         leaveMeeting(currentMeetingID, true, false);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+        error,
+      );
+    }
   }, [endMeetingStatusForQuickMeetingModalFlag]);
 
   useEffect(() => {
@@ -1134,7 +1170,12 @@ const ModalView = ({ ModalTitle }) => {
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         leaveMeeting(currentMeetingID, false, true);
       }
-    } catch {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+        error,
+      );
+    }
   }, [leaveMeetingOnLogoutResponse]);
 
   const leaveMeeting = async (id, flag, flag2) => {
@@ -1298,7 +1339,12 @@ const ModalView = ({ ModalTitle }) => {
       } else {
         openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+        error,
+      );
+    }
   };
 
   const copyToClipboardd = () => {
@@ -1403,7 +1449,12 @@ const ModalView = ({ ModalTitle }) => {
           });
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/quickMeeting/ViewQuickMeeting/index.js:",
+        error,
+      );
+    }
   }, [meetingIdReducerMeetingStatusEnded]);
 
   useEffect(() => {
@@ -1415,497 +1466,463 @@ const ModalView = ({ ModalTitle }) => {
 
   return (
     <>
-      <Container>
-        <Modal
-          onHide={() => {
+      <Modal
+        onHide={() => {
+          if (
+            JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
+          ) {
+            setIsQuickMeetingView(false);
+            localStorage.removeItem("QuicMeetingOperations");
+            localStorage.removeItem("NotificationQuickMeetingID");
+          } else {
             if (
-              JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
+              allMeetingDetails?.meetingStatus?.status === "10" ||
+              allMeetingDetails?.meetingStatus?.status === 10
             ) {
-              setIsQuickMeetingView(false);
-              localStorage.removeItem("QuicMeetingOperations");
-              localStorage.removeItem("NotificationQuickMeetingID");
+              // leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
+              setIsQuickMeetingView(true);
             } else {
-              if (
-                allMeetingDetails?.meetingStatus?.status === "10" ||
-                allMeetingDetails?.meetingStatus?.status === 10
-              ) {
-                // leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
-                setIsQuickMeetingView(true);
-              } else {
-                setIsQuickMeetingView(false);
-              }
+              setIsQuickMeetingView(false);
             }
-          }}
-          show={isQuickMeetingView}
-          size='md'
-          setShow={setIsQuickMeetingView}
-          modalParentClass='modaldialog MeetingView'
-          className='MeetingView'
-          ButtonTitle={ModalTitle}
-          modalBodyClassName='modalMeetingViewBody'
-          modalFooterClassName='modalMeetingViewFooter'
-          modalHeaderClassName='d-none'
-          ModalBody={
-            <>
-              <Row>
-                <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-2'>
-                  <Button
-                    className={
-                      isDetails
-                        ? "isDetail-View-top-btn"
-                        : "isDetail-View-top-btn-Outline"
-                    }
-                    variant={"Primary"}
-                    text={t("Details")}
-                    onClick={changeSelectDetails}
-                  />
-                  <Button
-                    className={
-                      isAgenda
-                        ? "isAgenda-View-top-btn"
-                        : "isAgenda-View-top-btn-Outline"
-                    }
-                    variant={"Primary"}
-                    text={t("Agenda-viewer")}
-                    onClick={changeSelectAgenda}
-                    datatut='show-agenda'
-                  />
-                  <Button
-                    className={
-                      isAttendees
-                        ? "isAttendee-View-top-btn"
-                        : "isAttendee-View-top-btn-Outline"
-                    }
-                    variant={"Primary"}
-                    text={t("Attendees")}
-                    datatut='show-meeting-attendees'
-                    onClick={changeSelectAttendees}
-                  />
-                  {minutesOftheMeatingStatus && (
-                    <Button
-                      className={
-                        isMinutes
-                          ? "isMinutes-View-top-btn"
-                          : "isMinutes-View-top-btn-Outline"
-                      }
-                      variant={"Primary"}
-                      text={t("Minutes")}
-                      datatut='show-minutes'
-                      onClick={navigateToMinutes}
-                    />
-                  )}
-                  <Button
-                    className={
-                      isAttachments
-                        ? "isDataRoom-View-top-btn"
-                        : "isDataRoom-View-top-btn-Outline"
-                    }
-                    variant={"Primary"}
-                    text={t("Data-room")}
-                    onClick={changeSelectAttachments}
-                  />
-                </Col>
-              </Row>
-              {isDetails ? (
-                <>
-                  <Row className='mt-4'>
-                    <Col lg={6} md={6} xs={6}>
-                      <span className='MeetingViewDateTimeTextField'>
-                        {createMeeting.MeetingDate}
-                      </span>
-                    </Col>
-                    {!HIDE_VIDEO && (
-                      <Col
-                        lg={6}
-                        md={6}
-                        xs={6}
-                        className='MontserratRegular d-flex gap-2 align-items-start'>
-                        <Button
-                          disableBtn={
-                            isVideo && (meetStatus === 10 || meetStatus === 1)
-                              ? false
-                              : true
-                          }
-                          text={t("Copy-link")}
-                          className={"CopyLinkButton"}
-                          onClick={() => copyToClipboardd()}
-                        />
-                        <Button
-                          // disableBtn={
-                          //   isVideo && meetStatus === 10
-                          //     ? false
-                          //     : true || enableDisableVideoState
-                          // }
-                          disableBtn={
-                            !isVideo ||
-                            meetStatus !== 10 ||
-                            enableDisableVideoState ||
-                            participantEnableVideoState
-                          }
-                          text={t("Join-video-call")}
-                          className={"JoinMeetingButton"}
-                          onClick={joinMeetingCall}
-                        />
-
-                        {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
-                        {NormalHostVideoFlag && (
-                          <NormalHostVideoCallComponent />
-                        )}
-                        {maximizeParticipantVideoFlag && (
-                          <ParticipantVideoCallComponent />
-                        )}
-                        {normalParticipantVideoFlag && (
-                          <NormalParticipantVideoComponent />
-                        )}
-                        {maxParticipantVideoDeniedFlag && (
-                          <MaxParticipantVideoDeniedComponent />
-                        )}
-                        {maxParticipantVideoRemovedFlag && (
-                          <MaxParticipantVideoRemovedComponent />
-                        )}
-                      </Col>
-                    )}
-                  </Row>
-                  <Row>
-                    <Col sm={12} md={12} lg={12}>
-                      <span className='MeetingViewLocationText_Field'>
-                        {createMeeting.MeetingLocation}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} xs={12} className=' viewModalTitle '>
-                      {createMeeting.MeetingTitle.length < 100
-                        ? `${createMeeting.MeetingTitle}`
-                        : `${createMeeting.MeetingTitle.substring(0, 110)}...`}
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className='MontserratRegular textAreaDivView p-0'>
-                      <TextField
-                        change={detailsHandler}
-                        name='MeetingDescription'
-                        applyClass='form-control2 textbox-height-details-view'
-                        type='text'
-                        disable={true}
-                        as={"textarea"}
-                        rows='7'
-                        value={createMeeting.MeetingDescription}
-                        required
-                      />
-                    </Col>
-                  </Row>
-                </>
-              ) : isAgenda ? (
-                <>
-                  <div className='agendaList'>
-                    {createMeeting.MeetingAgendas.length > 0
-                      ? createMeeting.MeetingAgendas.map((data, index) => {
-                          return (
-                            <>
-                              <div>
-                                <Row className='mt-4'>
-                                  <Col lg={1} md={1} xs={12}>
-                                    <span className=' agendaIndex'>
-                                      {index + 1}
-                                    </span>
-                                  </Col>
-                                  <Col
-                                    lg={7}
-                                    md={7}
-                                    sm={7}
-                                    xs={12}
-                                    className='MeetingAgendaView p-0'>
-                                    <p className=' agendaTitle'>
-                                      {data.ObjMeetingAgenda.Title}
-                                    </p>
-                                  </Col>
-                                  {data.ObjMeetingAgenda.PresenterName !==
-                                    "" && (
-                                    <Col
-                                      lg={4}
-                                      md={4}
-                                      xs={12}
-                                      className='MeetingAgendaPresented MeetingAgendaURL'>
-                                      <TextField
-                                        disable={true}
-                                        name={"PresenterName"}
-                                        value={
-                                          data.ObjMeetingAgenda.PresenterName
-                                        }
-                                        applyClass='form-control2'
-                                        type='text'
-                                        label={t("Presented-by")}
-                                      />
-                                      <p className='url m-0 p-0'>
-                                        {data.ObjMeetingAgenda.URLs}
-                                      </p>
-                                    </Col>
-                                  )}
-                                </Row>
-                                <div className='meetingView_documents'>
-                                  <Row>
-                                    {data.MeetingAgendaAttachments.length > 0
-                                      ? data.MeetingAgendaAttachments.map(
-                                          (
-                                            MeetingAgendaAttachmentsData,
-                                            index,
-                                          ) => {
-                                            return (
-                                              <Col sm={6} md={6} lg={6}>
-                                                <AttachmentViewer
-                                                  id={Number(
-                                                    MeetingAgendaAttachmentsData.OriginalAttachmentName,
-                                                  )}
-                                                  handleEyeIcon={() =>
-                                                    handeClickView(
-                                                      MeetingAgendaAttachmentsData,
-                                                    )
-                                                  }
-                                                  handleClickDownload={() =>
-                                                    downloadClick(
-                                                      MeetingAgendaAttachmentsData,
-                                                    )
-                                                  }
-                                                  data={
-                                                    MeetingAgendaAttachmentsData
-                                                  }
-                                                  name={
-                                                    MeetingAgendaAttachmentsData.DisplayAttachmentName
-                                                  }
-                                                />
-                                              </Col>
-                                            );
-                                          },
-                                        )
-                                      : null}
-                                  </Row>
-                                </div>
-                              </div>
-                            </>
-                          );
-                        })
-                      : null}
-                  </div>
-                </>
-              ) : isAttendees ? (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className=' meeting-view-attendee-organizer-tab'>
-                      <label>{t("Organizer")}</label>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className='meeting-view-attendee-organizer-list'>
-                      {addedParticipantNameList ? (
-                        <>
-                          <span>
-                            {addedParticipantNameList
-                              .filter(
-                                (atList) =>
-                                  atList.role === 1 || atList.role === 3,
-                              ) // Filter only the relevant roles
-                              .map((atList, index) => (
-                                <EmployeeCard
-                                  key={index} // Use a unique key (index or another unique value from your data)
-                                  employeeName={atList.name}
-                                  employeeDesignation={atList.designation}
-                                  cardIcon={<Check2 />}
-                                  UserProfilePic={atList.displayProfilePic}
-                                />
-                              ))}
-                          </span>
-                        </>
-                      ) : null}
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className=' meeting-view-attendee-participant-tab'>
-                      <label>{t("Participants")}</label>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className='meeting-view-attendee-participant-list'>
-                      {addedParticipantNameList ? (
-                        <>
-                          <span>
-                            {addedParticipantNameList.map((atList, index) => {
-                              if (atList.role === 2) {
-                                return (
-                                  <EmployeeCard
-                                    employeeName={atList.name}
-                                    employeeDesignation={atList.designation}
-                                    cardIcon={<Check2 />}
-                                    UserProfilePic={atList.displayProfilePic}
-                                  />
-                                );
-                              }
-                            })}
-                          </span>
-                        </>
-                      ) : null}
-                    </Col>
-                  </Row>
-                </>
-              ) : isMinutes && minutesOftheMeatingStatus ? (
-                <>
-                  <Row>
-                    <Col sm={12}>
-                      <Row className='my-3 minutes-view px-3 d-flex flex-row '>
-                        {createMeeting.MinutesOfMeeting.length > 0 ? (
-                          createMeeting.MinutesOfMeeting.map(
-                            (minutesOfMeetingLdata, index) => {
-                              return (
-                                <Col
-                                  className='border p-2 minutes-box rounded my-2'
-                                  sm={12}
-                                  md={12}
-                                  lg={12}>
-                                  <Row>
-                                    <Col sm={12}>
-                                      <Row>
-                                        <Col sm={1}>
-                                          <span className='agendaIndex'>
-                                            {index + 1}
-                                          </span>
-                                        </Col>
-                                        <Col sm={11} className='fs-6'>
-                                          <p className='agendaTitle meeting-view-minutes-title'>
-                                            {minutesOfMeetingLdata.Description}
-                                          </p>
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              );
-                            },
-                          )
-                        ) : (
-                          <Row className='meeting-view-minutes-tab'>
-                            <Col
-                              lg={12}
-                              md={12}
-                              xs={12}
-                              className='d-flex justify-content-center align-items-center'>
-                              <h3>{t("There-are-no-minutes-available")}</h3>
-                            </Col>
-                          </Row>
-                        )}
-                      </Row>
-                    </Col>
-                  </Row>
-                </>
-              ) : isAttachments ? (
-                <>
-                  <Row className='mt-2'>
-                    {attachmentsList.length > 0
-                      ? attachmentsList.map((data, index) => {
-                          return (
-                            <Col sm={6} lg={6} md={6}>
-                              <AttachmentViewer
-                                id={Number(data.OriginalAttachmentName)}
-                                handleEyeIcon={() => handeClickView(data)}
-                                handleClickDownload={() => downloadClick(data)}
-                                data={data}
-                                name={data.DisplayAttachmentName}
-                              />
-                            </Col>
-                          );
-                        })
-                      : null}
-                  </Row>
-                </>
-              ) : null}
-            </>
           }
-          ModalFooter={
-            <>
-              {isOrganizer ? (
+        }}
+        show={isQuickMeetingView}
+        size='md'
+        setShow={setIsQuickMeetingView}
+        modalParentClass='modaldialog MeetingView'
+        className='MeetingView'
+        ButtonTitle={ModalTitle}
+        closeButton={true}
+        modalBodyClassName='modalMeetingViewBody'
+        modalFooterClassName='modalMeetingViewFooter'
+        // modalHeaderClassName='d-none'
+        ModalBody={
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-2'>
+                <Button
+                  className={
+                    isDetails
+                      ? "ViewQuickMeetingTabActive"
+                      : "ViewQuickMeetingTabNotActive"
+                  }
+                  variant={"Primary"}
+                  text={t("Details")}
+                  onClick={changeSelectDetails}
+                />
+                <Button
+                  className={
+                    isAgenda
+                      ? "ViewQuickMeetingTabActive"
+                      : "ViewQuickMeetingTabNotActive"
+                  }
+                  variant={"Primary"}
+                  text={t("Agenda-viewer")}
+                  onClick={changeSelectAgenda}
+                  datatut='show-agenda'
+                />
+                <Button
+                  className={
+                    isAttendees
+                      ? "ViewQuickMeetingTabActive"
+                      : "ViewQuickMeetingTabNotActive"
+                  }
+                  variant={"Primary"}
+                  text={t("Attendees")}
+                  datatut='show-meeting-attendees'
+                  onClick={changeSelectAttendees}
+                />
+                {minutesOftheMeatingStatus && (
+                  <Button
+                    className={
+                      isMinutes
+                        ? "ViewQuickMeetingTabActive"
+                        : "ViewQuickMeetingTabNotActive"
+                    }
+                    variant={"Primary"}
+                    text={t("Minutes")}
+                    datatut='show-minutes'
+                    onClick={navigateToMinutes}
+                  />
+                )}
+                <Button
+                  className={
+                    isAttachments
+                      ? "ViewQuickMeetingTabActive"
+                      : "ViewQuickMeetingTabNotActive"
+                  }
+                  variant={"Primary"}
+                  text={t("Data-room")}
+                  onClick={changeSelectAttachments}
+                />
+              </Col>
+            </Row>
+            {isDetails ? (
+              <>
+                <Row className='mt-4'>
+                  <Col lg={6} md={6} xs={6}>
+                    <span className='MeetingViewDateTimeTextField'>
+                      {createMeeting.MeetingDate}
+                    </span>
+                  </Col>
+                  {!HIDE_VIDEO && (
+                    <Col
+                      lg={6}
+                      md={6}
+                      xs={6}
+                      className='MontserratRegular d-flex gap-2 align-items-start'>
+                      <Button
+                        disableBtn={
+                          isVideo && (meetStatus === 10 || meetStatus === 1)
+                            ? false
+                            : true
+                        }
+                        text={t("Copy-link")}
+                        className={"CopyLinkButton"}
+                        onClick={() => copyToClipboardd()}
+                      />
+                      <Button
+                        // disableBtn={
+                        //   isVideo && meetStatus === 10
+                        //     ? false
+                        //     : true || enableDisableVideoState
+                        // }
+                        disableBtn={
+                          !isVideo ||
+                          meetStatus !== 10 ||
+                          enableDisableVideoState ||
+                          participantEnableVideoState
+                        }
+                        text={t("Join-video-call")}
+                        className={"JoinMeetingButton"}
+                        onClick={joinMeetingCall}
+                      />
+
+                      {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
+                      {NormalHostVideoFlag && <NormalHostVideoCallComponent />}
+                      {maximizeParticipantVideoFlag && (
+                        <ParticipantVideoCallComponent />
+                      )}
+                      {normalParticipantVideoFlag && (
+                        <NormalParticipantVideoComponent />
+                      )}
+                      {maxParticipantVideoDeniedFlag && (
+                        <MaxParticipantVideoDeniedComponent />
+                      )}
+                      {maxParticipantVideoRemovedFlag && (
+                        <MaxParticipantVideoRemovedComponent />
+                      )}
+                    </Col>
+                  )}
+                </Row>
+                <Row>
+                  <Col sm={12} md={12} lg={12}>
+                    <span className='MeetingViewLocationText_Field'>
+                      {createMeeting.MeetingLocation}
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} xs={12} className=' viewModalTitle '>
+                    {createMeeting.MeetingTitle.length < 100
+                      ? `${createMeeting.MeetingTitle}`
+                      : `${createMeeting.MeetingTitle.substring(0, 110)}...`}
+                  </Col>
+                </Row>
+
                 <Row>
                   <Col
                     lg={12}
                     md={12}
                     xs={12}
-                    className='d-flex justify-content-end gap-2'>
-                    {meetingDifference <= remainingMinutesAgo &&
-                    allMeetingDetails.meetingStatus.status === "1" &&
-                    isDetails ? (
-                      <Button
-                        onClick={startMeeting}
-                        className={
-                          " btn btn-primary start-meeting-button" +
-                          " " +
-                          currentLanguage
-                        }
-                        text={t("Start-meeting")}
-                        disableBtn={startMeetingStatus}
-                      />
-                    ) : null}
+                    className='MontserratRegular textAreaDivView p-0'>
+                    <TextField
+                      change={detailsHandler}
+                      name='MeetingDescription'
+                      applyClass='form-control2 textbox-height-details-view'
+                      type='text'
+                      disable={true}
+                      as={"textarea"}
+                      rows='7'
+                      value={createMeeting.MeetingDescription}
+                      required
+                    />
+                  </Col>
+                </Row>
+              </>
+            ) : isAgenda ? (
+              <>
+                <div className='agendaList'>
+                  {createMeeting.MeetingAgendas.length > 0
+                    ? createMeeting.MeetingAgendas.map((data, index) => {
+                        return (
+                          <>
+                            <div>
+                              <Row className='mt-4'>
+                                <Col lg={1} md={1} sm={1} xs={12}>
+                                  <span className=' agendaIndex'>
+                                    {index + 1}
+                                  </span>
+                                </Col>
+                                <Col
+                                  lg={7}
+                                  md={7}
+                                  sm={7}
+                                  xs={12}
+                                  className='MeetingAgendaView p-0'>
+                                  <p className=' agendaTitle'>
+                                    {data.ObjMeetingAgenda.Title}
+                                  </p>
+                                </Col>
+                                {data.ObjMeetingAgenda.PresenterName !== "" && (
+                                  <Col
+                                    lg={4}
+                                    md={4}
+                                    sm={4}
+                                    xs={12}
+                                    className='MeetingAgendaPresented MeetingAgendaURL'>
+                                    <TextField
+                                      disable={true}
+                                      name={"PresenterName"}
+                                      value={
+                                        data.ObjMeetingAgenda.PresenterName
+                                      }
+                                      applyClass='form-control2'
+                                      type='text'
+                                      label={t("Presented-by")}
+                                    />
+                                    <p className='url m-0 p-0'>
+                                      {data.ObjMeetingAgenda.URLs}
+                                    </p>
+                                  </Col>
+                                )}
+                              </Row>
+                              <div className='meetingView_documents'>
+                                <Row>
+                                  {data.MeetingAgendaAttachments.length > 0
+                                    ? data.MeetingAgendaAttachments.map(
+                                        (
+                                          MeetingAgendaAttachmentsData,
+                                          index,
+                                        ) => {
+                                          return (
+                                            <Col sm={6} md={6} lg={6}>
+                                              <AttachmentViewer
+                                                id={Number(
+                                                  MeetingAgendaAttachmentsData.OriginalAttachmentName,
+                                                )}
+                                                handleEyeIcon={() =>
+                                                  handeClickView(
+                                                    MeetingAgendaAttachmentsData,
+                                                  )
+                                                }
+                                                handleClickDownload={() =>
+                                                  downloadClick(
+                                                    MeetingAgendaAttachmentsData,
+                                                  )
+                                                }
+                                                data={
+                                                  MeetingAgendaAttachmentsData
+                                                }
+                                                name={
+                                                  MeetingAgendaAttachmentsData.DisplayAttachmentName
+                                                }
+                                              />
+                                            </Col>
+                                          );
+                                        },
+                                      )
+                                    : null}
+                                </Row>
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })
+                    : null}
+                </div>
+              </>
+            ) : isAttendees ? (
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    xs={12}
+                    className=' meeting-view-attendee-organizer-tab'>
+                    <label>{t("Organizer")}</label>
+                  </Col>
+                </Row>
 
-                    {allMeetingDetails.meetingStatus.status === "10" ? (
-                      <Button
-                        onClick={() =>
-                          leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID)
-                        }
-                        className={
-                          "  end-meeting-btn_view-org" + " " + currentLanguage
-                        }
-                        text={t("Leave-meeting")}
-                      />
-                    ) : (
-                      <Button
-                        onClick={handleClickClose}
-                        className={"closeBtn"}
-                        text={t("Close")}
-                      />
-                    )}
-
-                    {allMeetingDetails.meetingStatus.status === "10" &&
-                    isDetails ? (
-                      <Button
-                        onClick={endMeeting}
-                        className={
-                          " btn btn-primary end-meeting-btn_view" +
-                          " " +
-                          currentLanguage
-                        }
-                        text={t("End-meeting")}
-                      />
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    xs={12}
+                    className='meeting-view-attendee-organizer-list'>
+                    {addedParticipantNameList ? (
+                      <>
+                        <span>
+                          {addedParticipantNameList
+                            .filter(
+                              (atList) =>
+                                atList.role === 1 || atList.role === 3,
+                            ) // Filter only the relevant roles
+                            .map((atList, index) => (
+                              <EmployeeCard
+                                key={index} // Use a unique key (index or another unique value from your data)
+                                employeeName={atList.name}
+                                employeeDesignation={atList.designation}
+                                cardIcon={<Check2 />}
+                                UserProfilePic={atList.displayProfilePic}
+                              />
+                            ))}
+                        </span>
+                      </>
                     ) : null}
                   </Col>
                 </Row>
-              ) : isParticipant ? (
-                <>
+
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    xs={12}
+                    className=' meeting-view-attendee-participant-tab'>
+                    <label>{t("Participants")}</label>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    xs={12}
+                    className='meeting-view-attendee-participant-list'>
+                    {addedParticipantNameList ? (
+                      <>
+                        <span>
+                          {addedParticipantNameList.map((atList, index) => {
+                            if (atList.role === 2) {
+                              return (
+                                <EmployeeCard
+                                  employeeName={atList.name}
+                                  employeeDesignation={atList.designation}
+                                  cardIcon={<Check2 />}
+                                  UserProfilePic={atList.displayProfilePic}
+                                />
+                              );
+                            }
+                          })}
+                        </span>
+                      </>
+                    ) : null}
+                  </Col>
+                </Row>
+              </>
+            ) : isMinutes && minutesOftheMeatingStatus ? (
+              <>
+                <Row>
+                  <Col sm={12}>
+                    <Row className='my-3 minutes-view px-3 d-flex flex-row '>
+                      {createMeeting.MinutesOfMeeting.length > 0 ? (
+                        createMeeting.MinutesOfMeeting.map(
+                          (minutesOfMeetingLdata, index) => {
+                            return (
+                              <Col
+                                className='border p-2 minutes-box rounded my-2'
+                                sm={12}
+                                md={12}
+                                lg={12}>
+                                <Row>
+                                  <Col sm={12}>
+                                    <Row>
+                                      <Col sm={1}>
+                                        <span className='agendaIndex'>
+                                          {index + 1}
+                                        </span>
+                                      </Col>
+                                      <Col sm={11} className='fs-6'>
+                                        <p className='agendaTitle meeting-view-minutes-title'>
+                                          {minutesOfMeetingLdata.Description}
+                                        </p>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            );
+                          },
+                        )
+                      ) : (
+                        <Row className='meeting-view-minutes-tab'>
+                          <Col
+                            lg={12}
+                            md={12}
+                            xs={12}
+                            className='d-flex justify-content-center align-items-center'>
+                            <h3>{t("There-are-no-minutes-available")}</h3>
+                          </Col>
+                        </Row>
+                      )}
+                    </Row>
+                  </Col>
+                </Row>
+              </>
+            ) : isAttachments ? (
+              <>
+                <Row className='mt-2'>
+                  {attachmentsList.length > 0
+                    ? attachmentsList.map((data, index) => {
+                        return (
+                          <Col sm={6} lg={6} md={6}>
+                            <AttachmentViewer
+                              id={Number(data.OriginalAttachmentName)}
+                              handleEyeIcon={() => handeClickView(data)}
+                              handleClickDownload={() => downloadClick(data)}
+                              data={data}
+                              name={data.DisplayAttachmentName}
+                            />
+                          </Col>
+                        );
+                      })
+                    : null}
+                </Row>
+              </>
+            ) : null}
+          </>
+        }
+        ModalFooter={
+          <>
+            {isOrganizer ? (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  xs={12}
+                  className='d-flex justify-content-end gap-2'>
+                  {meetingDifference <= remainingMinutesAgo &&
+                  allMeetingDetails.meetingStatus.status === "1" &&
+                  isDetails ? (
+                    <Button
+                      onClick={startMeeting}
+                      className={
+                        " btn btn-primary start-meeting-button" +
+                        " " +
+                        currentLanguage
+                      }
+                      text={t("Start-meeting")}
+                      disableBtn={startMeetingStatus}
+                    />
+                  ) : null}
+
                   {allMeetingDetails.meetingStatus.status === "10" ? (
                     <Button
                       onClick={() =>
                         leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID)
                       }
-                      className={`end-meeting-btn_view ${currentLanguage}`}
+                      className={
+                        "  end-meeting-btn_view-org" + " " + currentLanguage
+                      }
                       text={t("Leave-meeting")}
                     />
                   ) : (
@@ -1913,19 +1930,50 @@ const ModalView = ({ ModalTitle }) => {
                       onClick={handleClickClose}
                       className={"closeBtn"}
                       text={t("Close")}
-                      // disableBtn={startMeetingStatus}
                     />
                   )}
-                </>
-              ) : null}
-            </>
-          }
-        />
-        <EndMeetingConfirmationModal
-          handleClickContinue={handleClickEndMeeting}
-          handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
-        />
-      </Container>
+
+                  {allMeetingDetails.meetingStatus.status === "10" &&
+                  isDetails ? (
+                    <Button
+                      onClick={endMeeting}
+                      className={
+                        " btn btn-primary end-meeting-btn_view" +
+                        " " +
+                        currentLanguage
+                      }
+                      text={t("End-meeting")}
+                    />
+                  ) : null}
+                </Col>
+              </Row>
+            ) : isParticipant ? (
+              <>
+                {allMeetingDetails.meetingStatus.status === "10" ? (
+                  <Button
+                    onClick={() =>
+                      leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID)
+                    }
+                    className={`end-meeting-btn_view ${currentLanguage}`}
+                    text={t("Leave-meeting")}
+                  />
+                ) : (
+                  <Button
+                    onClick={handleClickClose}
+                    className={"closeBtn"}
+                    text={t("Close")}
+                    // disableBtn={startMeetingStatus}
+                  />
+                )}
+              </>
+            ) : null}
+          </>
+        }
+      />
+      <EndMeetingConfirmationModal
+        handleClickContinue={handleClickEndMeeting}
+        handleClickDiscard={() => setEndMeetingConfirmationModal(false)}
+      />
 
       {/* Max Component */}
       {SnackBar}

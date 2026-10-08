@@ -106,7 +106,7 @@ const ParentAgenda = ({
       AgendaVotingID: record.agendaVotingID,
     };
     await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
-    dispatch(showCastVoteAgendaModal(true));
+    // dispatch(showCastVoteAgendaModal(true));
     dispatch(GetCurrentAgendaDetails(record));
   };
 
@@ -234,7 +234,7 @@ const ParentAgenda = ({
             <div ref={provided.innerRef} {...provided.draggableProps}>
               {/* Main Agenda Items Mapping */}
               <span className='position-relative'>
-                <Row key={data.id} className='mt-4 m-0 p-0'>
+                <Row key={data.id} className=' mb-3 p-0'>
                   <Col
                     lg={12}
                     md={12}

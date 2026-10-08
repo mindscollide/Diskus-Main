@@ -56,6 +56,8 @@ import {
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
+import { useCommitteeContext } from "../../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { SaveMeetingDetailsApi } from "../../../../../store/actions/NewMeeting2.actions";
 import { HIDE_VIDEO } from "../../../../../commen/featureFlags";
 
@@ -73,6 +75,11 @@ const MeetingDetails = () => {
     editorRole,
     setEditorRole,
   } = useContext(MeetingContext);
+  // Shared across Main Meeting, Committee, and Group — only one context is
+  // ever actually "live"; threaded into the publish action so it can
+  // switch the correct module's active tab to Published on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
 
   // const { isAdvanceMeetingRoute, setIsMeetingCreateOrEdit } =
   //   useNewMeetingContext();
@@ -332,7 +339,9 @@ const MeetingDetails = () => {
       const updatedRows = [...rows];
       updatedRows[index].dateForView = newDate;
       setRows(updatedRows);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   };
 
   // const addRow = () => {
@@ -432,7 +441,11 @@ const MeetingDetails = () => {
       };
 
       dispatch(
-        SaveMeetingDetailsApi(navigate, t, data, context, { setEditorRole }),
+        SaveMeetingDetailsApi(navigate, t, data, context, {
+          setEditorRole,
+          setCurrentCommitteeMeetingTabActive,
+          setCurrentGroupMeetingTabActive,
+        }),
       );
     } else {
       seterror(true);
@@ -518,7 +531,11 @@ const MeetingDetails = () => {
         },
       };
       dispatch(
-        SaveMeetingDetailsApi(navigate, t, data, context, { setEditorRole }),
+        SaveMeetingDetailsApi(navigate, t, data, context, {
+          setEditorRole,
+          setCurrentCommitteeMeetingTabActive,
+          setCurrentGroupMeetingTabActive,
+        }),
       );
       localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
     } else {
@@ -781,7 +798,9 @@ const MeetingDetails = () => {
         });
         setReminderFrequencyOne(Newdata);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   }, [getAllReminderFrequency.meetingReminders]);
 
   //Recurring Drop Down Data
@@ -800,7 +819,9 @@ const MeetingDetails = () => {
         });
         setRecurringDropDown(Newdata);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   }, [recurring.meetingRecurrances]);
 
   useEffect(() => {
@@ -858,7 +879,9 @@ const MeetingDetails = () => {
           MeetingType: typeData,
         }));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
   // Showing The reposnse messege
@@ -964,7 +987,9 @@ const MeetingDetails = () => {
         setCurrentMeetingStatus(11);
         // setRows([]);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+    }
   }, [getAllMeetingDetails, currentMeetingInfo]);
 
   useEffect(() => {
@@ -1039,7 +1064,7 @@ const MeetingDetails = () => {
                     <span className={styles["steric"]}>*</span>
                   </span>
                   <div className={styles["meetingType_Value"]}>
-                    {meetingDetails.MeetingType.Type === "Board Meetings"
+                    {meetingDetails.MeetingType.Type === "Board Meeting"
                       ? t("Board-meeting")
                       : meetingDetails.MeetingType.Type === "Group Meeting"
                         ? t("Group-meeting")

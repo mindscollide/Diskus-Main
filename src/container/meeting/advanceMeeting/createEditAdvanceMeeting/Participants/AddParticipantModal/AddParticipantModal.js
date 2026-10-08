@@ -316,18 +316,19 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
             <Row>
               <Col className={styles["OverAll_padding"]}>
                 <Row>
-                  <Col>
+                  <Col sm={6} md={6} lg={6}>
                     <span className={styles["Add_organization"]}>
                       {t("Add-participants")}
                     </span>
                   </Col>
-                  <Col className='text-end'>
+                  <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
                     <img
                       src={BlackCrossIcon}
                       onClick={() => dispatch(showAddParticipantsModal(false))}
                       className='cursor-pointer'
                       width='16'
                       height='16'
+                      alt=""
                     />
                   </Col>
                 </Row>
@@ -345,10 +346,11 @@ const AddParticipantModal = ({ setrspvRows, rspvRows }) => {
                       filterOption={customFilter}
                       closeMenuOnSelect={false}
                       isSearchable={true}
+                      placeholder={t("Select")}
                     />
 
                     <Button
-                      text={t("ADD")}
+                      text={t("Add")}
                       onClick={handleAddUsers}
                       className={styles["ADD_Btn_CreatePool_Modal"]}
                     />

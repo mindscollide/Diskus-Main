@@ -173,40 +173,25 @@ body[dir="rtl"] .ResetOkBtn {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 10px;
   font-size: 0.8em;
   border-radius: 4px !important;
   white-space: nowrap;
+  gap: 10px;
 }
-.PaginationStyle-Committee {
-  padding: 12px 40px !important;
-  box-shadow: 0px 0px 5px #ccc !important;
-  border-radius: 4px !important;
-}
-.ProposedMeeting_Pagination {
-  position: absolute;
-  bottom: 10px;
-}
+
 .VoteMeetingButton{
-  max-width: 128px !important;
+  min-width: 75px !important;
   max-height: 25px !important;
   background: #6172d6 !important;
   color: #fff !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  gap: 10px;
   font-size: 0.8em;
   border-radius: 4px !important;
+  border: none;
 }
 .MainMeetingTablePublished {
   min-height: 50vh !important;
-  max-height: 63vh !important;
-  margin-bottom: 40px;
 }
 
-.PaginationStyle-Meeting {
-  padding: 12px 40px !important;
-  box-shadow: 0px 0px 5px #ccc !important;
-  border-radius: 4px !important;
-}

@@ -15,11 +15,11 @@ const FinalWelcomeScreen = () => {
   let userName = localStorage.getItem("name");
 
   const handleClickNavigate = () => {
-    let hasAdminRights = JSON.parse(localStorage.getItem("hasAdminRights"));
-    if (hasAdminRights) {
-      navigate("/Admin/ManageUsers");
-      return;
-    }
+    // let hasAdminRights = JSON.parse(localStorage.getItem("hasAdminRights"));
+    // if (hasAdminRights) {
+    //   navigate("/Admin/ManageUsers");
+    //   return;
+    // }
     navigate(getHomeRoute())
   };
   return (

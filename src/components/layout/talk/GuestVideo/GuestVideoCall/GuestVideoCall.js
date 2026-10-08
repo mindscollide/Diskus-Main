@@ -14,7 +14,6 @@ import {
   guestVideoNavigationScreen,
   hideUnHideVideoByHost,
   hideUnHideVideoParticipantsorGuest,
-  hostEndVideoCallMeeting,
   makeStreamStop,
   muteUnMuteByHost,
   muteUnMuteParticipantsorGuest,
@@ -27,7 +26,6 @@ import {
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
 import Helper from "../../../../../commen/functions/history_logout";
-import { mqttConnectionGuestUser } from "../../../../../commen/functions/mqttconnection_guest";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 import GuestVideoReject from "../GuestVideoReject/GuestVideoReject";
 import {
@@ -35,6 +33,8 @@ import {
   participantWaitingList,
 } from "../../../../../store/actions/VideoFeature_actions";
 import GuestRemoveByHost from "../GuestRemoveByHost/GuestRemoveByHost";
+import VideoCallNotStarteded from "../VIdeoCallNotStarted";
+import VideoCallNotPublishedYet from "../VIdeoCallNotPublishYet";
 
 /**
  * @component GuestVideoCall
@@ -65,23 +65,23 @@ const GuestVideoCall = () => {
   let MeetingId = Number(sessionStorage.getItem("MeetingId"));
 
   const validateData = useSelector(
-    (state) => state.GuestVideoReducer.validateData
+    (state) => state.GuestVideoReducer.validateData,
   );
   const guestClient = useSelector(
-    (state) => state.GuestVideoReducer.guestClient
+    (state) => state.GuestVideoReducer.guestClient,
   );
   const videoCameraGuest = useSelector(
-    (state) => state.GuestVideoReducer.videoCameraGuest
+    (state) => state.GuestVideoReducer.videoCameraGuest,
   );
   const voiceControle = useSelector(
-    (state) => state.GuestVideoReducer.voiceControle
+    (state) => state.GuestVideoReducer.voiceControle,
   );
 
   const guestVideoNavigationData = useSelector(
-    (state) => state.GuestVideoReducer.guestVideoNavigationData
+    (state) => state.GuestVideoReducer.guestVideoNavigationData,
   );
   const getAllParticipantGuest = useSelector(
-    (state) => state.GuestVideoReducer.getAllParticipantGuest
+    (state) => state.GuestVideoReducer.getAllParticipantGuest,
   );
   // let viewState = sessionStorage.getItem("viewState");
 
@@ -95,7 +95,7 @@ const GuestVideoCall = () => {
   const [extractMeetingTitle, setExtractMeetingTitle] = useState("");
   const [guestName, setGuestName] = useState("");
   const [roomId, setRoomId] = useState("");
-  console.log(roomId, "guestName");
+  console.log(guestVideoNavigationData, "guestName");
 
   function modifyUrl(url, isMute, isHideCamera, guestName) {
     let modifiedUrl = url.replace("$ParticipantFullName$", guestName);
@@ -104,8 +104,28 @@ const GuestVideoCall = () => {
     modifiedUrl = modifiedUrl.replace("$IsMute$", isMute.toString());
     modifiedUrl = modifiedUrl.replace(
       "$IsHideCamera$",
-      isHideCamera.toString()
+      isHideCamera.toString(),
     );
+
+    // Zoom iframe URLs (identified by sessionKey) have no placeholders. The
+    // Zoom app applies isMute / isHideCamera when its audio and camera start,
+    // so pass the lobby choices through so the call starts in that state.
+    try {
+      const parsedUrl = new URL(modifiedUrl);
+      if (parsedUrl.searchParams.has("sessionKey")) {
+        parsedUrl.searchParams.set("isMute", String(Boolean(isMute)));
+        parsedUrl.searchParams.set(
+          "isHideCamera",
+          String(Boolean(isHideCamera)),
+        );
+        modifiedUrl = parsedUrl.toString();
+      }
+    } catch (error) {
+      console.error(
+        "src/components/layout/talk/GuestVideo/GuestVideoCall/GuestVideoCall.js:",
+        error,
+      );
+    }
 
     return modifiedUrl;
   }
@@ -117,7 +137,7 @@ const GuestVideoCall = () => {
         videoUrl,
         voiceControle,
         videoCameraGuest,
-        guestName
+        guestName,
       );
 
       console.log(modifiedUrl, "updatedUrlupdatedUrlupdatedUrl");
@@ -127,10 +147,6 @@ const GuestVideoCall = () => {
 
   const onJoinNameChange = (name) => {
     setGuestName(name);
-  };
-
-  const onConnectionLost = () => {
-    setTimeout(mqttConnectionGuestUser(guestUserId, dispatch), 3000);
   };
 
   const onMessageArrived = async (msg) => {
@@ -172,7 +188,7 @@ const GuestVideoCall = () => {
             // dispatch(setVoiceControleGuest(true));
             console.log("data formute", data);
             dispatch(
-              setVoiceControleGuestForAllbyHost(true, data.payload.isMute)
+              setVoiceControleGuestForAllbyHost(true, data.payload.isMuted),
             );
           } else {
             // // Handle additional logic for individual mute/unmute, if needed
@@ -228,12 +244,13 @@ const GuestVideoCall = () => {
         ) {
           console.log(data, "JOINEDJOINEDJOINED");
           console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
+          // Append every participant in the batch, not just the first
           dispatch(
             getVideoCallParticipantGuestSuccess(
-              data.payload.newParticipants[0],
+              data.payload.newParticipants,
               "",
-              2
-            )
+              2,
+            ),
           );
         } else if (
           data.payload.message.toLowerCase() ===
@@ -242,7 +259,7 @@ const GuestVideoCall = () => {
           console.log(data, "JOINEDJOINEDJOINED");
           console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
           dispatch(
-            getVideoCallParticipantGuestSuccess(data.payload.removedUID, "", 3)
+            getVideoCallParticipantGuestSuccess(data.payload.removedUID, "", 3),
           );
         } else if (
           data.payload.message.toLowerCase() ===
@@ -266,20 +283,26 @@ const GuestVideoCall = () => {
           console.log(data.payload, "JOINEDJOINEDJOINED");
           console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
           dispatch(
-            getVideoCallParticipantGuestSuccess(data.payload.uid, "", 3)
+            getVideoCallParticipantGuestSuccess(data.payload.uid, "", 3),
           );
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/components/layout/talk/GuestVideo/GuestVideoCall/GuestVideoCall.js:",
+        error,
+      );
+    }
   };
 
   useEffect(() => {
     if (guestClient !== null) {
       console.log(
         guestClient,
-        "guestVideoClientguestVideoClientguestVideoClient"
+        "guestVideoClientguestVideoClientguestVideoClient",
       );
-      guestClient.onConnectionLost = onConnectionLost;
+      // Reconnect is handled by mqttConnectionGuestUser's own onConnectionLost
+      // (3s delay); overriding it here reconnected immediately.
       guestClient.onMessageArrived = onMessageArrived;
     } else {
       console.log(guestUserId, "guestUserIdguestUserId");
@@ -310,7 +333,7 @@ const GuestVideoCall = () => {
       window.removeEventListener(
         "hashchange",
         extractActionFromCurrentUrl,
-        false
+        false,
       );
     };
   }, []);
@@ -385,13 +408,13 @@ const GuestVideoCall = () => {
 
       {guestVideoNavigationData === 4 ? (
         <>
-          <div className="Main-Guest-Video">
+          <div className='Main-Guest-Video'>
             <GuestVideoEnded />
           </div>
         </>
       ) : guestVideoNavigationData === 1 ? (
         <>
-          <div className="Main-Guest-Video">
+          <div className='Main-Guest-Video'>
             <GuestJoinVideo
               extractMeetingId={extractMeetingId}
               extractMeetingTitle={extractMeetingTitle}
@@ -405,16 +428,20 @@ const GuestVideoCall = () => {
         </>
       ) : guestVideoNavigationData === 3 ? (
         <>
-          <div className="Main-Guest-Video">
+          <div className='Main-Guest-Video'>
             <GuestVideoReject />
           </div>
         </>
       ) : guestVideoNavigationData === 5 ? (
         <>
-          <div className="Main-Guest-Video">
+          <div className='Main-Guest-Video'>
             <GuestRemoveByHost />
           </div>
         </>
+      ) : guestVideoNavigationData === 6 ? (
+          <VideoCallNotStarteded />
+      ) : guestVideoNavigationData === 7 ? (
+        <VideoCallNotPublishedYet />
       ) : null}
     </>
   );
