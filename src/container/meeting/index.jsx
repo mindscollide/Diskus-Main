@@ -76,6 +76,7 @@ const MainMeeting = () => {
   let currentView = Number(localStorage.getItem("MeetingCurrentView"));
   let meetingpageRow = Number(localStorage.getItem("MeetingPageRows"));
   let meetingPageCurrent = Number(localStorage.getItem("MeetingPageCurrent"));
+  const mtAgUpdate = localStorage.getItem("mtAgUpdate");
 
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes,
@@ -187,7 +188,109 @@ const MainMeeting = () => {
       dispatch(toggleIsParticipantProposedMeetingDates(false));
     };
   }, []);
+  useEffect(() => {
+    if(mtAgUpdate !== null) {
+        const handleViewMeetingLink = async () => {
+      try {
+        const getResponse = await dispatch(
+          validateEncryptedStringViewMeetingLinkApi(
+            mtAgUpdate,
+            navigate,
+            t,
+          ),
+        );
 
+        if (getResponse.isExecuted && getResponse.responseCode === 1) {
+          const {
+            attendeeId,
+            isQuickMeeting,
+            meetingID,
+            meetingStatusId,
+            organizationID,
+            userID,
+            isChat,
+            talkGroupId,
+            isVideo,
+            videoCallUrl,
+            meetingTitle,
+            isMinutePublished,
+          } = getResponse.response;
+
+          const role = getParticipantRole(attendeeId);
+          localStorage.setItem("meetingTitle", meetingTitle);
+          // If meeting is active, join immediately
+          if (isMeetingActive(meetingStatusId)) {
+            localStorage.setItem("videoCallURL", videoCallUrl);
+            setVideoTalk(
+              buildVideoTalk({
+                isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
+              }),
+            );
+            setEditorRole(
+              buildEditorRole(
+                { statusID: meetingStatusId, isPrimaryOrganizer: false },
+                role,
+              ),
+            );
+
+            dispatch(
+              joinMeetingApi(
+                navigate,
+                t,
+                {
+                  VideoCallURL: videoCallUrl,
+                  FK_MDID: Number(meetingID),
+                  DateTime: getCurrentDateTimeUTC(),
+                },
+                "JoinMeetingFromListing",
+                {
+                  role,
+                  isQuickMeeting,
+                  record: { FK_MDID: meetingID },
+                  setIsQuickMeetingView,
+                },
+              ),
+            );
+            return;
+          }
+
+          // Handle quick meeting view
+          if (isQuickMeeting) {
+            await dispatch(
+              getViewMeetingByMeetingIdApi(
+                navigate,
+                t,
+                { MeetingID: meetingID },
+                "ViewQuickMeetingFromListing",
+                { setIsQuickMeetingView },
+              ),
+            );
+            return;
+          }
+
+          // Handle advance meeting view
+          dispatch(setCurrentMeetingInfo({ meetingID }));
+          dispatch(toggleViewMeetingModal(true));
+          dispatch(setViewTab("agenda"));
+          setEditorRole(
+            buildEditorRole(
+              { statusID: meetingStatusId, isPrimaryOrganizer: false },
+              role,
+            ),
+          );
+        }
+      } catch (error) {
+        console.error("View meeting link error:", error);
+      } finally {
+        localStorage.removeItem("viewMeetingLink");
+      }
+    };
+
+    handleViewMeetingLink();
+    }
+  }, [mtAgUpdate])
   // ─── View Meeting Link Handler ───────────────────────────────────────────
   useEffect(() => {
     let viewMeetingRoute = localStorage.getItem("viewMeetingLink");

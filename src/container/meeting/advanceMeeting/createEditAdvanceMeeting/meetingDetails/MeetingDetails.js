@@ -172,7 +172,7 @@ const MeetingDetails = () => {
     IsVideoCall: HIDE_VIDEO ? false : true,
     IsPublished: false,
   });
-
+  console.log(meetingDetails, "meetingDetailsmeetingDetailsmeetingDetails");
   // custom react select styles recurring
   const customStyles = {
     menuPortal: (base) => ({
@@ -340,7 +340,10 @@ const MeetingDetails = () => {
       updatedRows[index].dateForView = newDate;
       setRows(updatedRows);
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:",
+        error,
+      );
     }
   };
 
@@ -799,7 +802,10 @@ const MeetingDetails = () => {
         setReminderFrequencyOne(Newdata);
       }
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:",
+        error,
+      );
     }
   }, [getAllReminderFrequency.meetingReminders]);
 
@@ -820,7 +826,10 @@ const MeetingDetails = () => {
         setRecurringDropDown(Newdata);
       }
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:",
+        error,
+      );
     }
   }, [recurring.meetingRecurrances]);
 
@@ -880,7 +889,10 @@ const MeetingDetails = () => {
         }));
       }
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:",
+        error,
+      );
     }
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
@@ -902,6 +914,7 @@ const MeetingDetails = () => {
         let getmeetingType = MeetingData.meetingType;
         setCurrentMeetingStatus(MeetingData.meetingStatus.pK_MSID);
         setMeetingDetails({
+          ...MeetingData,
           MeetingTitle: MeetingData.meetingTitle,
           MeetingType: {
             PK_MTID: getmeetingType.pK_MTID,
@@ -988,7 +1001,10 @@ const MeetingDetails = () => {
         // setRows([]);
       }
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/MeetingDetails.js:",
+        error,
+      );
     }
   }, [getAllMeetingDetails, currentMeetingInfo]);
 
@@ -1003,7 +1019,17 @@ const MeetingDetails = () => {
     dispatch(getAgendaWithMeetingIDForImport_success(null, ""));
     dispatch(getAllMeetingForAgendaImport_success([], ""));
   }, []);
+  const isBoardMeeting = meetingDetails?.MeetingType?.Type === "Board Meeting";
 
+  const isCommitteeOrGroupMeeting =
+    committeeInfo !== null ||
+    groupInfo !== null ||
+    meetingDetails?.MeetingType?.Type === "Committee Meeting" ||
+    meetingDetails?.MeetingType?.Type === "Group Meeting";
+  console.log(
+    isCommitteeOrGroupMeeting,
+    "isCommitteeOrGroupMeetingisCommitteeOrGroupMeetingisCommitteeOrGroupMeeting",
+  );
   return (
     <section>
       <Row>
@@ -1074,7 +1100,8 @@ const MeetingDetails = () => {
                           : null}
                   </div>
                 </Col>
-                {committeeInfo !== null ? (
+                {committeeInfo !== null ||
+                meetingDetails?.MeetingType?.Type === "Committee Meeting" ? (
                   <>
                     {" "}
                     <Col lg={6} md={6} sm={6} className='my-2'>
@@ -1083,11 +1110,13 @@ const MeetingDetails = () => {
                         <span className={styles["steric"]}>*</span>
                       </span>
                       <div className={styles["meetingType_Value"]}>
-                        {committeeInfo.committeeTitle}
+                        {meetingDetails?.committeeGroupTitle ||
+                          committeeInfo.committeeTitle}
                       </div>
                     </Col>
                   </>
-                ) : groupInfo !== null ? (
+                ) : groupInfo !== null ||
+                  meetingDetails?.MeetingType?.Type === "Group Meeting" ? (
                   <>
                     <Col lg={6} md={6} sm={6} className='my-2'>
                       <span className={styles["Meeting_type_heading"]}>
@@ -1096,16 +1125,41 @@ const MeetingDetails = () => {
                       </span>
 
                       <div className={styles["meetingType_Value"]}>
-                        {groupInfo.groupTitle}
+                        {meetingDetails?.committeeGroupTitle ||
+                          groupInfo.groupTitle}
                       </div>
                     </Col>
                   </>
                 ) : null}
 
-                <Col
-                  lg={committeeInfo === null && groupInfo === null ? 6 : 12}
-                  md={committeeInfo === null && groupInfo === null ? 6 : 12}
-                  sm={committeeInfo === null && groupInfo === null ? 6 : 12}
+                {/* <Col
+                  lg={
+                    (committeeInfo !== null ||
+                      meetingDetails?.MeetingType?.Type ===
+                        "Committee Meeting") &&
+                    (groupInfo !== null ||
+                      meetingDetails?.MeetingType?.Type === "Group Meeting")
+                      ? 12
+                      : 6
+                  }
+                  md={
+                    (committeeInfo !== null ||
+                      meetingDetails?.MeetingType?.Type ===
+                        "Committee Meeting") &&
+                    (groupInfo !== null ||
+                      meetingDetails?.MeetingType?.Type === "Group Meeting")
+                      ? 12
+                      : 6
+                  }
+                  sm={
+                      (committeeInfo !== null ||
+                      meetingDetails?.MeetingType?.Type !==
+                        "Committee Meeting") &&
+                    (groupInfo !== null ||
+                      meetingDetails.MeetingType.Type !== "Group Meeting")
+                      ? 12
+                      : 6
+                  }
                   className='my-2'>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
@@ -1134,6 +1188,43 @@ const MeetingDetails = () => {
                                 isAdvanceMeetingRoute === 2
                               ? true
                               : false
+                        }
+                        maxLength={245}
+                      />
+                    </Col>
+                  </Row>
+                </Col> */}
+
+                <Col
+                  lg={isBoardMeeting ? 6 : 12}
+                  md={isBoardMeeting ? 6 : 12}
+                  sm={12}
+                  className='my-2'>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["Meeting_type_heading"]}>
+                        {t("Location-Videourl")}
+                      </span>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        placeholder={t("Location-Videourl")}
+                        applyClass='meetinInnerSearch'
+                        name='Location'
+                        labelclass='d-none'
+                        change={HandleChange}
+                        value={meetingDetails.Location}
+                        disable={
+                          ((Number(editorRole.status) === 9 ||
+                            Number(editorRole.status) === 8 ||
+                            Number(editorRole.status) === 10) &&
+                            editorRole.role === "Organizer" &&
+                            isAdvanceMeetingRoute === 2) ||
+                          (editorRole.role === "Agenda Contributor" &&
+                            isAdvanceMeetingRoute === 2)
                         }
                         maxLength={245}
                       />
