@@ -846,7 +846,7 @@ const getParticipantMeetingJoinMainApi = (
                 );
               }
               await dispatch(
-                getParticipantMeetingJoinFail(t("Something-went-wrong")),
+                getParticipantMeetingJoinFail(t("")),
               );
             }
           } else {

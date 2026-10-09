@@ -467,7 +467,34 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       if (presenterViewJoinFlag) {
         // Leave presenter view
         if (alreadyInMeetingVideo) {
+          // Viewer joined the presentation from meeting video: leave the
+          // presentation and the meeting video (same as the normal header).
+          // Ids are read before the resets below clear them.
+          const isUsable = (v) =>
+            Boolean(v) && !["null", "undefined", "0"].includes(String(v));
+          const meetingGuid = String(
+            [isMeetingVideoHostCheck ? isGuid : participantUID, participantUID, isGuid].find(
+              isUsable,
+            ) ?? participantUID,
+          );
+          const leavePresenterData = {
+            RoomID: String(RoomID),
+            UserGUID: meetingGuid,
+            Name: String(currentUserName),
+          };
+          const leaveMeetingVideoData = {
+            RoomID: String(
+              isMeetingVideoHostCheck ? newRoomID : participantRoomId,
+            ),
+            UserGUID: meetingGuid,
+            Name: String(currentUserName),
+            IsHost: isMeetingVideoHostCheck ? true : false,
+            MeetingID: Number(currentMeetingID),
+          };
           sessionStorage.removeItem("alreadyInMeetingVideo");
+          dispatch(leavePresenterViewMainApi(navigate, t, leavePresenterData, 2));
+          dispatch(setRaisedUnRaisedParticiant(false));
+          dispatch(LeaveMeetingVideo(leaveMeetingVideoData, navigate, t));
           await dispatch(presenterViewGlobalState(0, false, false, false));
           dispatch(maximizeVideoPanelFlag(false));
           dispatch(normalizeVideoPanelFlag(true));

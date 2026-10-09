@@ -374,7 +374,7 @@ const VideoCallNormalHeader = ({
         : isMeetingVideoHostCheck
           ? newRoomID
           : participantRoomId;
-  let UID =
+  const computedUID =
     callTypeID === 2 && callerID !== 0 && isUsableId(callerGuid)
       ? callerGuid
       : callTypeID === 2 && recipentCalledID !== 0 && isUsableId(recepientGuid)
@@ -384,6 +384,25 @@ const VideoCallNormalHeader = ({
           : isMeetingVideoHostCheck
             ? isGuid
             : participantUID;
+  // The stored guid can be missing: a participant who is first into the video
+  // becomes its host (JoinMeetingVideoRequest_02 stores isGuid but leaves
+  // isMeetingVideoHostCheck false and sets no participantUID), and another tab
+  // can clear the keys. Only then, take this user's own guid from the live
+  // roster (then any stored guid). When computedUID is usable nothing changes.
+  const selfRosterGuid = Array.isArray(getAllParticipantMain)
+    ? getAllParticipantMain.find(
+        (p) => Number(p.userID) === Number(currentUserID),
+      )?.guid
+    : undefined;
+  let UID = isUsableId(computedUID)
+    ? computedUID
+    : isUsableId(selfRosterGuid)
+      ? selfRosterGuid
+      : isUsableId(isGuid)
+        ? isGuid
+        : isUsableId(participantUID)
+          ? participantUID
+          : computedUID;
 
   const {
     leaveOneToOne,
@@ -888,6 +907,18 @@ const VideoCallNormalHeader = ({
     } else {
       if (presenterViewJoinFlag) {
         console.log("participantUIDparticipantUID", typeof participantUID);
+        // A viewer who joined the presentation from meeting video also
+        // leaves the meeting video. Built before LeavePresenterView because
+        // its response clears the room/guid keys.
+        const leaveMeetingVideoData = {
+          RoomID: String(
+            isMeetingVideoHostCheck ? newRoomID : participantRoomId,
+          ),
+          UserGUID: String(UID),
+          Name: String(newName),
+          IsHost: isMeetingVideoHostCheck ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
         // Leave presenter view
         if (isMeetingVideoHostCheck) {
           dispatch(videoIconOrButtonState(false));
@@ -907,7 +938,16 @@ const VideoCallNormalHeader = ({
         // overall meeting-host status.
         let data = {
           RoomID: String(RoomID),
-          UserGUID: String(participantUID),
+          UserGUID: String(
+            // In meeting video the presentation was joined with the meeting
+            // guid and participantUID is not stored, so it can be null here.
+            [
+              alreadyInMeetingVideo ? UID : participantUID,
+              participantUID,
+              UID,
+              isGuid,
+            ].find(isUsableId) ?? participantUID,
+          ),
           Name: String(newName),
         };
         console.log("leavePresenterViewMainApi");
@@ -922,6 +962,10 @@ const VideoCallNormalHeader = ({
             setLeavePresenterViewToJoinOneToOne,
           ),
         );
+        if (alreadyInMeetingVideo && !leavePresenterViewToJoinOneToOne) {
+          dispatch(setRaisedUnRaisedParticiant(false));
+          dispatch(LeaveMeetingVideo(leaveMeetingVideoData, navigate, t));
+        }
         leaveSuccess();
       }
     }

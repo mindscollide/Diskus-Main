@@ -1137,21 +1137,43 @@ const onClickVideoIconOpenVideo = () => {
           dispatch(joinPresentationOrOpenWaitingRoom(navigate, t, RoomID));
         }
       } else if (value === 3) {
-        // if (alreadyInMeetingVideo) {
+        // Read before it is removed: a viewer who joined the presentation
+        // from meeting video also leaves the meeting video.
+        const wasInMeetingVideo = Boolean(
+          JSON.parse(sessionStorage.getItem("alreadyInMeetingVideo")),
+        );
         sessionStorage.removeItem("alreadyInMeetingVideo");
-        //   await dispatch(presenterViewGlobalState(0, false, false, false));
-        //   dispatch(maximizeVideoPanelFlag(false));
-        //   dispatch(normalizeVideoPanelFlag(true));
-        //   dispatch(minimizeVideoPanelFlag(false));
-        // } else {
+        // In meeting video participantUID is not stored for a host (and isGuid
+        // can be missing), so take the first usable guid.
+        const isUsable = (v) =>
+          Boolean(v) && !["null", "undefined", "0"].includes(String(v));
+        const meetingGuid = String(
+          [isMeetingVideoHostCheck ? isGuid : participantUID, participantUID, isGuid].find(
+            isUsable,
+          ) ?? participantUID,
+        );
         let data = {
           RoomID: String(callAcceptedRoomID),
-          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+          UserGUID: wasInMeetingVideo
+            ? meetingGuid
+            : String(isMeetingVideoHostCheck ? isGuid : participantUID),
           Name: String(currentUserName),
+        };
+        // Built before LeavePresenterView, whose response clears these keys.
+        const leaveMeetingVideoData = {
+          RoomID: String(
+            isMeetingVideoHostCheck ? newRoomID : participantRoomId,
+          ),
+          UserGUID: meetingGuid,
+          Name: String(currentUserName),
+          IsHost: isMeetingVideoHostCheck ? true : false,
+          MeetingID: Number(thisPageMeetingID),
         };
         console.log("leavePresenterViewMainApi");
         dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
-        // }
+        if (wasInMeetingVideo) {
+          dispatch(LeaveMeetingVideo(leaveMeetingVideoData, navigate, t));
+        }
       }
       // }
     } catch (error) {
