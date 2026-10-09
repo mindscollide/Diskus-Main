@@ -10,6 +10,7 @@ import searchIcon from "@/assets/images/searchicon.svg";
 import BlackCrossIcon from "@/assets/images/BlackCrossIconModals.svg";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
 import { useMeetingListActions } from "@/container/meeting/commonComponents/useMeetingListActions";
+import { useMeetingLinkActions } from "@/container/meeting/commonComponents/useMeetingLinkActions";
 import ProposedMeetingList from "@/container/meeting/proposedMeetingFlow";
 import DraftNeetingList from "@/container/meeting/draftMeeting";
 import PublishedMeetingList from "@/container/meeting/publishMeeting";
@@ -29,7 +30,6 @@ import ViewQuickMeeting from "./quickMeeting/ViewQuickMeeting";
 import {
   setAdvanceMeetingRoute,
   setProposedMeetingRoute,
-  setViewTab,
   toggleCreateEditMeetingModal,
   toggleCreateEditProposedMeetingModal,
   toggleViewMeetingModal,
@@ -41,20 +41,9 @@ import { listOfMeetingsApi } from "@/store/actions/NewMeeting2.actions";
 import ProposedNewMeeting from "./proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting";
 import ViewProposedMeetingModal from "./proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import ViewParticipantsDates from "./proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
-import {
-  dashboardCalendarEvent,
-  validateEncryptedStringViewMeetingLinkApi,
-} from "../../store/actions/NewMeetingActions";
-import {
-  createConvert,
-  getCurrentDateTimeUTC,
-} from "../../commen/functions/date_formater";
-import {
-  getViewMeetingByMeetingIdApi,
-  joinMeetingApi,
-  resetCurrentMeetingInfo,
-  setCurrentMeetingInfo,
-} from "../../store/actions/NewMeeting2.actions";
+import { dashboardCalendarEvent } from "../../store/actions/NewMeetingActions";
+import { createConvert } from "../../commen/functions/date_formater";
+import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
   PARTICIPANT_ROLE,
@@ -62,9 +51,6 @@ import {
 } from "./commonComponents/meeting.constants";
 import {
   isMeetingActive,
-  getParticipantRole,
-  buildVideoTalk,
-  buildEditorRole,
   getMeetingFilters,
   isMeetingPublished,
 } from "./commonComponents/meeting.utils";
@@ -76,7 +62,6 @@ const MainMeeting = () => {
   let currentView = Number(localStorage.getItem("MeetingCurrentView"));
   let meetingpageRow = Number(localStorage.getItem("MeetingPageRows"));
   let meetingPageCurrent = Number(localStorage.getItem("MeetingPageCurrent"));
-  const mtAgUpdate = localStorage.getItem("mtAgUpdate");
 
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes,
@@ -111,13 +96,14 @@ const MainMeeting = () => {
     isQuickMeetingUpdate,
     setIsQuickMeetingUpdate,
     isQuickMeetingView,
-    setIsQuickMeetingView,
   } = useNewMeetingContext();
 
-  const { setEditorRole, setVideoTalk } = useMeetingContext();
+  const { setEditorRole } = useMeetingContext();
 
   const { handleViewMeeting, handleJoinMeeting, handleStartMeeting } =
     useMeetingListActions();
+  const { openMeetingFromLinkData, handleEncryptedMeetingLink } =
+    useMeetingLinkActions();
 
   const [searchText, setSearchText] = useState("");
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -188,214 +174,28 @@ const MainMeeting = () => {
       dispatch(toggleIsParticipantProposedMeetingDates(false));
     };
   }, []);
+  // ─── Email links (view / agenda-edit / start / update) ───────────────────
+  // PrivateRoutes stashes the token before this page's first render, so read
+  // it here on mount (not from a render-time const that only updates on a
+  // later re-render). Only one link is handled; any other stale link keys are
+  // dropped so they can't hijack a later visit. A started meeting joins
+  // straight away, otherwise it opens like a listing click.
   useEffect(() => {
-    if(mtAgUpdate !== null) {
-        const handleViewMeetingLink = async () => {
-      try {
-        const getResponse = await dispatch(
-          validateEncryptedStringViewMeetingLinkApi(
-            mtAgUpdate,
-            navigate,
-            t,
-          ),
-        );
-
-        if (getResponse.isExecuted && getResponse.responseCode === 1) {
-          const {
-            attendeeId,
-            isQuickMeeting,
-            meetingID,
-            meetingStatusId,
-            organizationID,
-            userID,
-            isChat,
-            talkGroupId,
-            isVideo,
-            videoCallUrl,
-            meetingTitle,
-            isMinutePublished,
-          } = getResponse.response;
-
-          const role = getParticipantRole(attendeeId);
-          localStorage.setItem("meetingTitle", meetingTitle);
-          // If meeting is active, join immediately
-          if (isMeetingActive(meetingStatusId)) {
-            localStorage.setItem("videoCallURL", videoCallUrl);
-            setVideoTalk(
-              buildVideoTalk({
-                isChat,
-                isVideoCall: isVideo,
-                talkGroupID: talkGroupId,
-              }),
-            );
-            setEditorRole(
-              buildEditorRole(
-                { statusID: meetingStatusId, isPrimaryOrganizer: false },
-                role,
-              ),
-            );
-
-            dispatch(
-              joinMeetingApi(
-                navigate,
-                t,
-                {
-                  VideoCallURL: videoCallUrl,
-                  FK_MDID: Number(meetingID),
-                  DateTime: getCurrentDateTimeUTC(),
-                },
-                "JoinMeetingFromListing",
-                {
-                  role,
-                  isQuickMeeting,
-                  record: { FK_MDID: meetingID },
-                  setIsQuickMeetingView,
-                },
-              ),
-            );
-            return;
-          }
-
-          // Handle quick meeting view
-          if (isQuickMeeting) {
-            await dispatch(
-              getViewMeetingByMeetingIdApi(
-                navigate,
-                t,
-                { MeetingID: meetingID },
-                "ViewQuickMeetingFromListing",
-                { setIsQuickMeetingView },
-              ),
-            );
-            return;
-          }
-
-          // Handle advance meeting view
-          dispatch(setCurrentMeetingInfo({ meetingID }));
-          dispatch(toggleViewMeetingModal(true));
-          dispatch(setViewTab("agenda"));
-          setEditorRole(
-            buildEditorRole(
-              { statusID: meetingStatusId, isPrimaryOrganizer: false },
-              role,
-            ),
-          );
-        }
-      } catch (error) {
-        console.error("View meeting link error:", error);
-      } finally {
-        localStorage.removeItem("viewMeetingLink");
-      }
-    };
-
-    handleViewMeetingLink();
+    const emailLinks = [
+      ["mtAgUpdate", "agenda"],
+      ["viewMeetingLink", "meetingDetails"],
+      ["meetingStr", "meetingDetails"],
+      ["meetingUpd", "meetingDetails"],
+    ];
+    const [linkKey, linkTab] =
+      emailLinks.find(([key]) => localStorage.getItem(key)) || [];
+    emailLinks.forEach(([key]) => {
+      if (key !== linkKey) localStorage.removeItem(key);
+    });
+    if (linkKey) {
+      handleEncryptedMeetingLink(localStorage.getItem(linkKey), linkKey, linkTab);
     }
-  }, [mtAgUpdate])
-  // ─── View Meeting Link Handler ───────────────────────────────────────────
-  useEffect(() => {
-    let viewMeetingRoute = localStorage.getItem("viewMeetingLink");
-
-    if (!viewMeetingRoute) return;
-
-    const handleViewMeetingLink = async () => {
-      try {
-        const getResponse = await dispatch(
-          validateEncryptedStringViewMeetingLinkApi(
-            viewMeetingRoute,
-            navigate,
-            t,
-          ),
-        );
-
-        if (getResponse.isExecuted && getResponse.responseCode === 1) {
-          const {
-            attendeeId,
-            isQuickMeeting,
-            meetingID,
-            meetingStatusId,
-            organizationID,
-            userID,
-            isChat,
-            talkGroupId,
-            isVideo,
-            videoCallUrl,
-            isMinutePublished,
-          } = getResponse.response;
-
-          const role = getParticipantRole(attendeeId);
-
-          // If meeting is active, join immediately
-          if (isMeetingActive(meetingStatusId)) {
-            localStorage.setItem("videoCallURL", videoCallUrl);
-            setVideoTalk(
-              buildVideoTalk({
-                isChat,
-                isVideoCall: isVideo,
-                talkGroupID: talkGroupId,
-              }),
-            );
-            setEditorRole(
-              buildEditorRole(
-                { statusID: meetingStatusId, isPrimaryOrganizer: false },
-                role,
-              ),
-            );
-
-            dispatch(
-              joinMeetingApi(
-                navigate,
-                t,
-                {
-                  VideoCallURL: videoCallUrl,
-                  FK_MDID: Number(meetingID),
-                  DateTime: getCurrentDateTimeUTC(),
-                },
-                "JoinMeetingFromListing",
-                {
-                  role,
-                  isQuickMeeting,
-                  record: { FK_MDID: meetingID },
-                  setIsQuickMeetingView,
-                },
-              ),
-            );
-            return;
-          }
-
-          // Handle quick meeting view
-          if (isQuickMeeting) {
-            await dispatch(
-              getViewMeetingByMeetingIdApi(
-                navigate,
-                t,
-                { MeetingID: meetingID },
-                "ViewQuickMeetingFromListing",
-                { setIsQuickMeetingView },
-              ),
-            );
-            return;
-          }
-
-          // Handle advance meeting view
-          dispatch(setCurrentMeetingInfo({ meetingID }));
-          dispatch(toggleViewMeetingModal(true));
-          dispatch(setViewTab("meetingDetails"));
-          setEditorRole(
-            buildEditorRole(
-              { statusID: meetingStatusId, isPrimaryOrganizer: false },
-              role,
-            ),
-          );
-        }
-      } catch (error) {
-        console.error("View meeting link error:", error);
-      } finally {
-        localStorage.removeItem("viewMeetingLink");
-      }
-    };
-
-    handleViewMeetingLink();
-  }, [localStorage.getItem("viewMeetingLink")]);
+  }, []);
 
   useEffect(() => {
     if (state !== null) {
@@ -479,59 +279,17 @@ const MainMeeting = () => {
     }
   }, [state]);
 
+  // /Redirected (EmailActionHandler) hands the validated link data over via
+  // navigation state — same data shape as the token flows above.
   useEffect(() => {
-    if (state !== null) {
-
-      console.log("state?.key", state?.key, state?.value, state);
-      try {
-        if (state?.key === "viewMeeting_action") {
-
-          const { meetingStatusId = 0, isQuickMeeting = false, meetingID = 0, attendeeId = 0 } = state?.value;
-          // If the meeting is Published State
-          if (meetingStatusId === 1) {
-            // If the is Quick Meeting, then open the Quick Meeting View Modal
-            if (isQuickMeeting) {
-              dispatch(
-                getViewMeetingByMeetingIdApi(
-                  navigate,
-                  t,
-                  { MeetingID: meetingID },
-                  "ViewQuickMeetingFromListing",
-                  { setIsQuickMeetingView },
-                ),
-              );
-            }
-            // if the meeting is not Quick Meeting, then open the Advance Meeting View Modal
-
-            const role =
-              attendeeId === 2
-                ? "Participant"
-                : attendeeId === 3
-                  ? "Agenda Contributor"
-                  : "Organizer";
-
-            setEditorRole(
-              buildEditorRole(
-                {
-                  status: meetingStatusId,
-                  isPrimaryOrganizer: false,
-                },
-                role,
-              ),
-            );
-
-            dispatch(setCurrentMeetingInfo({ meetingID: meetingID }));
-            dispatch(toggleViewMeetingModal(true));
-            dispatch(setViewTab("meetingDetails"));
-          }
-        }
-        navigate(pathname, {
-          replace: true,
-          state: null,
-        });
-      } catch (error) {
-        console.error("src/container/meeting/index.jsx:", error);
-      }
+    if (state?.key === "viewMeeting_action" && state?.value) {
+      openMeetingFromLinkData(state.value, "meetingDetails").catch((error) =>
+        console.error("src/container/meeting/index.jsx:", error),
+      );
+      navigate(pathname, {
+        replace: true,
+        state: null,
+      });
     }
   }, [state]);
 

@@ -245,6 +245,29 @@ const ProposedMeeting = () => {
     }
   };
 
+  // Email links land here with the Proposed tab selected but the list in the
+  // store may still hold whatever the page loaded first — refetch Proposed.
+  const loadProposedList = () => {
+    dispatch(
+      listOfMeetingsApi(
+        navigate,
+        t,
+        {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(localStorage.getItem("userID")),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings: false,
+          ProposedMeetings: true,
+        },
+        "",
+        {},
+      ),
+    );
+  };
+
   const handelChangeProposedMeetingPagination = (page, pageSize) => {
     let searchData = {
       Date: "",
@@ -672,6 +695,14 @@ const ProposedMeeting = () => {
             t,
           )(dispatch); // Ensure you're passing dispatch
           if (getApiResponse) {
+            loadProposedList();
+            if (
+              String(getApiResponse.deadline).slice(0, 8) < getTodayYYYYMMDD()
+            ) {
+              localStorage.removeItem("meetingprop");
+              show(t("Vote-deadline-expired"), "success");
+              return;
+            }
             dispatch(
               getMeetingDetailsByMeetingIdApi(
                 navigate,
@@ -724,6 +755,7 @@ const ProposedMeeting = () => {
               )(dispatch); // Ensure you're passing dispatch here
 
             if (getApiResponse) {
+              loadProposedList();
               localStorage.setItem(
                 "viewProposeDatePollMeetingID",
                 getApiResponse.meetingID,

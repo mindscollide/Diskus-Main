@@ -49,6 +49,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import { useGroupsContext } from "../../context/GroupsContext";
+import { getTodayYYYYMMDD } from "../../commen/functions/utils";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 import CreateEditAdvanceMeeting from "../meeting/advanceMeeting/createEditAdvanceMeeting";
 import ViewMeetingModal from "../meeting/advanceMeeting/viewAdvanceMeeting";
@@ -66,8 +67,8 @@ import {
 } from "../../store/actions/ModalStates_actions";
 import { resetCurrentMeetingInfo } from "../../store/actions/NewMeeting2.actions";
 import { useMeetingContext } from "../../context/MeetingContext";
+import { useMeetingLinkActions } from "../meeting/commonComponents/useMeetingLinkActions";
 import {
-  validateStringEmailApi,
   validateStringParticipantProposedApi,
   validateStringUserMeetingProposedDatesPollsApi,
 } from "../../store/actions/NewMeetingActions";
@@ -82,6 +83,12 @@ const Groups = () => {
   const groupsMeetingstr = localStorage.getItem("groups_meetingStr_action");
 
   const groupsMeetingUpd = localStorage.getItem("groups_meetingUpd_action");
+
+  // Group meeting email links (viewMeeting / Startmeeting / Updatemeeting, via
+  // stored token or /Redirected navigation state): open the group's meetings
+  // tab on Published, then the meeting itself.
+  const { handleEncryptedMeetingLink, openMeetingFromLinkData } =
+    useMeetingLinkActions();
 
   //Context For Groups
   const {
@@ -337,61 +344,47 @@ const Groups = () => {
     }
   }, [GroupsReducerrealtimeGroupStatus]);
 
+  const openGroupMeetingFromLinkData = async (data, viewTab) => {
+    if (Number(data.standardMeetingType) !== 4) return;
+    dispatch(
+      viewGroupDetails({
+        groupID: data.commmitteeGroupID,
+        groupTitle: data.committeeGroupTitle || "",
+      }),
+    );
+    setCurrentViewGroupTabs(4);
+    setCurrentGroupMeetingTabActive(1);
+    localStorage.setItem("ViewGroupID", data.commmitteeGroupID);
+    setViewGroupPage(true);
+    dispatch(viewGroupPageFlag(true));
+    await openMeetingFromLinkData(data, viewTab);
+  };
+
   useEffect(() => {
-    if (
-      groupsMeetingView !== null ||
-      groupsMeetingstr !== null ||
-      groupsMeetingUpd !== null
-    ) {
-      try {
-        const callFun = async () => {
-          const encryptedvalue =
-            groupsMeetingView || groupsMeetingstr || groupsMeetingUpd;
-          const encryptedKey =
-            groupsMeetingView !== null
-              ? "groups_viewMeeting_action"
-              : groupsMeetingstr !== null
-                ? "groups_meetingStr_action"
-                : groupsMeetingView
-                  ? "groups_meetingUpd_action"
-                  : "";
-          const response = await validateStringEmailApi(
-            encryptedvalue,
-            navigate,
-            t,
-            1,
-            dispatch,
-            encryptedKey,
-          );
-
-          const { standardMeetingType, commmitteeGroupID } = response;
-          if (standardMeetingType === 4) {
-            dispatch(
-              viewGroupDetails({
-                groupID: commmitteeGroupID,
-                groupTitle:
-                  "Group Title" /* Group Title will update when new attribute receives  */,
-              }),
-            );
-            setCurrentViewGroupTabs(4);
-            localStorage.setItem("ViewGroupID", commmitteeGroupID);
-            setViewGroupPage(true);
-            dispatch(viewGroupPageFlag(true));
-          }
-
-          localStorage.removeItem("groups_viewMeeting_action");
-          localStorage.removeItem("groups_meetingStr_action");
-        };
-        callFun();
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    const token = groupsMeetingView || groupsMeetingstr || groupsMeetingUpd;
+    if (!token) return;
+    handleEncryptedMeetingLink(
+      token,
+      [
+        "groups_viewMeeting_action",
+        "groups_meetingStr_action",
+        "groups_meetingUpd_action",
+      ],
+      "meetingDetails",
+      openGroupMeetingFromLinkData,
+    );
   }, [groupsMeetingView, groupsMeetingUpd, groupsMeetingstr]);
 
   useEffect(() => {
     if (state !== null) {
       try {
+        if (state?.key === "group_viewMeeting_action" && state?.value) {
+          openGroupMeetingFromLinkData(state.value, "meetingDetails").catch(
+            (error) => console.error("src/container/Groups/Groups.js:", error),
+          );
+          navigate(pathname, { replace: true, state: null });
+          return;
+        }
         const { message, response } = state;
         // response.committeeGroupMeetingID/committeeGroupTitle never
         // existed on this object — routeMeetingTypeNotification only ever
@@ -442,7 +435,15 @@ const Groups = () => {
               t,
             )(dispatch); // Ensure you're passing dispatch
             if (getApiResponse) {
-              setGroupParticipantProposedMeetingEmailRouteData(getApiResponse);
+              // Same expiry rule as the notification path: still open the
+              // group on Proposed, but don't open the vote screen.
+              if (
+                String(getApiResponse.deadline).slice(0, 8) < getTodayYYYYMMDD()
+              ) {
+                show(t("Vote-deadline-expired"), "success");
+              } else {
+                setGroupParticipantProposedMeetingEmailRouteData(getApiResponse);
+              }
               console.log(
                 getApiResponse,
                 "getApiResponsegetApiResponsegetApiResponse",
@@ -479,7 +480,7 @@ const Groups = () => {
               //   "viewProposeDatePollMeetingID",
               //   getApiResponse.meetingID,
               // );
-              localStorage.removeItem("group_meetingprop_action");
+              localStorage.removeItem("groups_meetingprop_action");
 
               // setResponseByDate(getApiResponse.deadline);
               // dispatch(
@@ -494,7 +495,7 @@ const Groups = () => {
               // dispatch(toggleIsParticipantProposedMeetingDates(true));
             }
           } catch (error) {
-            localStorage.removeItem("group_meetingprop_action");
+            localStorage.removeItem("groups_meetingprop_action");
           }
         };
 

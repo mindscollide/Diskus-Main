@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Navigate,
   Outlet,
@@ -15,8 +15,7 @@ const PrivateRoutes = () => {
     "searchParamssearchParamssearchParams",
   );
   // Effect hook to perform actions based on the current URL
-  useEffect(() => {
-    const callRoutingFunction = async () => {
+  const callRoutingFunction = async () => {
       try {
         if (
           currentUrl
@@ -482,8 +481,23 @@ const PrivateRoutes = () => {
         localStorage.setItem("emailActionToken", getValue);
       }
     };
+
+  // Email links stash their token into localStorage here. It has to happen
+  // before the child page's first render/effects (an effect in this parent
+  // runs AFTER its children's), otherwise the target page mounts, finds no
+  // key and never picks the link up. The body is fully synchronous, so run it
+  // once as a state initializer, and again whenever the URL changes later.
+  useState(() => {
     callRoutingFunction();
-    // Action: Meeting RSVP
+    return null;
+  });
+  const isFirstUrlEffect = useRef(true);
+  useEffect(() => {
+    if (isFirstUrlEffect.current) {
+      isFirstUrlEffect.current = false;
+      return;
+    }
+    callRoutingFunction();
   }, [currentUrl]);
 
   let Blur = localStorage.getItem("blur");
