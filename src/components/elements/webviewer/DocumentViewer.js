@@ -22,6 +22,8 @@ import { Col, Row } from "react-bootstrap";
 import CustomButton from "../button/Button";
 import useSnackbar from "../snack_bar/useSnackbar";
 import { useApryseDocument } from "../../../context/DocumentContext";
+import { openDocumentViewer } from "../../../commen/functions/utils";
+import { validateEncryptedStringViewFileLinkApi } from "../../../store/actions/DataRoom2_actions";
 
 const DocumentViewer = () => {
   const { documentApryseViewer } = useApryseDocument();
@@ -33,6 +35,7 @@ const DocumentViewer = () => {
   const [show, SnackBar] = useSnackbar();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [instance, setInstance] = useState(null);
+  let documentViewer = localStorage.getItem("documentViewer");
 
   // State Variables
 
@@ -89,9 +92,41 @@ const DocumentViewer = () => {
 
       return clearLocalStorage;
     } catch (error) {
-      console.error("src/components/elements/webviewer/DocumentViewer.js:", error);
+      console.error(
+        "src/components/elements/webviewer/DocumentViewer.js:",
+        error,
+      );
     }
   }, [attachmentID]);
+
+  useEffect(() => {
+    if (documentViewer !== null) {
+      const callApi = async () => {
+        // Validate the encrypted committee view ID
+        const getResponse = await dispatch(
+          validateEncryptedStringViewFileLinkApi(documentViewer, navigate, t),
+        );
+
+        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+          let ext = getResponse.response.fileName?.split(".").pop();
+          let record = { id: getResponse.response.response.fileID };
+
+          const pdfData = {
+            taskId: getResponse.response.response.fileID,
+            commingFrom: 4,
+            fileName: getResponse.response.fileName,
+            attachmentID: getResponse.response.response.fileID,
+            isPermission: getResponse.response.response.permissionID,
+          };
+
+          const pdfDataJson = JSON.stringify(pdfData);
+          openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+          localStorage.removeItem("documentViewer"); // Cleanup the localStorage key
+        }
+      };
+      callApi();
+    }
+  }, [documentViewer]);
 
   // Handle File Removal via MQTT
   useEffect(() => {
@@ -376,7 +411,10 @@ const DocumentViewer = () => {
       // Reset the unsaved changes flag after successful save
       setHasUnsavedChanges(false);
     } catch (error) {
-      console.error("src/components/elements/webviewer/DocumentViewer.js:", error);
+      console.error(
+        "src/components/elements/webviewer/DocumentViewer.js:",
+        error,
+      );
     }
   };
 
@@ -420,8 +458,8 @@ const DocumentViewer = () => {
 
   return (
     <>
-      <div className='document-viewer'>
-        <div className='webviewer' ref={documentApryseViewer}></div>
+      <div className="document-viewer">
+        <div className="webviewer" ref={documentApryseViewer}></div>
       </div>
       {SnackBar}
     </>
