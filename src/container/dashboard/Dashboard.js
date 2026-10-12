@@ -2311,6 +2311,58 @@ const Dashboard = () => {
               dispatch(minimizeVideoPanelFlag(false));
             } else if (
               data.payload.message.toLowerCase() ===
+              "REMOVED_FROM_PRESENTATION".toLowerCase()
+            ) {
+              // The presenter removed this participant while they were in
+              // meeting video: they leave the presentation AND the meeting
+              // video (no waiting room). LeavePresenterView is not needed —
+              // the backend already removed them from the presentation.
+              show(t("Removed-by-presenter"), "info");
+              // Ids are read before anything below clears them.
+              const isUsable = (v) =>
+                Boolean(v) && !["null", "undefined", "0"].includes(String(v));
+              const hostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck"),
+              );
+              const guid = [
+                hostCheck
+                  ? localStorage.getItem("isGuid")
+                  : localStorage.getItem("participantUID"),
+                localStorage.getItem("participantUID"),
+                localStorage.getItem("isGuid"),
+              ].find(isUsable);
+              const leaveData = {
+                RoomID: String(
+                  hostCheck
+                    ? localStorage.getItem("newRoomId")
+                    : localStorage.getItem("participantRoomId"),
+                ),
+                UserGUID: String(guid),
+                Name: String(localStorage.getItem("name")),
+                IsHost: hostCheck ? true : false,
+                MeetingID: Number(
+                  data.payload?.meetingID ??
+                    localStorage.getItem("currentMeetingID"),
+                ),
+              };
+              sessionStorage.removeItem("alreadyInMeetingVideo");
+              dispatch(
+                participantRemovedFromPresentationMqtt({
+                  guid: guid,
+                }),
+              );
+              dispatch(setRaisedUnRaisedParticiant(false));
+              dispatch(toggleParticipantsVisibility(false));
+              dispatch(videoChatMessagesFlag(false));
+              dispatch(chatBoxActiveFlag(false));
+              dispatch(activeChatBoxGS(false));
+              dispatch(presenterViewGlobalState(0, false, false, false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
+              dispatch(LeaveMeetingVideo(leaveData, navigate, t));
+            } else if (
+              data.payload.message.toLowerCase() ===
               "PARTICIPANT_REMOVED_FROM_PRESENTATION".toLowerCase()
             ) {
               // CR(0012249): sent to the OTHER admitted participants so

@@ -578,6 +578,19 @@ const admitRejectAttendeeMainApi = (
               }
               dispatch(guestJoinPopup(false));
               await dispatch(admitRejectFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AdmitRejectAttendee_04".toLowerCase(),
+                )
+            ) {
+              if (typeof setLoadingAdmit === "function") {
+                setLoadingAdmit(false);
+                setLoadingDeny(false);
+              }
+              dispatch(guestJoinPopup(false));
+              await dispatch(admitRejectFail(t("Something-went-wrong")));
             }
           } else {
             if (typeof setLoadingAdmit === "function") {
@@ -585,7 +598,7 @@ const admitRejectAttendeeMainApi = (
               setLoadingDeny(false);
             }
             dispatch(guestJoinPopup(false));
-            await dispatch(admitRejectFail(t("Something-went-wrong")));
+            await dispatch(admitRejectFail(t("Invalid-data")));
           }
         } else {
           await dispatch(admitRejectFail(t("Something-went-wrong")));
@@ -1125,10 +1138,7 @@ const admitRejectPresentationAttendeeMainApi = (navigate, t, data) => {
   return (dispatch) => {
     dispatch(admitRejectPresentationInit());
     let form = new FormData();
-    form.append(
-      "RequestMethod",
-      admitRejectPresentationAttendee.RequestMethod,
-    );
+    form.append("RequestMethod", admitRejectPresentationAttendee.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
       .post(meetingApi, form)
@@ -1297,9 +1307,7 @@ const removeParticipantFromPresentationMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
-        dispatch(
-          removeParticipantPresentationFail(t("Something-went-wrong")),
-        );
+        dispatch(removeParticipantPresentationFail(t("Something-went-wrong")));
       });
   };
 };

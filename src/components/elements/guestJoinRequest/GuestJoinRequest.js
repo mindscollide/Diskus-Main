@@ -132,9 +132,12 @@ const GuestJoinRequest = () => {
         ),
       );
 
-      // Prepare API data
+      // Prepare API data. Rows loaded from the waiting-list API (e.g. after
+      // the host rejoins) carry no meetingID — fall back to the current one.
       const Data = {
-        MeetingId: meetingParticipants[0]?.meetingID,
+        MeetingId:
+          meetingParticipants[0]?.meetingID ||
+          Number(localStorage.getItem("currentMeetingID")),
         RoomId: String(roomID),
         IsRequestAccepted: flag === 1,
         AttendeeResponseList: meetingParticipants.map((p) => ({
@@ -143,7 +146,7 @@ const GuestJoinRequest = () => {
           UserID: p.userID,
         })),
       };
-
+      console.log("DataDataData");
       // Call API
       dispatch(
         admitRejectAttendeeMainApi(
@@ -171,7 +174,9 @@ const GuestJoinRequest = () => {
       );
 
       const presentationData = {
-        MeetingID: presentationParticipants[0]?.meetingID,
+        MeetingID:
+          presentationParticipants[0]?.meetingID ||
+          Number(localStorage.getItem("currentMeetingID")),
         RoomID: String(localStorage.getItem("acceptedRoomID")),
         IsRequestAccepted: flag === 1,
         AttendeeResponseList: presentationParticipants.map((p) => ({
@@ -182,11 +187,7 @@ const GuestJoinRequest = () => {
       };
 
       dispatch(
-        admitRejectPresentationAttendeeMainApi(
-          navigate,
-          t,
-          presentationData,
-        ),
+        admitRejectPresentationAttendeeMainApi(navigate, t, presentationData),
       );
 
       // admitRejectPresentationAttendeeMainApi doesn't take

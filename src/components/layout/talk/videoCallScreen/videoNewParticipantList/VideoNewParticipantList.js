@@ -423,7 +423,12 @@ const VideoNewParticipantList = () => {
         source.filter((p) => p.name.toLowerCase().includes(lower)),
       );
     },
-    [getAllParticipantMain, presenterRoster, presenterViewFlag, presenterViewHostFlag],
+    [
+      getAllParticipantMain,
+      presenterRoster,
+      presenterViewFlag,
+      presenterViewHostFlag,
+    ],
   );
 
   /**
@@ -678,6 +683,7 @@ const VideoNewParticipantList = () => {
       }
 
       if (presenterViewFlag || !filteredWaitingParticipants.length) return;
+      console.log("DataDataData");
 
       dispatch(
         admitRejectAttendeeMainApi(
@@ -763,6 +769,7 @@ const VideoNewParticipantList = () => {
         );
         return;
       }
+      console.log("DataDataData");
 
       dispatch(
         admitRejectAttendeeMainApi(

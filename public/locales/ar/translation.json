@@ -2469,6 +2469,7 @@
   "Please-select-a-date": "يرجى اختيار تاريخ",
   "Call-initiated-successfully": "تم بدء المكالمة بنجاح",
   "Presenter-view-started": "تم تشغيل عرض المُقدِّم",
+  "Removed-by-presenter": "تم طردك من قبل المذيع",
   "VIDEO_RECORDING_ONETO_ONE_RECEIVED": "أصبح تسجيل فيديو المكالمة مع [Participant Name] متاحًا الآن",
   "VIDEO_RECORDING_GROUP_RECEIVED": "أصبح تسجيل فيديو المكالمة الجماعية مع [Participant Name] وآخرين متاحًا الآن",
   "MEETING_VIDEO_RECORDING_RECEIVED": "أصبح تسجيل فيديو الاجتماع [Meeting Title] متاحًا الآن",
