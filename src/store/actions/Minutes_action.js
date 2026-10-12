@@ -1394,9 +1394,8 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
                 )
             ) {
               dispatch(
-                GetMinuteReviewDetailsByOrganizerByMinuteId_fail(),
-                // t("Minute-review-flow-not-found"),
-                "",
+                GetMinuteReviewDetailsByOrganizerByMinuteId_fail(    t("Revision-history-not-found"))
+            
               );
             } else if (
               response.data.responseResult.responseMessage

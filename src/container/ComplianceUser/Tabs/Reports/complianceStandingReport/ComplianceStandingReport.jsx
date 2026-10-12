@@ -545,7 +545,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "ComplianceName",
         key: "ComplianceName",
-        width: "27%",
+        width: "200px",
         sorter: (a, b) =>
           a.ComplianceName?.toLowerCase().localeCompare(
             b.ComplianceName?.toLowerCase(),
@@ -562,6 +562,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "Authority",
         key: "Authority",
+        width: "120px",
         sorter: (a, b) =>
           a.Authority?.toLowerCase().localeCompare(b.Authority?.toLowerCase()),
         sortOrder: authoritySort,
@@ -572,6 +573,7 @@ const ComplianceStandingReport = () => {
         dataIndex: "criticality",
         key: "criticality",
         ellipsis: true,
+        width: "120px",
         align: "center",
         ...criticalityColumnProps,
         render: (value) => (
@@ -589,6 +591,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "dueDate",
         key: "dueDate",
+        width: "150px",
         sorter: (a, b) => Number(a.dueDate) - Number(b.dueDate),
         sortOrder: dueDateSort,
         render: (value) => formatDateToYMD(value),
@@ -606,7 +609,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "totalChecklists",
         key: "totalChecklists",
-        width: "12%",
+        width: "150px",
         ellipsis: true,
         align: "center",
         sorter: (a, b) => (a.totalChecklists || 0) - (b.totalChecklists || 0),
@@ -626,7 +629,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "NoOfTasks",
         key: "NoOfTasks",
-        width: "10%",
+        width: "150px",
         ellipsis: true,
         align: "center",
         sorter: (a, b) => (a.NoOfTasks || 0) - (b.NoOfTasks || 0),
@@ -646,7 +649,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "overdueTasks",
         key: "overdueTasks",
-        width: "11%",
+   width: "150px",
         ellipsis: true,
         align: "center",
         sorter: (a, b) => (a.overdueTasks || 0) - (b.overdueTasks || 0),
@@ -666,7 +669,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "Progress",
         key: "Progress",
-        width: "8%",
+        width: "150px",
         align: "center",
         ellipsis: true,
         sorter: (a, b) => (a.Progress || 0) - (b.Progress || 0),
@@ -677,7 +680,7 @@ const ComplianceStandingReport = () => {
         title: "",
         key: "arrow",
         align: "right",
-        width: "5%",
+        width: "150px",
         render: (_, record) => {
           const isExpanded = expandedRowKeys.includes(record.key);
           return (
@@ -800,7 +803,6 @@ const ComplianceStandingReport = () => {
                 rows={tableData}
                 column={columns}
                 pagination={false}
-                rowKey="key"
                 onChange={handleChangeStandingReportSorter}
                 expandable={{
                   showExpandColumn: false,
@@ -934,6 +936,7 @@ const ComplianceStandingReport = () => {
                   },
                   rowExpandable: () => true,
                 }}
+                scroll={{ x: "max-content" }}
                 className="Compliance_Table Report_Table mt-3"
               />
             </div>

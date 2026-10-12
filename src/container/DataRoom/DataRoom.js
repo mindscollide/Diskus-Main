@@ -268,12 +268,19 @@ const DataRoom = () => {
   let userID = localStorage.getItem("userID");
   /** Currently authenticated user's organization ID. */
   let organizationID = localStorage.getItem("organizationID");
+  /** Non-null when the user arrived via a "document signed" notification link. */
+  const docSignedCrAction = localStorage.getItem("docSignedCrAction");
+  // That link must land on view 5 (Send for Approval). currentView is read at
+  // render time, so the view has to be written before it is read below — an
+  // effect would only take effect after some later re-render. Idempotent, and
+  // it stays set after the key is consumed, so the tab doesn't flip back.
+  if (docSignedCrAction !== null) {
+    localStorage.setItem("setTableView", 5);
+  }
   /** Active tab/view ID (1–5). Read once per render from localStorage. */
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   /** ID of the folder currently being browsed; null when at root. */
   let viewFolderID = localStorage.getItem("folderID");
-  /** Non-null when the user arrived via a "document signed" notification link. */
-  const docSignedCrAction = localStorage.getItem("docSignedCrAction");
 
   // ─── DOM refs ─────────────────────────────────────────────────────────────
   /** Ref for the search bar container — used for outside-click detection. */
@@ -713,7 +720,11 @@ const DataRoom = () => {
       localStorage.removeItem("setTableView");
       localStorage.removeItem("BoardDeckFolderID");
     };
-  }, [docSignedCrAction]);
+    // Mount-only. docSignedCrAction is removed from localStorage once
+    // ApprovalSend consumes it; with it as a dependency that re-ran this
+    // effect, and its cleanup wiped setTableView — flipping Send for Approval
+    // back to inactive right after it had activated.
+  }, []);
 
   // ─── Network status listener ──────────────────────────────────────────────
   /**
@@ -3863,13 +3874,12 @@ const DataRoom = () => {
               </Col>
               {currentView !== 5 && (
                 <>
-                  <Col sm={12} md={1} lg={1}></Col>
                   {/* ── Search bar ────────────────────────────────────────────── */}
                   <Col
-                    lg={6}
-                    md={6}
+                    lg={7}
+                    md={7}
                     sm={12}
-                    className='d-flex position-relative Inputfield_for_data_room justify-content-end '>
+                    className=''>
                     <SearchBarComponent
                       setSearchDataFields={setSearchDataFields}
                       searchDataFields={searchDataFields}
@@ -3886,7 +3896,7 @@ const DataRoom = () => {
                     lg={1}
                     md={1}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className='d-flex  justify-content-end'>
                     <span className={styles["lsit_grid_buttons"]}>
                       <Button
                         icon={

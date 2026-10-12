@@ -5,6 +5,8 @@ p.pendingStatus {
   font-size: 12px;
   text-transform: uppercase !important;
   color: #d8a709;
+  white-space: nowrap;
+
 }
 
 p.signedStatus {
@@ -14,6 +16,8 @@ p.signedStatus {
   font-size: 12px;
   text-transform: uppercase;
   color: #55ce5c;
+  white-space: nowrap;
+
 }
 
 p.declineStatus {
@@ -23,6 +27,8 @@ p.declineStatus {
   font-size: 12px;
   text-transform: uppercase;
   color: #f16b6b;
+  white-space: nowrap;
+
 }
 
 p.draftStatus {

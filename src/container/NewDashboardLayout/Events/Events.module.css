@@ -188,3 +188,11 @@ body[dir="rtl"] .event-details:hover {
   cursor: pointer;
   margin-top: 10px;
 }
+
+@media screen and (min-width: 1024px) and (max-width: 1400px) {
+  .events-dateTime {
+    font-size: 0.6em !important;
+    color: #000;
+    font-weight: 600;
+  }
+}

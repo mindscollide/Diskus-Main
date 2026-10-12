@@ -703,7 +703,7 @@ const TodoList = () => {
         ),
         dataIndex: "title",
         key: "title",
-        width: "30%",
+        width: "250px",
         ellipsis: true,
         sortDirections: ["descend", "ascend"],
         sorter: (a, b) =>
@@ -738,7 +738,7 @@ const TodoList = () => {
         dataIndex: "taskCreator",
         key: "taskCreator",
         align: "center",
-        width: "20%",
+        width: "150px",
         sortDirections: ["descend", "ascend"],
         // FIX: original had `(localeCompare(...), taskAssignedBySort)` — a comma
         // expression that returned the sort state, not the comparison value.
@@ -779,7 +779,7 @@ const TodoList = () => {
         dataIndex: "taskAssignedTo",
         key: "taskAssignedTo",
         align: "center",
-        width: "20%",
+        width: "150px",
         sortDirections: ["descend", "ascend"],
         sorter: (a, b) =>
           a.taskAssignedTo?.[0]?.name
@@ -823,7 +823,7 @@ const TodoList = () => {
         dataIndex: "deadlineDateTime",
         key: "deadlineDateTime",
         ellipsis: true,
-        width: "20%",
+        width: "150px",
         align: "center",
         sortDirections: ["descend", "ascend"],
         sorter: (a, b) =>
@@ -851,7 +851,7 @@ const TodoList = () => {
         dataIndex: "status",
         key: "status",
         align: "center",
-        width: "10%",
+        width: "120px",
         filterMultiple: true,
         filterIcon: () => (
           <ChevronDown
@@ -863,8 +863,7 @@ const TodoList = () => {
           <Dropdown
             overlay={filterMenu}
             open={filterVisible}
-            onOpenChange={setFilterVisible}
-          >
+            onOpenChange={setFilterVisible}>
             <div />
           </Dropdown>
         ),
@@ -883,7 +882,7 @@ const TodoList = () => {
             <Select
               value={t(status.status)}
               bordered={false}
-              popupClassName='Status-Todo'
+              popupClassName='Status-Todo '
               className={cls}
               onChange={(val) => statusChangeHandler(val, record.pK_TID)}>
               {statusOptions.map(({ id, status: label }) => (
@@ -906,7 +905,7 @@ const TodoList = () => {
         dataIndex: "taskCreator",
         key: "actions",
         align: "center",
-        width: "5%",
+        width: "30px",
         render: (creator, record) =>
           Number(creator?.pK_UID) === creatorID ? (
             <i

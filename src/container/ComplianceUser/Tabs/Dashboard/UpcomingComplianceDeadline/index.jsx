@@ -51,16 +51,16 @@ const UpcomingComplianceDeadline = () => {
 
   return (
     <div className={styles.upcomingComplianceCard} onClick={handleCardClick}>
-      <Row>
-        <Col xs={12}>
+      <Row className={"height-50_percentage"}>
+        <Col md={12} sm={12} lg={12} xs={12}>
           <h2 className={styles.cardHeading}>
             {t("Upcoming-compliance-deadlines")}
           </h2>
         </Col>
       </Row>
 
-      <Row>
-        <Col xs={12} className={styles.deadlineRow}>
+      <Row className={"height-50_percentage"}>
+        <Col md={12} sm={12} lg={12} xs={12} className={styles.deadlineRow}>
           <span className={styles.checkUpcomingCenter}>
             <span className={styles.boldNumber}>
               {formatNumber(upcomingData.dueThisQuarter)}

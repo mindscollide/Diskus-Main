@@ -315,7 +315,7 @@ const ApprovalSend = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "10%",
+      width: "200px",
       ellipsis: true,
       className: "statusParticipant",
 

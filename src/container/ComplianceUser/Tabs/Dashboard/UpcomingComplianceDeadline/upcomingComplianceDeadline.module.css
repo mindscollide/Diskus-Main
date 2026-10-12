@@ -17,7 +17,7 @@
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
-  margin: 15px 0px 0px 0px;
+  /* margin: 15px 0px 0px 0px; */
 }
 
 .itemSpacing {
@@ -45,9 +45,10 @@
 .normalText {
   font-weight: 600;
   font-family: "Montserrat";
-  font-size: 15px;
+  font-size:1em;
   margin-left: 5px;
   color: #5a5a5a;
+  white-space: nowrap;
 }
 
 

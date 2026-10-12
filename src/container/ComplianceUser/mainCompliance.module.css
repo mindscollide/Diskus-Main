@@ -61,6 +61,7 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   margin: 0 20px 0 20px;
+  white-space: nowrap;
 }
 
 .createComplianceButton:is(:hover, :active, :focus, :focus-visible) {

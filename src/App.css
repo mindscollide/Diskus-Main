@@ -4793,6 +4793,7 @@ body[dir="rtl"] .ql-editor.ql-blank {
   height: 39px !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
+  width: 100% !important;
 }
 
 .ImportPreviousMinutes input.form-control {

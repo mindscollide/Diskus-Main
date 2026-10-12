@@ -1,7 +1,7 @@
 .mainDivComplianceStanding {
   width: 100%;
   padding: 10px 20px;
-  overflow-x: auto; /* prevents breaking on smaller screens */
+  overflow-x: hidden; /* prevents breaking on smaller screens */
 }
 
 .iconTextWrapper {

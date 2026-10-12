@@ -38,14 +38,11 @@ const QuarterlyTask = () => {
 
       {hasData && (
         <div className={styles.upcomingComplianceCard}>
-          <Row>
+          <Row className="height-50_percentage">
             <Col xs={12}>
               <h2 className={styles.cardHeading}>{t("Quarterly-tasks")}</h2>
             </Col>
-          </Row>
-
-          <Row>
-            <Col xs={12}>
+               <Col xs={12}>
               <div className={styles.progressWrapper}>
                 <div className={styles.progressLabel}>
                   {formatNumber(
@@ -95,7 +92,9 @@ const QuarterlyTask = () => {
             </Col>
           </Row>
 
-          <Row>
+       
+
+          <Row className="height-50_percentage">
             <Col xs={12} className={styles.deadlineRow}>
               <span className={styles.checkUpcomingCenter}>
                 <span className={styles.boldNumber}>
