@@ -294,6 +294,7 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
+
   // Fetch the presentation roster ONCE, the moment a non-host viewer joins
   // a presentation. From then on, PRESENTATION_PARTICIPANT_JOINED /
   // PRESENTATION_PARTICIPANT_LEFT MQTT events keep the list in sync via
@@ -490,7 +491,9 @@ const VideoPanelNormal = () => {
       (presenterViewFlag && presenterViewHostFlag)
     ) {
       console.log("Check new");
-      if (!leavePresenterOrJoinOtherCalls) {
+      // A presentation viewer's roster comes from GetPresentationParticipants
+      // (above); the generic video-call roster isn't needed for them.
+      if (!leavePresenterOrJoinOtherCalls && !joiningPresentationView) {
         let Data = {
           RoomID: String(
             presenterViewFlag ? callAcceptedRoomID : participantRoomIds,
@@ -1274,6 +1277,11 @@ const VideoPanelNormal = () => {
     let activeRoomID = localStorage.getItem("activeRoomID");
     let isGuid = localStorage.getItem("isGuid");
     let participantUID = localStorage.getItem("participantUID");
+    // Fresh read: WasInVideo is true only when the user is in meeting video.
+    let wasInVideo = false;
+    try {
+      wasInVideo = Boolean(JSON.parse(localStorage.getItem("isMeetingVideo")));
+    } catch {}
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
@@ -1285,6 +1293,7 @@ const VideoPanelNormal = () => {
           : callAcceptedRoomID,
       ),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
+      WasInVideo: wasInVideo,
     };
     sessionStorage.removeItem("nonPresenter");
     dispatch(participanMuteUnMuteMeeting(true, true, true, true, 1));
@@ -2134,11 +2143,11 @@ const VideoPanelNormal = () => {
     activeVideoIcon || ActiveChatBoxGS
       ? `${baseClass} more-zindexwithChatOpen`
       : baseClass;
-  // A maximised MEETING call covers the whole window at every resolution
-  // (.meeting-full-window in videoCallNormalPanel.css). 1:1 / group talk calls
-  // and the docked/minimised states keep their original size.
+  // A maximised call (meeting, 1:1 or group) covers the whole window at every
+  // resolution (.meeting-full-window in videoCallNormalPanel.css). The
+  // docked/minimised states keep their original size.
   const finalClass =
-    isMeetingVideo === true && baseClass.trim() === "max-video-panel"
+    baseClass.trim() === "max-video-panel"
       ? `${chatClass} meeting-full-window`
       : chatClass;
 
@@ -2324,7 +2333,12 @@ const VideoPanelNormal = () => {
                             </Col>
                           ) : null}
                         </>
-                      ) : isMeeting && isMeetingVideo && !isMeetingHost ? (
+                      ) : isMeeting &&
+                        isMeetingVideo &&
+                        !isMeetingHost &&
+                        !joiningPresentationView ? (
+                        // (a presentation viewer, even one who is also in
+                        // meeting video, uses the presentation list below)
                         <>
                           {participantsVisible && (
                             <div className='Participants-Lists'>
