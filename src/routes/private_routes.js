@@ -433,6 +433,15 @@ const PrivateRoutes = () => {
       }
 
       if (
+        currentUrl
+          .toLowerCase()
+          .includes("/Diskus/Dataroom?signed_cr_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "signed_cr_action=");
+        localStorage.setItem("docSignedCrAction", getValue);
+      }
+
+      if (
         currentUrl.toLowerCase().includes("/Diskus/Minutes?MRAP=".toLowerCase())
       ) {
         let getValue = getActionValue(currentUrl, "MRAP=");
@@ -473,14 +482,6 @@ const PrivateRoutes = () => {
       }
     } catch (error) {
       console.error("src/routes/private_routes.js:", error);
-    }
-    if (
-      currentUrl
-        .toLowerCase()
-        .includes("/Diskus/Dataroom?signed_cr_action".toLowerCase())
-    ) {
-      let getValue = getActionValue(currentUrl, "signed_cr_action=");
-      localStorage.setItem("docSignedCrAction", getValue);
     }
 
     // Unified email action handler — save token for post-login redirect
@@ -554,6 +555,7 @@ const PrivateRoutes = () => {
             ? "/"
             : "*"
       }
+      replace
     />
   );
 };
