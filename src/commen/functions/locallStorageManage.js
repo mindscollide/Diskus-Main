@@ -86,7 +86,9 @@ export const localStorageManage = (
     committee_meetingStr_action: localStorage.getItem("committee_meetingStr_action"),
     groups_meetingStr_action: localStorage.getItem("groups_meetingStr_action"),
     committee_UserMeetPropoDatPoll: localStorage.getItem("committee_UserMeetPropoDatPoll"),
-    groups_UserMeetPropoDatPoll: localStorage.getItem("groups_UserMeetPropoDatPoll")
+    groups_UserMeetPropoDatPoll: localStorage.getItem("groups_UserMeetPropoDatPoll"),
+    committee_mtAgUpdate: localStorage.getItem("committee_mtAgUpdate"),
+    groups_mtAgUpdate: localStorage.getItem("groups_mtAgUpdate")
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {

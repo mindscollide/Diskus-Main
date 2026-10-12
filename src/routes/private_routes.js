@@ -16,471 +16,479 @@ const PrivateRoutes = () => {
   );
   // Effect hook to perform actions based on the current URL
   const callRoutingFunction = async () => {
-      try {
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase(),
-            )
-        ) {
-          // const parts = currentUrl.split("/Meeting/")[1];
-          // Extract action parameter from URL
-          let getValue = getActionValue(
-            currentUrl,
-            "Useravailabilityformeeting?action=",
-          );
+    try {
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "Diskus/Meeting/Useravailabilityformeeting?action=".toLowerCase(),
+          )
+      ) {
+        // const parts = currentUrl.split("/Meeting/")[1];
+        // Extract action parameter from URL
+        let getValue = getActionValue(
+          currentUrl,
+          "Useravailabilityformeeting?action=",
+        );
 
-          localStorage.setItem("RSVP", getValue);
-          // localStorage.setItem("mobilePopUpAppRoute", parts);
-        }
+        localStorage.setItem("RSVP", getValue);
+        // localStorage.setItem("mobilePopUpAppRoute", parts);
+      }
 
-        // Action: Data Room
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/dataroom?action=".toLowerCase())
-        ) {
-          localStorage.setItem("DataRoomEmail", currentUrl);
-        }
+      // Action: Data Room
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/dataroom?action=".toLowerCase())
+      ) {
+        localStorage.setItem("DataRoomEmail", currentUrl);
+      }
 
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("/DisKus/Meeting?viewMeeting_action=".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "viewMeeting_action=");
-          localStorage.setItem("viewMeetingLink", getValue);
-        }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/DisKus/Meeting?viewMeeting_action=".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "viewMeeting_action=");
+        localStorage.setItem("viewMeetingLink", getValue);
+      }
 
-        // Action : Committee Advance Meeting
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("DisKus/committee?viewMeeting_action".toLowerCase())
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("committee_viewMeeting_action", parts);
-        }
+      // Action : Committee Advance Meeting
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("DisKus/committee?viewMeeting_action".toLowerCase())
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("committee_viewMeeting_action", parts);
+      }
 
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("DisKus/groups?viewMeeting_action".toLowerCase())
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("groups_viewMeeting_action", parts);
-        }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("DisKus/groups?viewMeeting_action".toLowerCase())
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("groups_viewMeeting_action", parts);
+      }
 
-        // Action: Meeting Minute Collaboration
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/Meeting/Meetingminutecollaborate?action=".toLowerCase(),
-            )
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("meetingMin", parts);
-        }
+      // Action: Meeting Minute Collaboration
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "Diskus/Meeting/Meetingminutecollaborate?action=".toLowerCase(),
+          )
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("meetingMin", parts);
+      }
 
-        // Action: Meeting Proposed
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/Meeting?Meetingproposed_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
+      // Action: Meeting Proposed
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/Meeting?Meetingproposed_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
 
-          localStorage.setItem("meetingprop", parts);
-          localStorage.setItem("MeetingCurrentView", 2);
-          localStorage.setItem("MeetingPageRows", 30);
-          localStorage.setItem("MeetingPageCurrent", 1);
-        }
+        localStorage.setItem("meetingprop", parts);
+        localStorage.setItem("MeetingCurrentView", 2);
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+      }
 
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/committee?Meetingproposed_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("committee_meetingprop_action", parts);
-        }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/committee?Meetingproposed_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("committee_meetingprop_action", parts);
+      }
 
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/groups?Meetingproposed_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("groups_meetingprop_action", parts);
-        }
-        // Action: Cancel Meeting
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/Meeting?Cancelmeeting_action=".toLowerCase())
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("meetingCanc", parts);
-        }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/groups?Meetingproposed_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("groups_meetingprop_action", parts);
+      }
+      // Action: Cancel Meeting
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/Meeting?Cancelmeeting_action=".toLowerCase())
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("meetingCanc", parts);
+      }
 
-        // Action: Delete Meeting
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/Meeting?Deletemeeting_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          navigate("/Diskus/Meeting");
-        }
+      // Action: Delete Meeting
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/Meeting?Deletemeeting_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        navigate("/Diskus/Meeting");
+      }
 
-        // Action: Update Meeting
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/Meeting?Updatemeeting_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("meetingUpd", parts);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/Committee?Updatemeeting_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("committee_meetingUpd_action", parts);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/Groups?Updatemeeting_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("groups_meetingUpd_action", parts);
-        }
-
-        // Action: Start Meeting
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/Meeting?Startmeeting_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("meetingStr", parts);
-        }
-        // Action: Start Meeting
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/committee?Startmeeting_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("committee_meetingStr_action", parts);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/groups?Startmeeting_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("groups_meetingStr_action", parts);
-        }
-
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/Meeting?Usermeetingproposedatespoll_action=".toLowerCase(),
-            )
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("UserMeetPropoDatPoll", parts);
-          localStorage.setItem("MeetingCurrentView", 2);
-          localStorage.setItem("MeetingPageRows", 30);
-          localStorage.setItem("MeetingPageCurrent", 1);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/committee?Usermeetingproposedatespoll_action=".toLowerCase(),
-            )
-        ) {
-          //
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("committee_UserMeetPropoDatPoll", parts);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/groups?Usermeetingproposedatespoll_action=".toLowerCase(),
-            )
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("groups_UserMeetPropoDatPoll", parts);
-          //
-        }
-        // Action: Poll Expire
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/polling?PollExpire_action=".toLowerCase())
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("pollExpire", parts);
-          // Add action-specific logic here if needed
-        }
-
-        // Action: Poll Published
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/polling?PollPublished_action=".toLowerCase())
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("poPub", parts);
-          // Add action-specific logic here if needed
-        }
-
-        // Action: Poll Update
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/polling?PollUpdated_action=".toLowerCase())
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-
-          localStorage.setItem("poUpda", parts);
-        }
-
-        // Action: Resolution Reminder
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/resolution?Resolutionreminder_action=".toLowerCase(),
-            )
-        ) {
-          // Add action-specific logic here if needed
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("resVot", parts);
-        }
-
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/resolution?ResolutionVoter_action=".toLowerCase())
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("resVot", parts);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/resolution?ResolutionNonVoter_action=".toLowerCase(),
-            )
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("resNonVot", parts);
-        }
-        // Action: Organization Status Enable
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/Admin/Organizationstatusenable?action=".toLowerCase(),
-            )
-        ) {
-          // Add action-specific logic here if needed
-        }
-
-        // Action: Organization Subscription Enable
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "Diskus/Admin/Organizationsubscriptionenable?action=".toLowerCase(),
-            )
-        ) {
-          // Add action-specific logic here if needed
-        }
-
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/Meeting?Activeagendaedit_action".toLowerCase())
-        ) {
-          const parts = currentUrl.split("action=")[1];
-          localStorage.setItem("mtAgUpdate", parts);
-        }
-        // Committee View
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/committee?id_action".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "id_action=");
-          // let getValue = getActionValue(currentUrl, "id_action=");
-
-          localStorage.setItem("committeeView_Id", getValue);
-        }
-        // Committee List View
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/committee?action".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "action=");
-
-          localStorage.setItem("committeeList", getValue);
-        }
-        // Group View
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/groups?id_action".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "id_action=");
-          localStorage.setItem("groupView_Id", getValue);
-        }
-        // Group List View
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/groups?action".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "action=");
-          localStorage.setItem("groupList", getValue);
-        }
-        // Tasks View
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/todolist?id_action".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "id_action=");
-          localStorage.setItem("taskListView_Id", getValue);
-        }
-        // Tasks List View
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/todolist?Tasks_action=".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "Tasks_action=");
-          localStorage.setItem("taskListView", getValue);
-        }
-
-        // DisKus/compliance?comptask_action
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("Diskus/compliance?comptask_action".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "comptask_action=");
-          localStorage.setItem("comptaskView", getValue);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes(
-              "/Diskus/documentViewer?documentViewer_action=".toLowerCase(),
-            )
-        ) {
-          let getValue = await getActionValue(
-            currentUrl,
-            "documentViewer_action=",
-          );
-          localStorage.setItem("documentViewer", getValue);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("/Diskus/dataroom?viewFol_action=".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "viewFol_action=");
-          localStorage.setItem("viewFolderLink", getValue);
-        }
-
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("/Diskus/Minutes?MRAP=".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "MRAP=");
-
-          localStorage.setItem("reviewMinutesLink", getValue);
-        }
-
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("/DisKus/Meeting?MRSP=".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "MRSP=");
-          localStorage.setItem("reviewSubmittedMinutesLink", getValue);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("/DisKus/Meeting?viewMeetingMinutes_action".toLowerCase())
-        ) {
-          let getValue = getActionValue(
-            currentUrl,
-            "viewMeetingMinutes_action=",
-          );
-          localStorage.setItem("viewPublishMinutesLink", getValue);
-        }
-
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("/Diskus/Minutes?sign_action".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "sign_action=");
-          localStorage.setItem("docSignAction", getValue);
-        }
-        if (
-          currentUrl
-            .toLowerCase()
-            .includes("/Diskus/Minutes?signed_action".toLowerCase())
-        ) {
-          let getValue = getActionValue(currentUrl, "signed_action=");
-          localStorage.setItem("docSignedAction", getValue);
-        }
-      } catch (error) {
-        console.error("src/routes/private_routes.js:", error);
+      // Action: Update Meeting
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/Meeting?Updatemeeting_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("meetingUpd", parts);
       }
       if (
         currentUrl
           .toLowerCase()
-          .includes("/Diskus/Dataroom?signed_cr_action".toLowerCase())
+          .includes("Diskus/Committee?Updatemeeting_action=".toLowerCase())
       ) {
-        let getValue = getActionValue(currentUrl, "signed_cr_action=");
-        localStorage.setItem("docSignedCrAction", getValue);
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("committee_meetingUpd_action", parts);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/Groups?Updatemeeting_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("groups_meetingUpd_action", parts);
       }
 
-      // Unified email action handler — save token for post-login redirect
-      if (currentUrl.toLowerCase().includes("Diskus/Redirect".toLowerCase())) {
-        let getValue = getActionValue(currentUrl, "Redirected?");
-        localStorage.setItem("emailActionToken", getValue);
+      // Action: Start Meeting
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/Meeting?Startmeeting_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("meetingStr", parts);
       }
-    };
+      // Action: Start Meeting
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/committee?Startmeeting_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("committee_meetingStr_action", parts);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/groups?Startmeeting_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("groups_meetingStr_action", parts);
+      }
+
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "Diskus/Meeting?Usermeetingproposedatespoll_action=".toLowerCase(),
+          )
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("UserMeetPropoDatPoll", parts);
+        localStorage.setItem("MeetingCurrentView", 2);
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "Diskus/committee?Usermeetingproposedatespoll_action=".toLowerCase(),
+          )
+      ) {
+        //
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("committee_UserMeetPropoDatPoll", parts);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "Diskus/groups?Usermeetingproposedatespoll_action=".toLowerCase(),
+          )
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("groups_UserMeetPropoDatPoll", parts);
+        //
+      }
+      // Action: Poll Expire
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/polling?PollExpire_action=".toLowerCase())
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("pollExpire", parts);
+        // Add action-specific logic here if needed
+      }
+
+      // Action: Poll Published
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/polling?PollPublished_action=".toLowerCase())
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("poPub", parts);
+        // Add action-specific logic here if needed
+      }
+
+      // Action: Poll Update
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/polling?PollUpdated_action=".toLowerCase())
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+
+        localStorage.setItem("poUpda", parts);
+      }
+
+      // Action: Resolution Reminder
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "Diskus/resolution?Resolutionreminder_action=".toLowerCase(),
+          )
+      ) {
+        // Add action-specific logic here if needed
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("resVot", parts);
+      }
+
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/resolution?ResolutionVoter_action=".toLowerCase())
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("resVot", parts);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "Diskus/resolution?ResolutionNonVoter_action=".toLowerCase(),
+          )
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("resNonVot", parts);
+      }
+      // Action: Organization Status Enable
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "Diskus/Admin/Organizationstatusenable?action=".toLowerCase(),
+          )
+      ) {
+        // Add action-specific logic here if needed
+      }
+
+      // Action: Organization Subscription Enable
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "Diskus/Admin/Organizationsubscriptionenable?action=".toLowerCase(),
+          )
+      ) {
+        // Add action-specific logic here if needed
+      }
+
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/Meeting?Activeagendaedit_action".toLowerCase())
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("mtAgUpdate", parts);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/committee?Activeagendaedit_action".toLowerCase())
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("committee_mtAgUpdate", parts);
+      }
+
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/groups?Activeagendaedit_action".toLowerCase())
+      ) {
+        const parts = currentUrl.split("action=")[1];
+        localStorage.setItem("groups_mtAgUpdate", parts);
+      }
+      // Committee View
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/committee?id_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "id_action=");
+        // let getValue = getActionValue(currentUrl, "id_action=");
+
+        localStorage.setItem("committeeView_Id", getValue);
+      }
+      // Committee List View
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/committee?action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "action=");
+
+        localStorage.setItem("committeeList", getValue);
+      }
+      // Group View
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/groups?id_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "id_action=");
+        localStorage.setItem("groupView_Id", getValue);
+      }
+      // Group List View
+      if (
+        currentUrl.toLowerCase().includes("Diskus/groups?action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "action=");
+        localStorage.setItem("groupList", getValue);
+      }
+      // Tasks View
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/todolist?id_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "id_action=");
+        localStorage.setItem("taskListView_Id", getValue);
+      }
+      // Tasks List View
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/todolist?Tasks_action=".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "Tasks_action=");
+        localStorage.setItem("taskListView", getValue);
+      }
+
+      // DisKus/compliance?comptask_action
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("Diskus/compliance?comptask_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "comptask_action=");
+        localStorage.setItem("comptaskView", getValue);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes(
+            "/Diskus/documentViewer?documentViewer_action=".toLowerCase(),
+          )
+      ) {
+        let getValue = await getActionValue(
+          currentUrl,
+          "documentViewer_action=",
+        );
+        localStorage.setItem("documentViewer", getValue);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/Diskus/dataroom?viewFol_action=".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "viewFol_action=");
+        localStorage.setItem("viewFolderLink", getValue);
+      }
+
+      if (
+        currentUrl.toLowerCase().includes("/Diskus/Minutes?MRAP=".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "MRAP=");
+
+        localStorage.setItem("reviewMinutesLink", getValue);
+      }
+
+      if (
+        currentUrl.toLowerCase().includes("/DisKus/Meeting?MRSP=".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "MRSP=");
+        localStorage.setItem("reviewSubmittedMinutesLink", getValue);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/DisKus/Meeting?viewMeetingMinutes_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "viewMeetingMinutes_action=");
+        localStorage.setItem("viewPublishMinutesLink", getValue);
+      }
+
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/Diskus/Minutes?sign_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "sign_action=");
+        localStorage.setItem("docSignAction", getValue);
+      }
+      if (
+        currentUrl
+          .toLowerCase()
+          .includes("/Diskus/Minutes?signed_action".toLowerCase())
+      ) {
+        let getValue = getActionValue(currentUrl, "signed_action=");
+        localStorage.setItem("docSignedAction", getValue);
+      }
+    } catch (error) {
+      console.error("src/routes/private_routes.js:", error);
+    }
+    if (
+      currentUrl
+        .toLowerCase()
+        .includes("/Diskus/Dataroom?signed_cr_action".toLowerCase())
+    ) {
+      let getValue = getActionValue(currentUrl, "signed_cr_action=");
+      localStorage.setItem("docSignedCrAction", getValue);
+    }
+
+    // Unified email action handler — save token for post-login redirect
+    if (currentUrl.toLowerCase().includes("Diskus/Redirect".toLowerCase())) {
+      let getValue = getActionValue(currentUrl, "Redirected?");
+      localStorage.setItem("emailActionToken", getValue);
+    }
+  };
 
   // Email links stash their token into localStorage here. It has to happen
   // before the child page's first render/effects (an effect in this parent

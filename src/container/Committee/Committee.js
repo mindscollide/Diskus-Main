@@ -172,15 +172,6 @@ const Committee = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const committeeList = localStorage.getItem("committeeList");
   const committeeViewId = localStorage.getItem("committeeView_Id");
-  const committeeMeetingView = localStorage.getItem(
-    "committee_viewMeeting_action",
-  );
-  const committee_meetingStr = localStorage.getItem(
-    "committee_meetingStr_action",
-  );
-  const committee_meetingupd = localStorage.getItem(
-    "committee_meetingUpd_action",
-  );
   const committee_meetingprop = localStorage.getItem(
     "committee_meetingprop_action",
   );
@@ -409,21 +400,26 @@ const Committee = () => {
     }
   }, [CommitteeReducerGetAllCommitteesByUserIDResponse]);
 
+  // The stash in PrivateRoutes runs before this page's first render, so read
+  // the link keys here on mount. Only the first one found is handled (the
+  // agenda-edit link opens the meeting on the Agenda Viewer tab).
   useEffect(() => {
-    const token =
-      committeeMeetingView || committee_meetingStr || committee_meetingupd;
-    if (!token) return;
+    const emailLinks = [
+      ["committee_viewMeeting_action", "meetingDetails"],
+      ["committee_meetingStr_action", "meetingDetails"],
+      ["committee_meetingUpd_action", "meetingDetails"],
+      ["committee_mtAgUpdate", "agendaViewer"],
+    ];
+    const [linkKey, linkTab] =
+      emailLinks.find(([key]) => localStorage.getItem(key)) || [];
+    if (!linkKey) return;
     handleEncryptedMeetingLink(
-      token,
-      [
-        "committee_viewMeeting_action",
-        "committee_meetingStr_action",
-        "committee_meetingUpd_action",
-      ],
-      "meetingDetails",
+      localStorage.getItem(linkKey),
+      emailLinks.map(([key]) => key),
+      linkTab,
       openCommitteeMeetingFromLinkData,
     );
-  }, [committeeMeetingView, committee_meetingStr, committee_meetingupd]);
+  }, []);
 
   useEffect(() => {
     if (committee_meetingprop !== null) {

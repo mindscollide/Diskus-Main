@@ -78,12 +78,6 @@ const Groups = () => {
   const { state, pathname } = useLocation();
   const { setEditorRole } = useMeetingContext();
 
-  const groupsMeetingView = localStorage.getItem("groups_viewMeeting_action");
-
-  const groupsMeetingstr = localStorage.getItem("groups_meetingStr_action");
-
-  const groupsMeetingUpd = localStorage.getItem("groups_meetingUpd_action");
-
   // Group meeting email links (viewMeeting / Startmeeting / Updatemeeting, via
   // stored token or /Redirected navigation state): open the group's meetings
   // tab on Published, then the meeting itself.
@@ -360,20 +354,26 @@ const Groups = () => {
     await openMeetingFromLinkData(data, viewTab);
   };
 
+  // The stash in PrivateRoutes runs before this page's first render, so read
+  // the link keys here on mount. Only the first one found is handled (the
+  // agenda-edit link opens the meeting on the Agenda Viewer tab).
   useEffect(() => {
-    const token = groupsMeetingView || groupsMeetingstr || groupsMeetingUpd;
-    if (!token) return;
+    const emailLinks = [
+      ["groups_viewMeeting_action", "meetingDetails"],
+      ["groups_meetingStr_action", "meetingDetails"],
+      ["groups_meetingUpd_action", "meetingDetails"],
+      ["groups_mtAgUpdate", "agendaViewer"],
+    ];
+    const [linkKey, linkTab] =
+      emailLinks.find(([key]) => localStorage.getItem(key)) || [];
+    if (!linkKey) return;
     handleEncryptedMeetingLink(
-      token,
-      [
-        "groups_viewMeeting_action",
-        "groups_meetingStr_action",
-        "groups_meetingUpd_action",
-      ],
-      "meetingDetails",
+      localStorage.getItem(linkKey),
+      emailLinks.map(([key]) => key),
+      linkTab,
       openGroupMeetingFromLinkData,
     );
-  }, [groupsMeetingView, groupsMeetingUpd, groupsMeetingstr]);
+  }, []);
 
   useEffect(() => {
     if (state !== null) {
