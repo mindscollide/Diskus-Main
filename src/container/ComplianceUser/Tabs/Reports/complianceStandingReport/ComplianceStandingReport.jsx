@@ -545,7 +545,8 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "ComplianceName",
         key: "ComplianceName",
-        width: "200px",
+      width:220,
+         ellipsis: true,
         sorter: (a, b) =>
           a.ComplianceName?.toLowerCase().localeCompare(
             b.ComplianceName?.toLowerCase(),
@@ -562,7 +563,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "Authority",
         key: "Authority",
-        width: "120px",
+        width: 120,
         sorter: (a, b) =>
           a.Authority?.toLowerCase().localeCompare(b.Authority?.toLowerCase()),
         sortOrder: authoritySort,
@@ -573,7 +574,7 @@ const ComplianceStandingReport = () => {
         dataIndex: "criticality",
         key: "criticality",
         ellipsis: true,
-        width: "120px",
+        width: 120,
         align: "center",
         ...criticalityColumnProps,
         render: (value) => (
@@ -742,8 +743,7 @@ const ComplianceStandingReport = () => {
                 </div>
               </Col>
               <Col
-                lg={5}
-                xs="auto"
+                lg={4}
                 className={`${styles.iconTextWrapper} d-flex justify-content-center`}
               >
                 <img src={ComplianceCalendar} alt="ComplianceCalendar" />
@@ -757,14 +757,14 @@ const ComplianceStandingReport = () => {
                   </p>
                 </div>
               </Col>
-              <Col lg={3} xs={4}>
+              <Col lg={3} md={3} sm={3} xs={12}>
                 <label className={styles.dueDateRange}>
                   {t("due-date-range")}
                 </label>
                 <DatePicker.RangePicker
                   format="DD/MM/YYYY"
                   placeholder={[t("Start-date"), t("End-date")]}
-                  className="custom-range-picker"
+                  className="custom-range-picker w-100"
                   separator="-"
                   inputReadOnly
                   allowClear
@@ -772,7 +772,7 @@ const ComplianceStandingReport = () => {
                   onChange={handleDateRangeChange}
                 />
               </Col>
-              <Col lg={1} xs="auto">
+              <Col lg={2} md={2} sm={2} xs={12}>
                 <CustomButton
                   text={t("Download")}
                   loading={isGenerating}

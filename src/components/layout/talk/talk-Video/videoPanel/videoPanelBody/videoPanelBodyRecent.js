@@ -1069,7 +1069,7 @@ const VideoPanelBodyRecent = () => {
                     //     ? t("End Participant")
                     //     : null
                     // }
-                    text={"Confirm"}
+                    text={t("Confirm")}
                     className="confirmation-disconnection-button"
                     onClick={
                       isMeetingVideo

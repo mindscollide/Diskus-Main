@@ -175,8 +175,8 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
 
 .dataRoomSearchInput {
   /* width: 611px; */
-  min-width: 100%;
-  position: relative !important;
+  width: 100%;
+  /* position: relative !important; */
 }
 
 .PollingSearchInput {

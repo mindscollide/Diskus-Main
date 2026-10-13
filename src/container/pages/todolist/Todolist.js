@@ -737,7 +737,7 @@ const TodoList = () => {
         ),
         dataIndex: "taskCreator",
         key: "taskCreator",
-        align: "center",
+        align: "left",
         width: "150px",
         sortDirections: ["descend", "ascend"],
         // FIX: original had `(localeCompare(...), taskAssignedBySort)` — a comma
@@ -753,7 +753,7 @@ const TodoList = () => {
             ),
         }),
         render: (creator) => (
-          <p className='m-0 d-flex justify-content-center MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
+          <p className='m-0 d-flex justify-content-start MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
             <img
               draggable='false'
               className='data-img'
@@ -778,7 +778,7 @@ const TodoList = () => {
         ),
         dataIndex: "taskAssignedTo",
         key: "taskAssignedTo",
-        align: "center",
+        align: "left",
         width: "150px",
         sortDirections: ["descend", "ascend"],
         sorter: (a, b) =>
@@ -796,7 +796,7 @@ const TodoList = () => {
           if (!assignees?.length) return null;
           const first = assignees[0];
           return (
-            <p className='m-0 MontserratRegular d-flex justify-content-center color-505050 FontArabicRegular text-nowrap'>
+            <p className='m-0 MontserratRegular d-flex justify-content-start color-505050 FontArabicRegular text-nowrap'>
               <img
                 draggable='false'
                 className='data-img'
@@ -905,7 +905,7 @@ const TodoList = () => {
         dataIndex: "taskCreator",
         key: "actions",
         align: "center",
-        width: "30px",
+        width: "80px",
         render: (creator, record) =>
           Number(creator?.pK_UID) === creatorID ? (
             <i
@@ -941,94 +941,85 @@ const TodoList = () => {
     <>
       <div className='todolistContainer'>
         {/* ── Header: title, create button, expandable search bar ── */}
-        <Row className='d-flex justify-content-start align-items-center'>
-          <Col md={2} sm={4} lg={2} className='todolist-heading-size'>
-            {t("Tasks")}
-          </Col>
-
-          <Col lg={2} md={2} sm={4} className='todolist-create-btn'>
+        <Row>
+          <Col
+            md={12}
+            sm={12}
+            lg={12}
+            className='d-flex align-items-center gap-3'>
+            <span className='todolist-heading-size'>{t("Tasks")}</span>
             <Button
-              className='btn btn-primary'
+              className='todolist-create-btn '
               icon={<Plus width={20} height={20} fontWeight={800} />}
               variant='Primary'
               text={t("Create-a-task")}
               onClick={() => setShow(true)}
             />
-          </Col>
-
-          <Col
-            md={8}
-            lg={8}
-            sm={4}
-            className='todo-list-field todolist-search-row'>
             <Search
               width='24px'
               height='24px'
-              className='search-Icon toExpandSearch Meeting'
+              className='search-Icon  '
               onClick={toggleSearch}
             />
-
             {isExpand && (
-              <div className='expandableMenuSearch'>
-                <Form className='d-flex'>
-                  <DatePicker
-                    selected={searchData.Date}
-                    format='DD/MM/YYYY'
-                    placeholder='DD/MM/YYYY'
-                    render={
-                      <div className='iconForDatePicker margin-right-20'>
-                        <CalendarFill
-                          className='DatePickerIcon'
-                          size={34}
-                          onClick={handleIconClick}
-                        />
-                      </div>
-                    }
-                    calendarPosition='bottom-right'
-                    editable
-                    className='datePickerTodoCreate2'
-                    onOpenPickNewDate={false}
-                    highlightToday
-                    showOtherDays
-                    calendar={gregorian}
-                    locale={locale}
-                    ref={datePickerRef}
-                    onFocusedDateChange={searchHandlerDate}
-                  />
-                  <TextField
-                    applyClass='form-control2'
-                    width='250px'
-                    name='Title'
-                    value={searchData.Title}
-                    className='mx-2'
-                    placeholder={t("Task")}
-                    labelclass='textFieldSearch'
-                    change={searchHandler}
-                  />
-                  <TextField
-                    applyClass='form-control2'
-                    width='180px'
-                    name='AssignedToName'
-                    value={searchData.AssignedToName}
-                    className='mx-2'
-                    placeholder={t("Assigned-to")}
-                    labelclass='textFieldSearch'
-                    change={searchHandler}
-                  />
-                  <Button
-                    className='btn btn-primary meeting search me-3'
-                    variant='Primary'
-                    text={<ArrowRight />}
-                    onClick={handleSearch}
-                  />
-                  <Button
-                    className='btn btn-primary meeting search'
-                    variant='Primary'
-                    type='reset'
-                    text={<ArrowCounterclockwise />}
-                    onClick={resetSearchBar}
-                  />
-                </Form>
+              <div className='expandableMenuSearch todo-list-field'>
+                <DatePicker
+                  selected={searchData.Date}
+                  format='DD/MM/YYYY'
+                  placeholder='DD/MM/YYYY'
+                  render={
+                    <div className='iconForDatePicker '>
+                      <CalendarFill
+                        className='DatePickerIcon'
+                        size={34}
+                        onClick={handleIconClick}
+                      />
+                    </div>
+                  }
+                  calendarPosition='bottom-right'
+                  editable
+                  className='datePickerTodoCreate2'
+                  onOpenPickNewDate={false}
+                  highlightToday
+                  showOtherDays
+                  calendar={gregorian}
+                  locale={locale}
+                  ref={datePickerRef}
+                  onFocusedDateChange={searchHandlerDate}
+                />
+                <TextField
+                  applyClass='form-control2'
+                  width='100%'
+                  name='Title'
+                  value={searchData.Title}
+                  className='mx-2'
+                  placeholder={t("Task")}
+                  labelclass='textFieldSearch'
+                  change={searchHandler}
+                />
+                <TextField
+                  applyClass='form-control2'
+                  width='100%'
+                  name='AssignedToName'
+                  value={searchData.AssignedToName}
+                  className='mx-2'
+                  placeholder={t("Assigned-to")}
+                  labelclass='textFieldSearch'
+                  change={searchHandler}
+                />
+                <Button
+                  className='btn btn-primary meeting search '
+                  variant='Primary'
+                  text={<ArrowRight />}
+                  onClick={handleSearch}
+                />
+                <Button
+                  className='btn btn-primary meeting search'
+                  variant='Primary'
+                  type='reset'
+                  text={<ArrowCounterclockwise />}
+                  onClick={resetSearchBar}
+                />
               </div>
             )}
           </Col>

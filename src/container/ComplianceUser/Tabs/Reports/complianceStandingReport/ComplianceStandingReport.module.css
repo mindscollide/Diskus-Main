@@ -139,7 +139,6 @@
 }
 
 .tableWrapper {
-  margin-top: 30px;
   background: transparent;
   border-radius: 8px;
   padding: 10px 0;
@@ -552,4 +551,13 @@
 
 .dateText span {
   margin-right: 4px;
+}
+@media screen and (min-width: 1024px) and (max-width: 1400px) {
+  .iconTextWrapper p {
+    font-size: 16px;
+    color: #5a5a5a;
+    font-family: "Montserrat";
+    margin: 0;
+    font-weight: 600;
+  }
 }

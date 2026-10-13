@@ -1385,7 +1385,7 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
                   "WorkFlow_WorkFlowServiceManager_GetMinuteReviewDetailsForOrganizerByMinuteId_02".toLowerCase(),
                 )
             ) {
-              dispatch(GetMinuteReviewDetailsByOrganizerByMinuteId_fail(t("Someting-went-wrong")));
+              dispatch(GetMinuteReviewDetailsByOrganizerByMinuteId_fail(t("No-revision-available")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

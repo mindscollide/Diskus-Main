@@ -48,8 +48,8 @@
   font-size: 15px;
   margin-left: 5px;
   color: #5a5a5a;
-    font-size:1em;
-    white-space: nowrap;
+  font-size: 1em;
+  white-space: nowrap;
 }
 
 .progressWrapper {
@@ -101,6 +101,8 @@ body[dir="rtl"] .progressLabel {
   border-radius: 4px;
   background-color: #fff;
   transition: all 0.3s ease;
+  padding: 16px 20px;
+
   /* display: flex;
   flex-direction: column;
   justify-content: center; */
@@ -116,7 +118,32 @@ body[dir="rtl"] .progressLabel {
   color: #6172d6;
   max-width: 900px; /* 🔥 SAME WIDTH AS CONTENT */
   width: 100%;
-  padding: 0px 20px;
-  margin-top: 12px;
   text-align: left;
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1400px) {
+  .NoDataCardHeading {
+    font-size: 18px;
+    font-weight: 700;
+    color: #6172d6;
+    max-width: 900px; /* 🔥 SAME WIDTH AS CONTENT */
+    width: 100%;
+    text-align: left;
+  }
+  .cardHeading {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: "Montserrat";
+    color: #6172d6;
+    margin: 0px 0px 0px 0px;
+  }
+  .normalText {
+    font-weight: 600;
+    font-family: "Montserrat";
+    font-size: 0.8em !important;
+    color: #5a5a5a;
+    font-size: 1em;
+    white-space: nowrap;
+  }
+ 
 }

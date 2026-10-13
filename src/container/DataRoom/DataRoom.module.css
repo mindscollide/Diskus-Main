@@ -789,6 +789,12 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   justify-content: center;
   align-items: center !important;
   width: 100%;
+  border: 1px solid #e1e1e1 !important;
+  height: 39px !important;
+  padding: 12px 30px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
 }
 
 .font_size {
@@ -960,7 +966,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   align-items: center;
   height: 39px !important;
   border-radius: 4px !important;
-  overflow: hidden;
+  padding: 0 !important;
 }
 
 .dataroom_table_heading {
@@ -1378,4 +1384,8 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+.dropdown_menu_dataroom{
+  margin-top: 0px !important;
+  padding-top: 0 !important;
 }

@@ -38,8 +38,8 @@ const ComplianceEmptyState = ({
         src={imageSrc}
         alt={title}
         className={styles.image}
-        style={{ marginTop: imgMarginTop, maxWidth: "100%" }}
-        loading="lazy"
+        style={{ marginTop: imgMarginTop, height: "auto" }}
+        loading='lazy'
       />
 
       <div className={styles.text}>
