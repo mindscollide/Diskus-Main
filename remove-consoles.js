@@ -9,8 +9,8 @@ const srcDir = path.join(process.cwd(), "src");
  * Excluded files
  */
 const excludeFiles = [
-  "Dashboard.js",
-  "App.js",
+  "Dashboard.jsx",
+  "App.jsx",
 ];
 
 /**
