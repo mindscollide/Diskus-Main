@@ -265,7 +265,7 @@ const PublishedMeetingList = () => {
         talkStateDataAllUserChats.AllUserChatsData.allMessages;
       let foundRecord =
         Array.isArray(allChatMessages) &&
-        allChatMessages.find((item) => item.id === data.talkGroupID);
+        allChatMessages.find((item) => Number(item.id) === Number(data.talkGroupID));
 
       // The chats reducer can be stale (e.g. a chat group created after it
       // was last loaded) — refetch from the API before concluding the chat
@@ -284,7 +284,7 @@ const PublishedMeetingList = () => {
             .allMessages;
         foundRecord =
           Array.isArray(refreshedAllChatMessages) &&
-          refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
+          refreshedAllChatMessages.find((item) => Number(item.id) === Number(data.talkGroupID));
       }
 
       if (foundRecord) {

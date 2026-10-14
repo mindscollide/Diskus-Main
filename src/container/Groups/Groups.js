@@ -726,7 +726,7 @@ const Groups = () => {
       let allChatMessages =
         talkStateDataAllUserChats.AllUserChatsData.allMessages;
       const foundRecord = allChatMessages.find(
-        (item) => item.id === data.talkGroupID,
+        (item) => Number(item.id) === Number(data.talkGroupID),
       );
       if (foundRecord) {
         dispatch(activeChat(foundRecord));

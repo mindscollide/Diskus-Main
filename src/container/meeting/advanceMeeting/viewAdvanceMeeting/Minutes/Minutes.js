@@ -185,7 +185,7 @@ const Minutes = () => {
       MeetingID: Number(advanceMeetingModalID),
     };
 
-    if (JSON.parse(isMinutePublished) === true) {
+    if (isMinutePublished !== null && JSON.parse(isMinutePublished) === true) {
       dispatch(GetPublishedMeetingMinutesApi(navigate, t, Data, "", {}));
       let MeetingDocs = {
         MDID: Data.MeetingID,
