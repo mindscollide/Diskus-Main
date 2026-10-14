@@ -285,6 +285,14 @@ body[dir="rtl"] .Participants-Lists {
   z-index: 103 !important;
 }
 
+/* While the Quick Meeting modal (.modal.MeetingView, z-index 1050 + backdrop
+   1040) is open, the maximised call goes IN FRONT of it. Higher specificity
+   than the 103 rule above and the chat-open 99 rule, so it wins in both. The
+   chat box (99999+) still sits over the call. */
+body:has(.modal.MeetingView.show) .max-video-panel.meeting-full-window {
+  z-index: 2000 !important;
+}
+
 /* The right-hand Talk bar (.talk_nav, Talk.css, z-index 999) stayed in front
    of the full-window meeting call. Drop it just under the call (103) while
    the call is full window.
