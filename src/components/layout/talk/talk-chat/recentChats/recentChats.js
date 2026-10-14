@@ -144,7 +144,9 @@ const RecentChats = () => {
           setAllChatData(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/recentChats/recentChats.js:", error);
+    }
   };
 
   //Managing that state of chat head, if show or hide
@@ -452,7 +454,9 @@ const RecentChats = () => {
           };
           dispatch(pushChatData(allChatNewMessageOtoData));
         }
-      } catch {}
+      } catch (error) {
+        console.error("src/components/layout/talk/talk-chat/recentChats/recentChats.js:", error);
+      }
     }
     //
   }, [talkStateData.talkSocketData.socketInsertOTOMessageData]);
@@ -589,7 +593,9 @@ const RecentChats = () => {
           };
           dispatch(pushChatData(newGroupMessageChat));
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/components/layout/talk/talk-chat/recentChats/recentChats.js:", error);
+      }
     }
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData]);
 

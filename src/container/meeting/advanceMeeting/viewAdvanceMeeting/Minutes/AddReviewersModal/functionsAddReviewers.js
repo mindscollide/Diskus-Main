@@ -84,7 +84,9 @@ export const handleCheck = (
         );
         setSelectedMinuteIDs(filteredIDs);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AddReviewersModal/functionsAddReviewers.js:", error);
+    }
   } else if (flag === "GeneralMinuteCheckbox") {
     try {
       if (checked) {
@@ -92,7 +94,9 @@ export const handleCheck = (
       } else {
         setSelectedMinuteIDs(selectedMinuteIDs.filter((id) => id !== ID));
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AddReviewersModal/functionsAddReviewers.js:", error);
+    }
   }
 };
 
@@ -105,7 +109,7 @@ export const findUserProfileImg = (userId, users) => {
     const user = users.find((user) => user.userID === userId);
     return user ? user.userProfileImg : "";
   } catch (error) {
-    
+    console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AddReviewersModal/functionsAddReviewers.js:", error);
   }
 };
 
@@ -322,7 +326,7 @@ export const updateMinutesData = (
     setSelectReviewersArray([]);
     setMinuteReviewDataCheckForEdit([]);
   } catch (error) {
-    
+    console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AddReviewersModal/functionsAddReviewers.js:", error);
   }
 };
 

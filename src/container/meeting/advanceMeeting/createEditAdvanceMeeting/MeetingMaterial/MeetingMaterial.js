@@ -41,6 +41,8 @@ import {
 } from "../../../../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useCommitteeContext } from "../../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { UpdateMeetingStatusApi } from "../../../../../store/actions/NewMeeting2.actions";
 import {
   setAdvanceMeetingRoute,
@@ -69,6 +71,11 @@ const MeetingMaterial = ({
 
   const { editorRole, setEditorRole, setGoBackCancelModal } =
     useContext(MeetingContext);
+  // Shared across Main Meeting, Committee, and Group — only one context is
+  // ever actually "live"; threaded into the publish action so it can
+  // switch the correct module's active tab to Published on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
 
   const meetingMaterialData = useSelector(
     (state) => state.NewMeetingreducer.meetingMaterialData,
@@ -439,7 +446,11 @@ const MeetingMaterial = ({
         t,
         { MeetingID: meetingID, StatusID: 1 },
         "PublishMeetingFromMeetingMaterial",
-        { setEditorRole },
+        {
+          setEditorRole,
+          setCurrentCommitteeMeetingTabActive,
+          setCurrentGroupMeetingTabActive,
+        },
       ),
     );
   };

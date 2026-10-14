@@ -246,7 +246,9 @@ const Polling = () => {
         setRows([]);
         setDublicatedrows([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Polling/Polling.js:", error);
+    }
   }, [PollsReducerSearchPolls]);
 
   useEffect(() => {
@@ -284,7 +286,9 @@ const Polling = () => {
           });
           dispatch(notifyPollingSocket(null));
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Polling/Polling.js:", error);
+      }
     }
   }, [PollsReducerpollingSocket]);
 
@@ -300,7 +304,9 @@ const Polling = () => {
         });
         dispatch(deletePollsMQTT(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Polling/Polling.js:", error);
+    }
   }, [PollsReducernewPollDelete]);
 
   const dispatchViewPollById = (pollID, check) => {
@@ -558,8 +564,8 @@ const Polling = () => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),

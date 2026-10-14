@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { forRecentActivity } from "@/commen/functions/date_formater";
 import { Popover } from "antd";
 import CustomButton from "@/components/elements/button/Button";
@@ -36,7 +36,8 @@ import {
 import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 import { getViewMeetingByMeetingIdApi } from "../../../../store/actions/NewMeeting2.actions";
 import { useGroupsContext } from "../../../../context/GroupsContext";
-import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
+import { clearGetMeetingbyGroupID, getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
+import { useMeetingListActions } from "../../../meeting/commonComponents/useMeetingListActions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -57,6 +58,23 @@ const GroupDraftMeetings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTitle, setMeetingTitle] = useState("");
+
+
+  const {
+    handleViewMeeting,
+  } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
+  })
   const {
     groupDraftMeetingData,
     setGroupDraftMeetingData,
@@ -66,6 +84,7 @@ const GroupDraftMeetings = () => {
     setCurrentPageDraftGroupMeeting,
     currentLengthDraftGroupMeeting,
     setCurrentLengthDraftGroupMeeting,
+    setCurrentGroupMeetingTabActive,
   } = useGroupsContext();
 
   // ─── Context ───
@@ -82,11 +101,7 @@ const GroupDraftMeetings = () => {
     (state) => state.GroupsReducer.viewGroupDetails,
   );
 
-  // ─── Local state ───
-  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [organizerNameSort, setOrganizerNameSort] = useState(null);
-  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   // Matches the same controlled-Popover pattern already used on the
@@ -96,6 +111,26 @@ const GroupDraftMeetings = () => {
     setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
 
+
+  useEffect(() => {
+    let searchData = {
+      GroupID: Number(localStorage.getItem("ViewGroupID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingbyGroupIdApi(navigate, t, searchData));
+
+    return () => {
+      dispatch(clearGetMeetingbyGroupID());
+
+    }
+  }, [])
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -181,7 +216,7 @@ const GroupDraftMeetings = () => {
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          { setEditorRole },
+          { setEditorRole, setCurrentGroupMeetingTabActive },
         ),
       );
     };
@@ -223,6 +258,7 @@ const GroupDraftMeetings = () => {
   };
 
   const handleClickTitle = (record) => {
+    handleViewMeeting(record)
     dispatch(toggleViewMeetingModal(true));
     dispatch(setViewTab("meetingDetails"));
     dispatch(
@@ -263,8 +299,8 @@ const GroupDraftMeetings = () => {
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
-        render: (text) => (
-          <span onClick={handleClickTitle} className={styles.tableRow}>
+        render: (text, record) => (
+          <span onClick={() => handleClickTitle(record)} className={styles.tableRow}>
             {text}
           </span>
         ),
@@ -391,7 +427,7 @@ const GroupDraftMeetings = () => {
                 <span>
                   <CustomButton
                     className={styles.MoreMeetingButton}
-                    text="More"
+                    text={t("More")}
                     icon2={
                       <img src={ChevronDownIcon} alt="Chevron Down" width={10} />
                     }
@@ -441,7 +477,7 @@ const GroupDraftMeetings = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-center my-3 pagination-groups-table"
+                className="d-flex justify-content-center  pagination-groups-table"
               >
                 <CustomPagination
                   current={currentPageDraftGroupMeeting}

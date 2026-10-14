@@ -342,8 +342,8 @@ const PendingApproval = () => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -415,7 +415,9 @@ const PendingApproval = () => {
         localStorage.removeItem("");
         dispatch(validateEncryptedMinutesReviewer_clear());
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/MinutesNewFlow/pendingApprovals/PendingApprovals.js:", error);
+    }
   }, [getMinutesReviewerData]);
 
   // originalData accumulates every page fetched so far (unfiltered);
@@ -486,7 +488,9 @@ const PendingApproval = () => {
           pendingSignature: pendingSignatures,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/MinutesNewFlow/pendingApprovals/PendingApprovals.js:", error);
+    }
   }, [PendingApprovalCountDataData]);
 
   useEffect(() => {

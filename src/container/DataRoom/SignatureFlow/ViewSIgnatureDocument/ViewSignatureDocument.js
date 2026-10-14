@@ -347,7 +347,9 @@ const ViewSignatureDocument = () => {
           }
           setFieldsData(newFieldsData);
         }
-      } catch {}
+      } catch (error) {
+        console.error("src/container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument.js:", error);
+      }
     }
   }, [getAllFieldsByWorkflowID]);
   // === End === //
@@ -424,7 +426,9 @@ const ViewSignatureDocument = () => {
           creatorID: getWorkfFlowByFileId?.workFlow?.workFlow.creatorID,
           isCreator: getWorkfFlowByFileId?.workFlow?.workFlow.isCreator,
         }));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument.js:", error);
+      }
     }
   }, [getWorkfFlowByFileId, FieldsData]);
   // === End === //
@@ -505,7 +509,9 @@ const ViewSignatureDocument = () => {
           attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
         }));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument.js:", error);
+    }
   }, [getSignatureFileAnnotationResponse]);
   // === End === //
 
@@ -695,7 +701,9 @@ const ViewSignatureDocument = () => {
               annotationManager.getFieldManager().forEachField((field) => {
                 field.flags.set("ReadOnly", true);
               });
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument.js:", error);
+            }
           }
 
           documentViewer.refreshAll();

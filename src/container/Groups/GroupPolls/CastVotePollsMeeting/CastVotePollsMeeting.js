@@ -143,7 +143,9 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/GroupPolls/CastVotePollsMeeting/CastVotePollsMeeting.js:", error);
+    }
   }, [Allpolls]);
 
   const handleCancelButton = () => {

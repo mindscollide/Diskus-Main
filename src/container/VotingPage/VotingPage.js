@@ -134,11 +134,11 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
           }
           setDecisionId(getVoteresult?.decisionID);
         } catch (error) {
-          
+          console.error("src/container/VotingPage/VotingPage.js:", error);
         }
       }
     } catch (error) {
-      
+      console.error("src/container/VotingPage/VotingPage.js:", error);
     }
   }, [VoteDetails]);
   return (

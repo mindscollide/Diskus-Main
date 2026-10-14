@@ -1,3 +1,39 @@
+/**
+ * Small shared string helpers. Despite the filename it holds three unrelated
+ * groups, so check which one you are reaching for:
+ *
+ *   1. INPUT SANITISERS — `regexOnlyForNumberNCharacters`, `regexOnlyCharacters`,
+ *      `regexOnlyNumbers`, `validateInput`, `containsStringandNumericCharacters`,
+ *      `replaceSlashWithBackslash`, `truncateString`. These CLEAN rather than
+ *      validate: they take the current value and return a stripped copy, so they
+ *      belong in `onChange` to stop bad characters ever being typed, not in a
+ *      submit-time check. `urlPatternValidation` is the odd one out — it returns
+ *      a boolean and validates.
+ *
+ *   2. LOCALE NUMBER FORMATTING — `formatValue`, `convertToArabicNumerals`,
+ *      `convertNumbersInString`. These map Western digits onto Arabic-Indic ones
+ *      (U+0660 +) for `ar`. Note they differ in where the locale comes from:
+ *      `formatValue` and `convertNumbersInString` take it as an argument, while
+ *      `convertToArabicNumerals` reads `i18nextLng` from localStorage itself.
+ *      Two of them also zero-pad values below 10, which is rarely what you want
+ *      outside a clock or a counter.
+ *
+ *   3. VIDEO-CALL PARTICIPANT HELPERS — `filterHostData`,
+ *      `removeParticipantByGuid`. Array operations on participant lists that
+ *      have nothing to do with strings; they live here only by accident.
+ *
+ * ── The \u0600-\u06FF range ─────────────────────────────────────────────────
+ * Several patterns whitelist `\u0600-\u06FF` alongside `a-zA-Z`. That is the
+ * Arabic Unicode block, and it is there because the app is bilingual (see the
+ * `lang`/i18n handling throughout the UI). Dropping it from a pattern silently
+ * makes that field unusable for Arabic users — every character they type is
+ * stripped as they type it. Any new pattern intended for user-facing text needs
+ * the same range.
+ *
+ * Note `regexOnlyCharacters` deliberately does NOT include it: it is for
+ * Latin-only fields. Check which behaviour you want before reusing one.
+ */
+
 // its allow only character  space and number and also didnt allow space as a first character
 export const regexOnlyForNumberNCharacters = (data) => {
   return data.replace(/^\s/, "").replace(/[^\u0600-\u06FFa-zA-Z0-9\s]/g, "");

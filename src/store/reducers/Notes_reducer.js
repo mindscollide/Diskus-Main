@@ -69,7 +69,7 @@ const NotesReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        GetAllNotesResponse: [],
+        GetAllNotesResponse: null,
         ResponseMessage: action.message,
         errorSeverity: "error",
       };

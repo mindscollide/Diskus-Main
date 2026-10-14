@@ -5,7 +5,11 @@ import { useTranslation } from "react-i18next";
 import Polls from "../../GroupPolls/GroupViewPolls";
 import ViewGroupTodo from "../../ViewGroupTodo/ViewGroupTodo";
 import ViewUpdateGroup from "../ViewGroup/ViewUpdateGroup";
-import { getbyGroupID } from "../../../../store/actions/Groups_actions";
+import {
+  getbyGroupID,
+  resetViewGroupDetails,
+  viewGroupPageFlag,
+} from "../../../../store/actions/Groups_actions";
 import { Button } from "./../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +20,11 @@ import { useGroupsContext } from "../../../../context/GroupsContext";
 const ViewGrouppage = ({ setViewGroupPage }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { currentViewGroupTabs, setCurrentViewGroupTabs } = useGroupsContext();
+  const {
+    currentViewGroupTabs,
+    setCurrentViewGroupTabs,
+    setCurrentGroupMeetingTabActive,
+  } = useGroupsContext();
 
   const GroupsReducergetGroupByGroupIdResponse = useSelector(
     (state) => state.GroupsReducer.getGroupByGroupIdResponse,
@@ -41,7 +49,12 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
           dispatch(getbyGroupID(navigate, ViewGroupID, t));
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/Groups/MainGroup/ViewGrouppage/ViewGrouppage.js:",
+        error,
+      );
+    }
 
     return () => {
       localStorage.removeItem("NotifcationClickViewGroupID");
@@ -52,6 +65,9 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
   const handleClose = () => {
     localStorage.removeItem("ViewGroupID");
     setViewGroupPage(false);
+    dispatch(viewGroupPageFlag(false));
+    setCurrentGroupMeetingTabActive(1);
+    dispatch(resetViewGroupDetails());
   };
 
   useEffect(() => {
@@ -63,7 +79,12 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
       } else {
         setGroupStatus(null);
       }
-    } catch {}
+    } catch (error) {
+      console.error(
+        "src/container/Groups/MainGroup/ViewGrouppage/ViewGrouppage.js:",
+        error,
+      );
+    }
   }, [GroupsReducergetGroupByGroupIdResponse]);
   return (
     <>

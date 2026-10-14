@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Button, Paper } from "../../../components/elements";
+import { Button } from "../../../components/elements";
 import "./Password_Update_Message.css";
 import "./../../../i18n.js";
 import logo from "./../../../assets/images/diskuslogo-forsigncard.svg";

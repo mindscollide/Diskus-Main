@@ -54,11 +54,15 @@ import {
   listOfMeetingsApi,
   SaveMeetingDetailsApi,
 } from "../../../../store/actions/NewMeeting2.actions";
+import { useCommitteeContext } from "../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../context/GroupsContext";
 const ProposedNewMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { editorRole, setSceduleMeeting, setEditorRole } = useMeetingContext();
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
   const animatedComponents = makeAnimated();
   const userID = localStorage.getItem("userID");
   const calendRef = useRef();
@@ -132,7 +136,6 @@ const ProposedNewMeeting = () => {
         const EditFlowData = getAllMeetingDetails.advanceMeetingDetails;
 
         if (isProposedMeetingRoute === 2) {
-        
           // Update meetingTypeDetails based on the edit flow
           setMeetingTypeDetails({
             MeetingType: {
@@ -150,7 +153,12 @@ const ProposedNewMeeting = () => {
           setEditProposedMeetingID(EditFlowData.meetingID);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
+    }
   }, [getAllMeetingDetails, isProposedMeetingRoute]);
 
   //Getting All the Participants for edit flow
@@ -164,7 +172,12 @@ const ProposedNewMeeting = () => {
         setDropdowndata(getAllParticipants);
         setMembersParticipants(getAllParticipants);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
+    }
   }, [getAllParticipants]);
 
   const [show, SnackBar] = useSnackbar();
@@ -251,7 +264,12 @@ const ProposedNewMeeting = () => {
           date: convertResponseDate,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
+    }
   }, [getAllProposedDatesEditFlow, isProposedMeetingRoute]);
 
   const renderLabel = (img, name, isBase64 = false) => (
@@ -417,7 +435,12 @@ const ProposedNewMeeting = () => {
           MeetingType: typeData,
         }));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
+    }
   }, [getALlMeetingTypes, committeeInfo, groupInfo]);
 
   //onChange function Search
@@ -568,7 +591,12 @@ const ProposedNewMeeting = () => {
       const updatedRows = [...rows];
       updatedRows[index].dateSelect = newDate;
       setRows(updatedRows);
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/meeting/proposedMeetingFlow/ProposedNewMeeting/ProposedNewMeeting.js:",
+        error,
+      );
+    }
   };
 
   //Removing the Date Time Rows
@@ -735,13 +763,20 @@ const ProposedNewMeeting = () => {
             MeetingStatusID: 11,
           },
         };
-
+        let routeValue =
+          committeeInfo !== null
+            ? "updateCommitteeProposedMeeting"
+            : groupInfo !== null
+              ? "updateGroupProposedMeeting"
+              : "updateProposedMeeting";
         dispatch(
-          SaveMeetingDetailsApi(navigate, t, data, "updateProposedMeeting", {
+          SaveMeetingDetailsApi(navigate, t, data, routeValue, {
             proposedMeetingDetails,
             membersParticipants,
             sortedDates,
             sendResponseBtDateVal,
+            setCurrentCommitteeMeetingTabActive,
+            setCurrentGroupMeetingTabActive,
           }),
         );
 
@@ -832,12 +867,20 @@ const ProposedNewMeeting = () => {
             MeetingStatusID: 11,
           },
         };
+        let routeValue =
+          committeeInfo !== null
+            ? "saveCommitteeProposedMeeting"
+            : groupInfo !== null
+              ? "saveGroupProposedMeeting"
+              : "saveProposedMeeting";
         dispatch(
-          SaveMeetingDetailsApi(navigate, t, data, "saveProposedMeeting", {
+          SaveMeetingDetailsApi(navigate, t, data, routeValue, {
             proposedMeetingDetails,
             membersParticipants,
             sortedDates,
             sendResponseBtDateVal,
+            setCurrentCommitteeMeetingTabActive,
+            setCurrentGroupMeetingTabActive,
           }),
         );
 

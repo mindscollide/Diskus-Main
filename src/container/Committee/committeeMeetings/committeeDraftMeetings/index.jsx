@@ -39,8 +39,9 @@ import {
 } from "@/store/actions/ModalStates_actions";
 import DeleteMeetingConfirmationModal from "../../../meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
-import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
+import { clearGetMeetingByCommitteeID, getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
+import { useMeetingListActions } from "../../../meeting/commonComponents/useMeetingListActions";
 
 const buildEditorRole = (record) => ({
   status: record.status,
@@ -61,6 +62,24 @@ const CommitteeDraftMeetings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
+  const [meetingTitle, setMeetingTitle] = useState("");
+
+
+
+  const {
+    handleViewMeeting,
+  } = useMeetingListActions({
+    setMeetingTitle,
+    setMeetingTitleSort,
+    setOrganizerNameSort,
+    setMeetingTimeSort,
+    setMeetingDateSort,
+  })
+
   const {
     committeeDraftMeetingData,
     committeeDraftMeetingDataRecord,
@@ -68,6 +87,7 @@ const CommitteeDraftMeetings = () => {
     setCurrentPageDraftCommitteeMeeting,
     currentLengthDraftCommitteeMeeting,
     setCurrentLengthDraftCommitteeMeeting,
+    setCurrentCommitteeMeetingTabActive,
   } = useCommitteeContext();
 
   // ─── Context ───
@@ -83,11 +103,7 @@ const CommitteeDraftMeetings = () => {
     setVideoTalk,
   } = useMeetingContext();
 
-  // ─── Local state ───
-  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
-  const [organizerNameSort, setOrganizerNameSort] = useState(null);
-  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
-  const [meetingDateSort, setMeetingDateSort] = useState(null);
+
   // Tracks which row's "More" Popover is open, by record ID — not a plain
   // boolean, since a shared boolean would open every row's popover at once.
   // Matches the same controlled-Popover pattern already used on the
@@ -96,6 +112,28 @@ const CommitteeDraftMeetings = () => {
   const handelChangePopoverOpen = (recordId, isOpen) => {
     setOpenPopoverMeetingID(isOpen ? recordId : null);
   };
+
+
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    return () => {
+      dispatch(clearGetMeetingByCommitteeID());
+
+    }
+  }, [])
 
   // ─── Handle table sorting ───
   const handleChangeMeetingTable = (pagination, filters, sorter) => {
@@ -179,7 +217,7 @@ const CommitteeDraftMeetings = () => {
           t,
           { MeetingID: record.pK_MDID, StatusID: 1 },
           "publishMeetingFromdraftTable",
-          { setEditorRole },
+          { setEditorRole, setCurrentCommitteeMeetingTabActive },
         ),
       );
     };
@@ -221,6 +259,8 @@ const CommitteeDraftMeetings = () => {
   };
 
   const handleClickTitle = (record) => {
+    handleViewMeeting(record)
+
     dispatch(toggleViewMeetingModal(true));
     dispatch(setViewTab("meetingDetails"));
     dispatch(
@@ -261,8 +301,8 @@ const CommitteeDraftMeetings = () => {
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
-        render: (text) => (
-          <span onClick={handleClickTitle} className={styles.tableRow}>
+        render: (text, record) => (
+          <span onClick={() => handleClickTitle(record)} className={styles.tableRow}>
             {text}
           </span>
         ),

@@ -39,7 +39,9 @@ const ReopenOrOnHoldDetailsModalECR = () => {
           );
 
         setComplianceStatusChangeHistory(filteredHistory);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/Tabs/Reports/endOfComplianceReport/ReopenOrOnHoldDetailsModalECR/index.jsx:", error);
+      }
     } else {
       setComplianceStatusChangeHistory([]);
     }

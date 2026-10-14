@@ -96,7 +96,6 @@ const AddUsers = () => {
     if (!isFreeTrial) {
       dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
     } else {
-      
     }
 
     return () => {
@@ -136,38 +135,38 @@ const AddUsers = () => {
           UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails;
 
         userStats.forEach((data) => {
-          
           UserCount += data.headCount - data.packageAllotedUsers;
         });
 
         setTotalUserCount(UserCount);
       }
     } catch (error) {
-      
+      console.error(
+        "src/container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers.js:",
+        error,
+      );
     }
   }, [UserMangementReducergetOrganizationUserStatsGraph]);
 
   //Data from  GetOrganizationSelectedPackagesByOrganizationID
-useEffect(() => {
-  const response =
-    UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
+  useEffect(() => {
+    const response =
+      UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
 
-  if (response && Object.keys(response).length > 0) {
-    setWorldCountryID(
-      response.organization?.fK_NumberWorldCountryID || 0,
-    );
+    if (response && Object.keys(response).length > 0) {
+      setWorldCountryID(response.organization?.fK_NumberWorldCountryID || 0);
 
-    const packageIDs = [];
+      const packageIDs = [];
 
-    response.organizationSubscriptions?.forEach((subscription) => {
-      subscription.organizationSelectedPackages?.forEach((packageData) => {
-        packageIDs.push(packageData.pK_OrganizationsSelectedPackageID);
+      response.organizationSubscriptions?.forEach((subscription) => {
+        subscription.organizationSelectedPackages?.forEach((packageData) => {
+          packageIDs.push(packageData.pK_OrganizationsSelectedPackageID);
+        });
       });
-    });
 
-    setPakageID(packageIDs);
-  }
-}, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
+      setPakageID(packageIDs);
+    }
+  }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 
   //Handle Change For TextFields
   const handleAddUsersFreeTrial = (e) => {
@@ -244,16 +243,18 @@ useEffect(() => {
       });
     }
 
-    if (name === "Contact" && value !== "") {
-      if (/^\d+$/.test(value) || value === "") {
-        setAddUserFreeTrial({
-          ...addUserFreeTrial,
-          Contact: {
-            value: value.trimStart(),
-            errorMessage: "",
-            errorStatus: false,
-          },
-        });
+    if (name === "Contact") {
+      if (value !== "") {
+        if (/^\d+$/.test(value)) {
+          setAddUserFreeTrial({
+            ...addUserFreeTrial,
+            Contact: {
+              value: value.trimStart(),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
       } else {
         setAddUserFreeTrial({
           ...addUserFreeTrial,
@@ -423,14 +424,14 @@ useEffect(() => {
 
   return (
     <Container className={styles["PageAlignment"]}>
-      <Row className="mt-3">
+      <Row className='mt-3'>
         <Col lg={12} md={12} sm={12} xs={12}>
           <span className={styles["AddUserheading"]}>{t("Add-user")}</span>
         </Col>
       </Row>
       <Row>
         <Col lg={4} md={4} sm={12} xs={12}>
-          <Row className="mt-4">
+          <Row className='mt-4'>
             <Col lg={12} md={12} sm={12} xs={12}>
               <TextField
                 placeholder={t("Full-name")}
@@ -459,38 +460,36 @@ useEffect(() => {
                   addUserFreeTrial.Name.value === ""
                     ? ` ${styles["errorMessage"]}`
                     : `${styles["errorMessage_hidden"]}`
-                }
-              >
+                }>
                 {addUserFreeTrial.Name.value === ""
                   ? t("Please-enter-full-name")
                   : addUserFreeTrial.Name.errorMessage}
               </p>
             </Col>
           </Row>
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col
               lg={12}
               md={12}
               sm={12}
               xs={12}
-              className="d-flex flex-column flex-wrap"
-            >
+              className='d-flex flex-column flex-wrap'>
               <span className={styles["NameCreateAddtional"]}>
                 {t("Organization")}
               </span>
               <span className={styles["NameClass"]}>{organizationNames}</span>
             </Col>
           </Row>
-          <Row className="mt-3">
-            <Col lg={12} md={12} sm={12} className="flex-column flex-wrap">
+          <Row className='mt-3'>
+            <Col lg={12} md={12} sm={12} className='flex-column flex-wrap'>
               <span className={styles["NameCreateAddtional"]}>
                 {t("Organization-role")}
               </span>
               <Row>
-                <Col lg={12} md={12} sm={12} xs={12} className="d-flex gap-2">
+                <Col lg={12} md={12} sm={12} xs={12} className='d-flex gap-2'>
                   <Checkbox
-                    classNameCheckBoxP="m-0 p-0"
-                    classNameDiv=""
+                    classNameCheckBoxP='m-0 p-0'
+                    classNameDiv=''
                     checked={addUserFreeTrial.isAdmin === 4}
                     onChange={handleIsAdminCheckBox}
                   />
@@ -501,7 +500,7 @@ useEffect(() => {
               </Row>
             </Col>
           </Row>
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col lg={12} md={12} sm={12} xs={12}>
               <TextField
                 placeholder={t("Designation")}
@@ -530,16 +529,15 @@ useEffect(() => {
                   addUserFreeTrial.Desgination.value === ""
                     ? ` ${styles["errorMessage"]}`
                     : `${styles["errorMessage_hidden"]}`
-                }
-              >
+                }>
                 {addUserFreeTrial.Desgination.value === ""
                   ? t("Please-enter-designation")
                   : addUserFreeTrial.Desgination.errorMessage}
               </p>
             </Col>
           </Row>
-          <Row className="mt-3">
-            <Col lg={12} md={12} sm={12} xs={12} className="position-relative">
+          <Row className='mt-3'>
+            <Col lg={12} md={12} sm={12} xs={12} className='position-relative'>
               <TextField
                 onBlur={() => {
                   handeEmailvlidate();
@@ -576,8 +574,7 @@ useEffect(() => {
                         addUserFreeTrial.Email.errorMessage !== ""
                           ? ` ${styles["errorMessage"]} `
                           : `${styles["errorMessage_hidden"]}`
-                      }
-                    >
+                      }>
                       {addUserFreeTrial.Email.value === ""
                         ? t("Please-enter-email")
                         : addUserFreeTrial.Email.errorMessage}
@@ -587,7 +584,7 @@ useEffect(() => {
               </Row>
             </Col>
           </Row>
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col lg={12} md={12} sm={12}>
               <div>
                 <span className={styles["NameCreateAddtional"]}>
@@ -601,6 +598,7 @@ useEffect(() => {
                     selected={selected}
                     onSelect={handleSelect}
                     selectButtonClassName={styles["flagButton"]}
+                    searchPlaceholder={t("Select")}
                     searchable={true}
                     customLabels={countryNameforPhoneNumber}
                   />
@@ -628,8 +626,7 @@ useEffect(() => {
                       addUserFreeTrial.Contact.value === ""
                         ? ` ${styles["errorMessage"]}`
                         : `${styles["errorMessage_hidden"]}`
-                    }
-                  >
+                    }>
                     {addUserFreeTrial.Contact.value === ""
                       ? t("Please-enter-Contact")
                       : addUserFreeTrial.Contact.errorMessage}
@@ -646,21 +643,19 @@ useEffect(() => {
               md={12}
               sm={12}
               xs={12}
-              className="d-flex align-items-center justify-content-end"
-            >
-              <img src={AddUsericon} alt="" />
+              className='d-flex align-items-center justify-content-end'>
+              <img src={AddUsericon} alt='' />
             </Col>
           </Row>
         </Col>
       </Row>
-      <Row className="mt-5">
+      <Row className='mt-5'>
         <Col
           lg={12}
           md={12}
           sm={12}
           xs={12}
-          className="d-flex justify-content-end gap-2"
-        >
+          className='d-flex justify-content-end gap-2'>
           <Button
             text={t("Cancel")}
             className={styles["AddUserCancelButton"]}

@@ -234,7 +234,9 @@ const UpdatePolls = () => {
             Option.push(dataAdd);
           });
           setOptions(Option);
-        } catch {}
+        } catch (error) {
+          console.error("src/container/Polling/UpdatePolls/UpdatePolls.js:", error);
+        }
       }
     }
   }, [PollsReducerAllpolls]);
@@ -312,7 +314,9 @@ const UpdatePolls = () => {
           } else {
           }
         });
-      } catch {}
+      } catch (error) {
+        console.error("src/container/Polling/UpdatePolls/UpdatePolls.js:", error);
+      }
       const uniqueData = new Set(tem.map(JSON.stringify));
 
       // Convert the Set back to an array of objects
@@ -916,7 +920,7 @@ const UpdatePolls = () => {
                                   options={dropdowndata}
                                 />
                                 <Button
-                                  text={t("ADD")}
+                                  text={t("Add")}
                                   className={styles["ADD_Btn_CreatePool_Modal"]}
                                   onClick={handleAddUsers}
                                 />

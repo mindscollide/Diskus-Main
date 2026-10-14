@@ -95,7 +95,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         };
         dispatch(getTasksByGroupIDApi(navigate, t, newData));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/ViewGroupTodo/ViewGroupTodo.js:", error);
+    }
   }, []);
 
   // Remove task from mqtt response
@@ -127,7 +129,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/ViewGroupTodo/ViewGroupTodo.js:", error);
+    }
   }, [toDoListReducersocketTodoStatusData]);
 
   //get todolist reducer
@@ -157,7 +161,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         setRowToDo([]);
         setOriginalData([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/ViewGroupTodo/ViewGroupTodo.js:", error);
+    }
   }, [PollsReducertodoGetGroupTask]);
 
   useEffect(() => {
@@ -169,7 +175,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         }
         dispatch(createTaskGroupMQTT(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/ViewGroupTodo/ViewGroupTodo.js:", error);
+    }
   }, [toDoListReducercreateTaskGroup]);
 
   // SET STATUS VALUES
@@ -202,7 +210,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       setStatusValues(newArrStatus);
 
       setStatusOptions(optionsArr);
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/ViewGroupTodo/ViewGroupTodo.js:", error);
+    }
   }, [todoStatus]);
 
   // for modal create  handler
@@ -498,8 +508,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -590,7 +600,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setModalsflag(false);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/ViewGroupTodo/ViewGroupTodo.js:", error);
+    }
   }, [toDoListReducerToDoDetails]);
 
   // CHANGE HANDLER STATUS
@@ -616,7 +628,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           setRemoveTodo(0);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Groups/ViewGroupTodo/ViewGroupTodo.js:", error);
+    }
   }, [assigneesUpdateTodoStatusMessage, removeTodo]);
 
   const scroll = {

@@ -216,3 +216,82 @@ body[dir="rtl"] .Participants-Lists {
   font-weight: 600 !important;
   margin-left: 3px !important;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Make the call iframe fill the panel.
+
+   The video container used fixed heights (.normal-avatar 45vh,
+   .normal-avatar-large / .normal-Presenter-avatar-large 85vh) that ignore the
+   header above them, so the iframe didn't match the panel (57vh docked, 89vh
+   maximised, 100vh presenter): it overflowed the bottom or left a gap.
+
+   The panel becomes a flex column: the header row keeps its natural height and
+   the body row (.videoCallBodyRow, videoCallNormalPanel.js) takes whatever is
+   left, so the iframe always matches the panel at any size.
+   ───────────────────────────────────────────────────────────────────────────── */
+:is(.max-video-panel, .videoCallScreen, .Presenter-Max-VideoPanel) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.videoCallBodyRow {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-bottom: 12px;
+}
+
+.videoCallBodyCol {
+  height: 100%;
+}
+
+.videoCallBodyCol
+  :is(.normal-avatar, .normal-avatar-large, .normal-Presenter-avatar-large) {
+  height: 100% !important;
+  margin-top: 0 !important;
+}
+
+/* An inline iframe adds a few px of baseline gap below it; block removes it. */
+.videoCallBodyCol iframe {
+  display: block;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Maximised MEETING call: fill the whole window at every resolution.
+
+   .meeting-full-window is added in videoCallNormalPanel.js only for a meeting
+   video call in the maximised state. It overrides the windowed geometry of
+   .max-video-panel (top 70px, left 65px, 90% x 89vh).
+
+   z-index 103 puts it above the header (102) and the sidebar (101), and it
+   keeps that value when chat is open (.more-zindexwithChatOpen would otherwise
+   drop it to 99, under the header). The chat box (99999+), modals (1050+) and
+   notifications still sit above it. While the Quick Meeting modal is open,
+   ModalView.css lifts it to 2000 (higher specificity), as before.
+
+   100dvh follows the visible viewport on mobile browsers whose toolbars resize
+   it; 100vh is the fallback for browsers without dvh.
+   ───────────────────────────────────────────────────────────────────────────── */
+.max-video-panel.meeting-full-window {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none;
+  padding: 10px 20px 0 20px;
+  z-index: 103 !important;
+}
+
+/* The right-hand Talk bar (.talk_nav, Talk.css, z-index 999) stayed in front
+   of the full-window meeting call. Drop it just under the call (103) while
+   the call is full window.
+
+   .talk_nav is also where the chat box renders (Talk.js -> <TalkNew/>). When
+   chat is open the call carries .more-zindexwithChatOpen, and this rule then
+   does not match, so the chat box stays in front of the call as before. */
+body:has(.meeting-full-window:not(.more-zindexwithChatOpen)) .talk_nav {
+  z-index: 102 !important;
+}

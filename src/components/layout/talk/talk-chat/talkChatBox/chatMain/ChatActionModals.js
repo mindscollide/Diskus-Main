@@ -133,7 +133,7 @@ const ChatActionModals = ({
           <Col lg={12} md={12} sm={12}>
             {" "}
             <div className="chat-modal-Heading">
-              <h1>{t("Print-Messages")}</h1>
+              <h1>{t("Print-messages")}</h1>
             </div>
           </Col>
         </Row>

@@ -31,3 +31,9 @@ yarn-error.log*
 **/*.DEEPDIVE.md
 /scripts/gen-folder-docs.js
 /scripts/gen-tree.js
+
+# A production bundle (e.g. a downloaded main.<hash>.js) accidentally committed as
+# prod_app.js embedded the production env values, including MQTT credentials.
+# Never commit built bundles to the repo root.
+/prod_app.js
+/main.*.js

@@ -84,7 +84,9 @@ const checkOraganisation = (
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(false);
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
             dispatch(organizationSuccess(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
@@ -95,7 +97,9 @@ const checkOraganisation = (
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(true);
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
             dispatch(organizationSuccess(true, newError));
           } else if (
             response.data.responseResult.responseMessage ===
@@ -106,7 +110,9 @@ const checkOraganisation = (
               await setCompanyNameValidate(false);
               await setCompanyNameValidateError([...newError]);
               await setCompanyNameUnique(false);
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
             dispatch(organizationSuccess(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
@@ -117,7 +123,9 @@ const checkOraganisation = (
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(false);
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
             dispatch(organizationSuccess(false, newError));
           } else {
             let newError = t("This-organization-doesnt-exists");
@@ -125,7 +133,9 @@ const checkOraganisation = (
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(true);
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
             dispatch(organizationSuccess(false, newError));
           }
         } else {
@@ -170,7 +180,9 @@ const checkEmailExsist = (
               await setEmailUnique(false);
               await dispatch(emailVerficationFail(false, newError));
               await dispatch(setLoader(false));
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_02"
@@ -182,7 +194,9 @@ const checkEmailExsist = (
               await setEmailUnique(false);
               await dispatch(emailVerficationFail(false, newError));
               await dispatch(setLoader(false));
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_03"
@@ -194,7 +208,9 @@ const checkEmailExsist = (
               await setEmailUnique(true);
               await dispatch(emailVerficationSuccess(true, newError));
               // await dispatch(setLoader(true));
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_04"
@@ -206,7 +222,9 @@ const checkEmailExsist = (
               await setEmailUnique(true);
               await dispatch(emailVerficationSuccess(true, newError));
               // await dispatch(setLoader(true));
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_05"
@@ -218,7 +236,9 @@ const checkEmailExsist = (
               await setEmailUnique(false);
               await dispatch(emailVerficationFail(false, newError));
               await dispatch(setLoader(false));
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
           } else {
             let newError = t("Enter-a-valid-email");
             try {
@@ -227,7 +247,9 @@ const checkEmailExsist = (
               await setEmailUnique(false);
               await dispatch(emailVerficationFail(false, newError));
               await dispatch(setLoader(false));
-            } catch {}
+            } catch (error) {
+              console.error("src/store/actions/Admin_Organization.js:", error);
+            }
           }
         } else {
           let newToste = t("Something-went-wrong");

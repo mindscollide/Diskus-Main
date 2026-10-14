@@ -44,7 +44,8 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", TwoFaAuthenticateRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(authenticationApi, form)
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -55,40 +56,40 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Authenticate2FA_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_Authenticate2FA_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                TwoFaAuthenticateFail(t("Device-does-not-exists"))
+                TwoFaAuthenticateFail(t("Device-does-not-exists")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Authenticate2FA_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_Authenticate2FA_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                TwoFaAuthenticateFail(t("Device-id-does-not-exists"))
+                TwoFaAuthenticateFail(t("Device-id-does-not-exists")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Authenticate2FA_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_Authenticate2FA_03".toLowerCase(),
                 )
             ) {
               await dispatch(
                 TwoFaAuthenticateSuccess(
                   response.data.responseResult,
-                  t("2FA-authentication-is-not-enabled-against-this-user")
-                )
+                  t("2FA-authentication-is-not-enabled-against-this-user"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Authenticate2FA_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_Authenticate2FA_04".toLowerCase(),
                 )
             ) {
               await dispatch(TwoFaAuthenticateFail(t("No-user-exist")));
@@ -96,16 +97,16 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Authenticate2FA_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_Authenticate2FA_05".toLowerCase(),
                 )
             ) {
               await dispatch(
                 TwoFaAuthenticateSuccess(
                   response.data.responseResult,
-                  t("User-has-saved-devices-along-with-email-and-sms")
-                )
+                  t("User-has-saved-devices-along-with-email-and-sms"),
+                ),
               );
-              
+
               if (response.data.responseResult.userDevices.length === 1) {
                 dispatch(LoginFlowRoutes(8));
                 localStorage.setItem("LoginFlowPageRoute", 8);
@@ -119,27 +120,26 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Authenticate2FA_06".toLowerCase()
+                  "ERM_AuthService_AuthManager_Authenticate2FA_06".toLowerCase(),
                 )
             ) {
               await dispatch(
                 TwoFaAuthenticateSuccess(
                   response.data.responseResult,
-                  ""
+                  "",
                   // t("User-doesnt-have-saved-devices")
-                )
+                ),
               );
               localStorage.removeItem("SignupFlowPageRoute");
               localStorage.setItem("LoginFlowPageRoute", 4);
               localStorage.setItem("commingfromSignFlow", true);
               dispatch(LoginFlowRoutes(4));
               navigate("/");
-              
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Authenticate2FA_07".toLowerCase()
+                  "ERM_AuthService_AuthManager_Authenticate2FA_07".toLowerCase(),
                 )
             ) {
               await dispatch(TwoFaAuthenticateFail(t("Something-went-wrong")));
@@ -185,7 +185,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
     let form = new FormData();
     form.append("RequestMethod", sendTwoFacOTP.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(authenticationApi, form)
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -196,7 +197,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_01".toLowerCase(),
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Device-does-not-exists")));
@@ -206,7 +207,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_02".toLowerCase(),
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Device-id-does-not-exists")));
@@ -216,7 +217,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_03".toLowerCase(),
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("FailedtogenerateOTP")));
@@ -226,14 +227,14 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-email-sms-and-devices")
-                )
+                  t("Otp-code-sent-via-email-sms-and-devices"),
+                ),
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
@@ -244,14 +245,14 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_05".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-sms-and-devices")
-                )
+                  t("Otp-code-sent-via-sms-and-devices"),
+                ),
               );
 
               //localStorage.setItem("LoginFlowPageRoute", 6);
@@ -263,14 +264,14 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_06".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_06".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-email-and-devices")
-                )
+                  t("Otp-code-sent-via-email-and-devices"),
+                ),
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
@@ -281,7 +282,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_07".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_07".toLowerCase(),
                 )
             ) {
               // localStorage.setItem("seconds", 0);
@@ -289,8 +290,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-email-and-sms")
-                )
+                  t("Otp-code-sent-via-email-and-sms"),
+                ),
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
@@ -302,7 +303,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_08".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_08".toLowerCase(),
                 )
             ) {
               // localStorage.setItem("seconds", 0);
@@ -310,8 +311,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-devices")
-                )
+                  t("Otp-code-sent-via-devices"),
+                ),
               );
               // navigate("/2FAverificationdevieotp");
               dispatch(LoginFlowRoutes(14));
@@ -321,7 +322,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_09".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_09".toLowerCase(),
                 )
             ) {
               // localStorage.setItem("seconds", 0);
@@ -329,8 +330,8 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-sms")
-                )
+                  t("Otp-code-sent-via-sms"),
+                ),
               );
 
               //localStorage.setItem("LoginFlowPageRoute", 6);
@@ -343,14 +344,14 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_10".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_10".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-email")
-                )
+                  t("Otp-code-sent-via-email"),
+                ),
               );
 
               //localStorage.setItem("LoginFlowPageRoute", 6);
@@ -363,7 +364,7 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_11".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_11".toLowerCase(),
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
@@ -387,12 +388,13 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
     let form = new FormData();
     form.append("RequestMethod", sendTwoFacOTP.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(authenticationApi, form)
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes)
+            resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -400,7 +402,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_01".toLowerCase(),
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Device-does-not-exists")));
@@ -410,7 +412,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_02".toLowerCase(),
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Device-id-does-not-exists")));
@@ -421,7 +423,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_03".toLowerCase(),
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("FailedtogenerateOTP")));
@@ -432,14 +434,14 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-email-sms-and-devices")
-                )
+                  t("Otp-code-sent-via-email-sms-and-devices"),
+                ),
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
@@ -451,14 +453,14 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_05".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-sms-and-devices")
-                )
+                  t("Otp-code-sent-via-sms-and-devices"),
+                ),
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
@@ -469,14 +471,14 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_06".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_06".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-email-and-devices")
-                )
+                  t("Otp-code-sent-via-email-and-devices"),
+                ),
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
@@ -487,7 +489,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_07".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_07".toLowerCase(),
                 )
             ) {
               // localStorage.setItem("seconds", 0);
@@ -495,8 +497,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-email-and-sms")
-                )
+                  t("Otp-code-sent-via-email-and-sms"),
+                ),
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
@@ -508,7 +510,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_08".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_08".toLowerCase(),
                 )
             ) {
               // localStorage.setItem("seconds", 0);
@@ -516,8 +518,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-devices")
-                )
+                  t("Otp-code-sent-via-devices"),
+                ),
               );
               navigate("/2FAverificationdevieotp");
               // return setSeconds(60), setMinutes(4);
@@ -527,7 +529,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_09".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_09".toLowerCase(),
                 )
             ) {
               // localStorage.setItem("seconds", 0);
@@ -535,8 +537,8 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-sms")
-                )
+                  t("Otp-code-sent-via-sms"),
+                ),
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
@@ -548,14 +550,14 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_10".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_10".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
-                  t("Otp-code-sent-via-email")
-                )
+                  t("Otp-code-sent-via-email"),
+                ),
               );
               //localStorage.setItem("LoginFlowPageRoute", 6);
               dispatch(LoginFlowRoutes(6));
@@ -567,7 +569,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Send2FAOTP_11".toLowerCase()
+                  "ERM_AuthService_AuthManager_Send2FAOTP_11".toLowerCase(),
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
@@ -611,7 +613,8 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
     let form = new FormData();
     form.append("RequestMethod", verifyTwoFacOTP.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(authenticationApi, form)
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -622,27 +625,27 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Verify2FAOTP_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_Verify2FAOTP_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 verifyOtpFacSuccess(
                   response.data.responseResult,
-                  t("Otp-has-been-verified-successfully")
-                )
+                  t("Otp-has-been-verified-successfully"),
+                ),
               );
               localStorage.setItem("TowApproval", true);
               let isFirstLogin = JSON.parse(
-                localStorage.getItem("isFirstLogin")
+                localStorage.getItem("isFirstLogin"),
               );
-              handleNavigation(navigate, isFirstLogin, dispatch);
+              handleNavigation(navigate, null, isFirstLogin, dispatch);
 
               clearLocalStorageAtloginresponce(dispatch, 1, navigate);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Verify2FAOTP_02".toLowerCase()
+                  "ERM_AuthService_AuthManager_Verify2FAOTP_02".toLowerCase(),
                 )
             ) {
               setOtpCode("");
@@ -652,7 +655,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Verify2FAOTP_03".toLowerCase()
+                  "ERM_AuthService_AuthManager_Verify2FAOTP_03".toLowerCase(),
                 )
             ) {
               dispatch(verifyOtpFacFail(t("Something-went-wrong")));
@@ -661,7 +664,7 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Verify2FAOTP_04".toLowerCase()
+                  "ERM_AuthService_AuthManager_Verify2FAOTP_04".toLowerCase(),
                 )
             ) {
               dispatch(verifyOtpFacFail(t("No-otp-exist-against-this-user")));
@@ -671,13 +674,13 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_Verify2FAOTP_05".toLowerCase()
+                  "ERM_AuthService_AuthManager_Verify2FAOTP_05".toLowerCase(),
                 )
             ) {
               dispatch(
                 verifyOtpFacFail(
-                  t("The-user-has-reached-the-maximum-faileda-attempts")
-                )
+                  t("The-user-has-reached-the-maximum-faileda-attempts"),
+                ),
               );
               setOtpCode("");
               navigate("/");
@@ -694,7 +697,6 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
       .catch((response) => {
         dispatch(verifyOtpFacFail(t("Something-went-wrong")));
         localStorage.setItem("TowApproval", false);
-        
       });
   };
 };

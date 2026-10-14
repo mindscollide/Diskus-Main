@@ -88,7 +88,9 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           setPreviousIDs(PrevIds);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/notes/modalUpdateNote/ModalUpdateNote.js:", error);
+    }
   }, [RetrieveDocsNotes]);
 
   const [addNoteFields, setAddNoteFields] = useState({
@@ -337,7 +339,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         }
       }
     } catch (error) {
-      
+      console.error("src/container/notes/modalUpdateNote/ModalUpdateNote.js:", error);
     }
   }, [NotesReducer.GetNotesByNotesId]);
 
@@ -354,7 +356,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         });
       }
     } catch (error) {
-      
+      console.error("src/container/notes/modalUpdateNote/ModalUpdateNote.js:", error);
     }
   }, [isdescription]);
 
@@ -435,7 +437,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         show(t("Please-fill-all-the-fields"), "error");
       }
     } catch (error) {
-      
+      console.error("src/container/notes/modalUpdateNote/ModalUpdateNote.js:", error);
     }
   };
 

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   getCommitteesbyCommitteeId,
+  resetViewCommitteeDetails,
   viewCommitteePageFlag,
 } from "../../../../store/actions/Committee_actions";
 import ViewCommitteeDetails from "../ViewCommittee/ViewCommittee.js";
@@ -25,8 +26,11 @@ const ViewUpdateCommittee = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { setviewVotes } = usePollsContext();
-  const { currentViewCommitteeTabs, setCurrentViewCommitteeTabs } =
-    useCommitteeContext();
+  const {
+    currentViewCommitteeTabs,
+    setCurrentViewCommitteeTabs,
+    setCurrentCommitteeMeetingTabActive,
+  } = useCommitteeContext();
   let NotificationClickCommitteeID = localStorage.getItem(
     "NotifcationClickViewCommitteeID",
   );
@@ -66,7 +70,12 @@ const ViewUpdateCommittee = ({
           dispatch(getCommitteesbyCommitteeId(navigate, Data, t));
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(
+        "src/container/Committee/MainCommittee/ViewUpdateCommittee/ViewUpdateCommittee.js:",
+        error,
+      );
+    }
     return () => {
       localStorage.removeItem("NotificationClickCommitteeOperations");
       localStorage.removeItem("NotifcationClickViewCommitteeID");
@@ -78,6 +87,8 @@ const ViewUpdateCommittee = ({
     setviewVotes(false);
     dispatch(viewCommitteePageFlag(false));
     localStorage.removeItem("ViewCommitteeID");
+    setCurrentCommitteeMeetingTabActive(1);
+    dispatch(resetViewCommitteeDetails());
   };
 
   useEffect(() => {

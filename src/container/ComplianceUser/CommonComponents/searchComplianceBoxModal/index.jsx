@@ -382,7 +382,7 @@ const SearchComplianceBoxModal = () => {
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <DatePicker.RangePicker
                           format="DD/MM/YYYY"
-                          placeholder={["Start Date", "End Date"]}
+                          placeholder={[t("Start-date"), t("End-date")]}
                           allowEmpty={[true, true]}
                           className="custom-range-picker"
                           separator="-"

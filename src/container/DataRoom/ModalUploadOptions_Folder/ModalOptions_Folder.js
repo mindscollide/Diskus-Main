@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import styles from "./ModalOptions_Folder.module.css";
 import { useTranslation } from "react-i18next";
-import { Button, Modal } from "../../../components/elements";
+import { Button, CustomRadio2, Modal } from "../../../components/elements";
 import { createFolderApi } from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -26,8 +26,8 @@ const ModalOptionsFolder = ({
         t,
         setAddfolder,
         folderUploadOptions,
-        setIsExistFolder
-      )
+        setIsExistFolder,
+      ),
     );
   };
   return (
@@ -39,7 +39,7 @@ const ModalOptionsFolder = ({
             setIsExistFolder(false);
           }}
           setShow={setIsExistFolder}
-          modalFooterClassName="d-block"
+          modalFooterClassName='d-block'
           centered
           ModalBody={
             <>
@@ -51,7 +51,7 @@ const ModalOptionsFolder = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col lg={12} md={12} sm={12}>
                     <p className={styles["paragrapgh"]}>
                       {t("An-item-named")}{" "}
@@ -67,13 +67,12 @@ const ModalOptionsFolder = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className={"d-flex justify-content-start gap-3"}
-                  >
-                    <Form.Check
-                      type="radio"
-                      checked={folderUploadOptions === 1 ? true : false}
+                    className={"d-flex justify-content-start gap-3"}>
+                    <CustomRadio2
+                      value={String(folderUploadOptions)}
+                      Optios='1'
                       onChange={() => setFolderUploadOptions(1)}
-                      name="dataroomfiles"
+                      name='dataroomfiles'
                     />
                     <span className={styles["Options"]}>
                       {t("Replace-existing-folder")}
@@ -85,13 +84,12 @@ const ModalOptionsFolder = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-start gap-3"
-                  >
-                    <Form.Check
-                      type="radio"
-                      checked={folderUploadOptions === 2 ? true : false}
+                    className='d-flex justify-content-start gap-3'>
+                    <CustomRadio2
+                      value={String(folderUploadOptions)}
+                      Optios='2'
                       onChange={() => setFolderUploadOptions(2)}
-                      name="dataroomfiles"
+                      name='dataroomfiles'
                     />
                     <span className={styles["Options"]}>
                       {t("Keep-both-folders")}
@@ -103,13 +101,12 @@ const ModalOptionsFolder = ({
           }
           ModalFooter={
             <>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-end gap-2"
-                >
+                  className='d-flex justify-content-end gap-2'>
                   <Button
                     text={t("Cancel")}
                     className={styles["Cancel_button_UploadFile"]}

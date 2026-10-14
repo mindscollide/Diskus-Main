@@ -529,7 +529,7 @@ const SubAgendaMappingDragging = ({
                                             </Col>
                                           </Row>
                                           <>
-                                            {
+                                            {/* {
                                               subAgendaData.subSelectRadio ===
                                                 1 &&
                                               Object.keys(
@@ -596,6 +596,105 @@ const SubAgendaMappingDragging = ({
                                                 Object.keys(
                                                   subAgendaData.subfiles,
                                                 ).length === 0 ? null : null // <span
+                                            } */}
+                                            {
+                                              subAgendaData.subSelectRadio ===
+                                                1 &&
+                                              Object.keys(
+                                                subAgendaData.subfiles,
+                                              ).length > 0 ? (
+                                                <div
+                                                  className={
+                                                    styles["filesParentClass"]
+                                                  }>
+                                                  {subAgendaData.subfiles
+                                                    .slice(0, 3)
+                                                    .map(
+                                                      (
+                                                        filesData,
+                                                        fileIndex,
+                                                      ) => {
+                                                        return (
+                                                          <AttachmentViewer
+                                                            handleClickDownload={() =>
+                                                              downloadDocument(
+                                                                filesData,
+                                                              )
+                                                            }
+                                                            data={filesData}
+                                                            name={
+                                                              filesData?.displayAttachmentName
+                                                            }
+                                                            id={Number(
+                                                              filesData.originalAttachmentName,
+                                                            )}
+                                                            handleEyeIcon={() =>
+                                                              pdfData(
+                                                                filesData,
+                                                                getFileExtension(
+                                                                  filesData?.displayAttachmentName,
+                                                                ),
+                                                              )
+                                                            }
+                                                          />
+                                                        );
+                                                      },
+                                                    )}
+                                                  {subAgendaData.subfiles
+                                                    .length > 3 && (
+                                                    <Button
+                                                      text={`${subAgendaData.subfiles.length - 3}+ ${t("More")}`}
+                                                      className={
+                                                        styles[
+                                                          "Show_More_Button"
+                                                        ]
+                                                      }
+                                                      onClick={() =>
+                                                        showMoreFiles(
+                                                          subAgendaData.subfiles,
+                                                          data.title,
+                                                          index,
+                                                        )
+                                                      }
+                                                    />
+                                                  )}
+                                                  {/* {data.files
+                                                                          .slice(0, 3)
+                                                                          .map((filesData, fileIndex) => {
+                                                                            return (
+                                                                              <AttachmentViewer
+                                                                                handleClickDownload={() =>
+                                                                                  downloadDocument(filesData)
+                                                                                }
+                                                                                data={filesData}
+                                                                                name={filesData?.displayAttachmentName}
+                                                                                id={Number(
+                                                                                  filesData.originalAttachmentName,
+                                                                                )}
+                                                                                handleEyeIcon={() =>
+                                                                                  pdfData(
+                                                                                    filesData,
+                                                                                    getFileExtension(
+                                                                                      filesData?.displayAttachmentName,
+                                                                                    ),
+                                                                                  )
+                                                                                }
+                                                                              />
+                                                                            );
+                                                                          })}
+                                                                        {data.files.length > 3 && (
+                                                                          <Button
+                                                                            text={t("More")}
+                                                                            className={styles["Show_More_Button"]}
+                                                                            onClick={() =>
+                                                                              showMoreFiles(data.files, data.title, index)
+                                                                            }
+                                                                          />
+                                                                        )} */}
+                                                </div>
+                                              ) : data.selectedRadio === 1 &&
+                                                Object.keys(data.files)
+                                                  .length === 0 ? null : null // </span> //   No Files Attached // <span className={styles["NoFiles_Heading"]}>
                                             }
 
                                             {subAgendaData.subSelectRadio ===

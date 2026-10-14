@@ -1105,14 +1105,7 @@ const Sidebar = () => {
                 {checkFeatureIDAvailability(77) ? (
                   <Nav.Link
                     as={Link}
-                    to={
-                      advanceMeetingCreateEditModal === true ||
-                      advanceMeetingViewModal === true ||
-                      proposedMeetingCreateEditModal === true ||
-                      proposedMeetingViewModal === true
-                        ? "/Diskus/Meeting"
-                        : "/Diskus/compliance"
-                    }
+                    to="/Diskus/compliance"
                     disabled={false}
                     draggable='false'
                     className={
@@ -1160,8 +1153,8 @@ const Sidebar = () => {
                             x2='27.4839'
                             y2='18.0879'
                             gradientUnits='userSpaceOnUse'>
-                            <stop stop-color='#6172D6' />
-                            <stop offset='1' stop-color='#4ADEDE' />
+                            <stop stopColor='#6172D6' />
+                            <stop offset='1' stopColor='#4ADEDE' />
                           </linearGradient>
                         </defs>
                       </svg>
@@ -1174,14 +1167,7 @@ const Sidebar = () => {
                 {checkFeatureIDAvailability(48) ? (
                   <Nav.Link
                     as={Link}
-                    to={
-                      advanceMeetingCreateEditModal === true ||
-                      advanceMeetingViewModal === true ||
-                      proposedMeetingCreateEditModal === true ||
-                      proposedMeetingViewModal === true
-                        ? "/Diskus/Meeting"
-                        : "/Diskus/committee"
-                    }
+                    to="/Diskus/committee"
                     disabled={false}
                     draggable='false'
                     className={

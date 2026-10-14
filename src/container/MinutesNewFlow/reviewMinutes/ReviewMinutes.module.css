@@ -1,8 +1,9 @@
 .pendingApprovalContainer {
   width: 98% !important;
-  height: 91vh !important;
+  height: auto !important;
   margin: 0 auto !important;
   overflow: hidden !important;
+  padding: 10px 0;
 }
 
 .pendingApprovalHeading {

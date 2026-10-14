@@ -639,7 +639,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
         <iframe
           src={videoUrlName}
           ref={frameRef}
-          title="Live Video"
+          title={t("Live-video")}
           width="100%"
           height="100%"
           allow="camera; microphone; fullscreen; display-capture; cross-origin-isolated"

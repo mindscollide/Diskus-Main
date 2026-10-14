@@ -636,7 +636,9 @@ const applyAnnotationLocks = (
             field.flags.set("ReadOnly", true);
             field.flags.set("NoToggleToOff", true);
           }
-        } catch {}
+        } catch (error) {
+          console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", error);
+        }
       }
     } else {
       // Owner: fillable, but NOT repositionable.
@@ -666,7 +668,9 @@ const applyAnnotationLocks = (
             // field would otherwise leave the flag stuck on for every option.
             field.flags.set("NoToggleToOff", false);
           }
-        } catch {}
+        } catch (error) {
+          console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", error);
+        }
       }
     }
 
@@ -1087,7 +1091,9 @@ const PendingSignatureViewer = () => {
         setUserAnnotations(reverted);
         setUserAnnotationsCopy(reverted);
       }
-    } catch (err) {}
+    } catch (err) {
+      console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", err);
+    }
   }, [getAllFieldsByWorkflowID]);
 
   // ── getWorkfFlowByFileId ───────────────────────────────────────────────────
@@ -1145,7 +1151,9 @@ const PendingSignatureViewer = () => {
         creatorID: workFlow.creatorID,
         isCreator: workFlow.isCreator,
       }));
-    } catch (err) {}
+    } catch (err) {
+      console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", err);
+    }
   }, [getWorkfFlowByFileId, fieldsData]);
 
   // ── getSignatureFileAnnotationResponse ────────────────────────────────────
@@ -1209,7 +1217,9 @@ const PendingSignatureViewer = () => {
         xfdfData: hideFreetextXmlString,
         attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
       }));
-    } catch (err) {}
+    } catch (err) {
+      console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", err);
+    }
   }, [getSignatureFileAnnotationResponse]);
 
   // ─── Save / submit handler ────────────────────────────────────────────────
@@ -1438,7 +1448,9 @@ const PendingSignatureViewer = () => {
             },
           ),
         );
-      } catch (err) {}
+      } catch (err) {
+        console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", err);
+      }
     },
     [docWorkflowID, dispatch, navigate, t],
   );
@@ -1790,7 +1802,9 @@ const PendingSignatureViewer = () => {
                 hiddenFieldNamesRef.current,
                 new Set(hiddenUsersRef.current),
               );
-            } catch (err) {}
+            } catch (err) {
+              console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", err);
+            }
           }
 
           // Start in EDIT mode deterministically, right after annotations and
@@ -1805,7 +1819,9 @@ const PendingSignatureViewer = () => {
 
         // Header buttons
         renderHeaderButtons(inst);
-      } catch (err) {}
+      } catch (err) {
+        console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", err);
+      }
     };
 
     init();
@@ -1889,7 +1905,9 @@ const PendingSignatureViewer = () => {
         }));
         mergeXFDFIntoAnnotations(xfdfString, selectedUserRef.current, snapshot);
         setUserAnnotations(snapshot);
-      } catch (err) {}
+      } catch (err) {
+        console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", err);
+      }
 
       // Re-apply locks after changes
       applyAnnotationLocks(
@@ -1953,7 +1971,9 @@ const PendingSignatureViewer = () => {
           annotationManager.updateAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
-      } catch (err) {}
+      } catch (err) {
+        console.error("src/container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue.js:", err);
+      }
     };
 
     annotationManager.addEventListener("annotationChanged", annotHandler);

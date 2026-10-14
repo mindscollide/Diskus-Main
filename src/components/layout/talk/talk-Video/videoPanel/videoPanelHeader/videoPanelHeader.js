@@ -82,7 +82,9 @@ const VideoPanelHeader = () => {
           }
         } else {
         }
-      } catch {}
+      } catch (error) {
+        console.error("src/components/layout/talk/talk-Video/videoPanel/videoPanelHeader/videoPanelHeader.js:", error);
+      }
     }
   };
 

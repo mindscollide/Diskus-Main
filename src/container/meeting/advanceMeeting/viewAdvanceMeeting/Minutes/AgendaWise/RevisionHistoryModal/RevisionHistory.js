@@ -209,7 +209,7 @@ const RevisionHistory = ({
                     <img
                       src={CrossIcon}
                       onClick={() => setShowRevisionHistory(false)}
-                      className='cursor-pointer'
+                      className='cursor-pointer me-3'
                       alt='cross_icon'
                     />
                   </Col>

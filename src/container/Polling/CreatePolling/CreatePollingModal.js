@@ -289,7 +289,9 @@ const CreatePolling = () => {
           } else {
           }
         });
-      } catch {}
+      } catch (error) {
+        console.error("src/container/Polling/CreatePolling/CreatePollingModal.js:", error);
+      }
 
       const uniqueData = new Set(tem.map(JSON.stringify));
 
@@ -314,7 +316,9 @@ const CreatePolling = () => {
         ...createPollData,
         date: DateDate,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Polling/CreatePolling/CreatePollingModal.js:", error);
+    }
   };
 
   // for create polls
@@ -762,7 +766,7 @@ const CreatePolling = () => {
                                 options={dropdowndata}
                               />
                               <Button
-                                text={t("ADD")}
+                                text={t("Add")}
                                 className={styles["ADD_Btn_CreatePool_Modal"]}
                                 onClick={handleAddUsers}
                               />

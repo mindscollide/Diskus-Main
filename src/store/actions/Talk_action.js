@@ -266,12 +266,15 @@ const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
     let form = new FormData();
     form.append("RequestMethod", getAllUserChats.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance
+    // Returned so callers (e.g. opening a chat from the meeting list) can
+    // await a fresh fetch before deciding the chat doesn't exist, instead
+    // of only ever trusting whatever happens to already be in the reducer.
+    return axiosInstance
       .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
-          dispatch(
+          return dispatch(
             GetAllUserChats(navigate, currentUserId, currentOrganizationId, t),
           );
         } else if (response.data.responseResult.isExecuted === true) {

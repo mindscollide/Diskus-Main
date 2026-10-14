@@ -6,6 +6,7 @@ import { Progress } from "antd";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { useTranslation } from "react-i18next";
+import { formatNumber } from "../../../../../commen/functions/utils";
 
 const QuarterlySubmittedCompliance = () => {
   const { setMainComplianceTabs } = useComplianceContext();
@@ -66,7 +67,7 @@ const QuarterlySubmittedCompliance = () => {
                 format={(percent) => (
                   <>
                     <div className={styles.quarterlyPercentageClass}>
-                      {percent}%
+                      {formatNumber(percent)}%
                     </div>
                     <div className={styles.quarterlyCompletedClass}>
                       {t("Completed")}

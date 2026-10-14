@@ -76,6 +76,7 @@ body[dir="rtl"] span.No-of-reviews {
   font-weight: 600;
   font-size: 30px;
   color: #6172d6;
+  margin-left: 12px;
 }
 
 p.minutes-text {

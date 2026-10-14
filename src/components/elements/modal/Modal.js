@@ -1,6 +1,6 @@
 import Modal from "react-bootstrap/Modal";
 import "./Modal.css";
-
+import CrossIcon from "../../../assets/images/Cross_Icon.png";
 const CustomModal = ({
   ModalTitle,
   ModalBody,
@@ -30,29 +30,40 @@ const CustomModal = ({
           show={show}
           onHide={onHide}
           backdrop={backdrop}
-          data-backdrop="false"
+          data-backdrop='false'
           size={size}
           centered={centered ?? true}
           className={className}
           dialogClassName={dialogClassName}
+          
           fullscreen={fullscreen}
-          contentClassName={contentClassName}
-        >
-          <Modal.Header
-            className={`${modalHeaderClassName} ${"border-0"}`}
-            closeButton={closeButton}
-          >
+          contentClassName={contentClassName}>
+          <Modal.Header className={`${modalHeaderClassName} ${"border-0"}`}>
             <Modal.Title className={modalTitleClassName}>
               {ModalTitle}
             </Modal.Title>
+            {/* {localStorage.getItem("i18nextLng") === "en" ? (
+              <>
+                <Modal.Title className={modalTitleClassName}>
+                  {ModalTitle}
+                </Modal.Title>
+                {/* {closeButton && <img src={CrossIcon} alt='' onClick={onHide} />} */}
+            {/* </> */}
+            {/* ) : (
+              <>
+                {closeButton && <img src={CrossIcon} onClick={onHide} alt='' />}{" "}
+                <Modal.Title className={modalTitleClassName}>
+                  {ModalTitle}
+                </Modal.Title>
+              </> */}
+            {/* )} */}
           </Modal.Header>
           {htmlCode !== "" && htmlCode !== null && htmlCode !== undefined ? (
             <Modal.Body
               dangerouslySetInnerHTML={{
                 __html: htmlCode !== "" ? htmlCode : null,
               }}
-              className={modalBodyClassName}
-            >
+              className={modalBodyClassName}>
               {ModalBody}
             </Modal.Body>
           ) : (

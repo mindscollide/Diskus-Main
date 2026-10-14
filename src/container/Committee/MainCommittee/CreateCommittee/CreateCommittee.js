@@ -110,7 +110,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       dispatch(getCommitteeTypes(navigate, Data, t));
       dispatch(getCommitteeMembersRole(navigate, Data, t));
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
     }
   }, [chcekFlag]);
 
@@ -134,7 +134,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setCommitteeMembersRolesOptions(committeeMembersRoleOptions);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
     }
   }, [CommitteeReducergetCommitteeMembersRoles]);
 
@@ -152,7 +152,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setNewCommitteeTypeOptions(committeeTypeOptions);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
     }
   }, [CommitteeReducergetCommitteeTypes]);
 
@@ -408,7 +408,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         });
         setAllPresenters(newData);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
+    }
   }, [assigneesuser]);
 
   const checkGroupMembers = (GroupMembers) => {
@@ -493,7 +495,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         documentsUploadCall(folderIdCreated);
       }
     } catch (error) {
-      
+      console.error("src/container/Committee/MainCommittee/CreateCommittee/CreateCommittee.js:", error);
     }
   }, [CommitteeReducercreateUpdateCommitteeDataroom]);
 

@@ -203,7 +203,9 @@ const Actions = ({ dataroomMapFolderId }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Actions/Actions.js:", error);
+    }
   }, [toDoListReducer.socketTodoStatusData]);
 
   useEffect(() => {
@@ -513,8 +515,8 @@ const Actions = ({ dataroomMapFolderId }) => {
       filterDropdown: () => (
         <Dropdown
           overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          open={visible}
+          onOpenChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -625,14 +627,27 @@ const Actions = ({ dataroomMapFolderId }) => {
         actionMeetingReducer.todoListMeetingTask.toDoLists.length > 0
       ) {
         setTotalRecords(actionMeetingReducer.todoListMeetingTask.totalRecords);
-        setActionsRows(actionMeetingReducer.todoListMeetingTask.toDoLists);
         setOriginalData(actionMeetingReducer.todoListMeetingTask.toDoLists);
+        // Re-fetches (e.g. discarding the Create Task modal) refresh this
+        // list from the API, which has no status filter of its own — the
+        // filter is applied entirely client-side. Re-apply whatever status
+        // filter is currently selected instead of overwriting the view
+        // with the unfiltered list, so a previously applied filter (with
+        // some statuses unchecked) survives the refresh.
+        setActionsRows(
+          actionMeetingReducer.todoListMeetingTask.toDoLists.filter((item) =>
+            selectedValues.includes(item.status.pK_TSID.toString()),
+          ),
+        );
       } else {
         setActionsRows([]);
         setOriginalData([]);
         setTotalRecords(0);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Actions/Actions.js:", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actionMeetingReducer.todoListMeetingTask]);
 
   useEffect(() => {
@@ -651,7 +666,9 @@ const Actions = ({ dataroomMapFolderId }) => {
         }
         dispatch(createTaskMeetingMQTT(null));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Actions/Actions.js:", error);
+    }
   }, [toDoListReducer.createTaskMeeting]);
   const handleCreateTaskButton = () => {
     setCreateaTask(true);

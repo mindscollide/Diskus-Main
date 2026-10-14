@@ -13,10 +13,14 @@ import {
   DataRoomDownloadFileWithFooterApiFunc,
 } from "../../../../../../store/actions/DataRoom_actions";
 import { Col, Row } from "react-bootstrap";
-import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
+import {
+  getFileExtension,
+  getIconSource,
+} from "../../../../../DataRoom/SearchFunctionality/option";
 import { fileFormatforSignatureFlow } from "../../../../../../commen/functions/utils";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
-
+import DownloadImg from "../../../../../../assets/images/download.png";
+import EyeIcon from "../../../../../../assets/images/newElements/eyeIcon.svg";
 const AllFilesModal = ({
   setShowMoreFilesView,
   agendaName,
@@ -120,12 +124,13 @@ const AllFilesModal = ({
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => setShowMoreFilesView(false)}
+        contentClassName={"p-3"}
         size='md'
-        className='allFileModalClass'
+        // className='allFileModalClass'
         ModalTitle={
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className={styles["OVer_padding"]}>
+              <Col lg={12} md={12} sm={12}>
                 <p className={styles["FileModalTitle"]}>
                   {agendaIndex !== -1 && subAgendaIndex === -1
                     ? agendaIndex + 1 + ". " + agendaName
@@ -145,7 +150,77 @@ const AllFilesModal = ({
         ModalBody={
           <>
             <section className={styles["FileSectionHeight"]}>
-              <Row key={Math.random()}>
+              <Row className='m-0 p-0'>
+                {fileDataAgenda?.map((filesData, fileIndex) => {
+                  let getfileExtensionName = getFileExtension(
+                    filesData?.displayAttachmentName,
+                  );
+                  return (
+                    <Col sm={12} md={12} lg={12} className={styles.FilesList}>
+                      <Row>
+                        <Col
+                          sm={12}
+                          md={10}
+                          lg={10}
+                          className='d-flex align-items-center gap-2'>
+                          <span>
+                            {" "}
+                            <img
+                              draggable={false}
+                              src={getIconSource(
+                                getFileExtension(
+                                  filesData?.displayAttachmentName,
+                                ),
+                              )}
+                              alt=''
+                              width={28}
+                              height={28}
+                            />
+                          </span>
+                          <span className={styles.fileName}>
+                            {filesData?.displayAttachmentName}
+                          </span>
+                        </Col>
+                        <Col
+                          sm={12}
+                          md={2}
+                          lg={2}
+                          className='d-flex align-items-center gap-3'>
+                          <img
+                            src={DownloadImg}
+                            onClick={() => downloadDocument(filesData)}
+                            alt=''
+                            width={14}
+                            className='cursor-pointer'
+                          />{" "}
+                          <img
+                            width={22}
+                            alt=''
+                            onClick={() =>
+                              pdfData(filesData, getfileExtensionName)
+                            }
+                            src={EyeIcon}
+                            className='cursor-pointer'
+                          />
+                        </Col>
+                      </Row>
+                      {/* <AttachmentViewer
+                        handleClickDownload={() => downloadDocument(filesData)}
+                        data={filesData}
+                        name={filesData?.displayAttachmentName}
+                        id={Number(filesData.originalAttachmentName)}
+                        handleEyeIcon={() =>
+                          pdfData(
+                            filesData,
+                            getFileExtension(filesData?.displayAttachmentName),
+                          )
+                        }
+                      /> */}
+                    </Col>
+                  );
+                })}
+              </Row>
+              {/* <Row key={Math.random()}>
                 {fileDataAgenda?.map((filesData, fileIndex) => {
                   return (
                     <Col lg={4} md={4} sm={4}>
@@ -164,13 +239,13 @@ const AllFilesModal = ({
                     </Col>
                   );
                 })}
-              </Row>
+              </Row> */}
             </section>
           </>
         }
         ModalFooter={
           <>
-            <Row className='mt-4'>
+            <Row>
               <Col
                 lg={12}
                 md={12}

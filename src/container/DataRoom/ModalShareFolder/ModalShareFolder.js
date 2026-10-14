@@ -173,7 +173,9 @@ const ModalShareFolder = ({
           }
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalShareFolder/ModalShareFolder.js:", error);
+    }
   }, [getSharedFolderUsers, assignees]);
 
   //Input Field Assignee Change

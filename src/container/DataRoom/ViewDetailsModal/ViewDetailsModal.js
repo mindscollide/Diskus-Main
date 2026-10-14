@@ -136,7 +136,9 @@ const ViewDetailsModal = ({
       if (getDataAnalyticsDetails !== null) {
         setDocumentActivityDetails(getDataAnalyticsDetails);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/ViewDetailsModal/ViewDetailsModal.js:", error);
+    }
   }, [getDataAnalyticsDetails]);
   useEffect(() => {
     try {
@@ -174,7 +176,9 @@ const ViewDetailsModal = ({
           name: DatafileandFolderDetails.name,
         });
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/DataRoom/ViewDetailsModal/ViewDetailsModal.js:", error);
+    }
   }, [DatafileandFolderDetails]);
 
   return (

@@ -731,7 +731,9 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
               }
 
               dispatch(showunsavedEditPollsMeetings(false));
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/store/actions/Polls_actions.js:", error);
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

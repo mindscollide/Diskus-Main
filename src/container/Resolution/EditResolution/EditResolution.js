@@ -85,7 +85,7 @@ const EditResolution = ({ setCancelresolution }) => {
         }
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/EditResolution/EditResolution.js:", error);
     }
   }, [currentLanguage]);
   const [attachments, setAttachments] = useState([]);
@@ -443,7 +443,7 @@ const EditResolution = ({ setCancelresolution }) => {
           }
         }
       } catch (error) {
-        
+        console.error("src/container/Resolution/EditResolution/EditResolution.js:", error);
       }
     }
     setVoters(voters_Data);
@@ -587,7 +587,7 @@ const EditResolution = ({ setCancelresolution }) => {
           }
         }
       } catch (error) {
-        
+        console.error("src/container/Resolution/EditResolution/EditResolution.js:", error);
       }
     }
     setNonVoters(nonVotersData);
@@ -833,7 +833,7 @@ const EditResolution = ({ setCancelresolution }) => {
         documentsUploadCall(folderIDCreated);
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/EditResolution/EditResolution.js:", error);
     }
   }, [ResolutionReducerupdateResolutionDataroom]);
 
@@ -1122,7 +1122,7 @@ const EditResolution = ({ setCancelresolution }) => {
         }
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/EditResolution/EditResolution.js:", error);
     }
   }, [ResolutionReducergetAllCommitteesAndGroups]);
   // Get Voting Methods
@@ -1139,7 +1139,7 @@ const EditResolution = ({ setCancelresolution }) => {
         setVotingMethods(newArr);
       }
     } catch (error) {
-      
+      console.error("src/container/Resolution/EditResolution/EditResolution.js:", error);
     }
   }, [ResolutionReducerGetAllVotingMethods]);
 
@@ -1264,7 +1264,9 @@ const EditResolution = ({ setCancelresolution }) => {
           // }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Resolution/EditResolution/EditResolution.js:", error);
+    }
   }, [ResolutionReducergetResolutionbyID, meetingAttendeesList]);
 
   const circulationDateChangeHandler = (date) => {

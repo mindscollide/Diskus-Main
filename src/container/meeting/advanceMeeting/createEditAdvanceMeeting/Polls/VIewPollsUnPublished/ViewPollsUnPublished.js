@@ -48,7 +48,9 @@ const ViewPollsUnPublished = ({ setUnPublished }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Polls/VIewPollsUnPublished/ViewPollsUnPublished.js:", error);
+    }
   }, [Allpolls]);
   return (
     <section>

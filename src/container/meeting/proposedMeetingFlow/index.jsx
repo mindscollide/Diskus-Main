@@ -55,10 +55,13 @@ import {
   MeetingProposedForOrganizerProposed,
   MeetingProposedForParticipantProposed,
 } from "../../../store/actions/NotificationRouting_actions";
+import { getTodayYYYYMMDD } from "../../../commen/functions/utils";
+import { useSnackbar } from "../../../components/elements";
 const ProposedMeeting = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [show, Snackbar] = useSnackbar();
   const {
     isMeetingTypeFilter,
     setProposedMeetingData,
@@ -120,7 +123,12 @@ const ProposedMeeting = () => {
           meetingID,
           responseResult: { sendResponseByDeadline },
         } = proposedMeetingParticipant;
-
+      if (String(sendResponseByDeadline).slice(0, 8) < getTodayYYYYMMDD()) {
+          dispatch(MeetingProposedForParticipantProposed(null));
+          navigate(pathname, { replace: true, state: null });
+          show(t("Vote-deadline-expired"), "success");
+          return;
+        }
         dispatch(
           getMeetingDetailsByMeetingIdApi(
             navigate,
@@ -139,7 +147,9 @@ const ProposedMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [proposedMeetingParticipant]);
 
@@ -162,7 +172,9 @@ const ProposedMeeting = () => {
           replace: true,
           state: null,
         });
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [proposedMeetingOrganizer]);
 
@@ -218,6 +230,7 @@ const ProposedMeeting = () => {
       }
     }
   };
+  
   const handleCLickView = (record) => {
     if (record.isOrganizer) {
       dispatch(
@@ -613,7 +626,25 @@ const ProposedMeeting = () => {
           if (indexToUpdate !== -1) {
             let updatedRows = [...proposedMeetingData];
 
-            updatedRows[indexToUpdate] = getMeetingData;
+            // This poll-response event is broadcast to every connected
+            // user, not just the one who voted. The vote count in
+            // getMeetingData is correct for everyone, but its isVoted flag
+            // reflects the sender's vote — applying it as-is would flip
+            // other users' Vote button to Voted too. Only trust isVoted
+            // when the logged-in user is the one who actually voted.
+            let currentUserID = Number(localStorage.getItem("userID"));
+            let mergedMeetingData =
+              Number(meetingData.senderID) !== currentUserID
+                ? {
+                    ...getMeetingData,
+                    meetingPoll: {
+                      ...getMeetingData.meetingPoll,
+                      isVoted: updatedRows[indexToUpdate]?.meetingPoll?.isVoted,
+                    },
+                  }
+                : getMeetingData;
+
+            updatedRows[indexToUpdate] = mergedMeetingData;
 
             setProposedMeetingData(updatedRows);
           } else {
@@ -625,7 +656,9 @@ const ProposedMeeting = () => {
         };
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [meetingStatusProposedMqttData]);
 
@@ -712,7 +745,9 @@ const ProposedMeeting = () => {
         };
 
         callApi1();
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/meeting/proposedMeetingFlow/index.jsx:", error);
+      }
     }
   }, [UserMeetPropoDatPoll]);
   return (
@@ -763,6 +798,7 @@ const ProposedMeeting = () => {
       {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
       {deleteMeetingModal && <DeleteMeetingModal />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+      {Snackbar}
     </section>
   );
 };

@@ -1079,7 +1079,9 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                 if (webNotifactionDataRoutecheckFlag) {
                   dispatch(webnotificationGlobalFlag(true));
                 }
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
                 true
@@ -2401,7 +2403,9 @@ const GetAllMeetingDetailsApiFunc = (
                     ),
                   );
                 }
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -3837,7 +3841,9 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
                     pK_FileID: newFileID.pK_FileID,
                   });
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
               await dispatch(
                 saveFiles_success(
                   response.data.responseResult,
@@ -4246,7 +4252,9 @@ const GetAllAgendaWiseMinutesApiFunc = (
                   );
                   break;
               }
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/store/actions/NewMeetingActions.js:", error);
+            }
 
             await dispatch(
               showGetAllAgendaWiseMinutesSuccess(
@@ -4517,7 +4525,7 @@ const DeleteAgendaWiseMinutesApiFunc = (
               await dispatch(
                 showDeleteAgendaWiseMinutesSuccess(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  "",
                 ),
               );
 
@@ -4525,12 +4533,9 @@ const DeleteAgendaWiseMinutesApiFunc = (
                 MeetingID: currentMeeting,
               };
               dispatch(
-                GetAllAgendaWiseMinutesApiFunc(
-                  navigate,
-                  DeleteGetAll,
-                  t,
+                GetAllAgendaWiseMinutesApiFunc(navigate, t, DeleteGetAll, "", {
                   currentMeeting,
-                ),
+                }),
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -5281,7 +5286,9 @@ const saveFilesMeetingagendaWiseMinutesApi = (
                     pK_FileID: newFileID.pK_FileID,
                   });
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
               await dispatch(
                 saveFiles_success_agenda_wise(response.data.responseResult, ""),
               );
@@ -5599,7 +5606,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
               await dispatch(
                 showDeleteAgendaWiseDocumentSuccess(
                   response.data.responseResult,
-                  t("Record-deleted"),
+                  "",
                 ),
               );
               let AgendaWiseDelData = {
@@ -5610,7 +5617,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   navigate,
                   AgendaWiseDelData,
                   t,
-                  currentMeeting,
+                  Data.MDID,
                   id,
                 ),
               );
@@ -5636,9 +5643,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   "DataRoom_DataRoomManager_DeleteAgendaWiseMinuteDocuments_02".toLowerCase(),
                 )
             ) {
-              dispatch(
-                showDeleteAgendaWiseDocumentFailed(t("No-record-deleted")),
-              );
+              dispatch(showDeleteAgendaWiseDocumentFailed(""));
               let AgendaWiseDelData = {
                 MinuteID: Number(id),
               };
@@ -5647,7 +5652,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
                   navigate,
                   AgendaWiseDelData,
                   t,
-                  currentMeeting,
+                  Data.MDID,
                 ),
               );
             } else if (
@@ -6148,7 +6153,9 @@ const UpdateMeetingUserApiFunc = (
           } else {
             dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/store/actions/NewMeetingActions.js:", error);
+        }
       })
       .catch((response) => {
         dispatch(UpdateMeetingUserFailed(t("Something-went-wrong")));
@@ -7680,7 +7687,9 @@ const LeaveCurrentMeetingOtherMenus = (
                   },
                   t,
                 });
-              } catch (error) {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -8257,7 +8266,9 @@ const LeaveMeetingVideo = (
                 }
 
                 sessionStorage.removeItem("isWaiting");
-              } catch {}
+              } catch (error) {
+                console.error("src/store/actions/NewMeetingActions.js:", error);
+              }
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
             } else if (
@@ -9171,7 +9182,9 @@ const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
                   displayFileName: newFileID.displayFileName,
                 });
               });
-            } catch (error) {}
+            } catch (error) {
+              console.error("src/store/actions/NewMeetingActions.js:", error);
+            }
 
             dispatch(saveFilesQuickMeeting_Success(responseResult, ""));
 
@@ -9257,6 +9270,7 @@ const moveFilesAndFoldersApi = (
   newAgendas,
   checkFlag,
   setShow,
+  tabSetters = {},
 ) => {
   return async (dispatch) => {
     await dispatch(moveFilesAndFolder_init());
@@ -9276,6 +9290,7 @@ const moveFilesAndFoldersApi = (
               newAgendas,
               checkFlag,
               setShow,
+              tabSetters,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -9298,6 +9313,7 @@ const moveFilesAndFoldersApi = (
                 SaveMeetingDocuments(navigate, t, newAgendas, "", {
                   checkFlag,
                   setShow,
+                  ...tabSetters,
                 }),
               );
             } else if (
@@ -9416,9 +9432,7 @@ const getMeetingRecordingFilesApi = (
                   "Meeting_MeetingServiceManager_GetMeetingRecordingFiles_03".toLowerCase(),
                 )
             ) {
-              dispatch(
-                getMeetingRecordingFiles_fail(t("No-meeting-recording-found")),
-              );
+              dispatch(getMeetingRecordingFiles_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -9571,7 +9585,15 @@ const deleteMeetingMQtt = (response) => {
   };
 };
 
+const removeProposedMeeting = (response) => {
+  return {
+    type: actions.REMOVE_PROPOSEDMEETINGFROMLISTING,
+    response,
+  };
+};
+
 export {
+  removeProposedMeeting,
   deleteMeetingMQtt,
   meetingMinutesDownloaded,
   requestMeetingRecordingTranscriptApi,

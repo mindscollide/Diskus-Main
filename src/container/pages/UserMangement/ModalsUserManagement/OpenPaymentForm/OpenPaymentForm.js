@@ -26,7 +26,7 @@ const OpenPaymentForm = () => {
         setSourceLink(apiResponse.paymentRedirectionLink);
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm.js:", error);
     }
   }, [UserMangementReducerpaymentInitiateDataData]);
 

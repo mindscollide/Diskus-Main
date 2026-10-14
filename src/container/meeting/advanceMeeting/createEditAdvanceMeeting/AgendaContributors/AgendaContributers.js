@@ -28,6 +28,8 @@ import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
 import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { useCommitteeContext } from "../../../../../context/CommitteeContext";
+import { useGroupsContext } from "../../../../../context/GroupsContext";
 import {
   UpdateMeetingStatusApi,
   UpdateMeetingUserApi,
@@ -52,6 +54,11 @@ const AgendaContributers = () => {
   const [notifyMessageField, setNotifyMessageField] = useState("");
   const { editorRole, setEditorRole, setGoBackCancelModal } =
     useMeetingContext();
+  // Shared across Main Meeting, Committee, and Group — only one context is
+  // ever actually "live"; threaded into the publish action so it can
+  // switch the correct module's active tab to Published on success.
+  const { setCurrentCommitteeMeetingTabActive } = useCommitteeContext();
+  const { setCurrentGroupMeetingTabActive } = useGroupsContext();
 
   const [selectedOption, setSelectedOption] = useState({
     value: 1,
@@ -596,7 +603,11 @@ const AgendaContributers = () => {
         t,
         { MeetingID: meetingID, StatusID: 1 },
         "publishMeetingFromAgendaContributor",
-        { setEditorRole },
+        {
+          setEditorRole,
+          setCurrentCommitteeMeetingTabActive,
+          setCurrentGroupMeetingTabActive,
+        },
       ),
     );
   };

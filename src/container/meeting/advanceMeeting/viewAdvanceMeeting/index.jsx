@@ -611,7 +611,9 @@ const ViewMeetingModal = () => {
             t,
           ),
         );
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/index.jsx:", error);
+      }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
 
@@ -642,7 +644,9 @@ const ViewMeetingModal = () => {
             t,
           ),
         );
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/index.jsx:", error);
+      }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
 
@@ -680,7 +684,9 @@ const ViewMeetingModal = () => {
           }
           localStorage.setItem("folderDataRoomMeeting", 0);
         }
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/index.jsx:", error);
+      }
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 
@@ -720,13 +726,17 @@ const ViewMeetingModal = () => {
   useEffect(() => {
     try {
       if (leaveMeetingOnLogoutResponse) leaveMeeting(true, false);
-    } catch { }
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/index.jsx:", error);
+    }
   }, [leaveMeetingOnLogoutResponse]);
 
   useEffect(() => {
     try {
       if (leaveMeetingOnEndStatusMqttFlag) leaveMeeting(false, true);
-    } catch { }
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/index.jsx:", error);
+    }
   }, [leaveMeetingOnEndStatusMqttFlag]);
 
   // ─── Agenda Voting MQTT ───────────────────────────────────────────────────
@@ -745,7 +755,9 @@ const ViewMeetingModal = () => {
           dispatch(AgendaPollVotingStartedAction(true));
         }
       }
-    } catch (error) { }
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/index.jsx:", error);
+    }
   }, [AgendaVotingModalStartedData]);
 
   // ─── Web Notification Routing ─────────────────────────────────────────────
@@ -778,7 +790,9 @@ const ViewMeetingModal = () => {
         );
         dispatch(webnotificationGlobalFlag(false));
       }
-    } catch (error) { }
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/index.jsx:", error);
+    }
   }, [globalFunctionWebnotificationFlag]);
 
   // ─── Vote Cast Success Message ────────────────────────────────────────────

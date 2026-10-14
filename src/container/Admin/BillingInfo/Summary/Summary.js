@@ -99,7 +99,9 @@ const Summary = () => {
         IsLateSurcharge: false,
       };
       dispatch(searchPaymentHistoryApi(navigate, Data, t, false, false));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Admin/BillingInfo/Summary/Summary.js:", error);
+    }
   }, []);
 
   //Extracting the data of payment and Invoice Details
@@ -108,7 +110,9 @@ const Summary = () => {
       if (searchPaymentHistory !== null && searchPaymentHistory !== undefined) {
         setOpenInvoiceRecords(searchPaymentHistory.paymentInfo.paymentHistory);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/Admin/BillingInfo/Summary/Summary.js:", error);
+    }
   }, [searchPaymentHistory]);
 
   const closeModal = () => {
@@ -236,7 +240,9 @@ const Summary = () => {
               : "",
         });
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Admin/BillingInfo/Summary/Summary.js:", error);
+    }
   }, [getBillInformation]);
 
   useEffect(() => {

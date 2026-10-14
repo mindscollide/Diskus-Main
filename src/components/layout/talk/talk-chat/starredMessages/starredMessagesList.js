@@ -93,7 +93,9 @@ const StarredMessagesList = () => {
           setAllStarredMessagesData(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/starredMessages/starredMessagesList.js:", error);
+    }
   };
 
   useEffect(() => {
@@ -262,7 +264,7 @@ const StarredMessagesList = () => {
         <ResultMessage
           icon={<img src={StarredMessages} width={250} />}
           title={
-            "You haven't starred any messages yet. Mark important messages for quick access"
+            t("You-haven't-starred-any-messages-yet-mark-important-messages-for-quick-access")
           }
           className="emptyRecentChats"
         />

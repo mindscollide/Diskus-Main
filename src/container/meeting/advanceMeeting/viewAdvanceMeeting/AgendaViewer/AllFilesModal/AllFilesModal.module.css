@@ -51,5 +51,18 @@ body[dir="rtl"] span.fileNameAttachment {
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 280px;
+  width: 100%;
   padding-right: 10px;
+}
+
+.FilesList {
+  border: 1px solid #e1e1e1;
+  border-left: 2px solid #e1e1e1;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.fileName{
+  font-weight: 600;
+  font-size: 12px;
 }

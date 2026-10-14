@@ -51,11 +51,15 @@ import EmptyTableComponent from "../../../meeting/commonComponents/EmptyTableCom
 import SceduleProposedmeeting from "../../../meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting";
 import DeleteMeetingModal from "../../../meeting/proposedMeetingFlow/DeleteMeetingModal/DeleteMeetingModal";
 import { MeetingProposedForOrganizerProposed, MeetingProposedForParticipantProposed } from "../../../../store/actions/NotificationRouting_actions";
+import { clearGetMeetingByCommitteeID } from "../../../../store/actions/Committee_actions";
+import { getTodayYYYYMMDD } from "../../../../commen/functions/utils";
+import { useSnackbar } from "../../../../components/elements";
 const CommitteeProposedMeetings = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [show, SnackBar] =useSnackbar()
   const proposedMeetingOrganizer = useSelector(
     (state) => state.NotificationRoutingReducer.MeetingProposedForOrganizer,
   );
@@ -77,7 +81,9 @@ const CommitteeProposedMeetings = () => {
     setCurrentPageProposedCommitteeMeeting,
     currentLengthProposedCommitteeMeeting,
     setCurrentLengthProposedCommitteeMeeting,
-  } = useCommitteeContext();
+    participantProposedMeetingEmailRouteData,
+    setParticipantProposedMeetingEmailRouteData,
+    organizerProposedMeetingEmailRouteData, setOrganizerProposedMeetingEmailRouteData } = useCommitteeContext();
 
   const currentLanguage = localStorage.getItem("i18nextLng");
   const {
@@ -93,6 +99,27 @@ const CommitteeProposedMeetings = () => {
   const deleteMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.deleteMeetingModal,
   );
+
+  useEffect(() => {
+
+    let searchData = {
+      CommitteeID: Number(localStorage.getItem("ViewCommitteeID")),
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: true,
+    };
+    dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
+
+    return () => {
+      dispatch(clearGetMeetingByCommitteeID());
+
+    }
+  }, [])
 
   const handleClickActions = (record) => {
     if (record.isParticipant) {
@@ -134,7 +161,12 @@ const CommitteeProposedMeetings = () => {
           meetingID,
           responseResult: { sendResponseByDeadline },
         } = proposedMeetingParticipant;
-
+        if (String(sendResponseByDeadline).slice(0, 8) < getTodayYYYYMMDD()) {
+          dispatch(MeetingProposedForParticipantProposed(null));
+          navigate(pathname, { replace: true, state: null });
+          show(t("Vote-deadline-expired"), "success");
+          return;
+        }
         dispatch(
           getMeetingDetailsByMeetingIdApi(
             navigate,
@@ -153,7 +185,9 @@ const CommitteeProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingParticipant]);
 
@@ -176,9 +210,67 @@ const CommitteeProposedMeetings = () => {
           replace: true,
           state: null,
         });
-      } catch (error) { }
+      } catch (error) {
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
     }
   }, [proposedMeetingOrganizer]);
+
+  useEffect(() => {
+    if (participantProposedMeetingEmailRouteData !== null) {
+      try {
+        dispatch(
+          getMeetingDetailsByMeetingIdApi(
+            navigate,
+            t,
+            { MeetingID: participantProposedMeetingEmailRouteData.meetingID },
+            "ProposedMeetingViewForParticipant",
+            {
+              responseDeadline: participantProposedMeetingEmailRouteData.deadline,
+              meetingId: participantProposedMeetingEmailRouteData.meetingID,
+              setResponseByDate,
+            },
+          ),
+        );
+        setParticipantProposedMeetingEmailRouteData(null);
+        localStorage.setItem(
+          "viewProposeDatePollMeetingID",
+          participantProposedMeetingEmailRouteData.meetingID,
+        );
+      } catch (error) {
+        setParticipantProposedMeetingEmailRouteData(null);
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
+    }
+  }, [participantProposedMeetingEmailRouteData]);
+
+  useEffect(() => {
+    if (organizerProposedMeetingEmailRouteData !== null) {
+      try {
+
+        // localStorage.setItem(
+        //   "viewProposeDatePollMeetingID",
+        //   organizerProposedMeetingEmailRouteData.meetingID,
+        // );
+        // localStorage.removeItem("UserMeetPropoDatPoll");
+        dispatch(
+          getUserWiseProposedDatesForOrganizerApi(
+            navigate,
+            t,
+            { MeetingID: organizerProposedMeetingEmailRouteData.meetingID },
+            "",
+            {},
+          ),
+        );
+        setOrganizerProposedMeetingEmailRouteData(null)
+
+      } catch (error) {
+        setOrganizerProposedMeetingEmailRouteData(null)
+
+        console.error("src/container/Committee/committeeMeetings/committeeProposedMeetings/index.jsx:", error);
+      }
+    }
+  }, [organizerProposedMeetingEmailRouteData]);
 
   const handelChangePagination = async (current, PageSize) => {
     setCurrentPageProposedCommitteeMeeting(current);
@@ -498,7 +590,7 @@ const CommitteeProposedMeetings = () => {
                     <span>
                       <CustomButton
                         className={styles.MoreMeetingButton}
-                        text='More'
+                        text={t('More')}
                         icon2={
                           <img
                             src={ChevronDownIcon}
@@ -556,7 +648,7 @@ const CommitteeProposedMeetings = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-center my-3 pagination-groups-table"
+                className="d-flex justify-content-center  pagination-groups-table"
               >
 
                 <CustomPagination
@@ -575,6 +667,7 @@ const CommitteeProposedMeetings = () => {
         {isOrganizerViewPollProposedMeeting && <SceduleProposedmeeting />}
         {deleteMeetingModal && <DeleteMeetingModal />}
         {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
+        {SnackBar}
       </div>
     </>
   );

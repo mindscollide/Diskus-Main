@@ -1,3 +1,25 @@
+/**
+ * Barrel for the shared element library — the single import point for the app's
+ * reusable UI primitives (buttons, inputs, modals, tables, loaders, cards…).
+ *
+ * Imported by ~430 files, which makes it the most depended-on module in `src`
+ * and worth two warnings:
+ *
+ * 1. COST. Importing anything from here pulls EVERY component listed below into
+ *    the module graph, because a re-export barrel cannot be tree-shaken away
+ *    once any member is used. A screen that wants one `<Button>` drags in the
+ *    date pickers, the tables and the calendar with it. For a leaf component,
+ *    prefer the deep path — `components/elements/button/Button` — and keep this
+ *    barrel for places that genuinely use many of them.
+ *
+ * 2. ORDER. These are plain (non-lazy) imports evaluated at module load, so a
+ *    module-level side effect in any component here runs as soon as anything
+ *    touches the barrel, long before that component renders.
+ *
+ * Adding a component: import it above and add it to the export block at the
+ * bottom. Both halves are required — an import with no matching export is dead
+ * weight that still costs bundle size.
+ */
 import Button from "./button/Button";
 import TextField from "./input_field/Input_field";
 import VerificationInputField from "./verification_input/Verification_Input";

@@ -1,5 +1,4 @@
 export const countryName = {
-  AF: { id: 1, primary: "AF", secondary: "+93" },
   AE: { id: 2, primary: "AE", secondary: "+971" },
   AF: { id: 3, primary: "AF", secondary: "+93" },
   AG: { id: 4, primary: "AG", secondary: "+1-268" },
@@ -698,9 +697,9 @@ export const countryNameforPhoneNumber = {
     primary: "IN",
     secondary: "+91"
   },
-  ER: {
+  ID: {
     id: 91,
-    primary: "ER",
+    primary: "ID",
     secondary: "+62"
   },
   IR: {

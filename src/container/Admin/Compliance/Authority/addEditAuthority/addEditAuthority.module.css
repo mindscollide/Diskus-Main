@@ -150,7 +150,10 @@ body[dir="rtl"] .AddButtonStyles {
 .addEditViewAuthorityModal_Header {
   margin: 0 0 15px 0 !important;
   padding: 0 !important;
+  display: flex;
+  justify-content: space-between;
 }
+
 .addEditViewAuthorityModal_Body {
   margin: 0 !important;
   padding: 0 !important;
@@ -249,4 +252,8 @@ body[dir="rtl"] .SearchIconClass {
   letter-spacing: 0%;
   color: #5a5a5a;
   word-break: break-all;
+}
+body[dir="rtl"] .AuthortyModalTitle button {
+  left: 0 !important;
+  position: absolute;
 }

@@ -115,7 +115,9 @@ const CreateEditViewComplianceTask = () => {
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/CreateEditViewComplianceTask/index.jsx:", error);
+      }
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
@@ -143,7 +145,9 @@ const CreateEditViewComplianceTask = () => {
         );
 
         setTaskCount(totalTaskCount);
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/ComplianceUser/Tabs/ComplainceByMe/createEditCompliance/CreateEditViewComplianceTask/index.jsx:", error);
+      }
     } else {
       //  CLEAR UI when API returns null
 

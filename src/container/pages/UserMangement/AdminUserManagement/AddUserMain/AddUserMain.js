@@ -838,7 +838,7 @@ const AddUserMain = () => {
                           selectedSize={8}
                           onSelect={handleSelect}
                           searchable={true}
-                          placeholder={"Select Co...."}
+                          placeholder={t("Select")}
                           customLabels={countryNameforPhoneNumber}
                         />
                       </Col>

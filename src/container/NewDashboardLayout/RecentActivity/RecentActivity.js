@@ -16,10 +16,10 @@ import DemoIcon from "../../../assets/images/Recent Activity Icons/Task/Added In
 
 const RecentActivity = () => {
   const RecentActivityData = useSelector(
-    (state) => state.settingReducer.RecentActivityData
+    (state) => state.settingReducer.RecentActivityData,
   );
   const SocketRecentActivityData = useSelector(
-    (state) => state.settingReducer.SocketRecentActivityData
+    (state) => state.settingReducer.SocketRecentActivityData,
   );
   const Spinner = useSelector((state) => state.settingReducer.Spinner);
   let currentLanguage = localStorage.getItem("i18nextLng") || "en";
@@ -43,7 +43,7 @@ const RecentActivity = () => {
       SocketRecentActivityData !== undefined &&
       Object.keys(SocketRecentActivityData).length > 0
     ) {
-      setRecentActivityData([SocketRecentActivityData, ...recentActivityData]);
+      setRecentActivityData((prev) => [SocketRecentActivityData, ...prev]);
     }
   }, [SocketRecentActivityData]);
 
@@ -73,23 +73,21 @@ const RecentActivity = () => {
         ) : (
           recentActivityData.map((activity) => {
             const { pK_NTID, description } = activity.notificationTypes;
-            return (
-              <>
-                <div
-                  key={pK_NTID + activity.creationDateTime}
-                  className={styles["imageNotificationCard"]}>
-                  {/* Since all IDs use the same icon, you can simplify */}
-                  <img src={DemoIcon} width={46} height={46} alt='' />
 
+            return (
+              <React.Fragment key={activity.pK_NID}>
+                <div className={styles["imageNotificationCard"]}>
+                  <img src={DemoIcon} width={46} height={46} alt='' />
                   {description}
                 </div>
+
                 <p className='d-flex justify-content-end mx-1'>
                   {timePassed(
                     forRecentActivity(activity.creationDateTime),
-                    currentLanguage
+                    currentLanguage,
                   )}
                 </p>
-              </>
+              </React.Fragment>
             );
           })
         )}

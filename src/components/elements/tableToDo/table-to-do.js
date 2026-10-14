@@ -67,7 +67,23 @@ const CustomTableToDo = ({
   sticky,
   style,
   showHeader,
-  footer
+  footer,
+  /**
+   * How to identify a row. Defaults to antd's own default ("key"), so existing
+   * call sites are unaffected — but pass a real unique field wherever the data
+   * has no `key` property.
+   *
+   * Without it React cannot tell rows apart across a re-render ("Each child in a
+   * list should have a unique key prop"), and it then reuses the wrong DOM node
+   * when the list is sorted, filtered or paged. The visible symptoms are the
+   * wrong row appearing expanded or checked after a sort — not just a console
+   * warning.
+   *
+   * Accepts a field name or a `(record, index) => string` function; prefer a
+   * stable id over the index, since an index-based key changes on every reorder
+   * and defeats the purpose.
+   */
+  rowKey = "key",
 }) => {
   const { Text } = Typography;
 
@@ -95,6 +111,7 @@ const CustomTableToDo = ({
         style={style}
         bordered={false}
         footer={footer}
+        rowKey={rowKey}
         tableLayout="fixed"
       />
     </>

@@ -406,14 +406,17 @@ export const ComlianceProvider = ({ children }) => {
     {
       label: t("High"),
       value: 1,
+      labelString: "High",
     },
     {
       label: t("Medium"),
       value: 2,
+      labelString: "Medium",
     },
     {
       label: t("Low"),
       value: 3,
+      labelString: "Low",
     },
   ];
   const [checkAnyChecklistOnPendingState, setCheckAnyChecklistOnPendingState] =
@@ -541,7 +544,7 @@ export const ComlianceProvider = ({ children }) => {
         });
 
         const selectedCriticality = criticalityOptions.find(
-          (item) => item.label === criticalityLevel,
+          (item) => item.labelString === criticalityLevel,
         );
 
         setComplianceDetailsViewState((prev) => ({
@@ -619,7 +622,9 @@ export const ComlianceProvider = ({ children }) => {
           setCheckAnyTaskOnPendingState(false);
           setCheckAnyTaskInProgress(false);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/ComplianceContext.js:", error);
+      }
     }
   }, [viewComplianceByMeDetails, complianceAddEditViewState]);
 
@@ -647,6 +652,9 @@ export const ComlianceProvider = ({ children }) => {
         );
 
         if (findIsExist === undefined) {
+          let criticalityObj = criticalityOptions.find(
+            (data, index) => data.value === criticality,
+          );
           // Your logic here
           let complianceObj = {
             complianceId: complianceID,
@@ -654,7 +662,7 @@ export const ComlianceProvider = ({ children }) => {
             authorityId: authorityId,
             organizationId: localStorage.getItem("organizationID"),
             description: description,
-            criticality: criticality,
+            criticality: criticalityObj !== undefined ? criticality : null,
             complianceStatusId: 1,
             complianceStatusTitle: "Not Started",
             dueDate: dueDate,
@@ -667,7 +675,9 @@ export const ComlianceProvider = ({ children }) => {
           setComplianceByMeList((prev) => [complianceObj, ...prev]);
           setComplianceByMeTotal((prev) => prev + 1);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/ComplianceContext.js:", error);
+      }
     }
   }, [complianceCreatedMqttData]);
 
@@ -712,7 +722,9 @@ export const ComlianceProvider = ({ children }) => {
           ...(prev || []),
         ]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/ComplianceContext.js:", error);
+    }
   }, [complianceCheckListMqttData]);
 
   // WHen CheckList Data Update Mqtt Coming
@@ -739,7 +751,9 @@ export const ComlianceProvider = ({ children }) => {
             : item,
         ),
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/ComplianceContext.js:", error);
+    }
   }, [complianceCheckListUpdatedMqttData]);
 
   // WHen CheckList Data Delete Mqtt Coming
@@ -756,7 +770,9 @@ export const ComlianceProvider = ({ children }) => {
       setAllCheckListByComplianceId((prev) =>
         prev.filter((item) => Number(item.checklistId) !== Number(checklistId)),
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/ComplianceContext.js:", error);
+    }
   }, [complianceCheckListDeletedMqttData]);
 
   // WHen COMPLIANCE_UPDATED Mqtt Coming
@@ -879,7 +895,9 @@ export const ComlianceProvider = ({ children }) => {
           //   ),
           // );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/context/ComplianceContext.js:", error);
+      }
 
       setComplianceByMeList((prev) =>
         prev.map((item) =>
@@ -905,7 +923,9 @@ export const ComlianceProvider = ({ children }) => {
           complianceName: complianceTitle,
         };
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/ComplianceContext.js:", error);
+    }
   }, [complianceUpdateMqttData]);
 
   // WHEN COMPLIANCE_REOPEN_MQTT comes
@@ -933,7 +953,9 @@ export const ComlianceProvider = ({ children }) => {
           complianceStatusChangeHistory: complianceStatusChangeHistory,
         };
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/ComplianceContext.js:", error);
+    }
   }, [complianceReopenMqttData]);
 
   // FOr Task Status Update
@@ -959,7 +981,9 @@ export const ComlianceProvider = ({ children }) => {
           };
         });
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/context/ComplianceContext.js:", error);
+    }
   }, [taskStatusChangedMqttData]);
 
   return (

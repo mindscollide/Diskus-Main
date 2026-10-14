@@ -30,23 +30,23 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
   const { t } = useTranslation();
 
   const countryNamesReducerCountryNamesData = useSelector(
-    (state) => state.countryNamesReducer.CountryNamesData
+    (state) => state.countryNamesReducer.CountryNamesData,
   );
 
   const adminReducerOrganisationCheckData = useSelector(
-    (state) => state.adminReducer.OrganisationCheck
+    (state) => state.adminReducer.OrganisationCheck,
   );
 
   const adminReducerEmailCheckData = useSelector(
-    (state) => state.adminReducer.EmailCheck
+    (state) => state.adminReducer.EmailCheck,
   );
 
   const adminReducerOrganizationCheckSpinnerData = useSelector(
-    (state) => state.adminReducer.OrganizationCheckSpinner
+    (state) => state.adminReducer.OrganizationCheckSpinner,
   );
 
   const adminReducerEmailCheckSpinnerData = useSelector(
-    (state) => state.adminReducer.EmailCheckSpinner
+    (state) => state.adminReducer.EmailCheckSpinner,
   );
 
   const location = useLocation();
@@ -56,7 +56,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
   const dispatch = useDispatch();
 
   let packageSubscriptionDetail = JSON.parse(
-    localStorage.getItem("packageSubscriptionDetail")
+    localStorage.getItem("packageSubscriptionDetail"),
   );
 
   const [signUpDetails, setSignUpDetails] = useState({
@@ -143,7 +143,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
     });
-    
+
     if (a !== undefined) {
       setSelect(code);
       setSignUpDetails({
@@ -200,8 +200,8 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
             setCompanyEmailValidateError,
             signUpDetails,
             t,
-            setEmailUnique
-          )
+            setEmailUnique,
+          ),
         );
       } else {
         setEmailUnique(false);
@@ -425,7 +425,6 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
   };
 
   const handlerSignup = async () => {
-    
     if (isFreeTrail === true) {
       if (
         signUpDetails.CompanyName.value !== "" &&
@@ -441,7 +440,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
           ) {
             let PackageID = localStorage.getItem("PackageID");
             let tenureOfSuscriptionID = localStorage.getItem(
-              "TenureOfSuscriptionID"
+              "TenureOfSuscriptionID",
             );
 
             let data = {
@@ -453,7 +452,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                 ContactPersonEmail: signUpDetails.Email.value,
                 ContactPersonNumber: signUpDetails.PhoneNumber.value,
                 FK_NumberWorldCountryID: JSON.parse(
-                  signUpDetails.PhoneNumberCountryID
+                  signUpDetails.PhoneNumberCountryID,
                 ),
                 CustomerReferenceNumber: "",
                 PersonalNumber: signUpDetails.PhoneNumber.value,
@@ -475,8 +474,8 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                 setCompanyNameValidateError,
                 signUpDetails,
                 t,
-                setCompanyNameUnique
-              )
+                setCompanyNameUnique,
+              ),
             );
             handeEmailvlidate();
             setAgainCall(true);
@@ -593,7 +592,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
           ) {
             let data = {
               TenureOfSubscriptionID: Number(
-                packageSubscriptionDetail.TenureOfSubscriptionID
+                packageSubscriptionDetail.TenureOfSubscriptionID,
               ),
               Organization: {
                 OrganizationName: signUpDetails.CompanyName.value,
@@ -602,7 +601,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                 ContactPersonEmail: signUpDetails.Email.value,
                 ContactPersonNumber: signUpDetails.PhoneNumber.value,
                 FK_NumberWorldCountryID: JSON.parse(
-                  signUpDetails.PhoneNumberCountryID
+                  signUpDetails.PhoneNumberCountryID,
                 ),
                 CustomerReferenceNumber: "",
                 PersonalNumber: signUpDetails.PhoneNumber.value,
@@ -624,8 +623,8 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                 setCompanyNameValidateError,
                 signUpDetails,
                 t,
-                setCompanyNameUnique
-              )
+                setCompanyNameUnique,
+              ),
             );
             handeEmailvlidate();
             setAgainCall(true);
@@ -796,9 +795,8 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
     <>
       <Container
         fluid
-        className={`${"SignupOrganization"} ${styles["signUp_Container"]}`}
-      >
-        <Row className="position-relative">
+        className={`${"SignupOrganization"} ${styles["signUp_Container"]}`}>
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -809,26 +807,23 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
               sm={12}
               md={12}
               lg={12}
-              className={styles["sigup_form_leftSection"]}
-            >
+              className={styles["sigup_form_leftSection"]}>
               <Row>
                 <Col
                   sm={12}
                   lg={12}
                   md={12}
-                  className={styles["signUpform_bg"]}
-                >
+                  className={styles["signUpform_bg"]}>
                   {/* Oranization form */}
                   <h4 className={styles["signup_organization_title"]}>
                     {t("Organization-details")}
                   </h4>
-                  <Row className="mb-3">
+                  <Row className='mb-3'>
                     <Col
                       sm={12}
                       lg={6}
                       md={6}
-                      className={styles["checkOrganization"]}
-                    >
+                      className={styles["checkOrganization"]}>
                       <Row>
                         <span className={styles["Heading"]}>
                           {t("Company-name")}
@@ -843,17 +838,17 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                               setCompanyNameValidateError,
                               signUpDetails,
                               t,
-                              setCompanyNameUnique
-                            )
+                              setCompanyNameUnique,
+                            ),
                           );
                         }}
                         autofill
-                        labelclass="d-none"
+                        labelclass='d-none'
                         applyClass={"sign-up-textfield-input MontserratMedium"}
                         placeholder={t("Company-name")}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.CompanyName.value || ""}
-                        name="CompanyName"
+                        name='CompanyName'
                         maxLength={150}
                       />
                       <Row>
@@ -866,8 +861,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                                 signUpDetails.CompanyName.errorMessage !== ""
                                   ? ` ${styles["errorMessageCompany"]} `
                                   : `${styles["errorMessageCompany_hidden"]}`
-                              }
-                            >
+                              }>
                               {signUpDetails.CompanyName.value === ""
                                 ? t("Company-name-is-required")
                                 : signUpDetails.CompanyName.errorMessage}
@@ -890,8 +884,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                       sm={12}
                       lg={5}
                       md={5}
-                      className={styles["react-flag-Info-Signup"]}
-                    >
+                      className={styles["react-flag-Info-Signup"]}>
                       <Row>
                         <span className={styles["Heading"]}>
                           {t("Country")}
@@ -900,6 +893,8 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                       <ReactFlagsSelect
                         disabled={countryNames.length === 0 ? true : false}
                         selected={select}
+                        placeholder={t("Select-a-country")}
+                        searchPlaceholder={t("Search")}
                         className={
                           countryNames.length === 0
                             ? styles["country_ids_disabled"]
@@ -916,8 +911,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                               signUpDetails.CountryName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
+                            }>
                             {signUpDetails.CountryName.value === ""
                               ? t("Please-select-country")
                               : signUpDetails.CountryName.errorMessage}
@@ -926,7 +920,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                       </Row>
                     </Col>
                   </Row>
-                  <Row className="mb-3">
+                  <Row className='mb-3'>
                     <Col sm={12} md={12} lg={12}>
                       <Row>
                         <span className={styles["Heading"]}>
@@ -934,18 +928,18 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                         </span>
                       </Row>
                       <TextField
-                        labelclass="d-none"
+                        labelclass='d-none'
                         placeholder={t("Address")}
                         maxLength={100}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Address1.value || ""}
-                        name="Address1"
-                        applyClass="form-control2 MontserratMedium"
+                        name='Address1'
+                        applyClass='form-control2 MontserratMedium'
                       />
                     </Col>
                   </Row>
 
-                  <Row className="mb-3">
+                  <Row className='mb-3'>
                     <Col sm={12} md={4} lg={4}>
                       <Row>
                         <span className={styles["Heading"]}>
@@ -953,13 +947,13 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                         </span>
                       </Row>
                       <TextField
-                        labelclass="d-none"
+                        labelclass='d-none'
                         placeholder={t("State-province")}
                         maxLength={70}
                         change={signupValuesChangeHandler}
-                        name="State"
+                        name='State'
                         value={signUpDetails.State.value || ""}
-                        applyClass="form-control2 MontserratMedium"
+                        applyClass='form-control2 MontserratMedium'
                       />
                       <Row>
                         <Col>
@@ -972,13 +966,13 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                         <span className={styles["Heading"]}>{t("City")}</span>
                       </Row>
                       <TextField
-                        labelclass="d-none"
+                        labelclass='d-none'
                         placeholder={t("City")}
-                        name="City"
+                        name='City'
                         maxLength={70}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.City.value || ""}
-                        applyClass="form-control2 MontserratMedium"
+                        applyClass='form-control2 MontserratMedium'
                       />
                       <Row>
                         <Col>
@@ -993,13 +987,13 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                         </span>
                       </Row>
                       <TextField
-                        labelclass="d-none"
+                        labelclass='d-none'
                         placeholder={t("Postal-zipcode")}
                         maxLength={10}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.PostalCode.value || ""}
-                        name="PostalCode"
-                        applyClass="form-control2 MontserratMedium"
+                        name='PostalCode'
+                        applyClass='form-control2 MontserratMedium'
                       />
                       <Row>
                         <Col>
@@ -1012,7 +1006,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                   <h4 className={styles["signup_admin_title"]}>
                     {t("Admin-details")}
                   </h4>
-                  <Row className="mb-3">
+                  <Row className='mb-3'>
                     <Col sm={12} md={12} lg={12}>
                       <Row>
                         <span className={styles["Heading"]}>
@@ -1021,9 +1015,9 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                         </span>
                       </Row>
                       <TextField
-                        labelclass="d-none"
+                        labelclass='d-none'
                         placeholder={t("Full-name")}
-                        name="FullName"
+                        name='FullName'
                         change={signupValuesChangeHandler}
                         value={signUpDetails.FullName.value || ""}
                         applyClass={
@@ -1039,8 +1033,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                               signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
+                            }>
                             {signUpDetails.FullName.value === ""
                               ? t("Full-name-is-required")
                               : signUpDetails.FullName.errorMessage}
@@ -1049,7 +1042,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                       </Row>
                     </Col>
                   </Row>
-                  <Row className="mb-3">
+                  <Row className='mb-3'>
                     <Col sm={12} md={5} lg={5} className={styles["checkEmail"]}>
                       <Row>
                         <span className={styles["Heading"]}>
@@ -1061,14 +1054,14 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                         onBlur={() => {
                           handeEmailvlidate();
                         }}
-                        labelclass="d-none"
+                        labelclass='d-none'
                         placeholder={t("Work-email-address")}
-                        name="Email"
-                        type="email"
+                        name='Email'
+                        type='email'
                         maxLength={160}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Email.value || ""}
-                        applyClass="form-control2 MontserratMedium"
+                        applyClass='form-control2 MontserratMedium'
                       />
                       <Row>
                         <Col>
@@ -1080,8 +1073,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                                 signUpDetails.Email.errorMessage !== ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
-                              }
-                            >
+                              }>
                               {signUpDetails.Email.value === ""
                                 ? t("Email-address-is-required")
                                 : signUpDetails.Email.errorMessage}
@@ -1090,7 +1082,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                         </Col>
                       </Row>
                     </Col>
-                    <Col sm={12} md={1} lg={1} className="position-relative">
+                    <Col sm={12} md={1} lg={1} className='position-relative'>
                       {adminReducerEmailCheckSpinnerData ? (
                         <Spinner className={styles["checkEmailSpinner"]} />
                       ) : null}
@@ -1102,8 +1094,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                       sm={12}
                       md={6}
                       lg={6}
-                      className={styles["phoneNumber"]}
-                    >
+                      className={styles["phoneNumber"]}>
                       <Row>
                         <Row>
                           <span className={styles["Heading"]}>
@@ -1115,14 +1106,13 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                           lg={3}
                           md={3}
                           sm={12}
-                          className={styles["react-flag-Signup"]}
-                        >
+                          className={styles["react-flag-Signup"]}>
                           <ReactFlagsSelect
                             fullWidth={false}
                             selected={selected}
                             onSelect={handleSelect}
                             searchable={true}
-                            placeholder={"Select Co...."}
+                            searchPlaceholder={t("Search")}
                             customLabels={countryNameforPhoneNumber}
                             className={styles["dropdown-countrylist"]}
                           />
@@ -1131,13 +1121,12 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                           lg={9}
                           md={9}
                           sm={10}
-                          className="d-flex justify-content-end"
-                        >
+                          className='d-flex justify-content-end'>
                           <Form.Control
                             className={styles["Form-PhoneInput-field"]}
-                            name="PhoneNumber"
+                            name='PhoneNumber'
                             placeholder={t("Enter-phone-number")}
-                            applyClass="form-control2"
+                            applyClass='form-control2'
                             maxLength={15}
                             minLength={4}
                             onChange={signupValuesChangeHandler}
@@ -1152,8 +1141,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                                 signUpDetails.PhoneNumber.value === ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
-                              }
-                            >
+                              }>
                               {signUpDetails.PhoneNumber.value === ""
                                 ? t("Phone-number-is-required")
                                 : signUpDetails.PhoneNumber.errorMessage}
@@ -1165,17 +1153,15 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-4">
+              <Row className='mt-4'>
                 <Col
                   sm={7}
                   md={7}
                   lg={7}
-                  className="d-flex justify-content-start align-items-center"
-                >
+                  className='d-flex justify-content-start align-items-center'>
                   <span
                     onClick={onClickLink}
-                    className={styles["signUp_goBack"]}
-                  >
+                    className={styles["signUp_goBack"]}>
                     {t("Go-back")}
                   </span>
                 </Col>
@@ -1183,8 +1169,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
                   sm={5}
                   md={5}
                   lg={5}
-                  className="d-flex justify-content-end align-items-center"
-                >
+                  className='d-flex justify-content-end align-items-center'>
                   <Button
                     text={t("Next")}
                     onClick={handlerSignup}
@@ -1196,16 +1181,16 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
           </Col>
           <Col sm={12} lg={5} md={5} className={styles["signUp_rightSection"]}>
             <img
-              draggable="false"
+              draggable='false'
               src={DiskusnewRoundIconSignUp}
-              width="500px"
-              alt=""
+              width='500px'
+              alt=''
               className={styles["rightsection_roundLogo"]}
             />
           </Col>
         </Row>
       </Container>
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };

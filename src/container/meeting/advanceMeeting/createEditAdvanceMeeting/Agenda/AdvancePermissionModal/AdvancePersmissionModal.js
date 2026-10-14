@@ -176,7 +176,9 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
         );
         setsidebarOptions(agendaListArry);
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/AdvancePermissionModal/AdvancePersmissionModal.js:", error);
+    }
   }, [MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData]);
 
   useEffect(() => {
@@ -205,7 +207,9 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
           setMembers([]);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/AdvancePermissionModal/AdvancePersmissionModal.js:", error);
+    }
   }, [NewMeetingreducer.agendaRights]);
 
   return (

@@ -37,7 +37,6 @@ import {
   checkFeatureIDAvailability,
   getHomeRoute,
   getLocalStorageItemNonActiveCheck,
-  SideBarGlobalNavigationFunction,
   SideBarGlobalNavigationFunctionNew,
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
@@ -72,8 +71,10 @@ const Header2 = ({ isVideo }) => {
   const location = useLocation();
   const { t } = useTranslation();
   const WebNotificationBell = useRef();
-  const { isQuickMeetingCreate, setIsQuickMeetingCreate } =
-    useNewMeetingContext();
+  const {
+    isQuickMeetingFromHeader,
+    setIsQuickMeetingFromHeader
+  } = useNewMeetingContext();
   const remainingDays = localStorage.getItem("remainingDays");
   let defaultDashboard = getHomeRoute();
   const scheduleMeetingPageFlagReducer = useSelector(
@@ -250,7 +251,9 @@ const Header2 = ({ isVideo }) => {
       try {
         const data = { sRow: 0, eRow: 8 }; // Initial fetch data from API
         await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/components/layout/header2/Header2.js:", error);
+      }
     };
     fetchInitialData();
   }, []);
@@ -282,7 +285,9 @@ const Header2 = ({ isVideo }) => {
     try {
       const data = { sRow: webNotificationData.length, eRow: 8 };
       await dispatch(DiskusWebNotificationActionMethodAPI(navigate, t, data));
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/components/layout/header2/Header2.js:", error);
+    }
   };
 
   useEffect(() => {
@@ -479,7 +484,7 @@ const Header2 = ({ isVideo }) => {
       // User is in advance meeting modal and meeting is ongoing
       dispatch(showEndMeetingModal(true));
     } else {
-      setIsQuickMeetingCreate(true);
+      setIsQuickMeetingFromHeader(true);
     }
   };
 
@@ -1819,7 +1824,7 @@ const Header2 = ({ isVideo }) => {
           setEditFlag={setEditFlag}
         />
       ) : null}
-      {isQuickMeetingCreate && (
+      {isQuickMeetingFromHeader && (
         <CreateQuickMeeting
           // this is check from where its called 1 is from header
           checkFlag={1}

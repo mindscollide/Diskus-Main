@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Modal, Button } from "../../../elements";
 import { Row, Col } from "react-bootstrap";
 import VideoPanelNormal from "./videoCallPanels/videoCallNormalPanel";
-import VideoPanelMaximize from "./videoCallPanels/videoCallMaximizePanel";
 import VideoCallMinimizeHeader from "./videoCallHeader/videoCallMinimizeHeader";
 import { leaveCallModal } from "../../../../store/actions/VideoFeature_actions";
 import LeaveVideoIntimationModal from "./LeaveVideoIntimationModal/LeaveVideoIntimationModal";

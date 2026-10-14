@@ -52,7 +52,7 @@ const BillProcessStepThree = ({setStoredStep}) => {
         dispatch(getOrganizationSelectedPakagesAPI(navigate, t, data));
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/BillingMethodUserManagement/BillProcessStepThree/BillProcessStepThree.js:", error);
     }
     return () => {
       setGetAllPakagesData([]);
@@ -96,7 +96,7 @@ const BillProcessStepThree = ({setStoredStep}) => {
         }
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/BillingMethodUserManagement/BillProcessStepThree/BillProcessStepThree.js:", error);
     }
   }, [UserMangementReducer.getAllSelectedPakagesData]);
 

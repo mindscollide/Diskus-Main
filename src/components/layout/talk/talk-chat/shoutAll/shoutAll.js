@@ -106,7 +106,9 @@ const ShoutAll = () => {
           setSearchChatValue("");
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/shoutAll/shoutAll.js:", error);
+    }
   };
 
   const chatClick = (record) => {

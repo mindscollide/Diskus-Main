@@ -50,6 +50,7 @@ const EmployeeCard = ({
           <Col
             lg={2}
             md={2}
+            sm={2}
             xs={12}
             className="p-0 margin-bottom-15margin-bottom-15"
           >
@@ -60,7 +61,7 @@ const EmployeeCard = ({
               draggable="false"
             />
           </Col>
-          <Col lg={8} md={8} xs={12}>
+          <Col lg={8} md={8} sm={8} xs={12}>
             <label className={" card-employee-name" + " " + currentLanguage}>
               {employeeName}
             </label>
@@ -71,7 +72,7 @@ const EmployeeCard = ({
               {employeeDesignation}
             </label>
           </Col>
-          <Col lg={2} md={2} xs={12} className="card-employee-checkIcon">
+          <Col lg={2} md={2} sm={2} xs={12} className="card-employee-checkIcon">
             <Check2 />
           </Col>
           {organizer ? (

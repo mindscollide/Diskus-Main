@@ -253,6 +253,9 @@ export const MeetingProvider = ({ children }) => {
     [],
   );
   const [inCallParticipantsList, setInCallParticipantsList] = useState([]);
+  // userIDs who just left/rejected, briefly, so a stale API refresh can't re-add them.
+  const [recentlyLeftGroupCallUserIDs, setRecentlyLeftGroupCallUserIDs] =
+    useState([]);
 
   // state for handRaise Counter
   const [handRaiseCounter, setHandRaiseCounter] = useState(0);
@@ -551,6 +554,8 @@ export const MeetingProvider = ({ children }) => {
     setGroupVideoCallAccepted,
     groupCallParticipantList,
     setGroupCallParticipantList,
+    recentlyLeftGroupCallUserIDs,
+    setRecentlyLeftGroupCallUserIDs,
     unansweredCallParticipant,
     setUnansweredCallParticipant,
     handRaiseCounter,

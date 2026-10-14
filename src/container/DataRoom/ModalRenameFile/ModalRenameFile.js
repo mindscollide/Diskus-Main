@@ -27,7 +27,9 @@ const ModalRenameFile = ({
           FileId: isRenameFileData.id,
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalRenameFile/ModalRenameFile.js:", error);
+    }
   }, [isRenameFileData]);
 
   const saveButton = () => {

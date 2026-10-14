@@ -230,8 +230,6 @@ body[dir="rtl"] .White_Icon_class {
   margin-top: 1px !important;
 }
 
-
-
 .UnpublishedMeetingButton {
   font-size: 12px !important;
   font-weight: 600 !important;
@@ -259,5 +257,5 @@ body[dir="rtl"] .White_Icon_class {
   font-weight: 600 !important;
   max-height: 75px;
   overflow-y: auto;
-  word-break: break-all;
+  word-break: break-word;
 }

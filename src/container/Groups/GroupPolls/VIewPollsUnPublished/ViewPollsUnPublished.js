@@ -46,7 +46,9 @@ const ViewPollsUnPublished = ({ setViewUnPublished }) => {
           });
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/container/Groups/GroupPolls/VIewPollsUnPublished/ViewPollsUnPublished.js:", error);
+    }
   }, [Allpolls]);
   return (
     <section>

@@ -420,7 +420,7 @@ const AgendaContributorsModal = ({
                   </Col>
                   <Col md={2} lg={2} sm={2}>
                     <Button
-                      text={t("ADD")}
+                      text={t("Add")}
                       className={styles["ADD_Btn_CreatePool_Modal"]}
                       onClick={handleAddUsers}
                     />

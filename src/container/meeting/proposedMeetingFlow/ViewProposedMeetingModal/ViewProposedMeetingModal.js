@@ -78,7 +78,7 @@ const ViewProposedMeetingModal = () => {
         });
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal.js:", error);
     }
   }, [getAllMeetingDetails]);
 
@@ -92,7 +92,7 @@ const ViewProposedMeetingModal = () => {
         setParticipants(getAllSavedparticipantsData);
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal.js:", error);
     }
   }, [getAllSavedparticipantsData]);
 
@@ -109,7 +109,7 @@ const ViewProposedMeetingModal = () => {
       } else {
       }
     } catch (error) {
-      
+      console.error("src/container/meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal.js:", error);
     }
   }, [getAllProposedDatesData]);
 

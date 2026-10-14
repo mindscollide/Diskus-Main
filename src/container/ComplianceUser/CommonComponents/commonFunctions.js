@@ -89,7 +89,9 @@ export const parseYYYYMMDDToEndOfDay = (dateString) => {
     const day = dateString?.slice(6, 8);
 
     return new Date(year, month, day, 23, 59, 58);
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/container/ComplianceUser/CommonComponents/commonFunctions.js:", error);
+  }
 };
 
 // 20260316235958 -> Date object

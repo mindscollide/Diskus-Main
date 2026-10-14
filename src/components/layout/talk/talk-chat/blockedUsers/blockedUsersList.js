@@ -103,7 +103,9 @@ const BlockedUsersList = () => {
           setBlockedUsersData(data);
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/blockedUsers/blockedUsersList.js:", error);
+    }
   };
 
   console.log("Get Blocked Users", blockedUsersData);
@@ -175,7 +177,7 @@ const BlockedUsersList = () => {
                     </p>
                     <Button
                       className="MontserratRegular Unblock-btn"
-                      text="Unblock"
+                      text={t("Unblock")}
                       onClick={() => unblockblockContactHandler(dataItem)}
                     />
                   </div>
@@ -188,7 +190,7 @@ const BlockedUsersList = () => {
         blockedUsersData.length === 0 ? (
         <ResultMessage
           icon={<img src={BlockedContactsIcon} width={250} />}
-          title={"Your blocked list is empty"}
+          title={t("Your-blocked-list-is-empty")}
           className="emptyRecentChats"
         />
       ) : null}

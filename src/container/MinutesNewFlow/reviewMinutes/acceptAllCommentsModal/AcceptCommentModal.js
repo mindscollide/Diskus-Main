@@ -68,7 +68,7 @@ const AcceptCommentModal = ({
       setMinutesToReview(0);
       dispatch(acceptCommentModal(false));
     } catch (error) {
-      
+      console.error("src/container/MinutesNewFlow/reviewMinutes/acceptAllCommentsModal/AcceptCommentModal.js:", error);
     }
   };
 

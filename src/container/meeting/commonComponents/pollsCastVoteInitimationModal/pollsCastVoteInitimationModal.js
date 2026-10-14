@@ -61,7 +61,9 @@ const PollsCastVoteInitimationModal = () => {
           setPollDetails(pollData);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/commonComponents/pollsCastVoteInitimationModal/pollsCastVoteInitimationModal.js:", error);
+    }
   }, [newPollMeeting]);
 
   const handleClickCastYourVote = () => {
@@ -87,7 +89,9 @@ const PollsCastVoteInitimationModal = () => {
         dispatch(minimizeVideoPanelFlag(true));
         dispatch(normalizeVideoPanelFlag(false));
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/meeting/commonComponents/pollsCastVoteInitimationModal/pollsCastVoteInitimationModal.js:", error);
+    }
   };
 
   return (

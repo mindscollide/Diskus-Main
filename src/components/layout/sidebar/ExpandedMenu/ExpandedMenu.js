@@ -15,7 +15,6 @@ import ResolutionImage from "../../../../assets/images/sidebar_icons/Resolution.
 import styles from "./ExpandMenu.module.css";
 import {
   checkFeatureIDAvailability,
-  SideBarGlobalNavigationFunction,
   SideBarGlobalNavigationFunctionNew,
 } from "../../../../commen/functions/utils";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../../store/actions/VideoMain_actions";

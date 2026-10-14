@@ -131,7 +131,7 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
         setTasksAttachments({ TasksAttachments: [] });
       };
     } catch (error) {
-      
+      console.error("src/container/todolistModal/ModalToDoList.js:", error);
     }
   }, []);
 
@@ -184,7 +184,7 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
         setAllPresenters(PresenterData);
       }
     } catch (error) {
-      
+      console.error("src/container/todolistModal/ModalToDoList.js:", error);
     }
   }, [toDoListReducerAllAssigneesData]);
 
@@ -409,7 +409,9 @@ const ModalToDoList = ({ ModalTitle, setShow,showModal}) => {
       await dispatch(
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 1, setShow)
       );
-    } catch (error) {}
+    } catch (error) {
+      console.error("src/container/todolistModal/ModalToDoList.js:", error);
+    }
   };
 
   useEffect(() => {

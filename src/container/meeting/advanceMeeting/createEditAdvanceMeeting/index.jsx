@@ -60,16 +60,13 @@ const CreateEditAdvanceMeeting = () => {
   const committeeInfo = useSelector(
     (state) => state.CommitteeReducer.viewCommitteeDetails,
   );
-
+  const currentMeetingInfo = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
   const groupInfo = useSelector(
     (state) => state.GroupsReducer.viewGroupDetails,
   );
-  console.log("CreateEditAdvanceMeeting", {
-    committeeInfo,
-    groupInfo,
-    isAdvanceMeetingRoute,
-    isCreateEditMeetingModal,
-  });
+
   // Fix: read all tab states from Redux MeetingModalsReducer instead of
   // individual NewMeetingreducer global flags
   const {
@@ -107,15 +104,19 @@ const CreateEditAdvanceMeeting = () => {
       ) {
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
       }
-      await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
-      await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
-    } catch (error) {}
+      // await dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+      // await dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
+    } catch (error) {
+      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/index.jsx:", error);
+    }
   };
 
   useEffect(() => {
     if (meetingID === 0) {
       apiCallsForComponentMound();
     }
+    dispatch(GetAllMeetingRemindersApiFrequencyNew(navigate, t));
+    dispatch(GetAllMeetingRecurringApiNew(navigate, t, false));
     return () => {
       // dispatch(resetViewGroupDetails());
       // dispatch(resetViewCommitteeDetails());
@@ -191,7 +192,9 @@ const CreateEditAdvanceMeeting = () => {
             }),
           );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/index.jsx:", error);
+      }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
 
@@ -230,9 +233,20 @@ const CreateEditAdvanceMeeting = () => {
             }),
           );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/index.jsx:", error);
+      }
     }
   }, [NewMeetingreducer.mqttMeetingOrgRemoved]);
+
+  console.log("CreateEditAdvanceMeeting", {
+    editorRole,
+    currentMeetingInfo,
+    committeeInfo,
+    groupInfo,
+    isAdvanceMeetingRoute,
+    isCreateEditMeetingModal,
+  });
 
   // ─── Render ───────────────────────────────────────────────────────────────
 
@@ -337,7 +351,7 @@ const CreateEditAdvanceMeeting = () => {
                       onClick={showMinutes}
                       disableBtn={
                         Number(editorRole.status) === 10 ||
-                        Number(editorRole.status) === 9
+                          Number(editorRole.status) === 9
                           ? false
                           : true
                       }
@@ -354,7 +368,7 @@ const CreateEditAdvanceMeeting = () => {
                         onClick={showActions}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
+                            Number(editorRole.status) === 9
                             ? false
                             : true
                         }
@@ -372,7 +386,7 @@ const CreateEditAdvanceMeeting = () => {
                         onClick={ShowPolls}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
+                            Number(editorRole.status) === 9
                             ? false
                             : true
                         }

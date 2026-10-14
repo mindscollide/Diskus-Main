@@ -1,16 +1,43 @@
 // options.js
-import audioIcon from "../../../assets/images/AttachmentIcons/Audio.png";
+import audioIcon from "../../../assets/images/AttachmentIcons/mp3.png";
 import ShareIcon from "../../../assets/images/AttachmentIcons/ShortCuts.png";
-import sitesIcon from "../../../assets/images/AttachmentIcons/Sites.png";
+import sitesIcon from "../../../assets/images/AttachmentIcons/html.png";
 import documentIcon from "../../../assets/images/AttachmentIcons/doc.png";
 import pdf from "../../../assets/images/AttachmentIcons/PDF.png";
-import video from "../../../assets/images/AttachmentIcons/Video.png";
-import spreadsheet from "../../../assets/images/AttachmentIcons/xls-file.png";
+import video from "../../../assets/images/AttachmentIcons/mov.png";
+import spreadsheet from "../../../assets/images/AttachmentIcons/xls.png";
 import forms from "../../../assets/images/AttachmentIcons/Forms.png"
 import folderColor from "../../../assets/images/folder_color.svg";
-import images from "../../../assets/images/AttachmentIcons/Photos.png";
+import images from "../../../assets/images/AttachmentIcons/jpg.png";
 import PDFICON from "../../../assets/images/AttachmentIcons/PDF.png";
 import PowerPointIcon from "../../../assets/images/AttachmentIcons/PPT.png";
+import datIcon from "../../../assets/images/AttachmentIcons/dat.png";
+import txtIcon from "../../../assets/images/AttachmentIcons/txt.png";
+import htmlIcon from "../../../assets/images/AttachmentIcons/html.png";
+import cssIcon from "../../../assets/images/AttachmentIcons/css.png";
+import jsIcon from "../../../assets/images/AttachmentIcons/js.png";
+import jsxIcon from "../../../assets/images/AttachmentIcons/jsx.png";
+import phpIcon from "../../../assets/images/AttachmentIcons/php.png";
+import sqlIcon from "../../../assets/images/AttachmentIcons/sql.png";
+import xmlIcon from "../../../assets/images/AttachmentIcons/xml.png";
+import zipIcon from "../../../assets/images/AttachmentIcons/zip.png";
+import gifIcon from "../../../assets/images/AttachmentIcons/gif.png";
+import jpgIcon from "../../../assets/images/AttachmentIcons/jpg.png";
+import pngIcon from "../../../assets/images/AttachmentIcons/png.png";
+import svgIcon from "../../../assets/images/AttachmentIcons/svg.png";
+import bmpIcon from "../../../assets/images/AttachmentIcons/bmp.png";
+import tifIcon from "../../../assets/images/AttachmentIcons/tif.png";
+import mp3Icon from "../../../assets/images/AttachmentIcons/mp3.png";
+import aacIcon from "../../../assets/images/AttachmentIcons/aac.png";
+import midiIcon from "../../../assets/images/AttachmentIcons/midi.png";
+import aviIcon from "../../../assets/images/AttachmentIcons/avi.png";
+import movIcon from "../../../assets/images/AttachmentIcons/mov.png";
+import mpgIcon from "../../../assets/images/AttachmentIcons/mpg.png";
+import wmvIcon from "../../../assets/images/AttachmentIcons/wmv.png";
+import flvIcon from "../../../assets/images/AttachmentIcons/flv.png";
+import psdIcon from "../../../assets/images/AttachmentIcons/psd.png";
+import aiIcon from "../../../assets/images/AttachmentIcons/ai.png";
+import epsIcon from "../../../assets/images/AttachmentIcons/eps.png";
 import { Row } from "react-bootstrap";
 import { Col } from "rsuite";
 import styles from "../DataRoom.module.css";
@@ -29,7 +56,7 @@ export const OptionsDocument2 = (t) => [
   },
   {
     value: 4,
-    imgSrc: video,
+    imgSrc: PowerPointIcon,
     label: t("Presentaion"),
   },
   {
@@ -158,7 +185,7 @@ export const OptionsDocument = (t) => [
           >
             <img
               draggable="false"
-              src={video}
+              src={PowerPointIcon}
               alt=""
               height="17px"
               width="17px"
@@ -520,38 +547,76 @@ export const getIconSource = (extension) => {
       return spreadsheet;
     case "html":
     case "htm":
-      return sitesIcon;
+      return htmlIcon;
+    case "css":
+      return cssIcon;
+    case "js":
+      return jsIcon;
+    case "jsx":
+      return jsxIcon;
+    case "php":
+      return phpIcon;
+    case "sql":
+      return sqlIcon;
+    case "xml":
+      return xmlIcon;
+    case "zip":
+      return zipIcon;
     case "txt":
-      return documentIcon;
+      return txtIcon;
     case "gif":
+      return gifIcon;
     case "jpeg":
     case "jpg":
+      return jpgIcon;
     case "png":
+      return pngIcon;
     case "svg":
-      return images;
+      return svgIcon;
+    case "bmp":
+      return bmpIcon;
+    case "tif":
+    case "tiff":
+      return tifIcon;
+    case "psd":
+      return psdIcon;
+    case "ai":
+      return aiIcon;
+    case "eps":
+      return epsIcon;
+    case "mp3":
+      return mp3Icon;
+    case "aac":
+      return aacIcon;
+    case "mid":
+    case "midi":
+      return midiIcon;
     case "aif":
     case "iff":
     case "m3u":
     case "m4a":
-    case "mid":
-    case "mp3":
     case "mpa":
     case "wav":
       return audioIcon;
+    case "avi":
+      return aviIcon;
+    case "mov":
+      return movIcon;
+    case "mpg":
+      return mpgIcon;
+    case "wmv":
+      return wmvIcon;
+    case "flv":
+      return flvIcon;
     case "3g2":
     case "3gp":
     case "asf":
-    case "avi":
-    case "flv":
     case "m4v":
-    case "mov":
     case "mp4":
-    case "mpg":
     case "rm":
     case "srt":
     case "swf":
     case "vob":
-    case "wmv":
       return video;
     case "ppt":
     case "pptx":
@@ -566,7 +631,7 @@ export const getIconSource = (extension) => {
     case "pa":
       return PowerPointIcon;
     default:
-      return null;
+      return datIcon;
   }
 };
 

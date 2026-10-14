@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useErrorBoundary } from "react-error-boundary";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 import CustomButton from "../button/Button";

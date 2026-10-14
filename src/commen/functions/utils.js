@@ -142,7 +142,9 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
       }
     });
     return LocalUserRoutes;
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/commen/functions/utils.js:", error);
+  }
 }
 
 export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
@@ -193,7 +195,9 @@ export function updateAdminRoutes(adminFeatures, LocalAdminRoutes) {
     });
 
     return LocalAdminRoutes;
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/commen/functions/utils.js:", error);
+  }
 }
 
 // for enter posword state management and routes management
@@ -370,7 +374,9 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
     if (Number(localStorage.getItem("LoginFlowPageRoute")) !== 1) {
       localStorage.setItem("LoginFlowPageRoute", 1);
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/commen/functions/utils.js:", error);
+  }
 }
 
 // Features IDs Check Fucntion
@@ -2948,8 +2954,6 @@ export const handleNavigation = (
   navigate,
   response,
   isFirstLogin,
-  userRights = [],
-  adminRights = [],
   dispatch,
 ) => {
   try {
@@ -3017,6 +3021,7 @@ export const handleNavigation = (
     const committee_meetingUpd_action = localStorage.getItem(
       "committee_meetingUpd_action",
     );
+    const committee_UserMeetPropoDatPoll = localStorage.getItem("committee_UserMeetPropoDatPoll");
     const groups_meetingUpd_action = localStorage.getItem(
       "groups_meetingUpd_action",
     );
@@ -3026,6 +3031,7 @@ export const handleNavigation = (
     const groups_meetingStr_action = localStorage.getItem(
       "groups_meetingStr_action",
     );
+    const groups_UserMeetPropoDatPoll = localStorage.getItem("groups_UserMeetPropoDatPoll")
     if (isFirstLogin) {
       // if (adminRights) {
       //   navigate("/Admin/ManageUsers");
@@ -3067,6 +3073,11 @@ export const handleNavigation = (
         viewMeetingLink !== null ||
         viewMeeting_action !== null
       ) {
+        if (UserMeetPropoDatPoll !== null || Meetingprop !== null) {
+          localStorage.setItem("MeetingCurrentView", 2);
+          localStorage.setItem("MeetingPageRows", 30);
+          localStorage.setItem("MeetingPageCurrent", 1);
+        }
         navigate("/Diskus/Meeting");
       } else if (
         PollPublish !== null ||
@@ -3080,8 +3091,9 @@ export const handleNavigation = (
         committee_viewMeeting_action !== null ||
         committee_meetingStr_action !== null ||
         committee_meetingUpd_action !== null ||
-        committee_meetingprop_action !== null
+        committee_meetingprop_action !== null || committee_UserMeetPropoDatPoll !== null
       ) {
+        // if(committee_meetingStr_action !== null || )
         navigate("/Diskus/committee");
       } else if (
         groupView_Id !== null ||
@@ -3089,7 +3101,7 @@ export const handleNavigation = (
         groups_meetingStr_action !== null ||
         groups_meetingUpd_action !== null ||
         groups_meetingprop_action !== null ||
-        groups_viewMeeting_action !== null
+        groups_viewMeeting_action !== null || groups_UserMeetPropoDatPoll !== null
       ) {
         navigate("/Diskus/groups");
       } else if (taskListView_Id !== null || taskListView !== null) {
@@ -3223,7 +3235,9 @@ export const SideBarGlobalNavigationFunctionNew = async (
           localStorage.removeItem("AdvanceMeetingOperations");
           localStorage.removeItem("NotificationClickTaskID");
           localStorage.removeItem("viewadvanceMeetingTask");
-        } catch (error) {}
+        } catch (error) {
+          console.error("src/commen/functions/utils.js:", error);
+        }
       }
     }
   } else if (createEditMeetingModal) {
@@ -3444,7 +3458,9 @@ export const handleNavigationforParticipantVideoFlow = async ({
       default:
         break;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("src/commen/functions/utils.js:", error);
+  }
 };
 
 // Special handling for Meeting case
@@ -3577,4 +3593,11 @@ export const formatNumber = (number) => {
         useGrouping: false,
       }).format(number)
     : number;
+};
+
+export const getTodayYYYYMMDD = () => {
+  const d = new Date();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}${mm}${dd}`;
 };

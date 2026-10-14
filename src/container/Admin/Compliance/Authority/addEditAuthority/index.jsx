@@ -185,7 +185,7 @@ const AddEditViewAuthorityModal = () => {
           authorityId: authority.authorityId,
         });
       } catch (error) {
-        
+        console.error("src/container/Admin/Compliance/Authority/addEditAuthority/index.jsx:", error);
       }
     }
   }, [GetAuthorityByAuthorityId, countryNamesReducerCountryNamesData]);
@@ -429,7 +429,9 @@ const AddEditViewAuthorityModal = () => {
             ),
           );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Admin/Compliance/Authority/addEditAuthority/index.jsx:", error);
+      }
     }
 
     // SHORT CODE uniqueness (API placeholder)
@@ -464,7 +466,9 @@ const AddEditViewAuthorityModal = () => {
             ),
           );
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("src/container/Admin/Compliance/Authority/addEditAuthority/index.jsx:", error);
+      }
     }
   };
 
@@ -1068,7 +1072,7 @@ const AddEditViewAuthorityModal = () => {
                     >
                       <div className={styles["ConfirmationHeading"]}>
                         {t(
-                          "All your changes will be lost. Are you sure you want to discard them?",
+                          "All-your-changes-will-be-lost-are-you-sure-you-want-to-discard-them",
                         )}
                       </div>
                     </Col>

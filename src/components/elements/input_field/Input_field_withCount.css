@@ -16,10 +16,15 @@
 }
 .AddEditAuthorityCounterInputField-suffix {
   position: absolute;
-  right: 10px;
+  right: 8px;
   top: 18px;
 }
-
+body[dir="rtl"] .AddEditAuthorityCounterInputField-suffix {
+  position: absolute;
+  right: auto;
+  left: 8px;
+  top: 18px;
+}
 .AddEditAuthorityCounterInputField-show-count-suffix {
   font-family: Montserrat;
   font-weight: 600;

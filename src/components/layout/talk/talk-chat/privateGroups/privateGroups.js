@@ -199,7 +199,9 @@ const PrivateGroups = () => {
           setSearchChatValue("");
         }
       }
-    } catch {}
+    } catch (error) {
+      console.error("src/components/layout/talk/talk-chat/privateGroups/privateGroups.js:", error);
+    }
   };
 
   console.log("TalkStateData PrivateGroupsData", { talkStateData });
@@ -344,7 +346,7 @@ const PrivateGroups = () => {
         <ResultMessage
           icon={<img src={PrivateGroupIcon} width={250} alt="" />}
           title={
-            "No private groups created. Create a group and chat with multiple friends at once"
+            t("No-private-groups-created-create-a-group-and-chat-with-multiple-friends-at-once")
           }
           className="emptyRecentChats"
         />

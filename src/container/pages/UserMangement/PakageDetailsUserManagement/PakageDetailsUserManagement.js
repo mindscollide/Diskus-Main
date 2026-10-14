@@ -58,7 +58,7 @@ const PakageDetailsUserManagement = () => {
         dispatch(getAllUserTypePackagesApi(navigate, t, false));
       }
     } catch (error) {
-      
+      console.error("src/container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement.js:", error);
     }
   }, []);
 
@@ -135,9 +135,8 @@ const PakageDetailsUserManagement = () => {
       align: "center",
       render: (text, response) => {
         const { name } = calculateTotals(tableData);
-
         if (response.isTotalRow) {
-          return <span className={styles["ChargesPerLicesense"]}>{name}</span>;
+          return <span className={styles["ChargesPerLicesense"]}>{t(name)}</span>;
         } else {
           return (
             <>
