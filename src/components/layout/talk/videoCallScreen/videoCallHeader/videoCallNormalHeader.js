@@ -869,6 +869,11 @@ const VideoCallNormalHeader = ({
         setLeavePresenterViewToJoinOneToOne(false);
         console.log("stopPresenterViewMainApi");
 
+        // Stop a running presentation recording first.
+        if (isZoomEnabled && (pauseRecordingState || resumeRecordingState)) {
+          await onStopRecording();
+        }
+
         if (stopApiCalledRef.current) return;
 
         stopApiCalledRef.current = true; // 🔒 LOCK
@@ -919,6 +924,14 @@ const VideoCallNormalHeader = ({
           IsHost: isMeetingVideoHostCheck ? true : false,
           MeetingID: Number(currentMeetingID),
         };
+        // A meeting-video host who was recording the presentation stops it.
+        if (
+          isZoomEnabled &&
+          isMeetingVideoHostCheck &&
+          (pauseRecordingState || resumeRecordingState)
+        ) {
+          await onStopRecording();
+        }
         // Leave presenter view
         if (isMeetingVideoHostCheck) {
           dispatch(videoIconOrButtonState(false));
@@ -2012,6 +2025,19 @@ const VideoCallNormalHeader = ({
     }
   };
 
+  // Recording controls: the meeting-video host, or — during a presentation —
+  // the presenter and the meeting-video host.
+  const showRecordingControls = Boolean(
+    isMeeting &&
+      ((isMeetingVideo &&
+        isMeetingVideoHostCheck &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag) ||
+        (presenterViewFlag &&
+          (presenterViewHostFlag ||
+            (presenterViewJoinFlag && isMeetingVideoHostCheck)))),
+  );
+
   return (
     <>
       <Row className='mb-4'>
@@ -2051,19 +2077,13 @@ const VideoCallNormalHeader = ({
               LeaveCallModalFlag === true ||
               (isZoomEnabled && disableBeforeJoinZoom)
                 ? "grayScaleImage"
-                : isMeetingVideoHostCheck &&
-                    !presenterViewJoinFlag &&
-                    !presenterViewHostFlag
+                : showRecordingControls
                   ? "cursor-pointer meeting-Recording-State"
                   : "inactive-state"
             }>
             {isZoomEnabled && (
               <>
-                {isMeeting &&
-                isMeetingVideo &&
-                isMeetingVideoHostCheck &&
-                !presenterViewJoinFlag &&
-                !presenterViewHostFlag ? (
+                {showRecordingControls ? (
                   <>
                     {/* if Recording is start */}
                     {startRecordingState && (

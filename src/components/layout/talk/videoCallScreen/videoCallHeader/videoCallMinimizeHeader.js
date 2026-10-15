@@ -425,6 +425,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           if (stopApiCalledRef.current) return;
 
           stopApiCalledRef.current = true;
+          // Stop a running presentation recording first.
+          if (pauseRecordingState || resumeRecordingState) {
+            await onHandleClickForStopRecording();
+          }
           dispatch(
             stopPresenterViewMainApi(
               navigate,
@@ -548,13 +552,16 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           }, 100);
         };
 
-        // Host-specific path
+        // Host-specific path (a presenter can record during a presentation)
         if (
           isMeeting &&
-          isMeetingVideo &&
-          isMeetingVideoHostCheck &&
-          !presenterViewJoinFlag &&
-          !presenterViewHostFlag
+          ((isMeetingVideo &&
+            isMeetingVideoHostCheck &&
+            !presenterViewJoinFlag &&
+            !presenterViewHostFlag) ||
+            (presenterViewFlag &&
+              (presenterViewHostFlag ||
+                (presenterViewJoinFlag && isMeetingVideoHostCheck))))
         ) {
           setTimeout(sendMessage, 1000); // 1s delay for host
         } else {
