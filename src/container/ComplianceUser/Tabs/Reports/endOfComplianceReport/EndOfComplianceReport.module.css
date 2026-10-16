@@ -938,3 +938,11 @@
 .dateText span {
   margin-right: 4px;
 }
+@media screen and (min-width: 1024px) and (max-width: 1400px) {
+  .insideAccordianSubHeading p {
+    color: #5a5a5a;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Montserrat";
+  }
+}

@@ -740,4 +740,5 @@ body[dir="rtl"] .cancel_icon_resolution {
 
 .search_input {
   position: relative !important;
+  width: 100%;
 }

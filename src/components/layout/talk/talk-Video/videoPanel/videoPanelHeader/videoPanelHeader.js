@@ -51,6 +51,11 @@ const VideoPanelHeader = () => {
 
   // Onchange Select Filter
   const chatFilterHandler = (e, value) => {
+    console.log(
+      e,
+      value,
+      "chatFilterHandlerchatFilterHandlerchatFilterHandler",
+    );
     if (value.label != undefined) {
       // try {
 
@@ -70,11 +75,11 @@ const VideoPanelHeader = () => {
       }
       try {
         if (value.label !== chatFilter.label) {
-          if (value.label === "Contact") {
+          if (value.value === 1) {
             dispatch(recentVideoFlag(false));
             dispatch(videoChatSearchFlag(false));
             dispatch(contactVideoFlag(true));
-          } else if (value.label === "Recent") {
+          } else if (value.value === 2) {
             dispatch(recentVideoFlag(true));
             dispatch(videoChatSearchFlag(false));
             dispatch(contactVideoFlag(false));
@@ -83,7 +88,10 @@ const VideoPanelHeader = () => {
         } else {
         }
       } catch (error) {
-        console.error("src/components/layout/talk/talk-Video/videoPanel/videoPanelHeader/videoPanelHeader.js:", error);
+        console.error(
+          "src/components/layout/talk/talk-Video/videoPanel/videoPanelHeader/videoPanelHeader.js:",
+          error,
+        );
       }
     }
   };

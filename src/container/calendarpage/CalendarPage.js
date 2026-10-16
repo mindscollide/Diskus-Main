@@ -611,44 +611,38 @@ const CalendarPage = () => {
     <>
       <div className='calendar_container'>
         <Row className='d-flex justify-content-start align-items-center margin-bottom-15 mt-2'>
-          <Col lg={2} md={2} sm={2} xs={12}>
+          <Col lg={12} md={12} sm={12} xs={12} className="d-flex justify-content-start gap-3 align-items-center">
             <span className='Calender-heading'>{t("Calendar")}</span>
-          </Col>
-          <Col lg={2} md={2} sm={2}>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Dropdown
-                  className='Calendar_CreateBtn'
-                  onClick={eventClickHandler}
-                  align={"start"}>
-                  <Dropdown.Toggle title={t("Create")}>
-                    <Plus width={20} height={20} fontWeight={800} />
-                    <span>{t("Create")}</span>
-                  </Dropdown.Toggle>
+            <Dropdown
+              className='Calendar_CreateBtn'
+              onClick={eventClickHandler}
+              align={"start"}>
+              <Dropdown.Toggle title={t("Create")}>
+                <Plus width={20} height={20} fontWeight={800} />
+                <span>{t("Create")}</span>
+              </Dropdown.Toggle>
 
-                  <Dropdown.Menu>
-                    {checkFeatureIDAvailability(1) ? (
-                      <>
-                        <Dropdown.Item
-                          className='dropdown-item'
-                          onClick={handleCreateMeeting}>
-                          {t("Schedule-a-meeting")}
-                        </Dropdown.Item>
-                      </>
-                    ) : null}
-                    {checkFeatureIDAvailability(14) ? (
-                      <>
-                        <Dropdown.Item
-                          className='dropdown-item'
-                          onClick={handleCreateTodo}>
-                          {t("Create-a-to-do-list")}
-                        </Dropdown.Item>
-                      </>
-                    ) : null}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Col>
-            </Row>
+              <Dropdown.Menu>
+                {checkFeatureIDAvailability(1) ? (
+                  <>
+                    <Dropdown.Item
+                      className='dropdown-item'
+                      onClick={handleCreateMeeting}>
+                      {t("Schedule-a-meeting")}
+                    </Dropdown.Item>
+                  </>
+                ) : null}
+                {checkFeatureIDAvailability(14) ? (
+                  <>
+                    <Dropdown.Item
+                      className='dropdown-item'
+                      onClick={handleCreateTodo}>
+                      {t("Create-a-to-do-list")}
+                    </Dropdown.Item>
+                  </>
+                ) : null}
+              </Dropdown.Menu>
+            </Dropdown>
           </Col>
         </Row>
         <Row className='align-items-center'>
@@ -673,7 +667,7 @@ const CalendarPage = () => {
       </div>
       {isQuickMeetingView && <MeetingViewModalCalendar data={meetingData} />}
 
-      {isQuickMeetingFromCalendar  && (
+      {isQuickMeetingFromCalendar && (
         <CreateQuickMeeting
           // this is check from where its called 2 is from Calendar
           checkFlag={2}

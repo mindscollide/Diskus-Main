@@ -1919,6 +1919,7 @@ const getMeetingByCommitteeIdApi = (navigate, t, Data) => {
               dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
             }
           } else {
+            dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
           }
         } else {
           dispatch(getMeetingByCommitteeID_fail(t("Something-went-wrong")));
@@ -1941,7 +1942,7 @@ const setMeetingbyCommitteeID_success = (response, message, loader = false) => {
     type: actions.SETMEETINGBYCOMMITTEEID_SUCCESS,
     response: response,
     message: message,
-    loader
+    loader,
   };
 };
 const setMeetingbyCommitteeID_fail = (message) => {
@@ -1977,7 +1978,7 @@ const setMeetingbyCommitteeIdApi = (navigate, t, Data, routePath, object) => {
                 setMeetingbyCommitteeID_success(
                   response.data.responseResult,
                   "",
-                  false
+                  false,
                 ),
               );
               switch (routePath) {

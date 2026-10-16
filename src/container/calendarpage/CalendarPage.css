@@ -496,6 +496,7 @@ body[dir="rtl"] .heading_button {
 
 .Calendar_CreateBtn {
   margin-top: 10px !important;
+  min-width: 160px !important;
 }
 
 .calendar_container {

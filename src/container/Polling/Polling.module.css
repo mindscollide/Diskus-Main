@@ -249,13 +249,15 @@ body[dir="rtl"] .PaginationStyle-polling {
 }
 
 .Ellipses_Class {
-  overflow: hidden !important;
+  display: block;
+  width: 100%;
+  overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis !important;
+  text-overflow: ellipsis;
   cursor: pointer !important;
   color: #2197d7 !important;
-  width: 100%;
-  display: inline-block;
+  /* min-width:  365px; */
+  /* display: inline-block; */
   font-weight: 600 !important;
 }
 

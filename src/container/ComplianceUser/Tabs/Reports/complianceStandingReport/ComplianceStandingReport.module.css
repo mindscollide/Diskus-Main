@@ -554,10 +554,28 @@
 }
 @media screen and (min-width: 1024px) and (max-width: 1400px) {
   .iconTextWrapper p {
-    font-size: 16px;
+    font-size: 12px;
     color: #5a5a5a;
     font-family: "Montserrat";
     margin: 0;
     font-weight: 600;
+  }
+  .insideAccordianMain p {
+    color: #5a5a5a;
+    font-size: 14px !important;
+    font-weight: 600;
+    font-family: "Montserrat";
+  }
+  .insideAccordianSubHeading p {
+    color: #5a5a5a;
+    font-size: 14px !important;
+    font-weight: 600;
+    font-family: "Montserrat";
+  }
+  .ChecklistMainHeading .titleBlueColor p {
+    color: #6172d6;
+    font-size: 14px !important;
+    font-weight: 600;
+    font-family: "Montserrat";
   }
 }

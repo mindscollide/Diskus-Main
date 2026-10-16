@@ -936,7 +936,7 @@ const ComplianceStandingReport = () => {
                   },
                   rowExpandable: () => true,
                 }}
-                scroll={{ x: "max-content" }}
+                scroll={{ x: tableData.length === 0 ? 1300 : "max-content" }}
                 className="Compliance_Table Report_Table mt-3"
               />
             </div>
