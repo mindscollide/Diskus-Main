@@ -43,17 +43,11 @@ import {
   participantVideoButtonState,
   setAudioControlHost,
   setVideoControlHost,
-  joinPresenterViewMainApi,
-  presentationJoinFlowFlag,
-  presentationJoinRequestApprovedMqtt,
-  presentationJoinRequestRejectedMqtt,
-  presentationStoppedMqtt,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { WebNotificationExportRoutFunc } from "../../../../../commen/functions/utils";
 import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { Tooltip } from "antd";
 import { useResolutionContext } from "../../../../../context/ResolutionContext";
-import { joinPresentationRequestMainApi } from "../../../../../store/actions/Guest_Video";
 
 const ParticipantVideoCallComponent = () => {
   const dispatch = useDispatch();
@@ -75,55 +69,38 @@ const ParticipantVideoCallComponent = () => {
   const { setViewGroupPage, setShowModal } = useGroupsContext();
 
   const webNotificationData = useSelector(
-    (state) => state.settingReducer.webNotificationDataVideoIntimination,
+    (state) => state.settingReducer.webNotificationDataVideoIntimination
   );
   const closeQuickMeetingVideoReducer = useSelector(
     (state) =>
-      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag,
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
-    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
   );
   const isAudioGlobalStream = useSelector(
-    (state) => state.videoFeatureReducer.isAudioGlobalStream,
+    (state) => state.videoFeatureReducer.isAudioGlobalStream
   );
 
   const isVideoGlobalStream = useSelector(
-    (state) => state.videoFeatureReducer.isVideoGlobalStream,
+    (state) => state.videoFeatureReducer.isVideoGlobalStream
   );
 
   const allNavigatorVideoStream = useSelector(
-    (state) => state.videoFeatureReducer.allNavigatorVideoStream,
-  );
-
-  // CR(0012249) — false for every existing meeting-video usage of this
-  // component; only true when this same modal is opened for a
-  // Presentation join instead.
-  const isPresentationJoinFlow = useSelector(
-    (state) => state.videoFeatureReducer.isPresentationJoinFlow,
-  );
-
-  const presentationJoinApprovedData = useSelector(
-    (state) => state.videoFeatureReducer.presentationJoinApprovedData,
-  );
-  const presentationJoinRejectedData = useSelector(
-    (state) => state.videoFeatureReducer.presentationJoinRejectedData,
-  );
-  const presentationStoppedData = useSelector(
-    (state) => state.videoFeatureReducer.presentationStoppedData,
+    (state) => state.videoFeatureReducer.allNavigatorVideoStream
   );
 
   const leaveMeetingVideoOnLogoutResponse = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse,
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse
   );
 
   const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag,
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
   );
 
   const closeVideoStreamForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.closeVideoStreamForParticipant,
+    (state) => state.videoFeatureReducer.closeVideoStreamForParticipant
   );
 
   let meetingId = localStorage.getItem("currentMeetingID");
@@ -147,6 +124,8 @@ const ParticipantVideoCallComponent = () => {
   // local state for Video Html Tag event state
   const [canVideoPlay, setCanVideoPlay] = useState(false);
 
+  
+
   // Latest streams for the unmount cleanup (state in a closure would be stale)
   const streamRef = useRef(null);
   const streamAudioRef = useRef(null);
@@ -164,50 +143,37 @@ const ParticipantVideoCallComponent = () => {
     let cancelled = false;
     const enableWebCamAndMic = async () => {
       try {
-        // CR(0012249): this is the meeting-video waiting room's own
-        // self-preview — it unconditionally calls getUserMedia to show you
-        // your own camera before joining. For a presentation join, mic/cam
-        // must never turn on at all (the toggleAudio/toggleVideo guards and
-        // the disabled-icon styling already block the BUTTONS, but this
-        // effect was still separately grabbing the camera regardless,
-        // which is why the camera light stayed on even with those buttons
-        // disabled).
-        if (isPresentationJoinFlow) {
+        // Access video and audio streams
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+        if (cancelled) {
+          // Screen already closed before permission resolved
+          mediaStream.getTracks().forEach((track) => track.stop());
           return;
         }
-        if (!isWebCamEnabled) {
-          // Access video and audio streams
-          const mediaStream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          });
-          if (cancelled) {
-            // Screen already closed before permission resolved
-            mediaStream.getTracks().forEach((track) => track.stop());
-            return;
-          }
 
-          // Set up video playback. A rejected play() (e.g. Safari autoplay
-          // policy) must not drop the stream, or it would never be released.
-          if (videoRef.current) {
-            videoRef.current.srcObject = mediaStream;
-            videoRef.current.muted = true;
-            videoRef.current.play().catch(() => {});
-          }
-          localStorage.setItem("isWebCamEnabled", false);
-          setStream(mediaStream); // Store the video and audio stream
-          sessionStorage.setItem("streamOnOff", JSON.stringify(true));
-          sessionStorage.setItem("videoStreamId", mediaStream.id); // Save video stream ID
+        // Set up video playback. A rejected play() (e.g. Safari autoplay
+        // policy) must not drop the stream, or it would never be released.
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {});
+        }
+        localStorage.setItem("isWebCamEnabled", false);
+        setStream(mediaStream); // Store the video and audio stream
+        sessionStorage.setItem("streamOnOff", JSON.stringify(true));
+        sessionStorage.setItem("videoStreamId", mediaStream.id); // Save video stream ID
 
-          // Handle microphone setup
-          localStorage.setItem("isMicEnabled", false);
-          const audioTrack = mediaStream.getAudioTracks()[0];
-          if (audioTrack) {
-            const audioStream = new MediaStream([audioTrack]);
-            setStreamAudio(audioStream);
-            sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
-            sessionStorage.setItem("audioStreamId", audioStream.id);
-          }
+        // Handle microphone setup
+        localStorage.setItem("isMicEnabled", false);
+        const audioTrack = mediaStream.getAudioTracks()[0];
+        if (audioTrack) {
+          const audioStream = new MediaStream([audioTrack]);
+          setStreamAudio(audioStream);
+          sessionStorage.setItem("audioStreamOnOff", JSON.stringify(true));
+          sessionStorage.setItem("audioStreamId", audioStream.id);
         }
       } catch (error) {
         alert(`Error accessing media devices: ${error.message}`);
@@ -281,52 +247,6 @@ const ParticipantVideoCallComponent = () => {
     }
   }, [allNavigatorVideoStream]);
 
-  // CR(0012249) — host admitted this participant into the presentation.
-  // Completes the join using the same joinPresenterViewMainApi call that
-  // used to fire immediately on click (AgendaViewer.js), then closes this
-  // waiting-room panel so the actual presenter view can take over.
-  useEffect(() => {
-    if (isPresentationJoinFlow && presentationJoinApprovedData) {
-      // keeps that existing shared logic correct without touching it.
-      localStorage.removeItem("callTypeID");
-      let data = {
-        VideoCallURL: String(newVideoUrl),
-        WasInVideo: false,
-      };
-      dispatch(joinPresenterViewMainApi(navigate, t, data));
-      dispatch(presentationJoinFlowFlag(false));
-      dispatch(maxParticipantVideoCallPanel(false));
-      // presentationRoomID is kept (removed only when the presentation stops)
-      // so a re-join after leaving still has the room.
-      dispatch(presentationJoinRequestApprovedMqtt(null));
-    }
-  }, [presentationJoinApprovedData]);
-
-  // CR(0012249) — host rejected this participant's presentation join request.
-  useEffect(() => {
-    if (isPresentationJoinFlow && presentationJoinRejectedData) {
-      if (!presentationStoppedData) {
-        setIsWaiting(false);
-        setJoinButton(false);
-      }
-      dispatch(presentationJoinRequestRejectedMqtt(null));
-    }
-  }, [presentationJoinRejectedData]);
-
-  // CR(0012249) — host stopped the presentation while this participant was
-  // still waiting to be admitted. Just close the waiting room; the toast is
-  // shown from Dashboard.js's MEETING_PRESENTATION_STOPPED handler.
-  useEffect(() => {
-    if (isPresentationJoinFlow && presentationStoppedData) {
-      dispatch(presentationJoinFlowFlag(false));
-      dispatch(maxParticipantVideoCallPanel(false));
-      localStorage.removeItem("presentationRoomID");
-      // See the matching reset in the approved-effect above — same
-      // stale-remount reasoning applies here.
-      dispatch(presentationStoppedMqtt(null));
-    }
-  }, [presentationStoppedData]);
-
   // it'll check when Video Html Tag is Connected when connected then make video Icon enable otherwise it'll disable
   useEffect(() => {
     const video = videoRef.current;
@@ -357,14 +277,6 @@ const ParticipantVideoCallComponent = () => {
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable) => {
-    // CR(0012249): in the presentation waiting room, mic/camera are off by
-    // default and the participant must not be able to turn them back on
-    // themselves. The icon is already visually locked below (pointerEvents),
-    // this is a defense-in-depth guard in case toggleAudio is ever invoked
-    // another way. Turning OFF is still allowed either way.
-    if (isPresentationJoinFlow && enable) {
-      return;
-    }
     dispatch(setAudioControlHost(enable));
     localStorage.setItem("isMicEnabled", enable);
     if (!enable) {
@@ -400,10 +312,6 @@ const ParticipantVideoCallComponent = () => {
 
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
-    // CR(0012249): see the matching guard in toggleAudio above.
-    if (isPresentationJoinFlow && enable) {
-      return;
-    }
     dispatch(setVideoControlHost(enable));
     localStorage.setItem("isWebCamEnabled", enable);
     if (!enable) {
@@ -418,7 +326,9 @@ const ParticipantVideoCallComponent = () => {
           if (videoRef.current) {
             videoRef.current.srcObject = videoStream;
             videoRef.current.muted = true;
-            videoRef.current.play().catch((error) => {});
+            videoRef.current.play().catch((error) => {
+              
+            });
           }
           setStream(videoStream);
           setIsWebCamEnabled(enable);
@@ -447,22 +357,6 @@ const ParticipantVideoCallComponent = () => {
 
   const joinNewApiVideoCallOnClick = async () => {
     setJoinButton(true);
-
-    if (isPresentationJoinFlow) {
-      let presentationData = {
-        RoomID: localStorage.getItem("presentationRoomID"),
-        MeetingID: Number(meetingId),
-        IsMuted: isMicEnabled,
-        HideVideo: isWebCamEnabled,
-      };
-      await dispatch(
-        joinPresentationRequestMainApi(navigate, t, presentationData),
-      );
-      setIsWaiting(true);
-      setJoinButton(false);
-      return;
-    }
-
     if (editorRole.role === "Participant") {
       localStorage.setItem("userRole", "Participant");
       localStorage.setItem("isMeetingVideo", true);
@@ -481,8 +375,8 @@ const ParticipantVideoCallComponent = () => {
         data,
         setIsWaiting,
         setGetReady,
-        setJoinButton,
-      ),
+        setJoinButton
+      )
     );
   };
 
@@ -490,16 +384,22 @@ const ParticipantVideoCallComponent = () => {
   useEffect(() => {
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
-      videoRef.current.play().catch((error) => {});
+      videoRef.current.play().catch((error) => {
+        
+      });
     }
   }, [minimizeState]);
 
   useEffect(() => {
+    
     if (closeVideoStreamForParticipant && stream) {
+      
       if (stream) {
+        
         stream.getVideoTracks().forEach((track) => track.stop());
         setStream(null); // Clear the stream from state
         if (videoRef.current) {
+          
           videoRef.current.srcObject = null; // Clear the video source
         }
 
@@ -507,6 +407,7 @@ const ParticipantVideoCallComponent = () => {
         sessionStorage.removeItem("videoStreamId");
       }
       if (streamAudio) {
+        
         streamAudio.getAudioTracks().forEach((track) => track.stop());
         setStreamAudio(null); // Clear the stream from state
       }
@@ -515,10 +416,10 @@ const ParticipantVideoCallComponent = () => {
       dispatch(participantVideoButtonState(false));
 
       setIsMicEnabled(false);
-
+      
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let currentMeetingVideoURL = JSON.parse(
-        sessionStorage.getItem("currentMeetingVideoURL"),
+        sessionStorage.getItem("currentMeetingVideoURL")
       );
       let leaveRoomId = getJoinMeetingParticipantorHostrequest
         ? getJoinMeetingParticipantorHostrequest.roomID
@@ -530,6 +431,7 @@ const ParticipantVideoCallComponent = () => {
       let newName = localStorage.getItem("name");
       let currentMeetingID = localStorage.getItem("currentMeetingID");
       sessionStorage.removeItem("isWaiting");
+      
 
       let Data = {
         RoomID: leaveRoomId,
@@ -538,6 +440,7 @@ const ParticipantVideoCallComponent = () => {
         IsHost: false,
         MeetingID: Number(currentMeetingID),
       };
+      
 
       let data = {
         VideoCallURL: String(currentMeetingVideoURL || ""),
@@ -545,7 +448,7 @@ const ParticipantVideoCallComponent = () => {
         WasInVideo: Boolean(isMeetingVideo),
       };
       dispatch(closeWaitingParticipantVideoStream(false));
-
+      
       dispatch(LeaveMeetingVideo(Data, navigate, t, 1, data));
     }
   }, [closeVideoStreamForParticipant]);
@@ -628,7 +531,7 @@ const ParticipantVideoCallComponent = () => {
     }
 
     const webNotifactionDataRoutecheckFlag = JSON.parse(
-      localStorage.getItem("webNotifactionDataRoutecheckFlag"),
+      localStorage.getItem("webNotifactionDataRoutecheckFlag")
     );
     try {
       if (webNotifactionDataRoutecheckFlag) {
@@ -650,14 +553,11 @@ const ParticipantVideoCallComponent = () => {
           setAdvanceMeetingModalID,
           setResultresolution,
           isMeeting,
-          setPolls,
+          setPolls
         );
       }
     } catch (error) {
-      console.error(
-        "src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:",
-        error,
-      );
+      console.error("src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:", error);
     }
   };
 
@@ -667,10 +567,7 @@ const ParticipantVideoCallComponent = () => {
         onClickEndVideoCall(true, false, false);
       }
     } catch (error) {
-      console.error(
-        "src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:",
-        error,
-      );
+      console.error("src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:", error);
     }
   }, [leaveMeetingVideoOnLogoutResponse]);
 
@@ -680,10 +577,7 @@ const ParticipantVideoCallComponent = () => {
         onClickEndVideoCall(false, true, false);
       }
     } catch (error) {
-      console.error(
-        "src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:",
-        error,
-      );
+      console.error("src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:", error);
     }
   }, [closeQuickMeetingVideoReducer]);
 
@@ -693,10 +587,7 @@ const ParticipantVideoCallComponent = () => {
         onClickEndVideoCall(false, false, true);
       }
     } catch (error) {
-      console.error(
-        "src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:",
-        error,
-      );
+      console.error("src/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent.js:", error);
     }
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
 
@@ -709,8 +600,8 @@ const ParticipantVideoCallComponent = () => {
           minimizeState
             ? "max-minimize-videoParticipantsvideo-panel"
             : isNormalPanel
-              ? "max-videoParticipantsvideo-panel"
-              : "max-videoParticipant-panel"
+            ? "max-videoParticipantsvideo-panel"
+            : "max-videoParticipant-panel"
         }
       >
         <Row>
@@ -739,16 +630,9 @@ const ParticipantVideoCallComponent = () => {
             <div
               className="max-videoParticipant-Icons-state"
               style={{
-                // CR(0012249): in the presentation waiting room the
-                // participant can't control mic/camera at all — same
-                // locked look as the existing canVideoPlay readiness gate.
-                pointerEvents:
-                  canVideoPlay && !isPresentationJoinFlow ? "auto" : "none",
-                opacity: canVideoPlay && !isPresentationJoinFlow ? 1 : 0.4,
-                cursor:
-                  canVideoPlay && !isPresentationJoinFlow
-                    ? "pointer"
-                    : "not-allowed",
+                pointerEvents: canVideoPlay ? "auto" : "none",
+                opacity: canVideoPlay ? 1 : 0.4,
+                cursor: canVideoPlay ? "pointer" : "not-allowed",
               }}
             >
               {isMicEnabled ? (
@@ -776,15 +660,9 @@ const ParticipantVideoCallComponent = () => {
             <div
               className="max-videoParticipant-Icons-state"
               style={{
-                // CR(0012249): same presentation-mode lock as the mic block
-                // above.
-                pointerEvents:
-                  canVideoPlay && !isPresentationJoinFlow ? "auto" : "none",
-                opacity: canVideoPlay && !isPresentationJoinFlow ? 1 : 0.4,
-                cursor:
-                  canVideoPlay && !isPresentationJoinFlow
-                    ? "pointer"
-                    : "not-allowed",
+                pointerEvents: canVideoPlay ? "auto" : "none",
+                opacity: canVideoPlay ? 1 : 0.4,
+                cursor: canVideoPlay ? "pointer" : "not-allowed",
               }}
             >
               {isWebCamEnabled ? (
@@ -828,8 +706,8 @@ const ParticipantVideoCallComponent = () => {
                   minimizeState
                     ? t("Expand")
                     : NormalizeIcon && isNormalPanel
-                      ? t("Expand")
-                      : t("Collapse")
+                    ? t("Expand")
+                    : t("Collapse")
                 }
               >
                 <img
@@ -838,8 +716,8 @@ const ParticipantVideoCallComponent = () => {
                     minimizeState
                       ? MinToNormalIcon
                       : NormalizeIcon && isNormalPanel
-                        ? ExpandIcon
-                        : NormalizeIcon
+                      ? ExpandIcon
+                      : NormalizeIcon
                   }
                   onClick={onClickToNormalParticipantPanel}
                   alt="ExpandIcon"
@@ -884,23 +762,21 @@ const ParticipantVideoCallComponent = () => {
                       height: minimizeState
                         ? "7vh"
                         : isNormalPanel
-                          ? "44vh"
-                          : "78vh",
+                        ? "44vh"
+                        : "78vh",
                       backgroundPosition: "center center",
                     }}
                   >
                     <div className="max-videoParticipant-gradient-sheet">
                       <div className="avatar-class">
                         <video
-                          ref={videoRef}
-                          playsInline
-                          muted
+                          ref={videoRef} playsInline muted
                           className={
                             minimizeState
                               ? "video-max-minimize-videoParticipant-panel"
                               : isNormalPanel
-                                ? "video-max-videoParticipantsvideo-panel"
-                                : "video-max-Participant"
+                              ? "video-max-videoParticipantsvideo-panel"
+                              : "video-max-Participant"
                           }
                         />
                       </div>

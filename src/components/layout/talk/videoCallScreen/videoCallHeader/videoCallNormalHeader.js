@@ -78,7 +78,6 @@ import {
   setAudioControlHost,
   joinPresenterViewMainApi,
   maxParticipantVideoCallPanel,
-  presentationJoinFlowFlag,
   openPresenterViewMainApi,
   unansweredOneToOneCall,
   getGroupCallParticipantsMainApi,
@@ -360,49 +359,24 @@ const VideoCallNormalHeader = ({
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let recepientGuid = localStorage.getItem("receipentGuid");
 
-  // callTypeID / callerID / acceptedRoomID outlive a group call ("0" / null /
-  // 0 once it ends). The group-call values are used only when they are real;
-  // otherwise (e.g. an advance / quick meeting video after an earlier group
-  // call) fall through to the meeting-video room and guid.
-  const isUsableId = (v) =>
-    Boolean(v) && !["null", "undefined", "0"].includes(String(v));
   let RoomID =
-    callTypeID === 2 && isUsableId(roomID)
+    callTypeID === 2
       ? roomID
       : presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
         ? roomID
         : isMeetingVideoHostCheck
           ? newRoomID
           : participantRoomId;
-  const computedUID =
-    callTypeID === 2 && callerID !== 0 && isUsableId(callerGuid)
+  let UID =
+    callTypeID === 2 && callerID !== 0
       ? callerGuid
-      : callTypeID === 2 && recipentCalledID !== 0 && isUsableId(recepientGuid)
+      : callTypeID === 2 && recipentCalledID !== 0
         ? recepientGuid
         : presenterViewFlag && presenterViewJoinFlag && !presenterViewHostFlag
           ? participantUID
           : isMeetingVideoHostCheck
             ? isGuid
             : participantUID;
-  // The stored guid can be missing: a participant who is first into the video
-  // becomes its host (JoinMeetingVideoRequest_02 stores isGuid but leaves
-  // isMeetingVideoHostCheck false and sets no participantUID), and another tab
-  // can clear the keys. Only then, take this user's own guid from the live
-  // roster (then any stored guid). When computedUID is usable nothing changes.
-  const selfRosterGuid = Array.isArray(getAllParticipantMain)
-    ? getAllParticipantMain.find(
-        (p) => Number(p.userID) === Number(currentUserID),
-      )?.guid
-    : undefined;
-  let UID = isUsableId(computedUID)
-    ? computedUID
-    : isUsableId(selfRosterGuid)
-      ? selfRosterGuid
-      : isUsableId(isGuid)
-        ? isGuid
-        : isUsableId(participantUID)
-          ? participantUID
-          : computedUID;
 
   const {
     leaveOneToOne,
@@ -479,11 +453,7 @@ const VideoCallNormalHeader = ({
 
   // API for check getGroupVideoCall Participants Data
   useEffect(() => {
-    // A presentation viewer is not in a group call (a stale CallType === 2
-    // from an earlier meeting video must not trigger the group roster).
-    const isPresentationViewer =
-      presenterViewFlag && presenterViewJoinFlag && !presenterViewHostFlag;
-    if (currentCallType === 2 && !isMeetingVideo && !isPresentationViewer) {
+    if (currentCallType === 2 && !isMeetingVideo) {
       console.log("Check is currentCallType coming");
       let data = {
         RoomID: isCaller ? String(initiateRoomID) : String(roomID),
@@ -743,7 +713,8 @@ const VideoCallNormalHeader = ({
     if (
       Object.keys(newJoinPresenterParticipant).length > 0 &&
       presenterViewFlag &&
-      presenterViewHostFlag
+      presenterViewHostFlag &&
+      priticipantListModalFlagForHost === false
     ) {
       // Step 1: Remove any existing participant with the same userID or guid
       let dublicateData = [...getAllParticipantMain];
@@ -869,11 +840,6 @@ const VideoCallNormalHeader = ({
         setLeavePresenterViewToJoinOneToOne(false);
         console.log("stopPresenterViewMainApi");
 
-        // Stop a running presentation recording first.
-        if (isZoomEnabled && (pauseRecordingState || resumeRecordingState)) {
-          await onStopRecording();
-        }
-
         if (stopApiCalledRef.current) return;
 
         stopApiCalledRef.current = true; // 🔒 LOCK
@@ -912,26 +878,6 @@ const VideoCallNormalHeader = ({
     } else {
       if (presenterViewJoinFlag) {
         console.log("participantUIDparticipantUID", typeof participantUID);
-        // A viewer who joined the presentation from meeting video also
-        // leaves the meeting video. Built before LeavePresenterView because
-        // its response clears the room/guid keys.
-        const leaveMeetingVideoData = {
-          RoomID: String(
-            isMeetingVideoHostCheck ? newRoomID : participantRoomId,
-          ),
-          UserGUID: String(UID),
-          Name: String(newName),
-          IsHost: isMeetingVideoHostCheck ? true : false,
-          MeetingID: Number(currentMeetingID),
-        };
-        // A meeting-video host who was recording the presentation stops it.
-        if (
-          isZoomEnabled &&
-          isMeetingVideoHostCheck &&
-          (pauseRecordingState || resumeRecordingState)
-        ) {
-          await onStopRecording();
-        }
         // Leave presenter view
         if (isMeetingVideoHostCheck) {
           dispatch(videoIconOrButtonState(false));
@@ -951,16 +897,7 @@ const VideoCallNormalHeader = ({
         // overall meeting-host status.
         let data = {
           RoomID: String(RoomID),
-          UserGUID: String(
-            // In meeting video the presentation was joined with the meeting
-            // guid and participantUID is not stored, so it can be null here.
-            [
-              alreadyInMeetingVideo ? UID : participantUID,
-              participantUID,
-              UID,
-              isGuid,
-            ].find(isUsableId) ?? participantUID,
-          ),
+          UserGUID: String(participantUID),
           Name: String(newName),
         };
         console.log("leavePresenterViewMainApi");
@@ -975,10 +912,6 @@ const VideoCallNormalHeader = ({
             setLeavePresenterViewToJoinOneToOne,
           ),
         );
-        if (alreadyInMeetingVideo && !leavePresenterViewToJoinOneToOne) {
-          dispatch(setRaisedUnRaisedParticiant(false));
-          dispatch(LeaveMeetingVideo(leaveMeetingVideoData, navigate, t));
-        }
         leaveSuccess();
       }
     }
@@ -1572,20 +1505,12 @@ const VideoCallNormalHeader = ({
         } else if (flag === 2) {
           setLeaveOneToOne(false);
           setPresenterForOneToOneOrGroup(false);
-          // CR(0012249): this is the OTHER "Join Presentation" trigger —
-          // fires after a participant who was in an active 1:1/group call
-          // confirms leaving it to join the presentation instead (see
-          // AgendaViewer.js's onClickStopPresenter, activeCallState branch).
-          // Same waiting-room gate as the direct-click path there:
-          // joinPresenterViewMainApi now fires later, from
-          // maxParticipantVideoCallComponent.js, only once the host
-          // approves.
-          let presentationRoomID = String(
-            localStorage.getItem("acceptedRoomID"),
-          );
-          localStorage.setItem("presentationRoomID", presentationRoomID);
-          dispatch(presentationJoinFlowFlag(true));
-          dispatch(maxParticipantVideoCallPanel(true));
+          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+          let data = {
+            VideoCallURL: String(currentMeetingVideoURL),
+            WasInVideo: false,
+          };
+          dispatch(joinPresenterViewMainApi(navigate, t, data));
         } else if (flag === 3) {
           setLeaveOneToOne(false);
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
@@ -1918,22 +1843,24 @@ const VideoCallNormalHeader = ({
 
   const raiseUnRaiseForParticipant = (flag) => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
-      // Group call keeps its own room/guid keys; meeting video and
-      // presentation participants use the room/uid computed above.
-      const isGroupCallHand =
-        callTypeID === 2 && !presenterViewFlag && !isMeetingVideo;
-      const handRoomID = isGroupCallHand
-        ? localStorage.getItem("groupCallRoomId")
-        : RoomID;
-      const handUID = isGroupCallHand
-        ? isCaller
-          ? localStorage.getItem("callerGuid")
-          : localStorage.getItem("receipentGuid")
-        : UID;
+      // Uses the component-level RoomID / UID (resolved near the top of this
+      // component), exactly like muteUnMuteForHost and videoHideUnHideForHost.
+      //
+      // This used to re-declare both here from the group-call-only keys
+      // `groupCallRoomId` / `callerGuid` / `receipentGuid`, shadowing the
+      // correct values. Those keys are written only when CallTypeID === 2
+      // (VideoMain_actions initiate/response), so in a MEETING video call they
+      // were never set: getItem() returned null and String(null) sent the
+      // literal text "null" — {"RoomID":"null","UID":"null",...} — and the
+      // server could not match the participant.
+      //
+      // The resolved values cover every case: group call, presenter view,
+      // meeting host (newRoomId + isGuid) and meeting participant
+      // (participantRoomId + participantUID).
       dispatch(
         raiseUnRaisedHandMainApi(navigate, t, {
-          RoomID: String(handRoomID),
-          UID: String(handUID),
+          RoomID: String(RoomID),
+          UID: String(UID),
           IsHandRaised: flag,
         }),
       );
@@ -2025,19 +1952,6 @@ const VideoCallNormalHeader = ({
     }
   };
 
-  // Recording controls: the meeting-video host, or — during a presentation —
-  // the presenter and the meeting-video host.
-  const showRecordingControls = Boolean(
-    isMeeting &&
-      ((isMeetingVideo &&
-        isMeetingVideoHostCheck &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag) ||
-        (presenterViewFlag &&
-          (presenterViewHostFlag ||
-            (presenterViewJoinFlag && isMeetingVideoHostCheck)))),
-  );
-
   return (
     <>
       <Row className='mb-4'>
@@ -2077,13 +1991,19 @@ const VideoCallNormalHeader = ({
               LeaveCallModalFlag === true ||
               (isZoomEnabled && disableBeforeJoinZoom)
                 ? "grayScaleImage"
-                : showRecordingControls
+                : isMeetingVideoHostCheck &&
+                    !presenterViewJoinFlag &&
+                    !presenterViewHostFlag
                   ? "cursor-pointer meeting-Recording-State"
                   : "inactive-state"
             }>
             {isZoomEnabled && (
               <>
-                {showRecordingControls ? (
+                {isMeeting &&
+                isMeetingVideo &&
+                isMeetingVideoHostCheck &&
+                !presenterViewJoinFlag &&
+                !presenterViewHostFlag ? (
                   <>
                     {/* if Recording is start */}
                     {startRecordingState && (

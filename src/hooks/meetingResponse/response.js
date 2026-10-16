@@ -81,7 +81,6 @@ export const getAllUnpublishedMeetingData = async (
   currentSourceID,
 ) => {
   let currentUserId = Number(localStorage.getItem("userID"));
-
   let newMeetingData = [];
   if (Array.isArray(meetingData) && meetingData?.length > 0) {
     meetingData.forEach(async (data, index) => {
@@ -128,7 +127,7 @@ export const getAllUnpublishedMeetingData = async (
         userDetails: usersData?.userData,
         isMinutePublished: data?.isMinutePublished || false,
         isRecordingAvailable: data?.isRecordingAvailable || false,
-        groupAndCommitteeTitle: data.committeeOrGroupTitle ?? "",
+        groupAndCommitteeTitle: data?.committeeOrGroupTitle ?? "",
       });
     });
   }
@@ -168,7 +167,7 @@ export const mqttMeetingData = async (meetingData, currentSourceID) => {
       isOrganizer: usersData?.isOrganiser,
       isAgendaContributor: usersData?.isAgendaContributor,
       isParticipant: usersData?.isParticipant,
-      talkGroupID: meetingData.talkGroupID ?? 0,
+      talkGroupID: meetingData?.talkGroupID ?? 0,
       meetingType: meetingTypeID,
       meetingEndTime: meetingData.meetingEndTime ?? false,
       meetingStartTime: meetingData.meetingStartTime ?? false,

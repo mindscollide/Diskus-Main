@@ -45,7 +45,6 @@ import {
 } from "./NewMeetingActions";
 import { RefreshToken } from "./Auth_action";
 import store from "../store";
-import { rememberPresentationRoomID } from "../../commen/functions/presentationRoom";
 import { editMeetingFlag, saveMeetingFlag } from "./MeetingOrganizers_action";
 
 // Fix: import Redux tab actions to replace individual xxxGlobalFlag dispatches
@@ -76,9 +75,7 @@ import {
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import {
   joinPresenterViewMainApi,
-  maxParticipantVideoCallPanel,
   nonMeetingVideoGlobalModal,
-  presentationJoinFlowFlag,
   presenterViewGlobalState,
   videoIconOrButtonState,
 } from "./VideoFeature_actions";
@@ -3444,16 +3441,12 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                   response.data.responseResult.isPresenterViewStarted;
 
                 if (presenterViewStatus && !activeStatusOneToOne) {
-                  // CR(0012249): opening this meeting revealed a
-                  // presentation is already active — opens the waiting
-                  // room instead of joining directly (see the matching fix
-                  // in NewMeetingActions.js).
-                  rememberPresentationRoomID(
-                    Data.FK_MDID,
-                    response.data.responseResult.roomID,
+                  dispatch(
+                    joinPresenterViewMainApi(navigate, t, {
+                      VideoCallURL: String(Data.VideoCallURL),
+                      WasInVideo: false,
+                    }),
                   );
-                  dispatch(presentationJoinFlowFlag(true));
-                  dispatch(maxParticipantVideoCallPanel(true));
                 } else if (presenterViewStatus && activeStatusOneToOne) {
                   localStorage.setItem("JoinpresenterForonetoone", true);
                   dispatch(nonMeetingVideoGlobalModal(true));
