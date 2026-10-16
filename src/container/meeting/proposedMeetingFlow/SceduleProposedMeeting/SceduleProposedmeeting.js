@@ -57,8 +57,10 @@ const SceduleProposedmeeting = () => {
       getUserProposedOrganizerData !== undefined &&
       getUserProposedOrganizerData
     ) {
-
-      console.log(getUserProposedOrganizerData, "getUserProposedOrganizerDatagetUserProposedOrganizerData")
+      console.log(
+        getUserProposedOrganizerData,
+        "getUserProposedOrganizerDatagetUserProposedOrganizerData",
+      );
       let ProposeDates;
 
       getUserProposedOrganizerData.response.forEach((datesData, index) => {
@@ -117,7 +119,10 @@ const SceduleProposedmeeting = () => {
 
           return formatetDateTime;
         } catch (error) {
-          console.error("src/container/meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting.js:", error);
+          console.error(
+            "src/container/meeting/proposedMeetingFlow/SceduleProposedMeeting/SceduleProposedmeeting.js:",
+            error,
+          );
         }
       });
 
@@ -149,30 +154,30 @@ const SceduleProposedmeeting = () => {
 
   // Function to count the selected proposed dates for a row
   const countSelectedProposedDatesForColumn = (columnIndex) => {
-  if (organizerRows && Array.isArray(organizerRows)) {
-    const count = organizerRows.reduce((total, row) => {
-      if (
-        row &&
-        row.selectedProposedDates?.length > 0 &&
-        row.selectedProposedDates?.[columnIndex]?.isSelected
-      ) {
-        return total + 1;
-      }
+    if (organizerRows && Array.isArray(organizerRows)) {
+      const count = organizerRows.reduce((total, row) => {
+        if (
+          row &&
+          row.selectedProposedDates?.length > 0 &&
+          row.selectedProposedDates?.[columnIndex]?.isSelected
+        ) {
+          return total + 1;
+        }
 
-      return total;
-    }, 0);
+        return total;
+      }, 0);
 
-    const formattedCount = count < 10 ? `0${count}` : `${count}`;
+      const formattedCount = count < 10 ? `0${count}` : `${count}`;
 
-    return localStorage.getItem("i18nextLng") === "ar"
-      ? new Intl.NumberFormat("ar-EG", {
-          useGrouping: true,
-        }).format(Number(formattedCount))
-      : formattedCount;
-  }
+      return localStorage.getItem("i18nextLng") === "ar"
+        ? new Intl.NumberFormat("ar-EG", {
+            useGrouping: true,
+          }).format(Number(formattedCount))
+        : formattedCount;
+    }
 
-  return localStorage.getItem("i18nextLng") === "ar" ? "٠٠" : "00";
-};
+    return localStorage.getItem("i18nextLng") === "ar" ? "٠٠" : "00";
+  };
 
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
@@ -205,6 +210,8 @@ const SceduleProposedmeeting = () => {
     {
       dataIndex: "userName",
       key: "userName",
+      width: "200px",
+    fixed: 'left',
       render: (text, record) => (
         <>
           <span className={styles["WidthOFSpan"]}>
@@ -269,17 +276,16 @@ const SceduleProposedmeeting = () => {
             </span>
           </span>
         ),
-
+        width: "250px",
         dataIndex: `selectedProposedDates-${index}`,
         key: `selectedProposedDates-${index}`,
         align: "center",
-
         render: (text, rowRecord) => {
           if (rowRecord.userName === "Total") {
             const totalDate = rowRecord?.selectedProposedDates?.find(
               (date) => date?.isTotal === 0,
             );
-            console.log(rowRecord, "rowRecordrowRecordrowRecordrowRecord")
+            console.log(rowRecord, "rowRecordrowRecordrowRecordrowRecord");
             if (totalDate) {
               return (
                 <span className={styles["TotalCount"]}>
@@ -288,7 +294,7 @@ const SceduleProposedmeeting = () => {
               );
             }
           } else {
-            console.log(rowRecord, "rowRecordrowRecordrowRecordrowRecord")
+            console.log(rowRecord, "rowRecordrowRecordrowRecordrowRecord");
 
             // selectedProposedDates is already index-aligned with the
             // column list (countSelectedProposedDatesForColumn above relies
@@ -362,7 +368,7 @@ const SceduleProposedmeeting = () => {
                 <Col lg={12} md={12} sm={12}>
                   <Table
                     column={scheduleColumn}
-                    scroll={{ x: "22vh", y: "42vh" }}
+                    scroll={{ x: "max-content", y: "42vh" }}
                     pagination={false}
                     className='SceduleProposedMeeting'
                     rows={updateTableRows}

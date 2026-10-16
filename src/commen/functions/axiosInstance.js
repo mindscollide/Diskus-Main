@@ -96,7 +96,7 @@ axiosInstance.interceptors.response.use(
   // separate copy rather than a shared helper because the two paths differ at
   // the end: this one re-rejects so call sites still see the error.
   (error) => {
-    let data = error.response.data;
+    let data = error.response?.data;
 
     // Same arraybuffer decode as the success path - see the comment there.
     if (data instanceof ArrayBuffer) {
