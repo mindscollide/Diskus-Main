@@ -1811,6 +1811,22 @@ export const removeParticipantMeeting = {
   RequestMethod: "ServiceManager.RemoveParticipantFromMeeting",
 };
 
+// CR(0012249) — Presentation waiting-room / admit-reject / remove flow.
+// Backend doc specifies these under the "MeetingServiceManager." prefix,
+// unlike the "ServiceManager." prefix used by the meeting-video equivalents
+// above — this is intentional, not a typo, per the API document.
+export const joinPresentationRequest = {
+  RequestMethod: "ServiceManager.JoinPresentationRequest",
+};
+
+export const admitRejectPresentationAttendee = {
+  RequestMethod: "ServiceManager.AdmitRejectPresentationAttendee",
+};
+
+export const removeParticipantFromPresentation = {
+  RequestMethod: "ServiceManager.RemoveParticipantFromPresentation",
+};
+
 export const guestLeaveMeetingVideo = {
   RequestMethod: "ServiceManager.GuestLeaveMeetingVideo",
 };
@@ -2214,12 +2230,12 @@ export const GetAllComplianceAuthority = {
 };
 
 export const ChangeChecklistAllowedTransactionStatusRM = {
-  RequestMethod: "ServiceManager.ChangeChecklistAllowedTransactionStatus"
+  RequestMethod: "ServiceManager.ChangeChecklistAllowedTransactionStatus",
 };
 
 export const validateEmailActionTokenRM = {
   RequestMethod: "ServiceManager.ValidateEmailActionToken",
-}
+};
 
 //API To get presentation participant
 export const getPresentationParticipants = {

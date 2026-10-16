@@ -24,6 +24,39 @@ const dedupeParticipants = (list) => {
   return Array.from(map.values());
 };
 
+// Presentation roster helpers (presentationParticipantsList is `[]` until first fill).
+const getPresentationRoster = (state) =>
+  Array.isArray(state.presentationParticipantsList?.participantList)
+    ? state.presentationParticipantsList.participantList
+    : [];
+
+const withPresentationRoster = (state, participantList) => ({
+  ...(typeof state.presentationParticipantsList === "object" &&
+  !Array.isArray(state.presentationParticipantsList)
+    ? state.presentationParticipantsList
+    : {}),
+  participantList,
+});
+
+// True when roster row `p` is the person identified by `target` (guid or userID).
+const isSamePresentationUser = (p, target) =>
+  (p.guid && target?.guid && String(p.guid) === String(target.guid)) ||
+  (p.userID && target?.userID && Number(p.userID) === Number(target.userID));
+
+// A guid is "<hex>_<userID>". A user gets a different guid at request time
+// and at join time, so a mute/hide MQTT's uid may not equal the roster row's
+// guid; match on guid first, then on the userID the uid ends with.
+const rosterRowMatchesUid = (p, uid) => {
+  if (!uid) return false;
+  if (p.guid === uid) return true;
+  const s = String(uid);
+  const i = s.lastIndexOf("_");
+  return i >= 0 && p.userID != null && String(p.userID) === s.slice(i + 1);
+};
+
+// Backend ids grow with each join, so the higher id is the newer row.
+const rowIdOf = (p) => Number(p?.videoCallParticipantsID || 0);
+
 const initialState = {
   VideoChatPanel: false,
   ContactVideoFlag: false,
@@ -70,6 +103,14 @@ const initialState = {
   MaximizeHostVideoFlag: false,
   NormalHostVideoFlag: false,
   maximizeParticipantVideoFlag: false,
+  // CR(0012249) — see PRESENTATION_JOIN_FLOW_FLAG in action_types.js.
+  // Kept default false so every existing meeting-video read/dispatch of
+  // maximizeParticipantVideoFlag etc. is unaffected until something
+  // explicitly opts into presentation mode.
+  isPresentationJoinFlow: false,
+  // CR(0012249) — see action_types.js ACTIVE_PRESENTATION_MEETING_ID for
+  // why this is separate from presenterViewFlag.
+  activePresentationMeetingID: null,
   normalParticipantVideoFlag: false,
   maxParticipantVideoDeniedFlag: false,
   maxParticipantVideoRemovedFlag: false,
@@ -134,6 +175,16 @@ const initialState = {
   presentationParticipantsList: [],
   raisedHandGuids: {},
   // startOrStopPresenter: false,
+
+  // CR(0012249) — Presentation waiting-room MQTT signals (raw payload
+  // capture only; UI wiring comes in a later step).
+  presentationWaitingParticipantsList: [],
+  presentationJoinApprovedData: null,
+  presentationJoinRejectedData: null,
+  presentationNewParticipantsJoinedData: null,
+  removedFromPresentationToWaitingRoomData: null,
+  participantRemovedFromPresentationData: null,
+  presentationStoppedData: null,
 };
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -163,6 +214,36 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         waitingParticipantsList: filteredParticipants,
+      };
+    }
+    case actions.PRESENTATION_ACCEPT_AND_REMOVE_PARTICIPANTS: {
+      const { payload } = action;
+      const filteredPresentationParticipants =
+        state.presentationWaitingParticipantsList.filter(
+          (participant) =>
+            !payload.some(
+              (p) =>
+                String(p.guid) === String(participant.guid) &&
+                (!p.meetingID ||
+                  !participant.meetingID ||
+                  Number(p.meetingID) === Number(participant.meetingID)),
+            ),
+        );
+
+      // A rejected requester was added to the roster on JOINED (request time);
+      // drop them so they don't show as a participant after the deny.
+      const roster = getPresentationRoster(state);
+      return {
+        ...state,
+        presentationWaitingParticipantsList: filteredPresentationParticipants,
+        ...(action.isRejected
+          ? {
+              presentationParticipantsList: withPresentationRoster(
+                state,
+                roster.filter((r) => !payload.some((p) => isSamePresentationUser(r, p))),
+              ),
+            }
+          : {}),
       };
     }
 
@@ -590,7 +671,9 @@ const videoFeatureReducer = (state = initialState, action) => {
           ? state.presentationParticipantsList.participantList
           : [];
         const updatedMuteList = existingMuteList.map((p) =>
-          p.guid === payload.uid ? { ...p, mute: payload.isMuted } : p,
+          rosterRowMatchesUid(p, payload.uid)
+            ? { ...p, mute: payload.isMuted }
+            : p,
         );
 
         return {
@@ -725,7 +808,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         ? state.presentationParticipantsList.participantList
         : [];
       const updatedHideList = existingHideList.map((p) =>
-        p.guid === payload.uid
+        rosterRowMatchesUid(p, payload.uid)
           ? { ...p, hideCamera: payload.isVideoHidden }
           : p,
       );
@@ -846,6 +929,30 @@ const videoFeatureReducer = (state = initialState, action) => {
 
         maximizeParticipantVideoFlag: action.response,
         normalParticipantVideoFlag: false,
+      };
+    }
+
+    // CR(0012249)
+    case actions.PRESENTATION_JOIN_FLOW_FLAG: {
+      return {
+        ...state,
+        isPresentationJoinFlow: action.response,
+        // Opening the waiting room: drop approved/rejected/stopped data left
+        // over from an earlier presentation, else the modal's own effects see
+        // it on mount and close the room immediately.
+        ...(action.response
+          ? {
+              presentationJoinApprovedData: null,
+              presentationJoinRejectedData: null,
+              presentationStoppedData: null,
+            }
+          : {}),
+      };
+    }
+    case actions.ACTIVE_PRESENTATION_MEETING_ID: {
+      return {
+        ...state,
+        activePresentationMeetingID: action.response,
       };
     }
 
@@ -1441,13 +1548,21 @@ const videoFeatureReducer = (state = initialState, action) => {
       const rawList = Array.isArray(action.response?.participantList)
         ? action.response.participantList
         : [];
-      const seenKeys = new Set();
-      const dedupedList = rawList.filter((p) => {
-        const key = p.guid || String(p.userID);
-        if (!key || seenKeys.has(key)) return false;
-        seenKeys.add(key);
-        return true;
+      // One row per user. The backend keeps a row per request/join, so a user
+      // can come back twice with different guids and stale mute/hideCamera;
+      // keep the newest row so the mic/camera icons reflect the current state.
+      const byUser = new Map();
+      rawList.forEach((p) => {
+        const key = p.userID
+          ? `u:${Number(p.userID)}`
+          : p.guid
+            ? `g:${p.guid}`
+            : null;
+        if (!key) return;
+        const existing = byUser.get(key);
+        if (!existing || rowIdOf(p) >= rowIdOf(existing)) byUser.set(key, p);
       });
+      const dedupedList = Array.from(byUser.values());
       return {
         ...state,
         Loading: false,
@@ -1481,16 +1596,21 @@ const videoFeatureReducer = (state = initialState, action) => {
       )
         ? state.presentationParticipantsList.participantList
         : [];
-      const alreadyExists = existingList.some(
-        (p) =>
-          (p.guid && newParticipant?.guid && p.guid === newParticipant.guid) ||
-          (p.userID &&
-            newParticipant?.userID &&
-            Number(p.userID) === Number(newParticipant.userID)),
+      const alreadyExists = existingList.some((p) =>
+        isSamePresentationUser(p, newParticipant),
       );
-      const updatedList =
-        alreadyExists || !newParticipant
-          ? existingList
+      // Same user re-joining (new guid per request): refresh their row with the
+      // latest guid/state instead of keeping the stale one, so later
+      // mute/hand/left events (keyed by guid) still match.
+      const updatedList = !newParticipant
+        ? existingList
+        : alreadyExists
+          ? existingList.map((p) =>
+              isSamePresentationUser(p, newParticipant) &&
+              rowIdOf(newParticipant) >= rowIdOf(p)
+                ? { ...p, ...newParticipant }
+                : p,
+            )
           : [...existingList, newParticipant];
       return {
         ...state,
@@ -1505,13 +1625,19 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PRESENTATION_PARTICIPANT_LEFT_MQTT: {
-      const leavingUid = action.response;
+      // Accepts a guid string (MQTT) or a {guid, userID} object (local removal).
+      const leaving =
+        action.response && typeof action.response === "object"
+          ? action.response
+          : { guid: action.response };
       const existingList = Array.isArray(
         state.presentationParticipantsList?.participantList,
       )
         ? state.presentationParticipantsList.participantList
         : [];
-      const updatedList = existingList.filter((p) => p.guid !== leavingUid);
+      const updatedList = existingList.filter(
+        (p) => !isSamePresentationUser(p, leaving),
+      );
       return {
         ...state,
         presentationParticipantsList: {
@@ -1521,6 +1647,90 @@ const videoFeatureReducer = (state = initialState, action) => {
             : {}),
           participantList: updatedList,
         },
+      };
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // CR(0012249) — Presentation waiting-room MQTT signals
+    // ─────────────────────────────────────────────────────────────────
+    case actions.PRESENTATION_PARTICIPANT_JOIN_REQUESTS_MQTT: {
+      // Mirrors PARTICIPANT_JOINT_REQUESTS above (meeting-video's waiting
+      // list): de-dupe on guid so repeated MQTT delivery doesn't create
+      // duplicate rows.
+      const exists = state.presentationWaitingParticipantsList.some(
+        (p) => String(p.guid) === String(action.response.guid),
+      );
+      if (exists) {
+        return state;
+      }
+      return {
+        ...state,
+        presentationWaitingParticipantsList: [
+          ...state.presentationWaitingParticipantsList,
+          action.response,
+        ],
+      };
+    }
+
+    case actions.PRESENTATION_JOIN_REQUEST_APPROVED_MQTT: {
+      return {
+        ...state,
+        presentationJoinApprovedData: action.response,
+      };
+    }
+
+    case actions.PRESENTATION_JOIN_REQUEST_REJECTED_MQTT: {
+      return {
+        ...state,
+        presentationJoinRejectedData: action.response,
+      };
+    }
+
+    case actions.PRESENTATION_NEW_PARTICIPANTS_JOINED_MQTT: {
+      return {
+        ...state,
+        presentationNewParticipantsJoinedData: action.response,
+      };
+    }
+
+    case actions.REMOVED_FROM_PRESENTATION_TO_WAITING_ROOM_MQTT: {
+      return {
+        ...state,
+        removedFromPresentationToWaitingRoomData: action.response,
+      };
+    }
+
+    case actions.PARTICIPANT_REMOVED_FROM_PRESENTATION_MQTT: {
+      // Also drop the removed participant from the waiting list (if they
+      // were re-added there) and the admitted roster, so the host's UI
+      // doesn't keep showing someone who was just removed.
+      const removedGuid = action.response?.guid ?? action.response?.UID;
+      return {
+        ...state,
+        participantRemovedFromPresentationData: action.response,
+        presentationWaitingParticipantsList:
+          state.presentationWaitingParticipantsList.filter(
+            (p) => String(p.guid) !== String(removedGuid),
+          ),
+        presentationParticipantsList: withPresentationRoster(
+          state,
+          getPresentationRoster(state).filter(
+            (p) => !isSamePresentationUser(p, { guid: removedGuid }),
+          ),
+        ),
+      };
+    }
+
+    case actions.MEETING_PRESENTATION_STOPPED_MQTT: {
+      return {
+        ...state,
+        presentationStoppedData: action.response,
+        // Clear the waiting list too — nobody should still be shown as
+        // "waiting" once the presentation itself has stopped.
+        presentationWaitingParticipantsList: [],
+        // Real stop only (a null dispatch is just a stale-data reset): the
+        // presenter's roster must not carry over into the next presentation.
+        ...(action.response ? { presentationParticipantsList: [] } : {}),
       };
     }
 

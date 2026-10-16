@@ -80,6 +80,7 @@ const VideoPanelNormal = () => {
   const navigate = useNavigate();
   const recordingToastShownRef = useRef(false);
   const hasTriggeredRecordingRef = useRef(false);
+  const presentationRecordingTriggeredRef = useRef(false);
   const ActiveChatBoxGS = useSelector(
     (state) => state.talkFeatureStates.ActiveChatBoxGS,
   );
@@ -294,6 +295,7 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
+
   // Fetch the presentation roster ONCE, the moment a non-host viewer joins
   // a presentation. From then on, PRESENTATION_PARTICIPANT_JOINED /
   // PRESENTATION_PARTICIPANT_LEFT MQTT events keep the list in sync via
@@ -490,7 +492,9 @@ const VideoPanelNormal = () => {
       (presenterViewFlag && presenterViewHostFlag)
     ) {
       console.log("Check new");
-      if (!leavePresenterOrJoinOtherCalls) {
+      // A presentation viewer's roster comes from GetPresentationParticipants
+      // (above); the generic video-call roster isn't needed for them.
+      if (!leavePresenterOrJoinOtherCalls && !joiningPresentationView) {
         let Data = {
           RoomID: String(
             presenterViewFlag ? callAcceptedRoomID : participantRoomIds,
@@ -1114,6 +1118,13 @@ const VideoPanelNormal = () => {
     }
   }, [isMeetingVideo, iframeRef]);
 
+  // Allow the auto-start again for the next presentation.
+  useEffect(() => {
+    if (!presenterViewFlag) {
+      presentationRecordingTriggeredRef.current = false;
+    }
+  }, [presenterViewFlag]);
+
   // Add this useEffect to watch for the transfer completion
   useEffect(() => {
     if (hostTransferFlag) {
@@ -1274,6 +1285,11 @@ const VideoPanelNormal = () => {
     let activeRoomID = localStorage.getItem("activeRoomID");
     let isGuid = localStorage.getItem("isGuid");
     let participantUID = localStorage.getItem("participantUID");
+    // Fresh read: WasInVideo is true only when the user is in meeting video.
+    let wasInVideo = false;
+    try {
+      wasInVideo = Boolean(JSON.parse(localStorage.getItem("isMeetingVideo")));
+    } catch {}
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
@@ -1285,6 +1301,7 @@ const VideoPanelNormal = () => {
           : callAcceptedRoomID,
       ),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
+      WasInVideo: wasInVideo,
     };
     sessionStorage.removeItem("nonPresenter");
     dispatch(participanMuteUnMuteMeeting(true, true, true, true, 1));
@@ -1597,6 +1614,26 @@ const VideoPanelNormal = () => {
             setTimeout(() => {
               dispatch(disableZoomBeforeJoinSession(false));
             }, 4000);
+          }
+
+          // Presentation recording starts automatically (like meeting video
+          // does on join) for the presenter / meeting-video host.
+          if (
+            isZoomEnabled &&
+            presenterViewFlag &&
+            canControlRecording() &&
+            !presentationRecordingTriggeredRef.current
+          ) {
+            presentationRecordingTriggeredRef.current = true;
+            setTimeout(() => {
+              const recIframe = iframeRef.current;
+              if (recIframe && recIframe.contentWindow) {
+                recIframe.contentWindow.postMessage(
+                  "RecordingStartMsgFromIframe",
+                  "*",
+                );
+              }
+            }, 1000);
           }
 
           if (presenterViewFlag && presenterViewHostFlag) {
@@ -1982,6 +2019,20 @@ const VideoPanelNormal = () => {
     }
   }, [participantWaitinglistBox]);
 
+  // Recording controls: the meeting-video host (not during a presentation), or
+  // — during a presentation — the presenter and the meeting-video host.
+  const canControlRecording = () =>
+    Boolean(
+      isMeeting &&
+        ((isMeetingVideo &&
+          isMeetingVideoHostChecker &&
+          !presenterViewJoinFlag &&
+          !presenterViewHostFlag) ||
+          (presenterViewFlag &&
+            (presenterViewHostFlag ||
+              (presenterViewJoinFlag && isMeetingVideoHostChecker)))),
+    );
+
   const onHandleClickForStartRecording = () => {
     console.log("onHandleClickForStartRecording");
 
@@ -1997,11 +2048,7 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostChecker &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
+        canControlRecording()
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -2021,11 +2068,7 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostChecker &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
+        canControlRecording()
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -2045,11 +2088,7 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostChecker &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
+        canControlRecording()
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -2086,11 +2125,7 @@ const VideoPanelNormal = () => {
 
         // Host-specific path
         if (
-          isMeeting &&
-          isMeetingVideo &&
-          isMeetingVideoHostChecker &&
-          !presenterViewJoinFlag &&
-          !presenterViewHostFlag
+          canControlRecording()
         ) {
           setTimeout(sendMessage, 1000); // 1s delay for host
         } else {
@@ -2134,11 +2169,11 @@ const VideoPanelNormal = () => {
     activeVideoIcon || ActiveChatBoxGS
       ? `${baseClass} more-zindexwithChatOpen`
       : baseClass;
-  // A maximised MEETING call covers the whole window at every resolution
-  // (.meeting-full-window in videoCallNormalPanel.css). 1:1 / group talk calls
-  // and the docked/minimised states keep their original size.
+  // A maximised call (meeting, 1:1 or group) covers the whole window at every
+  // resolution (.meeting-full-window in videoCallNormalPanel.css). The
+  // docked/minimised states keep their original size.
   const finalClass =
-    isMeetingVideo === true && baseClass.trim() === "max-video-panel"
+    baseClass.trim() === "max-video-panel"
       ? `${chatClass} meeting-full-window`
       : chatClass;
 
@@ -2324,7 +2359,12 @@ const VideoPanelNormal = () => {
                             </Col>
                           ) : null}
                         </>
-                      ) : isMeeting && isMeetingVideo && !isMeetingHost ? (
+                      ) : isMeeting &&
+                        isMeetingVideo &&
+                        !isMeetingHost &&
+                        !joiningPresentationView ? (
+                        // (a presentation viewer, even one who is also in
+                        // meeting video, uses the presentation list below)
                         <>
                           {participantsVisible && (
                             <div className='Participants-Lists'>
