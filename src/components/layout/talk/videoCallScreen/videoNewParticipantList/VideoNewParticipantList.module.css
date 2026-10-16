@@ -326,17 +326,11 @@
 
 /* ─── 8. STATUS TEXT ────────────────────────────────────────────────────────── */
 
-/* "Mic Disabled" / "Video Hidden" labels inside the presenter dropdown.
-   These are plain <span>s, not react-bootstrap Dropdown.Item like
-   "Remove" / "Mute" / "Hide-video" are, so they don't automatically pick
-   up Bootstrap's .dropdown-item font-size/weight (1rem / 400) — set
-   explicitly here to match exactly instead of relying on inheritance. */
+/* "Mic Disabled" / "Video Hidden" labels inside the presenter dropdown */
 .status-muted,
 .status-hidden {
-  font-size: 13px !important;
-  font-weight: 400;
-  color: #000;
-  cursor: pointer;
+  font-size: var(--vp-font-small);
+  color: var(--vp-text-dark);
 }
 
 

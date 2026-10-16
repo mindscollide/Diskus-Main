@@ -180,20 +180,17 @@ export default defineConfig(({ mode }) => {
          */
         {
           find: /^moment$/,
-          replacement: path.resolve(
-            __dirname,
-            "node_modules/moment/dist/moment.js",
-          ),
+          replacement: path.resolve(__dirname, "node_modules/moment/dist/moment.js"),
         },
       ],
     },
 
-    server: {
-      // CRA's default, so existing bookmarks, CORS allow-lists and OAuth
-      // redirect URIs registered against localhost:3000 keep working.
-      port: 3000,
-      open: false,
-    },
+    // server: {
+    //   // CRA's default, so existing bookmarks, CORS allow-lists and OAuth
+    //   // redirect URIs registered against localhost:3000 keep working.
+    //   port: ,
+    //   open: false,
+    // },
 
     build: {
       /**

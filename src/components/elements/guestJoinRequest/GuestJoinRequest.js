@@ -10,12 +10,10 @@ import ProfileIcon from "./../../layout/talk/talk-Video/video-images/Profile_Ico
 import {
   guestJoinPopup,
   participantAcceptandReject,
-  participantPresentationAcceptandReject,
   participantWaitingListBox,
 } from "../../../store/actions/VideoFeature_actions";
 import {
   admitRejectAttendeeMainApi,
-  admitRejectPresentationAttendeeMainApi,
   setAdmittedParticipant,
 } from "../../../store/actions/Guest_Video";
 
@@ -79,26 +77,16 @@ const GuestJoinRequest = () => {
 
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
-    const list = videoFeatureReducer.waitingParticipantsList || [];
-    // CR(0012249): presentation join requests are shown in this same
-    // popup — tagged isPresentationRequest so handleAdmit can route them
-    // to the presentation-specific admit/reject API instead.
-    const presentationList = (
-      videoFeatureReducer.presentationWaitingParticipantsList || []
-    ).map((p) => ({ ...p, isPresentationRequest: true }));
-    const combined = [...list, ...presentationList];
+    const list = videoFeatureReducer.waitingParticipantsList;
 
-    if (combined.length > 0) {
+    if (Array.isArray(list) && list.length > 0) {
       // Deduplicate by meetingID + userID
 
-      setFilteredWaitingParticipants(combined);
+      setFilteredWaitingParticipants(list);
     } else {
       setFilteredWaitingParticipants([]);
     }
-  }, [
-    videoFeatureReducer.waitingParticipantsList,
-    videoFeatureReducer.presentationWaitingParticipantsList,
-  ]);
+  }, [videoFeatureReducer.waitingParticipantsList]);
 
   const handleAdmit = (flag, participantInfo = null) => {
     // Set loading state
@@ -110,98 +98,41 @@ const GuestJoinRequest = () => {
       ? [participantInfo] // Single participant
       : filteredWaitingParticipants; // All participants
 
-    // CR(0012249): presentation join requests are handled by a separate
-    // API/reducer list — never mixed into the existing meeting-video
-    // admit/reject call below.
-    const meetingParticipants = participantsToProcess.filter(
-      (p) => !p.isPresentationRequest,
-    );
-    const presentationParticipants = participantsToProcess.filter(
-      (p) => p.isPresentationRequest,
-    );
-
-    if (meetingParticipants.length > 0) {
-      // Pehle waiting list se remove karo
-      dispatch(
-        participantAcceptandReject(
-          meetingParticipants.map((p) => ({
-            ...p,
-            meetingID: p.meetingID,
-            userID: p.userID,
-          })),
-        ),
-      );
-
-      // Prepare API data. Rows loaded from the waiting-list API (e.g. after
-      // the host rejoins) carry no meetingID — fall back to the current one.
-      const Data = {
-        MeetingId:
-          meetingParticipants[0]?.meetingID ||
-          Number(localStorage.getItem("currentMeetingID")),
-        RoomId: String(roomID),
-        IsRequestAccepted: flag === 1,
-        AttendeeResponseList: meetingParticipants.map((p) => ({
-          IsGuest: p.isGuest,
-          UID: p.guid,
-          UserID: p.userID,
+    // Pehle waiting list se remove karo
+    dispatch(
+      participantAcceptandReject(
+        participantsToProcess.map((p) => ({
+          ...p,
+          meetingID: p.meetingID,
+          userID: p.userID,
         })),
-      };
+      ),
+    );
 
-      // Call API
-      dispatch(
-        admitRejectAttendeeMainApi(
-          Data,
-          navigate,
-          t,
-          flag,
-          "",
-          setLoadingAdmit,
-          setLoadingDeny,
-        ),
-      );
-    }
+    // Prepare API data
+    const Data = {
+      MeetingId: participantsToProcess[0]?.meetingID,
+      RoomId: String(roomID),
+      IsRequestAccepted: flag === 1,
+      AttendeeResponseList: participantsToProcess.map((p) => ({
+        IsGuest: p.isGuest,
+        UID: p.guid,
+        UserID: p.userID,
+      })),
+    };
 
-    if (presentationParticipants.length > 0) {
-      dispatch(
-        participantPresentationAcceptandReject(
-          presentationParticipants.map((p) => ({
-            ...p,
-            meetingID: p.meetingID,
-            userID: p.userID,
-          })),
-          flag === 2,
-        ),
-      );
-
-      const presentationData = {
-        MeetingID:
-          presentationParticipants[0]?.meetingID ||
-          Number(localStorage.getItem("currentMeetingID")),
-        RoomID: String(localStorage.getItem("acceptedRoomID")),
-        IsRequestAccepted: flag === 1,
-        AttendeeResponseList: presentationParticipants.map((p) => ({
-          IsGuest: p.isGuest,
-          UID: p.guid,
-          UserID: p.userID,
-        })),
-      };
-
-      dispatch(
-        admitRejectPresentationAttendeeMainApi(
-          navigate,
-          t,
-          presentationData,
-        ),
-      );
-
-      // admitRejectPresentationAttendeeMainApi doesn't take
-      // setLoadingAdmit/setLoadingDeny (unlike the meeting-video call
-      // above), so clear the spinner locally once dispatched.
-      if (meetingParticipants.length === 0) {
-        setLoadingAdmit(false);
-        setLoadingDeny(false);
-      }
-    }
+    // Call API
+    dispatch(
+      admitRejectAttendeeMainApi(
+        Data,
+        navigate,
+        t,
+        flag,
+        "",
+        setLoadingAdmit,
+        setLoadingDeny,
+      ),
+    );
   };
 
   useEffect(() => {
@@ -229,21 +160,14 @@ const GuestJoinRequest = () => {
   };
 
   useEffect(() => {
-    const list = videoFeatureReducer.waitingParticipantsList || [];
-    const presentationList = (
-      videoFeatureReducer.presentationWaitingParticipantsList || []
-    ).map((p) => ({ ...p, isPresentationRequest: true }));
-    const combined = [...list, ...presentationList];
+    const list = videoFeatureReducer.waitingParticipantsList;
 
-    if (combined.length > 0) {
-      setWaitingOnParticipant(combined);
+    if (Array.isArray(list) && list.length > 0) {
+      setWaitingOnParticipant(list);
     } else {
       setWaitingOnParticipant([]);
     }
-  }, [
-    videoFeatureReducer.waitingParticipantsList,
-    videoFeatureReducer.presentationWaitingParticipantsList,
-  ]);
+  }, [videoFeatureReducer.waitingParticipantsList]);
 
   return (
     <div className={styles["box-positioning"]}>

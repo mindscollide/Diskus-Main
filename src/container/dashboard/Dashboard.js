@@ -1,10 +1,6 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  clearPresentationRoom,
-  savePresentationRoom,
-} from "../../commen/functions/presentationRoom";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "@/container/meeting/commonComponents/closeMeetingTab/CancelModal";
 import {
@@ -70,18 +66,9 @@ import {
   getGroupCallParticipantsMainApi,
   participantListWaitingListMainApi,
   maxParticipantVideoCallPanel,
-  presentationJoinFlowFlag,
-  activePresentationMeetingID,
   presenterLeaveParticipant,
   presentationParticipantJoinedMqtt,
   presentationParticipantLeftMqtt,
-  presentationParticipantJoinRequestMqtt,
-  presentationJoinRequestApprovedMqtt,
-  presentationJoinRequestRejectedMqtt,
-  presentationNewParticipantsJoinedMqtt,
-  removedFromPresentationToWaitingRoomMqtt,
-  participantRemovedFromPresentationMqtt,
-  presentationStoppedMqtt,
   clearPresenterParticipants,
   nonMeetingVideoGlobalModal,
   acceptHostTransferAccessGlobalFunc,
@@ -359,8 +346,6 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
 
-  console.log(maximizeParticipantVideoFlag, "maximizeParticipantVideoFlag");
-
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag,
   );
@@ -630,11 +615,6 @@ const Dashboard = () => {
       dispatch(maxParticipantVideoDenied(false));
 
       if (String(meetingVideoID) === String(payload?.meetingID)) {
-        // Keep the room the presentation started in; an in-video user's later
-        // "Join Presentation" sends it to JoinPresenterView.
-        if (payload?.roomID) {
-          localStorage.setItem("presentationRoomID", String(payload.roomID));
-        }
         if (maxParticipantVideoRemovedFlag) {
           // remove Screen Should be closed when presentation is started
           await dispatch(maxParticipantVideoRemoved(false));
@@ -701,23 +681,6 @@ const Dashboard = () => {
           } else {
             console.log("mqtt mqmqmqmqmqmq");
             dispatch(stopScreenShareOnPresenterStarting(true));
-            // CR(0012249): in meeting video -> no waiting room; tell the
-            // backend via JoinPresenterView with the room this presentation
-            // started in (from MEETING_PRESENTATION_STARTED).
-            localStorage.removeItem("callTypeID");
-            dispatch(
-              joinPresenterViewMainApi(navigate, t, {
-                VideoCallURL: String(currentMeetingVideoURL || ""),
-                WasInVideo: true,
-                RoomID: String(
-                  payload?.roomID ?? localStorage.getItem("presentationRoomID"),
-                ),
-                IsMuted: true,
-                HideVideo: true,
-                // this user's meeting-video guid (host: isGuid, else participantUID)
-                UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-              }),
-            );
             // let newRoomID = localStorage.getItem("newRoomId");
             // let activeRoomID = localStorage.getItem("activeRoomID");
             // if (newRoomID) {
@@ -751,40 +714,86 @@ const Dashboard = () => {
           // (Same exclusion already used for the <Talk/> widget below.)
           !location.pathname.includes("meetingDocumentViewer")
         ) {
-          // CR(0012249): MEETING_PRESENTATION_STARTED must no longer
-          // auto-join this participant into the presentation — it now
-          // opens maxParticipantVideoCallComponent (presentation waiting
-          // room) instead, exactly like clicking "Join Presentation"
-          // manually. The participant sends the actual join request from
-          // there; joinPresenterViewMainApi only fires later, once the
-          // host admits (PRESENTATION_JOIN_REQUEST_APPROVED).
-          console.log(
-            payload,
-            "CR0012249 MEETING_PRESENTATION_STARTED payload",
-          );
-          dispatch(videoIconOrButtonState(false));
-          dispatch(participantVideoButtonState(false));
-          dispatch(participantWaitingListBox(false));
-          let presentationRoomID = String(
-            payload?.roomID ||
-              payload?.RoomID ||
-              localStorage.getItem("acceptedRoomID"),
-          );
-          localStorage.setItem("presentationRoomID", presentationRoomID);
-          // CR(0012249): clear any stale approved/rejected/stopped capture
-          // from a PREVIOUS waiting-room cycle before reopening. Without
-          // this, maxParticipantVideoCallComponent's own stale-data
-          // effects (see its approved/rejected/stopped useEffects) can see
-          // leftover truthy data on this fresh mount and immediately
-          // close the panel again — confirmed via a reducer-level trace:
-          // this branch's maxParticipantVideoCallPanel(true) was followed
-          // by an unexplained (false) from that component's own mount
-          // effect.
-          dispatch(presentationJoinRequestApprovedMqtt(null));
-          dispatch(presentationJoinRequestRejectedMqtt(null));
-          dispatch(presentationStoppedMqtt(null));
-          dispatch(presentationJoinFlowFlag(true));
-          dispatch(maxParticipantVideoCallPanel(true));
+          // Same-user multi-tab fix: every open tab of the same logged-in
+          // user (e.g. two genuine AgendaViewer tabs for the same meeting)
+          // independently receives this MQTT event and independently
+          // reaches this branch — isMeeting/currentMeetingID are shared
+          // across tabs via localStorage, but presenterViewFlag/
+          // presenterViewJoinFlag are per-tab Redux state, so every OTHER open tab looks just as
+          // "uninvolved" as this one. Without a claim, every such tab would
+          // call joinPresenterViewMainApi and open its own presenter-view
+          // iframe. Uses the same Web Locks cross-tab mutex already used
+          // for the incoming-call ringer claim above (see there for why a
+          // plain localStorage read-then-write isn't atomic across tabs).
+          const presentationClaimID = String(payload?.meetingID);
+
+          if (document.visibilityState !== "visible") {
+            await new Promise((resolve) => setTimeout(resolve, 200));
+          }
+
+          let claimedPresentationJoinHere = false;
+          if (typeof navigator !== "undefined" && navigator.locks) {
+            await navigator.locks.request(
+              "diskus-presentation-join-claim",
+              async () => {
+                const alreadyClaimedOnAnotherTab =
+                  String(localStorage.getItem("presentationJoinClaimedID")) ===
+                  presentationClaimID;
+                if (!alreadyClaimedOnAnotherTab) {
+                  localStorage.setItem(
+                    "presentationJoinClaimedID",
+                    presentationClaimID,
+                  );
+                  claimedPresentationJoinHere = true;
+                }
+              },
+            );
+          } else {
+            const alreadyClaimedOnAnotherTab =
+              String(localStorage.getItem("presentationJoinClaimedID")) ===
+              presentationClaimID;
+            if (!alreadyClaimedOnAnotherTab) {
+              localStorage.setItem(
+                "presentationJoinClaimedID",
+                presentationClaimID,
+              );
+              claimedPresentationJoinHere = true;
+            }
+          }
+
+          if (claimedPresentationJoinHere) {
+            console.log("mqtt mqmqmqmqmqmq");
+            console.log("maximizeParticipantVideoFlag");
+            if (maximizeParticipantVideoFlagRef.current) {
+              console.log("maximizeParticipantVideoFlag");
+              console.log("mqtt mqmqmqmqmqmq");
+
+              console.log("maximizeParticipantVideoFlag");
+
+              dispatch(videoIconOrButtonState(false));
+              dispatch(participantVideoButtonState(false));
+              dispatch(maxParticipantVideoCallPanel(false));
+              let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+              let data = {
+                VideoCallURL: String(currentMeetingVideoURL),
+                WasInVideo: isMeetingVideo ? true : false,
+              };
+              dispatch(participantWaitingListBox(false));
+
+              dispatch(joinPresenterViewMainApi(navigate, t, data));
+            } else {
+              console.log("mqtt mqmqmqmqmqmq");
+              let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+              let data = {
+                VideoCallURL: String(currentMeetingVideoURL),
+                WasInVideo: isMeetingVideo ? true : false,
+              };
+              console.log("mqtt mqmqmqmqmqmq");
+              dispatch(participantWaitingListBox(false));
+
+              dispatch(joinPresenterViewMainApi(navigate, t, data));
+            }
+          }
         }
       }
     }
@@ -2001,9 +2010,8 @@ const Dashboard = () => {
                     localStorage.setItem("hostUrl", refinedVideoUrl);
                     localStorage.setItem("participantRoomId", newRoomId);
                     localStorage.setItem("participantUID", isGuid);
-                    localStorage.removeItem("isMeetingVideoHostCheck");
+                    localStorage.setItem("isMeetingVideoHostCheck", false);
                     localStorage.setItem("isHost", false);
-                    console.log("check 22");
                     // localStorage.removeItem("isGuid");
                     dispatch(participantWaitingListBox(false));
                     dispatch(toggleParticipantsVisibility(false));
@@ -2191,196 +2199,13 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STARTED".toLowerCase()
             ) {
-              // CR(0012249): set unconditionally, for every participant,
-              // regardless of their own join/admit status — this is what
-              // AgendaViewer.js's isPresentationForThisMeeting now checks
-              // to show "Join Presentation" instead of "Start Presentation"
-              // for someone who hasn't been admitted (or was rejected) yet.
-              dispatch(activePresentationMeetingID(data.payload?.meetingID));
-              // Remember this meeting's presentation room even if the user
-              // hasn't opened the meeting yet; JoinMeeting reads it later.
-              savePresentationRoom(
-                data.payload?.meetingID,
-                data.payload?.roomID,
-              );
               startPresenterView(data.payload);
               // Dispatch action with all UIDs
             } else if (
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STOPPED".toLowerCase()
             ) {
-              // CR(0012249): clear the same unconditional signal set above.
-              dispatch(activePresentationMeetingID(null));
-              // stopPresenterView does the real cleanup for anyone who was
-              // ALREADY in presenter view (resets raised hands, presenter
-              // participants list, audio/video controls, etc.) — this call
-              // was mistakenly dropped in an earlier pass of this CR; kept
-              // as-is here. presentationStoppedMqtt is the CR(0012249)
-              // addition alongside it, purely for whoever was still in the
-              // presentation WAITING ROOM (not yet admitted) — the toast
-              // below is for that group.
               stopPresenterView(data.payload);
-              dispatch(presentationStoppedMqtt(data.payload));
-              // This presentation's room is no longer joinable.
-              localStorage.removeItem("presentationRoomID");
-              clearPresentationRoom(data.payload?.meetingID);
-              setNotification({
-                ...notification,
-                notificationShow: true,
-                message: t("Presentation-stopped-by-host"),
-              });
-              setNotificationID(id);
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "PRESENTATION_PARTICIPANT_JOIN_REQUEST".toLowerCase()
-            ) {
-              // CR(0012249): presentation host is notified a participant
-              // wants to join — mirrors MEETING_VIDEO_PARTICIPANT_JOIN_REQUEST's
-              // role for the meeting-video waiting list, but kept on its
-              // own dedicated reducer field so it can't interfere with
-              // that existing flow. Popup only opens for the presentation
-              // host — using the ref (not the raw presenterViewHostFlag
-              // variable) because onMessageArrived is only re-bound to the
-              // MQTT client on a narrow dependency list that doesn't
-              // include presenterViewHostFlag, so the plain variable would
-              // read stale here (this file's established pattern for
-              // exactly this reason — see presenterViewHostFlagFlagRef's
-              // other uses).
-              dispatch(presentationParticipantJoinRequestMqtt(data.payload));
-              if (presenterViewHostFlagFlagRef.current) {
-                dispatch(guestJoinPopup(true));
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "PRESENTATION_JOIN_REQUEST_APPROVED".toLowerCase()
-            ) {
-              // CR(0012249): sent to the requesting participant once the
-              // host admits them. Per the API doc, JoinPresenterView should
-              // be called ONLY after this arrives (the waiting-room modal's
-              // own effect does that).
-              dispatch(presentationJoinRequestApprovedMqtt(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "PRESENTATION_JOIN_REQUEST_REJECTED".toLowerCase()
-            ) {
-              // CR(0012249): sent to the requesting participant if the
-              // host rejects them.
-              dispatch(presentationJoinRequestRejectedMqtt(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "PRESENTATION_NEW_PARTICIPANTS_JOINED".toLowerCase()
-            ) {
-              // CR(0012249): sent to already-admitted participants so their
-              // roster reflects a newly-admitted attendee.
-              dispatch(presentationNewParticipantsJoinedMqtt(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "REMOVED_FROM_PRESENTATION_TO_WAITING_ROOM".toLowerCase()
-            ) {
-              // CR(0012249): sent to the participant the host just removed
-              // — unlike meeting-video's REMOVED_FROM_MEETING, they go back
-              // to the waiting room rather than being fully disconnected.
-              // Exit the live presenter view the same way stop/leave does
-              // elsewhere in this file, then reopen the waiting room so
-              // they can request to join again.
-              dispatch(removedFromPresentationToWaitingRoomMqtt(data.payload));
-              dispatch(presenterViewGlobalState(0, false, false, false));
-              localStorage.setItem(
-                "presentationRoomID",
-                String(
-                  data.payload?.roomID ||
-                    localStorage.getItem("acceptedRoomID"),
-                ),
-              );
-              localStorage.removeItem("isWebCamEnabled");
-              dispatch(setAudioControlHost(false));
-              console.log("videoHideUnHideForHost");
-              dispatch(setVideoControlHost(false));
-              // CR(0012249): see the matching comment in startPresenterView
-              // — clear any stale approved/rejected/stopped capture before
-              // reopening the waiting room, so maxParticipantVideoCallComponent's
-              // fresh mount can't see leftover truthy data and immediately
-              // close itself again.
-              dispatch(presentationJoinRequestApprovedMqtt(null));
-              dispatch(presentationJoinRequestRejectedMqtt(null));
-              dispatch(presentationStoppedMqtt(null));
-              dispatch(presentationJoinFlowFlag(true));
-              dispatch(maxParticipantVideoCallPanel(true));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "REMOVED_FROM_PRESENTATION".toLowerCase()
-            ) {
-              // The presenter removed this participant while they were in
-              // meeting video: they leave the presentation AND the meeting
-              // video (no waiting room). LeavePresenterView is not needed —
-              // the backend already removed them from the presentation.
-              show(t("Removed-by-presenter"), "info");
-              // Ids are read before anything below clears them.
-              const isUsable = (v) =>
-                Boolean(v) && !["null", "undefined", "0"].includes(String(v));
-              const hostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck"),
-              );
-              const guid = [
-                hostCheck
-                  ? localStorage.getItem("isGuid")
-                  : localStorage.getItem("participantUID"),
-                localStorage.getItem("participantUID"),
-                localStorage.getItem("isGuid"),
-              ].find(isUsable);
-              const leaveData = {
-                RoomID: String(
-                  hostCheck
-                    ? localStorage.getItem("newRoomId")
-                    : localStorage.getItem("participantRoomId"),
-                ),
-                UserGUID: String(guid),
-                Name: String(localStorage.getItem("name")),
-                IsHost: hostCheck ? true : false,
-                MeetingID: Number(
-                  data.payload?.meetingID ??
-                    localStorage.getItem("currentMeetingID"),
-                ),
-              };
-              sessionStorage.removeItem("alreadyInMeetingVideo");
-              dispatch(
-                participantRemovedFromPresentationMqtt({
-                  guid: guid,
-                }),
-              );
-              dispatch(setRaisedUnRaisedParticiant(false));
-              dispatch(toggleParticipantsVisibility(false));
-              dispatch(videoChatMessagesFlag(false));
-              dispatch(chatBoxActiveFlag(false));
-              dispatch(activeChatBoxGS(false));
-              dispatch(presenterViewGlobalState(0, false, false, false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-              dispatch(LeaveMeetingVideo(leaveData, navigate, t));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "PARTICIPANT_REMOVED_FROM_PRESENTATION".toLowerCase()
-            ) {
-              // CR(0012249): sent to the OTHER admitted participants so
-              // their roster drops the removed attendee. This only ever
-              // updated presentationParticipantsList (the regular-viewer
-              // roster) — the presenter-HOST's own "Participants" panel
-              // (VideoNewParticipantList.js's filteredParticipants, local
-              // component state) was never told, so a removed attendee
-              // stayed visible there forever. Reusing presenterLeaveParticipant
-              // (the same action PRESENTATION_PARTICIPANT_LEFT already
-              // uses) instead of inventing a new mechanism — that
-              // component's existing effect already filters by .uid.
-              dispatch(participantRemovedFromPresentationMqtt(data.payload));
-              dispatch(
-                presenterLeaveParticipant({
-                  uid: data.payload?.guid ?? data.payload?.UID,
-                }),
-              );
             } else if (
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
@@ -5934,12 +5759,11 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/Diskus/videochat" ||
           location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
@@ -5947,7 +5771,7 @@ const Dashboard = () => {
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className="sidebar_layout" width={60}>
+                <Sider className='sidebar_layout' width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -5958,14 +5782,13 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }
-              >
+                }>
                 <>
                   <Outlet />
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className="talk_features_home">
+                <div className='talk_features_home'>
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
@@ -5974,7 +5797,7 @@ const Dashboard = () => {
           {notificationID !== 0 && (
             <NotificationBar
               iconName={
-                <img src={IconMetroAttachment} alt="" draggable="false" />
+                <img src={IconMetroAttachment} alt='' draggable='false' />
               }
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
@@ -5985,14 +5808,7 @@ const Dashboard = () => {
           )}
 
           {ShowGuestPopup &&
-            // CR(0012249): a presentation host isn't necessarily flagged
-            // isMeetingVideo (e.g. presenting without being in the
-            // meeting-video call at all), so this popup never mounted for
-            // them. presenterViewFlag is already used as the parallel
-            // condition to isMeetingVideo elsewhere in this file (see the
-            // chat-panel condition below) — same pattern here.
-            (JSON.parse(localStorage.getItem("isMeetingVideo")) === true ||
-              presenterViewFlag) &&
+            JSON.parse(localStorage.getItem("isMeetingVideo")) === true &&
             (location.pathname.includes("/Diskus/Meeting") ||
               location.pathname.includes("/Diskus/committee") ||
               location.pathname.includes("/Diskus/groups")) &&
@@ -6018,8 +5834,8 @@ const Dashboard = () => {
             // openMeetingGroupChat, so they still render this instance as
             // before.
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -6046,24 +5862,24 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
-                  <Row className="mb-1">
+                  <Row className='mb-1'>
                     <Col lg={12} md={12} xs={12} sm={12}>
                       <Row>
-                        <Col className="d-flex justify-content-center">
+                        <Col className='d-flex justify-content-center'>
                           <img
                             src={VerificationFailedIcon}
                             width={60}
                             className={"allowModalIcon"}
-                            alt=""
-                            draggable="false"
+                            alt=''
+                            draggable='false'
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col className="text-center mt-4">
+                        <Col className='text-center mt-4'>
                           <label className={"allow-limit-modal-p"}>
                             {t(
                               "The-organization-subscription-is-not-active-please-contact-your-admin",
@@ -6076,13 +5892,12 @@ const Dashboard = () => {
                 </>
               }
               ModalFooter={
-                <Row className="mb-3">
+                <Row className='mb-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}

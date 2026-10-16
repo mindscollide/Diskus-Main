@@ -77,7 +77,6 @@ import {
   joinPresenterViewMainApi,
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
-  presentationJoinFlowFlag,
   minimizeVideoPanelFlag,
   nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
@@ -113,7 +112,6 @@ import { getMeetingByCommitteeIdApi } from "./Committee_actions";
 import { getMeetingbyGroupIdApi } from "./Groups_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import store from "../store";
-import { rememberPresentationRoomID } from "../../commen/functions/presentationRoom";
 import { resetViewTabs, toggleViewMeetingModal } from "./ModalStates_actions";
 import {
   listOfMeetingsApi,
@@ -7240,15 +7238,12 @@ const JoinCurrentMeeting = (
               let presenterViewStatus =
                 response.data.responseResult.isPresenterViewStarted;
               if (presenterViewStatus && !activeStatusOneToOne) {
-                // CR(0012249): opening this meeting revealed a presentation
-                // is already active — no longer joins directly, opens the
-                // waiting room instead (same as clicking "Join Presentation").
-                rememberPresentationRoomID(
-                  Data.FK_MDID,
-                  response.data.responseResult.roomID,
-                );
-                dispatch(presentationJoinFlowFlag(true));
-                dispatch(maxParticipantVideoCallPanel(true));
+                let data = {
+                  VideoCallURL: String(Data.VideoCallURL),
+                  WasInVideo: false,
+                };
+
+                dispatch(joinPresenterViewMainApi(navigate, t, data));
               } else if (presenterViewStatus && activeStatusOneToOne) {
                 localStorage.setItem("JoinpresenterForonetoone", true);
                 dispatch(nonMeetingVideoGlobalModal(true));
@@ -8199,6 +8194,10 @@ const LeaveMeetingVideo = (
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_01".toLowerCase(),
                 )
             ) {
+              // let meetingFlag = JSON.parse(
+              //   localStorage.getItem("isMeetingVideoHostCheck")
+              // );
+
               await dispatch(videoIconOrButtonState(false));
               await dispatch(participantVideoButtonState(false));
               await dispatch(maxParticipantVideoCallPanel(false));
@@ -8209,6 +8208,7 @@ const LeaveMeetingVideo = (
                 isHostId: 0,
                 isDashboardVideo: false,
               };
+              // dispatch(makeHostNow(meetingHost));
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost),
@@ -8247,17 +8247,15 @@ const LeaveMeetingVideo = (
                     ),
                   );
                 } else if (flag === 2) {
-                  // CR(0012249): was leaving the current call to join an
-                  // already-active presentation directly — now opens the
-                  // waiting room instead (same as clicking "Join Presentation").
+                  let currentMeetingVideoURL =
+                    localStorage.getItem("videoCallURL");
                   await dispatch(videoIconOrButtonState(false));
                   await dispatch(participantVideoButtonState(false));
-                  localStorage.setItem(
-                    "presentationRoomID",
-                    String(localStorage.getItem("acceptedRoomID")),
-                  );
-                  dispatch(presentationJoinFlowFlag(true));
-                  dispatch(maxParticipantVideoCallPanel(true));
+                  let data = {
+                    VideoCallURL: String(currentMeetingVideoURL),
+                    WasInVideo: false,
+                  };
+                  dispatch(joinPresenterViewMainApi(navigate, t, data));
                 } else if (flag === 3) {
                   await setLeaveMeetingVideoForOneToOneOrGroup(false);
                   setJoiningOneToOneAfterLeavingPresenterView(true);
@@ -8334,18 +8332,15 @@ const LeaveMeetingVideo = (
                   ),
                 );
               } else if (flag === 2) {
-                // CR(0012249): see the matching comment in the other
-                // flag===2 branch above (same "leave call, then join
-                // presentation" pattern) — opens the waiting room now
-                // instead of joining directly.
+                let currentMeetingVideoURL =
+                  localStorage.getItem("videoCallURL");
                 await dispatch(videoIconOrButtonState(false));
                 await dispatch(participantVideoButtonState(false));
-                localStorage.setItem(
-                  "presentationRoomID",
-                  String(localStorage.getItem("acceptedRoomID")),
-                );
-                dispatch(presentationJoinFlowFlag(true));
-                dispatch(maxParticipantVideoCallPanel(true));
+                let data = {
+                  VideoCallURL: String(currentMeetingVideoURL),
+                  WasInVideo: false,
+                };
+                dispatch(joinPresenterViewMainApi(navigate, t, data));
               } else if (flag === 3) {
                 await setLeaveMeetingVideoForOneToOneOrGroup(false);
                 setJoiningOneToOneAfterLeavingPresenterView(true);
