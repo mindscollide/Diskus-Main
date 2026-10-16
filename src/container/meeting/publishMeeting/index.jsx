@@ -49,6 +49,7 @@ import {
   GetGroupMessages,
   GetAllUserChats,
   activeChat,
+  GetNewAllUserChats,
 } from "../../../store/actions/Talk_action";
 import {
   recentChatFlag,
@@ -87,6 +88,7 @@ import ShareViaDataRoomPathModal from "@/container/meeting/commonComponents/Boar
 import MeetingRecording from "@/container/meeting/commonComponents/MeetingRecording/MeetingRecording";
 import {
   getViewMeetingByMeetingIdApi,
+  getMeetingDetailsByMeetingIdApi,
   joinMeetingApi,
   listOfMeetingsApi,
   setCurrentMeetingInfo,
@@ -260,86 +262,12 @@ const PublishedMeetingList = () => {
   // ─── Group Chat ───────────────────────────────────────────────────────────
 
   const groupChatInitiation = async (data) => {
-    if (data.talkGroupID !== 0) {
-      let allChatMessages =
-        talkStateDataAllUserChats.AllUserChatsData.allMessages;
-      let foundRecord =
-        Array.isArray(allChatMessages) &&
-        allChatMessages.find((item) => item.id === data.talkGroupID);
-
-      // The chats reducer can be stale (e.g. a chat group created after it
-      // was last loaded) — refetch from the API before concluding the chat
-      // doesn't exist, instead of only ever trusting the cached reducer.
-      if (!foundRecord) {
-        await dispatch(
-          GetAllUserChats(
-            navigate,
-            parseInt(localStorage.getItem("userID")),
-            parseInt(currentOrganizationId),
-            t,
-          ),
-        );
-        const refreshedAllChatMessages =
-          store.getState().talkStateData.AllUserChats.AllUserChatsData
-            .allMessages;
-        foundRecord =
-          Array.isArray(refreshedAllChatMessages) &&
-          refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
-      }
-
-      if (foundRecord) {
-        dispatch(activeChat(foundRecord));
-        localStorage.setItem("activeOtoChatID", data.talkGroupID);
-        dispatch(createShoutAllScreen(false));
-        dispatch(addNewChatScreen(false));
-        dispatch(footerActionStatus(false));
-        dispatch(createGroupScreen(false));
-        dispatch(chatBoxActiveFlag(false));
-        dispatch(recentChatFlag(true));
-        dispatch(activeChatBoxGS(true));
-        dispatch(chatBoxActiveFlag(true));
-        dispatch(headerShowHideStatus(true));
-        dispatch(footerShowHideStatus(true));
-        let chatGroupData = {
-          UserID: parseInt(localStorage.getItem("userID")),
-          ChannelID: currentOrganizationId,
-          GroupID: data.talkGroupID,
-          NumberOfMessages: 50,
-          OffsetMessage: 0,
-        };
-        dispatch(GetGroupMessages(navigate, chatGroupData, t));
-        dispatch(
-          GetAllUsers(
-            navigate,
-            parseInt(localStorage.getItem("userID")),
-            parseInt(currentOrganizationId),
-            t,
-          ),
-        );
-        dispatch(
-          GetAllUserChats(
-            navigate,
-            parseInt(localStorage.getItem("userID")),
-            parseInt(currentOrganizationId),
-            t,
-          ),
-        );
-        dispatch(
-          GetAllUsersGroupsRoomsList(
-            navigate,
-            parseInt(localStorage.getItem("userID")),
-            parseInt(currentOrganizationId),
-            t,
-          ),
-        );
-      } else {
-        show(t("No-talk-group-created"), "error");
-      }
+    if (Number(data?.talkGroupID) !== 0) {
+      await dispatch(GetNewAllUserChats(navigate, data.talkGroupID, t));
     } else {
-      show(t("No-talk-group-created"), "error");
+      show(t("Something-went-wrong", "error"))
     }
-  };
-
+  }
   // ─── View Agenda ─────────────────────────────────────────────────────────
   const handleViewAgenda = async (record) => {
     try {

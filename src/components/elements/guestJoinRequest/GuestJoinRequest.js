@@ -146,7 +146,7 @@ const GuestJoinRequest = () => {
           UserID: p.userID,
         })),
       };
-      console.log("DataDataData");
+
       // Call API
       dispatch(
         admitRejectAttendeeMainApi(
@@ -187,7 +187,11 @@ const GuestJoinRequest = () => {
       };
 
       dispatch(
-        admitRejectPresentationAttendeeMainApi(navigate, t, presentationData),
+        admitRejectPresentationAttendeeMainApi(
+          navigate,
+          t,
+          presentationData,
+        ),
       );
 
       // admitRejectPresentationAttendeeMainApi doesn't take

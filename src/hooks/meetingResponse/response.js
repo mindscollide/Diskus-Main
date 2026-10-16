@@ -168,7 +168,7 @@ export const mqttMeetingData = async (meetingData, currentSourceID) => {
       isOrganizer: usersData?.isOrganiser,
       isAgendaContributor: usersData?.isAgendaContributor,
       isParticipant: usersData?.isParticipant,
-      talkGroupID: meetingData.talkGroupID ?? false,
+      talkGroupID: meetingData.talkGroupID ?? 0,
       meetingType: meetingTypeID,
       meetingEndTime: meetingData.meetingEndTime ?? false,
       meetingStartTime: meetingData.meetingStartTime ?? false,

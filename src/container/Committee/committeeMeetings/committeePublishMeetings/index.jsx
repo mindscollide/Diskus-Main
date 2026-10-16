@@ -96,6 +96,7 @@ import {
   validateStringEmail_success,
   validateStringMeetingEmail_clear,
 } from "../../../../store/actions/NewMeetingActions";
+import { GetNewAllUserChats } from "../../../../store/actions/Talk_action";
 
 // ─── Module-level constants (avoid per-render recreation) ──────────────────
 
@@ -277,8 +278,8 @@ const CommitteePublishedMeetingList = () => {
     dispatch(getMeetingByCommitteeIdApi(navigate, t, searchData));
 
     return () => {
-          dispatch(clearGetMeetingByCommitteeID());
-      
+      dispatch(clearGetMeetingByCommitteeID());
+
     }
   }, [])
 
@@ -503,76 +504,12 @@ const CommitteePublishedMeetingList = () => {
   // ─── Group Chat ───────────────────────────────────────────────────────────
 
   const groupChatInitiation = async (data) => {
-    if (data.talkGroupID === 0) {
-      show(t("No-talk-group-created"), "error");
-      return;
+    if (Number(data?.talkGroupID) !== 0) {
+      await dispatch(GetNewAllUserChats(navigate, data.talkGroupID, t));
+    } else {
+      show(t("Something-went-wrong", "error"))
     }
-
-    const allChatMessages = talkStateDataAllUserChats.AllUserChatsData.allMessages;
-    let foundRecord =
-      Array.isArray(allChatMessages) &&
-      allChatMessages.find((item) => item.id === data.talkGroupID);
-
-    // The chats reducer can be stale (e.g. a chat group created after it
-    // was last loaded) — refetch from the API before concluding the chat
-    // doesn't exist, instead of only ever trusting the cached reducer.
-    if (!foundRecord) {
-      await dispatch(
-        GetAllUserChats(
-          navigate,
-          parseInt(localStorage.getItem("userID")),
-          parseInt(currentOrganizationId),
-          t,
-        ),
-      );
-      const refreshedAllChatMessages =
-        store.getState().talkStateData.AllUserChats.AllUserChatsData
-          .allMessages;
-      foundRecord =
-        Array.isArray(refreshedAllChatMessages) &&
-        refreshedAllChatMessages.find((item) => item.id === data.talkGroupID);
-    }
-
-    if (!foundRecord) {
-      show(t("No-talk-group-created"), "error");
-      return;
-    }
-
-    dispatch(activeChat(foundRecord));
-    localStorage.setItem("activeOtoChatID", data.talkGroupID);
-    dispatch(createShoutAllScreen(false));
-    dispatch(addNewChatScreen(false));
-    dispatch(footerActionStatus(false));
-    dispatch(createGroupScreen(false));
-    dispatch(chatBoxActiveFlag(false));
-    dispatch(recentChatFlag(true));
-    dispatch(activeChatBoxGS(true));
-    dispatch(chatBoxActiveFlag(true));
-    dispatch(headerShowHideStatus(true));
-    dispatch(footerShowHideStatus(true));
-
-    const uid = parseInt(userID);
-    const orgId = parseInt(currentOrganizationId);
-
-    await Promise.all([
-      dispatch(GetAllUserChats(navigate, uid, orgId, t)),
-      dispatch(
-        GetGroupMessages(
-          navigate,
-          {
-            UserID: uid,
-            ChannelID: currentOrganizationId,
-            GroupID: data.talkGroupID,
-            NumberOfMessages: 50,
-            OffsetMessage: 0,
-          },
-          t,
-        ),
-      ),
-      dispatch(GetAllUsers(navigate, uid, orgId, t)),
-      dispatch(GetAllUsersGroupsRoomsList(navigate, uid, orgId, t)),
-    ]);
-  };
+  }
 
   // ─── View Agenda ─────────────────────────────────────────────────────────
   const handleViewAgenda = async (record) => {

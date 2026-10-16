@@ -80,6 +80,7 @@ const VideoPanelNormal = () => {
   const navigate = useNavigate();
   const recordingToastShownRef = useRef(false);
   const hasTriggeredRecordingRef = useRef(false);
+  const presentationRecordingTriggeredRef = useRef(false);
   const ActiveChatBoxGS = useSelector(
     (state) => state.talkFeatureStates.ActiveChatBoxGS,
   );
@@ -1117,6 +1118,13 @@ const VideoPanelNormal = () => {
     }
   }, [isMeetingVideo, iframeRef]);
 
+  // Allow the auto-start again for the next presentation.
+  useEffect(() => {
+    if (!presenterViewFlag) {
+      presentationRecordingTriggeredRef.current = false;
+    }
+  }, [presenterViewFlag]);
+
   // Add this useEffect to watch for the transfer completion
   useEffect(() => {
     if (hostTransferFlag) {
@@ -1608,6 +1616,26 @@ const VideoPanelNormal = () => {
             }, 4000);
           }
 
+          // Presentation recording starts automatically (like meeting video
+          // does on join) for the presenter / meeting-video host.
+          if (
+            isZoomEnabled &&
+            presenterViewFlag &&
+            canControlRecording() &&
+            !presentationRecordingTriggeredRef.current
+          ) {
+            presentationRecordingTriggeredRef.current = true;
+            setTimeout(() => {
+              const recIframe = iframeRef.current;
+              if (recIframe && recIframe.contentWindow) {
+                recIframe.contentWindow.postMessage(
+                  "RecordingStartMsgFromIframe",
+                  "*",
+                );
+              }
+            }, 1000);
+          }
+
           if (presenterViewFlag && presenterViewHostFlag) {
             if (isZoomEnabled) {
               setTimeout(() => {
@@ -1991,6 +2019,20 @@ const VideoPanelNormal = () => {
     }
   }, [participantWaitinglistBox]);
 
+  // Recording controls: the meeting-video host (not during a presentation), or
+  // — during a presentation — the presenter and the meeting-video host.
+  const canControlRecording = () =>
+    Boolean(
+      isMeeting &&
+        ((isMeetingVideo &&
+          isMeetingVideoHostChecker &&
+          !presenterViewJoinFlag &&
+          !presenterViewHostFlag) ||
+          (presenterViewFlag &&
+            (presenterViewHostFlag ||
+              (presenterViewJoinFlag && isMeetingVideoHostChecker)))),
+    );
+
   const onHandleClickForStartRecording = () => {
     console.log("onHandleClickForStartRecording");
 
@@ -2006,11 +2048,7 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostChecker &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
+        canControlRecording()
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -2030,11 +2068,7 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostChecker &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
+        canControlRecording()
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -2054,11 +2088,7 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostChecker &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
+        canControlRecording()
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -2095,11 +2125,7 @@ const VideoPanelNormal = () => {
 
         // Host-specific path
         if (
-          isMeeting &&
-          isMeetingVideo &&
-          isMeetingVideoHostChecker &&
-          !presenterViewJoinFlag &&
-          !presenterViewHostFlag
+          canControlRecording()
         ) {
           setTimeout(sendMessage, 1000); // 1s delay for host
         } else {

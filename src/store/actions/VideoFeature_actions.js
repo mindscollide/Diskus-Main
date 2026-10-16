@@ -3015,8 +3015,76 @@ const isSharedScreenFail = (message) => {
   };
 };
 
-const isSharedScreenTriggeredApi = (navigate, t, data) => {
+// IsSharedScreen needs both RoomID and UID. Callers read them straight from
+// localStorage, where they can occasionally be missing / "null" / "0" (e.g.
+// acceptedRoomID is not set for a one-to-one call), which made the API answer
+// "UnSuccessful". Keep a usable value as is; only replace a missing one from
+// the current call's other stored ids.
+const isUsableShareId = (screenShare) =>
+  screenShare !== null &&
+  screenShare !== undefined &&
+  screenShare !== "" &&
+  !["null", "undefined", "0"].includes(String(screenShare));
+
+const resolveSharedScreenData = (data) => {
+  const get = (key) => localStorage.getItem(key);
+  const first = (...values) => values.find(isUsableShareId);
+  const parse = (key) => {
+    try {
+      return JSON.parse(get(key));
+    } catch {
+      return null;
+    }
+  };
+  const isMeetingVideo = parse("isMeetingVideo");
+  const hostCheck = parse("isMeetingVideoHostCheck");
+
+  let roomID = data?.RoomID;
+  let uid = data?.UID;
+
+  if (!isUsableShareId(roomID)) {
+    roomID = isMeetingVideo
+      ? hostCheck
+        ? first(get("newRoomId"), get("participantRoomId"))
+        : first(get("participantRoomId"), get("newRoomId"))
+      : first(
+          get("activeRoomID"),
+          get("initiateCallRoomID"),
+          get("acceptedRoomID"),
+          get("groupCallRoomId"),
+          get("NewRoomID"),
+        );
+  }
+
+  if (!isUsableShareId(uid)) {
+    if (isMeetingVideo) {
+      uid = hostCheck
+        ? first(get("isGuid"), get("participantUID"))
+        : first(get("participantUID"), get("isGuid"));
+    } else if (Number(get("CallType")) === 2) {
+      uid = parse("isCaller")
+        ? first(get("callerGuid"), get("receipentGuid"))
+        : first(get("receipentGuid"), get("callerGuid"));
+    } else {
+      uid = first(get("userID"));
+    }
+  }
+
+  if (!isUsableShareId(roomID) || !isUsableShareId(uid)) return null;
+  return { ...data, RoomID: String(roomID), UID: String(uid) };
+};
+
+const isSharedScreenTriggeredApi = (navigate, t, originalData) => {
   return (dispatch) => {
+    const data = resolveSharedScreenData(originalData);
+    if (!data) {
+      // Nothing valid to send; the server would only answer with an error toast.
+      console.error(
+        "src/store/actions/VideoFeature_actions.js: IsSharedScreen not sent — RoomID or UID missing",
+        originalData,
+      );
+      return;
+    }
     dispatch(isSharedScreenInit());
     let form = new FormData();
     form.append("RequestMethod", isSharedScreenCall.RequestMethod);
@@ -3027,7 +3095,7 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          dispatch(isSharedScreenTriggeredApi(navigate, t, originalData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

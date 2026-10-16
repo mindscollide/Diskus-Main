@@ -344,7 +344,7 @@ const SignInUserManagement = () => {
                           lg={12}
                           className='d-flex justify-content-center mt-2 '>
                           <span className={styles["TermsfDiskus"]}>
-                            {t("By-signing-in-you-agree-to-our")}
+                            {`${t("By-signing-in-you-agree-to-our")} `}
                             <Link
                               to={"https://diskusboard.com/terms/"}
                               target='_blank'>
