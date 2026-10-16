@@ -46,7 +46,18 @@ import {
 import { changeMQTTJSONOne } from "../../commen/functions/MQTTJson";
 import { talkApi, talkApiReport } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
-import { chatBoxActiveFlag, retryFlagState } from "./Talk_Feature_actions";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+  retryFlagState,
+} from "./Talk_Feature_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 
 // Refresh Token Talk Success
@@ -4018,7 +4029,6 @@ const DownloadTalkFile = (navigate, Data, ext, originalFileName, t) => {
     contentType = "image/jpeg";
   } else if (ext === "jpeg") {
     contentType = "image/jpeg";
-  } else {
   }
   return (dispatch) => {
     // dispatch(DownloadLoaderStart());
@@ -4052,7 +4062,158 @@ const DownloadTalkFile = (navigate, Data, ext, originalFileName, t) => {
   };
 };
 
+//get all user chat init
+const getNewAllUserChatsInit = (loader) => {
+  return {
+    type: actions.GET_USERCHATS_INIT,
+    loader: loader,
+  };
+};
+
+//get user chats success
+const getNewAllUserChatsSuccess = (response, message) => {
+  return {
+    type: actions.GET_USERCHATS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//get user chats fail
+const getNewAllUserChatsFail = (response, message) => {
+  return {
+    type: actions.GET_USERCHATS_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//Get all user chats
+const GetNewAllUserChats = (navigate, talkGroupID, t) => {
+  let Data = {
+    TalkRequest: {
+      UserID:
+        localStorage.getItem("userID") !== null
+          ? Number(localStorage.getItem("userID"))
+          : 0,
+      ChannelID:
+        localStorage.getItem("organizationID") !== null
+          ? Number(localStorage.getItem("organizationID"))
+          : 0,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getNewAllUserChatsInit(true));
+    let form = new FormData();
+    form.append("RequestMethod", getAllUserChats.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    return axiosInstance
+      .post(talkApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(navigate, t));
+          return dispatch(GetAllUserChats(navigate, talkGroupID, t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetRecentAllMessagesWithUserDetails_01"
+          ) {
+            try {
+              const { allMessages = [] } =
+                response.data.responseResult.talkResponse;
+              let foundRecord =
+                allMessages &&
+                allMessages.find(
+                  (item) => Number(item.id) === Number(talkGroupID),
+                );
+              if (foundRecord) {
+                dispatch(activeChat(foundRecord));
+                localStorage.setItem("activeOtoChatID", talkGroupID);
+
+                dispatch(createShoutAllScreen(false));
+                dispatch(addNewChatScreen(false));
+                dispatch(footerActionStatus(false));
+                dispatch(createGroupScreen(false));
+                dispatch(recentChatFlag(true));
+                dispatch(activeChatBoxGS(true));
+                dispatch(chatBoxActiveFlag(true));
+                dispatch(headerShowHideStatus(true));
+                dispatch(footerShowHideStatus(true));
+              } else {
+                console.log(
+                  { allMessages, talkGroupID, foundRecord },
+                  "foundRecordfoundRecordfoundRecord",
+                );
+              }
+              let chatGroupData = {
+                UserID: parseInt(localStorage.getItem("userID")),
+                ChannelID:
+                  localStorage.getItem("organizationID") !== null
+                    ? Number(localStorage.getItem("organizationID"))
+                    : 0,
+                GroupID: Number(talkGroupID),
+                NumberOfMessages: 50,
+                OffsetMessage: 0,
+              };
+
+              dispatch(
+                GetAllUsersGroupsRoomsList(
+                  navigate,
+                  parseInt(localStorage.getItem("userID")),
+                  localStorage.getItem("organizationID") !== null
+                    ? Number(localStorage.getItem("organizationID"))
+                    : 0,
+                  t,
+                ),
+              );
+              dispatch(GetGroupMessages(navigate, chatGroupData, t));
+              dispatch(
+                GetAllUsers(
+                  navigate,
+                  parseInt(localStorage.getItem("userID")),
+                  localStorage.getItem("organizationID") !== null
+                    ? Number(localStorage.getItem("organizationID"))
+                    : 0,
+                  t,
+                ),
+              );
+            } catch (error) {
+              console.log("GetNewAllUserChatsGetNewAllUserChats", error);
+            }
+            let newError = t("Messages-found");
+            await dispatch(
+              getNewAllUserChatsSuccess(
+                response.data.responseResult.talkResponse,
+                newError,
+              ),
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetRecentAllMessagesWithUserDetails_02"
+          ) {
+            let newError = t("No-messages-found");
+            dispatch(getNewAllUserChatsFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetRecentAllMessagesWithUserDetails_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getNewAllUserChatsFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getNewAllUserChatsFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getNewAllUserChatsFail(false, newError));
+      });
+  };
+};
 export {
+  GetNewAllUserChats,
   activeChatID,
   activeMessageID,
   mqttInsertOtoMessage,
