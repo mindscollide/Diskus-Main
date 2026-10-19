@@ -389,8 +389,7 @@ const validationEmailAction = (email, navigate, t) => {
                 )
             ) {
               dispatch(
-                validationEmailSuccess(
-                  response.data.responseResult,
+                validationEmailFail(
                   t("Not-a-valid-user-please-login-with-valid-user"),
                 ),
               );

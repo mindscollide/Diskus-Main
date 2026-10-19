@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Col, Container, Form, Row } from "react-bootstrap";
-import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
+import { Col, Form, Row } from "react-bootstrap";
+import AuthLayout from "../../../../components/layout/AuthLayout/AuthLayout";
 import {
   Button,
   Notification,
@@ -15,8 +15,6 @@ import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.s
 import DiskusLogoArabic from "./../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import PSOLogo from "./../../../../assets/images/Logos/PSO_Logo.png";
 import { PSO_LOGO } from "./../../../../commen/featureFlags";
-import PSOPowerdBy from "./../../../../assets/images/Logos/PowerdByDiskus.png";
-import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
 import {
   LoginFlowRoutes,
@@ -159,173 +157,135 @@ const ForgotPasswordVerificationUM = () => {
 
   return (
     <>
-      <Container fluid className={styles["auth_container"]}>
-        <Row className='posotion-relative'>
-          <Col className={styles["languageSelector"]}>
-            <LanguageSelector />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col
-            lg={4}
-            md={4}
-            sm={12}
-            className='d-flex justify-content-center align-items-center min-vh-100'>
-            <span
+      <AuthLayout>
+        <Col
+          lg={4}
+          md={4}
+          sm={12}
+          className='d-flex justify-content-center align-items-center min-vh-100'>
+          <span
+            className={
+              styles["Forgot_password_Verification_loginbox_auth_paper"]
+            }>
+            <Col
+              sm={12}
+              lg={12}
+              md={12}
               className={
-                styles["Forgot_password_Verification_loginbox_auth_paper"]
+                styles["ForgotPassword_Verification_EmailVerifyBox"]
               }>
-              <Col
-                sm={12}
-                lg={12}
-                md={12}
-                className={
-                  styles["ForgotPassword_Verification_EmailVerifyBox"]
-                }>
+              <Row>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className='d-flex justify-content-center'>
+                  <img
+                    draggable='false'
+                    src={
+                      PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
+                        ? DiskusLogoArabic
+                        : DiskusLogo
+                    }
+                    width={PSO_LOGO ? 120 :200}
+                    alt='diskus_logo'
+                  />
+                </Col>
+              </Row>
+              <Form onSubmit={SubmitOTP}>
+                <Row className='mt-5 '>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className={styles["OTPHandler"]}>
+                    <span className={styles["EmailVerifyLabel"]}>
+                      {t("Enter-verification-code")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row className={styles["BoxesforOTP"]}>
+                  <Col sm={12} md={12} lg={12}>
+                    <VerificationInputField
+                      fields={6}
+                      applyClass='OTPInput'
+                      value={verifyOTP}
+                      change={changeHandler}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className='text-left d-flex justify-content-between'>
+                    <span
+                      className={
+                        styles["Forgot_Password_Verification_Tagline"]
+                      }>
+                      {t("Didnt-receiverthe-code")}
+                      <Button
+                        className={
+                          styles[
+                            "Forgot_Password_Verification_resendCode_btn"
+                          ]
+                        }
+                        disableBtn={seconds > 0 || minutes > 0}
+                        text={t("Resend-code")}
+                        type='button'
+                        onClick={sendRequestResend}
+                      />
+                    </span>
+                    <span
+                      className={
+                        styles[
+                          "Forgot_password_Verification_update_OTPCounter"
+                        ]
+                      }>
+                      0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
+                    </span>
+                  </Col>
+                </Row>
                 <Row>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className='d-flex justify-content-center'>
-                    <img
-                      draggable='false'
-                      src={
-                        PSO_LOGO ? PSOLogo : localStorage.getItem("i18nextLng") === "ar"
-                          ? DiskusLogoArabic
-                          : DiskusLogo
+                    className={styles["OTP_Error_Messege"]}>
+                    {errorMessage}
+                  </Col>
+                </Row>
+
+                <Row className='mt-5 d-flex justify-content-center'>
+                  <Col
+                    sm={12}
+                    lg={12}
+                    md={12}
+                    className='d-flex justify-content-center mt-1 '>
+                    <Button
+                      text={t("Next")}
+                      onClick={SubmitOTP}
+                      className={
+                        styles[
+                          "Forgot_Password_Verification_Next_button_EmailVerify"
+                        ]
                       }
-                      width={PSO_LOGO ? 120 :200}
-                      alt='diskus_logo'
                     />
                   </Col>
                 </Row>
-                <Form onSubmit={SubmitOTP}>
-                  <Row className='mt-5 '>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className={styles["OTPHandler"]}>
-                      <span className={styles["EmailVerifyLabel"]}>
-                        {t("Enter-verification-code")}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row className={styles["BoxesforOTP"]}>
-                    <Col sm={12} md={12} lg={12}>
-                      <VerificationInputField
-                        fields={6}
-                        applyClass='OTPInput'
-                        value={verifyOTP}
-                        change={changeHandler}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className='text-left d-flex justify-content-between'>
-                      <span
-                        className={
-                          styles["Forgot_Password_Verification_Tagline"]
-                        }>
-                        {t("Didnt-receiverthe-code")}
-                        <Button
-                          className={
-                            styles[
-                              "Forgot_Password_Verification_resendCode_btn"
-                            ]
-                          }
-                          disableBtn={seconds > 0 || minutes > 0}
-                          text={t("Resend-code")}
-                          type='button'
-                          onClick={sendRequestResend}
-                        />
-                      </span>
-                      <span
-                        className={
-                          styles[
-                            "Forgot_password_Verification_update_OTPCounter"
-                          ]
-                        }>
-                        0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className={styles["OTP_Error_Messege"]}>
-                      {errorMessage}
-                    </Col>
-                  </Row>
-
-                  <Row className='mt-5 d-flex justify-content-center'>
-                    <Col
-                      sm={12}
-                      lg={12}
-                      md={12}
-                      className='d-flex justify-content-center mt-1 '>
-                      <Button
-                        text={t("Next")}
-                        onClick={SubmitOTP}
-                        className={
-                          styles[
-                            "Forgot_Password_Verification_Next_button_EmailVerify"
-                          ]
-                        }
-                      />
-                    </Col>
-                  </Row>
-                </Form>
-                <Row className='mt-3'>
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className={
-                      styles["Forgot_passwordforogt_verification_email_link"]
-                    }>
-                    <Link onClick={handleBacktoSignIn}>{t("Go-back")}</Link>
-                  </Col>
-                </Row>
-              </Col>
-            </span>
-          </Col>
-          <Col
-            lg={8}
-            md={8}
-            sm={8}
-            className='position-relative d-flex overflow-hidden'>
-            <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>
-                {t("Simplify-management")}
-              </h1>
-              <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
-              <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
+              </Form>
+              <Row className='mt-3'>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className={
+                    styles["Forgot_passwordforogt_verification_email_link"]
+                  }>
+                  <Link onClick={handleBacktoSignIn}>{t("Go-back")}</Link>
+                </Col>
+              </Row>
             </Col>
-            <Col md={4} lg={4} sm={12} className='position-relative'>
-              <img
-                draggable='false'
-                src={DiskusAuthPageLogo}
-                alt='auth_icon'
-                width='600px'
-                className={styles["Forgot_Password_Verification_Auth_Icon"]}
-              />
-              {PSO_LOGO && (
-                <img
-                  src={PSOPowerdBy}
-                  alt=""
-                  draggable="false"
-                     className={styles["PoweredIcon_Diskus_Icon"]}
-                />
-              )}
-            </Col>
-          </Col>
-        </Row>
-      </Container>
+          </span>
+        </Col>
+      </AuthLayout>
       
     </>
   );
