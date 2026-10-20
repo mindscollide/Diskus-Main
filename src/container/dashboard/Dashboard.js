@@ -2458,7 +2458,6 @@ const Dashboard = () => {
           );
           if (
             data.viewable &&
-            !isComplianceTaskModalOpen &&
             !data.receiverID.includes(Number(localStorage.getItem("userID")))
           ) {
             setNotification({
@@ -2485,7 +2484,6 @@ const Dashboard = () => {
           );
           if (
             data.viewable &&
-            !isComplianceTaskModalOpenComment &&
             !data.receiverID.includes(Number(localStorage.getItem("userID")))
           ) {
             setNotification({

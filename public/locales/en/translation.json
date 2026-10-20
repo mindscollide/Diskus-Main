@@ -2953,5 +2953,6 @@
   "This-file-has-already-been-attached": "This file has already been attached",
   "Year": "Year",
   "Due": "Due",
-  "This-file-already-exist": "This file already exist"
+  "This-file-already-exist": "This file already exist",
+  "Browser": "Browser"
 }

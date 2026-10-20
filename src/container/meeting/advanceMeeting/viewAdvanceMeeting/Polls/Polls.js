@@ -785,31 +785,6 @@ const Polls = () => {
     setCreatepoll(true);
   };
 
-  const handleCancelPolls = () => {
-    setViewAdvanceMeetingModal(false);
-    dispatch(viewAdvanceMeetingPublishPageFlag(false));
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    let searchData = {
-      Date: "",
-      Title: "",
-      HostName: "",
-      UserID: Number(userID),
-      PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-      Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-      PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
-    };
-    console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
-    localStorage.removeItem("folderDataRoomMeeting");
-    setEditorRole({ status: null, role: null });
-    setAdvanceMeetingModalID(null);
-    localStorage.removeItem("AdvanceMeetingOperations");
-    localStorage.removeItem("NotificationAdvanceMeetingID");
-    localStorage.removeItem("viewadvanceMeetingPolls");
-    localStorage.removeItem("NotificationClickPollID");
-  };
-
   return (
     <>
       <section>
@@ -935,7 +910,6 @@ const Polls = () => {
                     pageSize={pageSize}
                     total={totalRecords}
                     showSizer={totalRecords >= 9 ? true : false}
-                    className={styles["PaginationStyle-Resolution"]}
                     onChange={handleChangePagination}
                   />
                 </Col>
