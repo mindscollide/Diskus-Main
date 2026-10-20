@@ -9309,13 +9309,18 @@ const moveFilesAndFoldersApi = (
                   // t("Files-moved-successfully"),
                 ),
               );
-              await dispatch(
+              try {
+                    await dispatch(
                 SaveMeetingDocuments(navigate, t, newAgendas, "", {
                   checkFlag,
                   setShow,
                   ...tabSetters,
                 }),
               );
+              } catch (error) {
+                console.log(error)
+              }
+          
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

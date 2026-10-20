@@ -2401,38 +2401,56 @@ export const SaveMeetingDocuments = (navigate, t, data, routePath, object) => {
                   setCurrentCommitteeMeetingTabActive,
                   setCurrentGroupMeetingTabActive,
                 } = object;
-                if (setShow) setShow(false);
+                try {
+                  if (setShow) setShow(false);
 
-                switch (checkFlag) {
-                  case 6:
-                    let ViewCommitteeID =
-                      localStorage.getItem("ViewCommitteeID");
-                    // Quick meeting created/published via Committee lands
-                    // directly on Published — switch to it and refetch so
-                    // the meeting shows up regardless of which tab the user
-                    // was on (setMeetingbyCommitteeIdApi is a routePath
-                    // dispatcher and does nothing without one here).
-                    setCurrentCommitteeMeetingTabActive?.(1);
-                    dispatch(
-                      setMeetingbyCommitteeIdApi(
-                        navigate,
-                        t,
-                        CommitteeMeetingData,
-                      ),
-                    );
-                    break;
-                  case 7:
-                  case 8:
-                    let ViewGroupID = localStorage.getItem("ViewGroupID");
-                    // Same as above, for Group quick meetings (Create uses
-                    // checkFlag 7, Update/Publish uses checkFlag 8).
-                    setCurrentGroupMeetingTabActive?.(1);
-                    dispatch(
-                      setMeetingByGroupIdApi(navigate, t, GroupMeetingData),
-                    );
-                    break;
-                  default:
-                    break;
+                  switch (checkFlag) {
+                    case 6:
+                      let ViewCommitteeID =
+                        localStorage.getItem("ViewCommitteeID");
+                      // Quick meeting created/published via Committee lands
+                      // directly on Published — switch to it and refetch so
+                      // the meeting shows up regardless of which tab the user
+                      // was on (setMeetingbyCommitteeIdApi is a routePath
+                      // dispatcher and does nothing without one here).
+                      setCurrentCommitteeMeetingTabActive?.(1);
+                      // dispatch(
+                      //   setMeetingbyCommitteeIdApi(
+                      //     navigate,
+                      //     t,
+                      //     {
+                      //       MeetingID: Number(data.MeetingID),
+                      //       CommitteeID: Number(ViewCommitteeID),
+                      //     },
+                      //     "",
+                      //     {},
+                      //   ),
+                      // );
+                      break;
+                    case 7:
+                    case 8:
+                      let ViewGroupID = localStorage.getItem("ViewGroupID");
+                      // Same as above, for Group quick meetings (Create uses
+                      // checkFlag 7, Update/Publish uses checkFlag 8).
+                      setCurrentGroupMeetingTabActive?.(1);
+                      // dispatch(
+                      //   setMeetingByGroupIdApi(
+                      //     navigate,
+                      //     t,
+                      //     {
+                      //       MeetingID: Number(data.MeetingID),
+                      //       GroupID: Number(ViewGroupID),
+                      //     },
+                      //     "",
+                      //     {},
+                      //   ),
+                      // );
+                      break;
+                    default:
+                      break;
+                  }
+                } catch (err) {
+                  console.log(err);
                 }
               },
               // _02: Server-side failure

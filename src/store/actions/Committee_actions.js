@@ -1989,36 +1989,35 @@ const setMeetingbyCommitteeIdApi = (navigate, t, Data, routePath, object) => {
                   // Refetch the Proposed list so the meeting just created/
                   // updated actually shows up — the active tab was already
                   // switched to Proposed (2) by the caller before this ran.
-                  // dispatch(
-                  //   getMeetingByCommitteeIdApi(navigate, t, {
-                  //     CommitteeID: Number(Data.CommitteeID),
-                  //     Date: "",
-                  //     Title: "",
-                  //     HostName: "",
-                  //     UserID: Number(localStorage.getItem("userID")),
-                  //     PageNumber: 1,
-                  //     Length: 30,
-                  //     PublishedMeetings: false,
-                  //     ProposedMeetings: true,
-                  //   }),
-                  // );
+                  dispatch(
+                    getMeetingByCommitteeIdApi(navigate, t, {
+                      CommitteeID: Number(Data.CommitteeID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(localStorage.getItem("userID")),
+                      PageNumber: 1,
+                      Length: 30,
+                      PublishedMeetings: false,
+                      ProposedMeetings: true,
+                    }),
+                  );
                   break;
                 case "CreateQuickmeetingFromCommittee":
-                  object.tabSetters.setCurrentCommitteeMeetingTabActive?.(1);
-
-                  // dispatch(
-                  //   getMeetingByCommitteeIdApi(navigate, t, {
-                  //     CommitteeID: Number(Data.CommitteeID),
-                  //     Date: "",
-                  //     Title: "",
-                  //     HostName: "",
-                  //     UserID: Number(localStorage.getItem("userID")),
-                  //     PageNumber: 1,
-                  //     Length: 30,
-                  //     PublishedMeetings: true,
-                  //     ProposedMeetings: false,
-                  //   }),
-                  // );
+                  object.setCurrentCommitteeMeetingTabActive?.(1);
+                  dispatch(
+                    getMeetingByCommitteeIdApi(navigate, t, {
+                      CommitteeID: Number(Data.CommitteeID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(localStorage.getItem("userID")),
+                      PageNumber: 1,
+                      Length: 30,
+                      PublishedMeetings: true,
+                      ProposedMeetings: false,
+                    }),
+                  );
                   break;
                 default:
                   // dispatch(
