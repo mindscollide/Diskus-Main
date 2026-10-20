@@ -31,6 +31,7 @@ import { AccessDeniedPolls } from "./Polls_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import { setCreateEditTab } from "./ModalStates_actions";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
+import { error } from "pdf-lib";
 
 const clearMessagesGroup = () => {
   return {
@@ -1977,49 +1978,61 @@ const setMeetingByGroupIdApi = (navigate, t, Data, routePath, object) => {
               dispatch(
                 setMeetingByGroupID_success(response.data.responseResult, ""),
               );
-              switch (routePath) {
-                case "fromGroupAdvanceMeeting":
-                  dispatch(setCreateEditTab("organizers"));
-                  break;
 
-                case "saveProposedMeetingFromGroup":
-                  // Refetch the Proposed list so the meeting just created/
-                  // updated actually shows up — the active tab was already
-                  // switched to Proposed (2) by the caller before this ran.
-                  object.tabSetters.setCurrentGroupMeetingTabActive?.(2);
-                  // dispatch(
-                  //   getMeetingbyGroupIdApi(navigate, t, {
-                  //     GroupID: Number(Data.GroupID),
-                  //     Date: "",
-                  //     Title: "",
-                  //     HostName: "",
-                  //     UserID: Number(localStorage.getItem("userID")),
-                  //     PageNumber: 1,
-                  //     Length: 30,
-                  //     PublishedMeetings: false,
-                  //     ProposedMeetings: true,
-                  //   }),
-                  // );
-                  break;
-                case "CreateQuickmeetingFromGroup":
-                  object.tabSetters.setCurrentGroupMeetingTabActive?.(1);
-                  // dispatch(
-                  //   getMeetingbyGroupIdApi(navigate, t, {
-                  //     GroupID: Number(Data.GroupID),
-                  //     Date: "",
-                  //     Title: "",
-                  //     HostName: "",
-                  //     UserID: Number(localStorage.getItem("userID")),
-                  //     PageNumber: 1,
-                  //     Length: 30,
-                  //     PublishedMeetings: true,
-                  //     ProposedMeetings: false,
-                  //   }),
-                  // );
-                  break;
-                default:
-                  break;
+              try {
+                switch (routePath) {
+                  case "fromGroupAdvanceMeeting":
+                    dispatch(setCreateEditTab("organizers"));
+                    break;
+
+                  case "saveProposedMeetingFromGroup":
+                    // Refetch the Proposed list so the meeting just created/
+                    // updated actually shows up — the active tab was already
+                    // switched to Proposed (2) by the caller before this ran.
+                    object.setCurrentGroupMeetingTabActive?.(2);
+                    dispatch(
+                      getMeetingbyGroupIdApi(navigate, t, {
+                        GroupID: Number(Data.GroupID),
+                        Date: "",
+                        Title: "",
+                        HostName: "",
+                        UserID: Number(localStorage.getItem("userID")),
+                        PageNumber: 1,
+                        Length: 30,
+                        PublishedMeetings: false,
+                        ProposedMeetings: true,
+                      }),
+                    );
+                    break;
+                  case "CreateQuickmeetingFromGroup":
+                    object.setCurrentGroupMeetingTabActive?.(1);
+                    dispatch(
+                      getMeetingbyGroupIdApi(
+                        navigate,
+                        t,
+                        {
+                          GroupID: Number(Data.GroupID),
+                          Date: "",
+                          Title: "",
+                          HostName: "",
+                          UserID: Number(localStorage.getItem("userID")),
+                          PageNumber: 1,
+                          Length: 30,
+                          PublishedMeetings: true,
+                          ProposedMeetings: false,
+                        },
+                        "",
+                        {},
+                      ),
+                    );
+                    break;
+                  default:
+                    break;
+                }
+              } catch (error) {
+                console.log(error);
               }
+
               // let ViewGroupID = localStorage.getItem("ViewGroupID");
               // let currentUserId = localStorage.getItem("userID");
 

@@ -822,25 +822,8 @@ const CreateUpdateMeetingDataRoomMap = (
                 "",
               ),
             );
-            if (checkFlag !== null && checkFlag !== undefined) {
-              let moveFilesandFolders = {
-                FolderID: response.data.responseResult.folderID,
-                FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
-                // FileIds: [{ PK_FileID: 2230 }],
-              };
-              if (moveFilesandFolders.FileIds.length > 0) {
-                dispatch(
-                  moveFilesAndFoldersApi(
-                    navigate,
-                    t,
-                    moveFilesandFolders,
-                    newAgendas,
-                    checkFlag,
-                    setShow,
-                    tabSetters,
-                  ),
-                );
-              } else {
+            try {
+              if (checkFlag !== null && checkFlag !== undefined) {
                 let createrID = localStorage.getItem("userID");
                 setShow(false);
                 if (checkFlag === 5) {
@@ -884,7 +867,7 @@ const CreateUpdateMeetingDataRoomMap = (
                       t,
                       Data,
                       "CreateQuickmeetingFromCommittee",
-                      { tabSetters },
+                      tabSetters,
                     ),
                   );
                   tabSetters.setCurrentCommitteeMeetingTabActive?.(1);
@@ -905,6 +888,7 @@ const CreateUpdateMeetingDataRoomMap = (
                     }),
                   );
                 } else if (checkFlag === 7) {
+                  tabSetters.setCurrentGroupMeetingTabActive?.(1);
                   let ViewGroupID = localStorage.getItem("ViewGroupID");
                   let Data = {
                     MeetingID: Number(data.MeetingID),
@@ -916,7 +900,7 @@ const CreateUpdateMeetingDataRoomMap = (
                       t,
                       Data,
                       "CreateQuickmeetingFromGroup",
-                      { tabSetters },
+                      tabSetters,
                     ),
                   );
                 } else if (checkFlag === 8) {
@@ -938,9 +922,30 @@ const CreateUpdateMeetingDataRoomMap = (
                   dispatch(getMeetingbyGroupIdApi(navigate, t, Data));
                 }
               }
-            }
+              if (attachmentIds.length > 0) {
+                let moveFilesandFolders = {
+                  FolderID: response.data.responseResult.folderID,
+                  FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
+                };
+                if (moveFilesandFolders.FileIds.length > 0) {
+                  dispatch(
+                    moveFilesAndFoldersApi(
+                      navigate,
+                      t,
+                      moveFilesandFolders,
+                      newAgendas,
+                      checkFlag,
+                      setShow,
+                      tabSetters,
+                    ),
+                  );
+                }
+              }
 
-            localStorage.setItem("MeetingID", data.MeetingID);
+              localStorage.setItem("MeetingID", data.MeetingID);
+            } catch (error) {
+              console.log(error);
+            }
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
             "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_02".toLowerCase()
