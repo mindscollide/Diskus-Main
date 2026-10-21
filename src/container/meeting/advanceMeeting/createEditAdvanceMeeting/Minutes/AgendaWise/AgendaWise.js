@@ -120,6 +120,7 @@ const AgendaWise = ({
   useEffect(() => {
     try {
       if (AllAgendas !== null && AllAgendas !== undefined) {
+        console.log(AllAgendas, "AllAgendasAllAgendasAllAgendas");
         let NewData = [];
         AllAgendas.agendaList.forEach((agenda, index) => {
           NewData.push({
@@ -137,7 +138,11 @@ const AgendaWise = ({
         setAgendaOptions(NewData);
       }
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:",
+        error,
+        AllAgendas,
+      );
     }
   }, [AllAgendas]);
 
@@ -595,7 +600,10 @@ const AgendaWise = ({
         setPreviousFileIDs(prevData);
       }
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:",
+        error,
+      );
     }
   }, [RetriveAgendaWiseDocuments]);
 

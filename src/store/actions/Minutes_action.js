@@ -968,11 +968,10 @@ const saveMinutesReviewFlow_Success = (response, message) => {
   };
 };
 
-const saveMinutesReviewFlow_Fail = (message, response) => {
+const saveMinutesReviewFlow_Fail = (message) => {
   return {
     type: actions.SAVE_MINUTESREVIEWFLOW_FAIL,
     message: message,
-    response: response,
   };
 };
 
@@ -1062,8 +1061,7 @@ const SaveMinutesReviewFlow = (
                   "WorkFlow_WorkFlowServiceManager_SaveMinutesReviewFlow_02".toLowerCase(),
                 )
             ) {
-              let data = [];
-              dispatch(saveMinutesReviewFlow_Fail(t("Insertion-failed", data)));
+              dispatch(saveMinutesReviewFlow_Fail(t("Insertion-failed")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

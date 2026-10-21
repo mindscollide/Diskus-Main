@@ -2368,29 +2368,6 @@ const Dashboard = () => {
         ) {
           dispatch(getDashboardTaskCountMQTT(data.payload));
         } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_COMMENT_DELETION".toLowerCase()
-        ) {
-          // Same suppression as NEW_COMMENT_CREATION — skip the toast when
-          // the Compliance Task view modal is already open for this comment.
-          const isComplianceTaskModalOpenTodo = JSON.parse(
-            sessionStorage.getItem("complianceTaskViewModalOpen"),
-          );
-          if (data.viewable && !isComplianceTaskModalOpenTodo) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQQTTJSONTwo(
-                t("NEW_COMMENT_DELETION"),
-                "[User]",
-                data.payload.comment.userName,
-                "[Task Title]",
-                data.payload.comment.todoTitle.substring(0, 100),
-              ),
-            });
-            setNotificationID(id);
-          }
-          dispatch(deleteCommentsMQTT(data.payload));
-        } else if (
           data.payload.message
             .toLowerCase()
             .includes("NEW_ADVANCE_MEETING_TODO".toLowerCase())
@@ -2484,7 +2461,7 @@ const Dashboard = () => {
           );
           if (
             data.viewable &&
-            !data.receiverID.includes(Number(localStorage.getItem("userID")))
+            data.receiverID.includes(Number(localStorage.getItem("userID")))
           ) {
             setNotification({
               notificationShow: true,

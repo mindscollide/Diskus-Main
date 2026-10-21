@@ -96,6 +96,7 @@ import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/respon
 import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
 import {
   deleteCommentModalGeneral,
+  GetMinuteReviewStatsForOrganizerByMeetingId,
   MinutesWorkFlowActorStatusNotificationAPI,
   ResendUpdatedMinuteForReview,
 } from "./Minutes_action";
@@ -5024,6 +5025,14 @@ const UpdateMinutesGeneralApiFunc = (
                     {},
                   ),
                 );
+                dispatch(
+                  GetMinuteReviewStatsForOrganizerByMeetingId(navigate, t, {
+                    isAgenda: false,
+                    MeetingID: Number(meetingId),
+                  }),
+                  "",
+                  {},
+                );
                 break;
               default:
                 let Meet = {
@@ -5034,17 +5043,17 @@ const UpdateMinutesGeneralApiFunc = (
                     GetAllGeneralMinutesApiFunc(navigate, t, Meet),
                   );
                 }
-                if (resendFlag === true) {
-                  dispatch(
-                    ResendUpdatedMinuteForReview(navigate, t, resendData, "", {
-                      setEditMinute,
-                      setConfirmationEdit,
-                      setResendMinuteForReview,
-                      setShowRevisionHistory,
-                      isAgenda,
-                    }),
-                  );
-                }
+                // if (resendFlag === true) {
+                //   dispatch(
+                //     ResendUpdatedMinuteForReview(navigate, t, resendData, "", {
+                //       setEditMinute,
+                //       setConfirmationEdit,
+                //       setResendMinuteForReview,
+                //       setShowRevisionHistory,
+                //       isAgenda,
+                //     }),
+                //   );
+                // }
                 break;
             }
           } else if (
@@ -5086,16 +5095,39 @@ const UpdateMinutesGeneralApiFunc = (
                 t("Minutes-revised-by-organizer"),
               ),
             );
-            if (resendFlag === true) {
-              dispatch(
-                ResendUpdatedMinuteForReview(navigate, t, resendData, "", {
-                  setEditMinute,
-                  setConfirmationEdit,
-                  setResendMinuteForReview,
-                  setShowRevisionHistory,
-                  isAgenda,
-                }),
-              );
+            const meetingId =
+              store.getState().NewMeetingreducer?.currentMeetingInfo?.meetingID;
+            switch (routePath) {
+              case "updateGeneralMinutes":
+                await dispatch(
+                  GetAllGeneralMinutesApiFunc(
+                    navigate,
+                    t,
+                    { MeetingID: meetingId },
+                    "getallGeneralMinutes",
+                    {},
+                  ),
+                );
+                dispatch(
+                  GetMinuteReviewStatsForOrganizerByMeetingId(navigate, t, {
+                    isAgenda: false,
+                    MeetingID: Number(meetingId),
+                  }),
+                  "",
+                  {},
+                );
+                break;
+              default:
+                let Meet = {
+                  MeetingID: meetingId,
+                };
+                if (!fileUploadFlag) {
+                  await dispatch(
+                    GetAllGeneralMinutesApiFunc(navigate, t, Meet),
+                  );
+                }
+
+                break;
             }
           }
         } else {
@@ -9310,17 +9342,16 @@ const moveFilesAndFoldersApi = (
                 ),
               );
               try {
-                    await dispatch(
-                SaveMeetingDocuments(navigate, t, newAgendas, "", {
-                  checkFlag,
-                  setShow,
-                  ...tabSetters,
-                }),
-              );
+                await dispatch(
+                  SaveMeetingDocuments(navigate, t, newAgendas, "", {
+                    checkFlag,
+                    setShow,
+                    ...tabSetters,
+                  }),
+                );
               } catch (error) {
-                console.log(error)
+                console.log(error);
               }
-          
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
