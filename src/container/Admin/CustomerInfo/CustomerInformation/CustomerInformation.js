@@ -27,7 +27,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { countryNamesReducer, adminReducer } = useSelector((state) => state);
+  const countryNamesReducer = useSelector((state) => state.countryNamesReducer);
+  const adminReducer = useSelector((state) => state.adminReducer);
 
   const [countryNames, setCountryNames] = useState([]);
   const Name = useRef(null);

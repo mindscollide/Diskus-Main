@@ -9,7 +9,7 @@ import styles from "../PackageUpgrade/PackageUpgrade.module.css";
 import { packagesforUpgrade } from "../../../../store/actions/Admin_PackageUpgrade";
 const PackageUpgrade = () => {
   const dispatch = useDispatch();
-  const { GetSubscriptionPackage } = useSelector((state) => state);
+  const GetSubscriptionPackage = useSelector((state) => state.GetSubscriptionPackage);
 
   const [currentPackageId, setCurrentPackageId] = useState(0);
   const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);

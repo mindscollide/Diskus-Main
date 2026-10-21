@@ -33,7 +33,7 @@ import { isFileSizeValid } from "../../../commen/functions/convertFileSizeInMB";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
-  const { NotesReducer } = useSelector((state) => state);
+  const NotesReducer = useSelector((state) => state.NotesReducer);
   const retriveDocsSpinner = useSelector(
     (state) => state.DataRoomReducer.Loading
   );

@@ -13,7 +13,7 @@ const MainAjendaItemRemoved = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
 
   const handleProceesBtn = () => {
     let mainRemoveAgenda = [...rows];

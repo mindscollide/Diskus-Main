@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
  */
 const VideoPanelHeader = () => {
   const { t } = useTranslation();
-  const { videoFeatureReducer } = useSelector((state) => state);
+  const videoFeatureReducer = useSelector((state) => state.videoFeatureReducer);
 
   const dispatch = useDispatch();
 

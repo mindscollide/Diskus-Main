@@ -47,7 +47,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const [meetingModal, setMeetingModal] = useState(false);
   const [meetingDeleteModal, setMeetingDeleteModal] = useState(false);
   const navigate = useNavigate();
-  const { adminReducer } = useSelector((state) => state);
+  const adminReducer = useSelector((state) => state.adminReducer);
   const [allMeetingData, setAllMeetingData] = useState([]);
   const [isMeetingId, setMeetingId] = useState(0);
   const [isMeetingStatusId, setMeetingStatusId] = useState(0);

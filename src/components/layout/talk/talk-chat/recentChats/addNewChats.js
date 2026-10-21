@@ -29,7 +29,7 @@ import CloseChatIcon from "../../../../../assets/images/Cross-Chat-Icon.png";
  * open. Closing the screen restores the default Talk sidebar state.
  */
 const AddNewChat = () => {
-  const { talkStateData } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
 
   const dispatch = useDispatch();
 

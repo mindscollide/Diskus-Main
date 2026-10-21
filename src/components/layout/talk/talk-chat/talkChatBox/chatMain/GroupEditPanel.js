@@ -18,7 +18,7 @@ const GroupEditPanel = ({ groupId, channelId, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { talkStateData } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
   const currentUserId = localStorage.getItem("userID");
 
   const [orgUsers, setOrgUsers] = useState([]);

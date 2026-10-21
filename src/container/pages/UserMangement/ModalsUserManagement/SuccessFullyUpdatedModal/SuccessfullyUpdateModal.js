@@ -11,7 +11,7 @@ const SuccessfullyUpdateModal = () => {
 
   const dispatch = useDispatch();
 
-  const { UserManagementModals } = useSelector((state) => state);
+  const UserManagementModals = useSelector((state) => state.UserManagementModals);
 
   const UserManagementModalssuccessfullyUpdatedData = useSelector(
     (state) => state.UserManagementModals.successfullyUpdated

@@ -9,7 +9,7 @@ import { Button, Modal } from "../../../../../../components/elements";
 const PreviousAgenda = ({ setAgenda, setParticipants }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { MeetingAgendaReducer } = useSelector((state) => state);
+  const MeetingAgendaReducer = useSelector((state) => state.MeetingAgendaReducer);
   const handleNOFunctionality = () => {
     dispatch(previousTabAgenda(false));
   };

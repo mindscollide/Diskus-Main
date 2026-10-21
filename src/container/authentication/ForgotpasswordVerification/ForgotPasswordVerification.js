@@ -25,7 +25,7 @@ import {
 import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 const ForgotPasswordVerification = () => {
-  const { Authreducer } = useSelector((state) => state);
+  const Authreducer = useSelector((state) => state.Authreducer);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -301,7 +301,8 @@ const Agenda = () => {
   const { meetingID, mapFolderId } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector((s) => s);
+  const NewMeetingreducer = useSelector((s) => s.NewMeetingreducer);
+  const MeetingAgendaReducer = useSelector((s) => s.MeetingAgendaReducer);
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails,
   );

@@ -47,7 +47,7 @@ const AddUsers = () => {
   // get IsTrial from LocalStorage
   let isFreeTrial = localStorage.getItem("isTrial");
 
-  const { adminReducer } = useSelector((state) => state);
+  const adminReducer = useSelector((state) => state.adminReducer);
 
   const [pakageID, setPakageID] = useState(0);
   const [worldCountryID, setWorldCountryID] = useState(0);

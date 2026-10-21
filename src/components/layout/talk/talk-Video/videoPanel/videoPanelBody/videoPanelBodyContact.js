@@ -35,9 +35,8 @@ import VideoPanelFooter from "../videoPanelFooter/videoPanelFooter";
 import { LeaveMeetingVideo } from "../../../../../../store/actions/NewMeetingActions";
 
 const VideoPanelBodyContact = () => {
-  const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state
-  );
+  const videoFeatureReducer = useSelector((state) => state.videoFeatureReducer);
+  const VideoMainReducer = useSelector((state) => state.VideoMainReducer);
 
   const dispatch = useDispatch();
 

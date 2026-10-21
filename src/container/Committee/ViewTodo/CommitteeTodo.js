@@ -34,8 +34,7 @@ import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 const CreateTodoCommittee = ({ committeeStatus }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const state = useSelector((state) => state);
-  const { todoStatus } = state;
+  const todoStatus = useSelector((state) => state.todoStatus);
 
   const toDoListReducersocketTodoStatusData = useSelector(
     (state) => state.toDoListReducer.socketTodoStatusData,

@@ -27,9 +27,8 @@ const SendNotificationOrganizer = () => {
   const currentMeetingInfo = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo
   );
-  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
-  );
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const MeetingOrganizersReducer = useSelector((state) => state.MeetingOrganizersReducer);
   const [notifyOrganizerData, setNotifyOrganizerData] = useState({
     Messege: "",
     allOrganizersAccept: false,

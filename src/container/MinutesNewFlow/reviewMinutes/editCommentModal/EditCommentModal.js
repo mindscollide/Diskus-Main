@@ -24,7 +24,7 @@ const EditCommentModal = ({
 
   const dispatch = useDispatch(); // Redux dispatch hook
 
-  const { MinutesReducer } = useSelector((state) => state);
+  const MinutesReducer = useSelector((state) => state.MinutesReducer);
 
   // Replaces the matching declinedReviews entry with an edited copy, or
   // (if none matches yet) appends the current user's own edit entry.

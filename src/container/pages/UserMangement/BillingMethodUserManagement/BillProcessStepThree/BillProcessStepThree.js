@@ -23,7 +23,7 @@ const BillProcessStepThree = ({setStoredStep}) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const SignupPage = localStorage.getItem("SignupFlowPageRoute");
 
-  const { UserMangementReducer } = useSelector((state) => state);
+  const UserMangementReducer = useSelector((state) => state.UserMangementReducer);
 
   const organizationName = localStorage.getItem("organizatioName");
   const organizationSubscriptionID = localStorage.getItem(

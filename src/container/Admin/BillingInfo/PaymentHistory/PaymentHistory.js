@@ -28,9 +28,8 @@ import moment from "moment";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const EditUser = ({ ModalTitle }) => {
-  const { OrganizationBillingReducer, adminReducer } = useSelector(
-    (state) => state
-  );
+  const OrganizationBillingReducer = useSelector((state) => state.OrganizationBillingReducer);
+  const adminReducer = useSelector((state) => state.adminReducer);
   
   const dispatch = useDispatch();
   const navigate = useNavigate();

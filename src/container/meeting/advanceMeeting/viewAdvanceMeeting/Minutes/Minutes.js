@@ -98,7 +98,8 @@ const Minutes = () => {
 
   let isAgenda = false;
 
-  const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
+  const MinutesReducer = useSelector((state) => state.MinutesReducer);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
 
   //All REviewers List
   const [allReviewers, setAllReviewers] = useState([]);

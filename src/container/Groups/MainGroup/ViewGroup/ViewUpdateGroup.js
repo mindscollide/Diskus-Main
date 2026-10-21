@@ -48,7 +48,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
     GroupID: 0,
   });
 
-  const { GroupsReducer } = useSelector((state) => state);
+  const GroupsReducer = useSelector((state) => state.GroupsReducer);
 
   const GroupsReducergetGroupByGroupIdResponse = useSelector(
     (state) => state.GroupsReducer.getGroupByGroupIdResponse,

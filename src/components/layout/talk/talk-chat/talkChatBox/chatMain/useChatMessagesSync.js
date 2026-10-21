@@ -28,7 +28,8 @@ function useChatMessagesSync({ uploadFileTalk }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { talkStateData, talkFeatureStates } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
+  const talkFeatureStates = useSelector((state) => state.talkFeatureStates);
   const currentUserId = localStorage.getItem("userID");
   const currentConnection = JSON.parse(
     localStorage.getItem("MqttConnectionState"),

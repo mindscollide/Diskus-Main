@@ -308,8 +308,8 @@ const SignatureViewer = () => {
   const { t, i18n } = useTranslation();
   const { signatureDocumentViewer } = useApryseDocument();
 
-  const { webViewer } = useSelector((s) => s);
-  const { assignees } = useSelector((s) => s);
+  const webViewer = useSelector((s) => s.webViewer);
+  const assignees = useSelector((s) => s.assignees);
   const {
     getAllFieldsByWorkflowID,
     saveWorkFlowResponse,

@@ -49,7 +49,7 @@ const Participants = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
   const { meetingID = 0 } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );

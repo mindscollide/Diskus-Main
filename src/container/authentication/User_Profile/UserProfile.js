@@ -40,8 +40,7 @@ const UserProfileModal = ({ ModalTitle, user, setUser }) => {
   const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
   const [mobileEnable, setMobileEnable] = useState(true);
   const [message, setMessege] = useState("");
-  const state = useSelector((state) => state);
-  const { settingReducer } = state;
+  const settingReducer = useSelector((state) => state.settingReducer);
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
 

@@ -16,7 +16,8 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { settingReducer, meetingIdReducer } = useSelector((state) => state);
+  const settingReducer = useSelector((state) => state.settingReducer);
+  const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
   const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
   let diskusEventColor =
     localStorage.getItem("diskusEventColor") !== null

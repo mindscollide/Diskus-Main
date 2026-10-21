@@ -30,7 +30,7 @@ const NotifyAgendaModal = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
   const [hidemembes, setHidemembes] = useState(false);
   let userID = localStorage.getItem("userID");
 

@@ -17,9 +17,8 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
-  );
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const MeetingAgendaReducer = useSelector((state) => state.MeetingAgendaReducer);
   const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
   const [sidebarindex, setSidebarindex] = useState(0);
   const [selectedRole, setSelectedRole] = useState("All");

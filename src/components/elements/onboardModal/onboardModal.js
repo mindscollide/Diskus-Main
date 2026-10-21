@@ -49,8 +49,7 @@ const CustomOnboardModal = ({
 }) => {
   const { currentStep, setCurrentStep } = useTour();
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-  const { OnBoardModal } = state;
+  const OnBoardModal = useSelector((state) => state.OnBoardModal);
 
   const handleShow = () => {
     

@@ -23,7 +23,7 @@ import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 const ChangePassword = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { Authreducer } = useSelector((state) => state);
+  const Authreducer = useSelector((state) => state.Authreducer);
   const [oldPassword, setOldPassword] = useState("");
   const [showOldPassword, setShowOldPasssword] = useState(false);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);

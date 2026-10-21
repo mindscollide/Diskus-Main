@@ -16,7 +16,7 @@ import {
 
 // Functional component for deleting a comment
 const DeleteCommentGeneral = ({ advanceMeetingModalID }) => {
-  const { MinutesReducer } = useSelector((state) => state);
+  const MinutesReducer = useSelector((state) => state.MinutesReducer);
 
   const { t } = useTranslation(); // Translation hook
 

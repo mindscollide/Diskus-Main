@@ -10,7 +10,7 @@ import Cookies from "js-cookie";
 import { getSubscriptionUpgradePaymentCompleteApi } from "../../../../store/actions/Admin_PackageDetail";
 const PaymentForm2 = () => {
   const { t } = useTranslation();
-  const { Authreducer } = useSelector((state) => state);
+  const Authreducer = useSelector((state) => state.Authreducer);
   const [totalAmount, setTotalAmount] = useState(0);
   let PaymentAmount = JSON.parse(localStorage.getItem("PaymentAmount"));
   useEffect(() => {
