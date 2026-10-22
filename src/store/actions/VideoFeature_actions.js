@@ -263,6 +263,17 @@ const participantAcceptandReject = (response) => {
   };
 };
 
+const participantPresentationAcceptandReject = (
+  response,
+  isRejected = false,
+) => {
+  return {
+    type: actions.PRESENTATION_ACCEPT_AND_REMOVE_PARTICIPANTS,
+    payload: response,
+    isRejected,
+  };
+};
+
 const guestLeaveVideoMeeting = (response) => {
   return {
     type: actions.GUEST_PARTICIPANT_LEAVE_VIDEO,
@@ -525,6 +536,24 @@ const maxParticipantVideoCallPanel = (response) => {
   };
 };
 
+// CR(0012249) — see PRESENTATION_JOIN_FLOW_FLAG in action_types.js
+const presentationJoinFlowFlag = (response) => {
+  return {
+    type: actions.PRESENTATION_JOIN_FLOW_FLAG,
+    response: response,
+  };
+};
+
+// CR(0012249) — see action_types.js for why this is separate from
+// presenterViewFlag. response is the meeting ID a presentation is
+// currently active for (or null when none is active).
+const activePresentationMeetingID = (response) => {
+  return {
+    type: actions.ACTIVE_PRESENTATION_MEETING_ID,
+    response: response,
+  };
+};
+
 // For Denied Max Patrticipant Video Compnent
 const maxParticipantVideoDenied = (response) => {
   return {
@@ -642,7 +671,10 @@ const getParticipantMeetingJoinMainApi = (
                 setGetReady(false);
                 setJoinButton(false);
               } catch (error) {
-                console.error("src/store/actions/VideoFeature_actions.js:", error);
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
               }
               await dispatch(
                 getParticipantMeetingJoinSuccess(
@@ -704,7 +736,10 @@ const getParticipantMeetingJoinMainApi = (
               try {
                 setJoinButton(false);
               } catch (error) {
-                console.error("src/store/actions/VideoFeature_actions.js:", error);
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -718,7 +753,10 @@ const getParticipantMeetingJoinMainApi = (
               try {
                 setJoinButton(false);
               } catch (error) {
-                console.error("src/store/actions/VideoFeature_actions.js:", error);
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
               }
               await dispatch(
                 getParticipantMeetingJoinFail(
@@ -737,7 +775,10 @@ const getParticipantMeetingJoinMainApi = (
               try {
                 setJoinButton(false);
               } catch (error) {
-                console.error("src/store/actions/VideoFeature_actions.js:", error);
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
               }
               await dispatch(
                 getParticipantMeetingJoinFail(t("Could-not-join-call")),
@@ -754,7 +795,10 @@ const getParticipantMeetingJoinMainApi = (
                 dispatch(participantVideoButtonState(false));
                 dispatch(videoIconOrButtonState(false));
               } catch (error) {
-                console.error("src/store/actions/VideoFeature_actions.js:", error);
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
               }
               await dispatch(
                 getParticipantMeetingJoinFail(t("Something-went-wrong")),
@@ -796,10 +840,13 @@ const getParticipantMeetingJoinMainApi = (
                 dispatch(participantVideoButtonState(false));
                 dispatch(videoIconOrButtonState(false));
               } catch (error) {
-                console.error("src/store/actions/VideoFeature_actions.js:", error);
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
               }
               await dispatch(
-                getParticipantMeetingJoinFail(t("Something-went-wrong")),
+                getParticipantMeetingJoinFail(t("")),
               );
             }
           } else {
@@ -808,7 +855,10 @@ const getParticipantMeetingJoinMainApi = (
               dispatch(participantVideoButtonState(false));
               dispatch(videoIconOrButtonState(false));
             } catch (error) {
-              console.error("src/store/actions/VideoFeature_actions.js:", error);
+              console.error(
+                "src/store/actions/VideoFeature_actions.js:",
+                error,
+              );
             }
             await dispatch(
               getParticipantMeetingJoinFail(t("Something-went-wrong")),
@@ -1544,7 +1594,10 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
                   dispatch(minimizeVideoPanelFlag(false));
                 }
               } catch (error) {
-                console.error("src/store/actions/VideoFeature_actions.js:", error);
+                console.error(
+                  "src/store/actions/VideoFeature_actions.js:",
+                  error,
+                );
               }
 
               dispatch(presenterStartedMainFlag(true));
@@ -1561,15 +1614,18 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               await dispatch(
                 startPresenterFail(t("Presentation-is-already-underway")),
               );
-              let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo"),
+              // CR(0012249): a presentation is already active — this no
+              // longer joins directly, it opens the waiting room (same as
+              // clicking "Join Presentation" or receiving
+              // MEETING_PRESENTATION_STARTED). The actual join happens
+              // later via joinPresenterViewMainApi, only once the host
+              // admits the request.
+              localStorage.setItem(
+                "presentationRoomID",
+                String(response.data.responseResult.roomID),
               );
-              let data = {
-                VideoCallURL: String(currentMeetingVideoURL),
-                WasInVideo: isMeetingVideo ? true : false,
-              };
-              dispatch(joinPresenterViewMainApi(navigate, t, data));
+              dispatch(presentationJoinFlowFlag(true));
+              dispatch(maxParticipantVideoCallPanel(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1688,6 +1744,54 @@ const stopPresenterViewMainApi = (
                     "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase(),
                   )
               ) {
+                // Presenter who is also the meeting-video host: reload the
+                // participant + waiting list now that presenting has stopped.
+                // Kept above the ref line so callers that don't pass
+                // stopApiCalledRef still reach it. Skipped for flag 3 (leaving
+                // meeting video for a 1:1/group call).
+                try {
+                  const inMeetingVideo = JSON.parse(
+                    localStorage.getItem("isMeetingVideo"),
+                  );
+                  const meetingVideoHost = JSON.parse(
+                    localStorage.getItem("isMeetingVideoHostCheck"),
+                  );
+                  const hostRoomID =
+                    localStorage.getItem("newRoomId") || data.RoomID;
+                  if (inMeetingVideo && meetingVideoHost && flag !== 3) {
+                    if (hostRoomID && String(hostRoomID) !== "null") {
+                      dispatch(
+                        participantListWaitingListMainApi(
+                          { RoomID: String(hostRoomID) },
+                          navigate,
+                          t,
+                        ),
+                      );
+                    }
+                  } else if (
+                    inMeetingVideo &&
+                    !meetingVideoHost &&
+                    flag !== 3
+                  ) {
+                    // Non-host participant who presented: reload the participant
+                    // list (getAllParticipantMain) for their meeting-video room.
+                    const participantRoomID =
+                      localStorage.getItem("participantRoomId") || data.RoomID;
+                    if (
+                      participantRoomID &&
+                      String(participantRoomID) !== "null"
+                    ) {
+                      dispatch(
+                        getVideoCallParticipantsMainApi(
+                          { RoomID: String(participantRoomID) },
+                          navigate,
+                          t,
+                        ),
+                      );
+                    }
+                  }
+                } catch {}
+                stopApiCalledRef.current = false; // 🔓 UNLOCK
                 releaseStopLock();
                 let alreadyInMeetingVideo = JSON.parse(
                   sessionStorage.getItem("alreadyInMeetingVideo")
@@ -2803,7 +2907,9 @@ const getVideoCallStatusToRejoinGroupCallMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getVideoCallStatusToRejoinGroupCallMainApi(navigate, t, data));
+          dispatch(
+            getVideoCallStatusToRejoinGroupCallMainApi(navigate, t, data),
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2844,7 +2950,9 @@ const getVideoCallStatusToRejoinGroupCallMainApi = (navigate, t, data) => {
             }
           } else {
             await dispatch(
-              getVideoCallStatusToRejoinGroupCallFail(t("Something-went-wrong")),
+              getVideoCallStatusToRejoinGroupCallFail(
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
@@ -2907,8 +3015,76 @@ const isSharedScreenFail = (message) => {
   };
 };
 
-const isSharedScreenTriggeredApi = (navigate, t, data) => {
+// IsSharedScreen needs both RoomID and UID. Callers read them straight from
+// localStorage, where they can occasionally be missing / "null" / "0" (e.g.
+// acceptedRoomID is not set for a one-to-one call), which made the API answer
+// "UnSuccessful". Keep a usable value as is; only replace a missing one from
+// the current call's other stored ids.
+const isUsableShareId = (screenShare) =>
+  screenShare !== null &&
+  screenShare !== undefined &&
+  screenShare !== "" &&
+  !["null", "undefined", "0"].includes(String(screenShare));
+
+const resolveSharedScreenData = (data) => {
+  const get = (key) => localStorage.getItem(key);
+  const first = (...values) => values.find(isUsableShareId);
+  const parse = (key) => {
+    try {
+      return JSON.parse(get(key));
+    } catch {
+      return null;
+    }
+  };
+  const isMeetingVideo = parse("isMeetingVideo");
+  const hostCheck = parse("isMeetingVideoHostCheck");
+
+  let roomID = data?.RoomID;
+  let uid = data?.UID;
+
+  if (!isUsableShareId(roomID)) {
+    roomID = isMeetingVideo
+      ? hostCheck
+        ? first(get("newRoomId"), get("participantRoomId"))
+        : first(get("participantRoomId"), get("newRoomId"))
+      : first(
+          get("activeRoomID"),
+          get("initiateCallRoomID"),
+          get("acceptedRoomID"),
+          get("groupCallRoomId"),
+          get("NewRoomID"),
+        );
+  }
+
+  if (!isUsableShareId(uid)) {
+    if (isMeetingVideo) {
+      uid = hostCheck
+        ? first(get("isGuid"), get("participantUID"))
+        : first(get("participantUID"), get("isGuid"));
+    } else if (Number(get("CallType")) === 2) {
+      uid = parse("isCaller")
+        ? first(get("callerGuid"), get("receipentGuid"))
+        : first(get("receipentGuid"), get("callerGuid"));
+    } else {
+      uid = first(get("userID"));
+    }
+  }
+
+  if (!isUsableShareId(roomID) || !isUsableShareId(uid)) return null;
+  return { ...data, RoomID: String(roomID), UID: String(uid) };
+};
+
+const isSharedScreenTriggeredApi = (navigate, t, originalData) => {
   return (dispatch) => {
+    const data = resolveSharedScreenData(originalData);
+    if (!data) {
+      // Nothing valid to send; the server would only answer with an error toast.
+      console.error(
+        "src/store/actions/VideoFeature_actions.js: IsSharedScreen not sent — RoomID or UID missing",
+        originalData,
+      );
+      return;
+    }
     dispatch(isSharedScreenInit());
     let form = new FormData();
     form.append("RequestMethod", isSharedScreenCall.RequestMethod);
@@ -2919,7 +3095,7 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          dispatch(isSharedScreenTriggeredApi(navigate, t, originalData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -3033,6 +3209,64 @@ const presentationParticipantLeftMqtt = (uid) => {
   };
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// CR(0012249) — Presentation waiting-room MQTT signals. Same
+// {type, response} pass-through shape as presentationParticipantJoinedMqtt
+// above — each just captures the latest raw MQTT payload into its own new
+// reducer field. No side effects on the existing meeting-video waiting-list
+// or presenter-view state; UI wiring (which screen to show, roster
+// patching) is deferred to a later step.
+// ─────────────────────────────────────────────────────────────────────────
+
+const presentationParticipantJoinRequestMqtt = (response) => {
+  return {
+    type: actions.PRESENTATION_PARTICIPANT_JOIN_REQUESTS_MQTT,
+    response: response,
+  };
+};
+
+const presentationJoinRequestApprovedMqtt = (response) => {
+  return {
+    type: actions.PRESENTATION_JOIN_REQUEST_APPROVED_MQTT,
+    response: response,
+  };
+};
+
+const presentationJoinRequestRejectedMqtt = (response) => {
+  return {
+    type: actions.PRESENTATION_JOIN_REQUEST_REJECTED_MQTT,
+    response: response,
+  };
+};
+
+const presentationNewParticipantsJoinedMqtt = (response) => {
+  return {
+    type: actions.PRESENTATION_NEW_PARTICIPANTS_JOINED_MQTT,
+    response: response,
+  };
+};
+
+const removedFromPresentationToWaitingRoomMqtt = (response) => {
+  return {
+    type: actions.REMOVED_FROM_PRESENTATION_TO_WAITING_ROOM_MQTT,
+    response: response,
+  };
+};
+
+const participantRemovedFromPresentationMqtt = (response) => {
+  return {
+    type: actions.PARTICIPANT_REMOVED_FROM_PRESENTATION_MQTT,
+    response: response,
+  };
+};
+
+const presentationStoppedMqtt = (response) => {
+  return {
+    type: actions.MEETING_PRESENTATION_STOPPED_MQTT,
+    response: response,
+  };
+};
+
 const getVideoPresentationParticipantsMainApi = (Data, navigate, t) => {
   return (dispatch) => {
     dispatch(getVideoPresentationParticipantInit());
@@ -3112,6 +3346,7 @@ const getVideoPresentationParticipantsMainApi = (Data, navigate, t) => {
 
 export {
   participantAcceptandReject,
+  participantPresentationAcceptandReject,
   participantWaitingList,
   participantWaitingListBox,
   videoChatPanel,
@@ -3157,6 +3392,8 @@ export {
   maxHostVideoCallPanel,
   normalHostVideoCallPanel,
   maxParticipantVideoCallPanel,
+  presentationJoinFlowFlag,
+  activePresentationMeetingID,
   maxParticipantVideoDenied,
   maxParticipantVideoRemoved,
   participantListWaitingListMainApi,
@@ -3219,4 +3456,11 @@ export {
   getVideoPresentationParticipantsMainApi,
   presentationParticipantJoinedMqtt,
   presentationParticipantLeftMqtt,
+  presentationParticipantJoinRequestMqtt,
+  presentationJoinRequestApprovedMqtt,
+  presentationJoinRequestRejectedMqtt,
+  presentationNewParticipantsJoinedMqtt,
+  removedFromPresentationToWaitingRoomMqtt,
+  participantRemovedFromPresentationMqtt,
+  presentationStoppedMqtt,
 };

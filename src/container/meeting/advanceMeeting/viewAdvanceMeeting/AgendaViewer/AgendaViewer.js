@@ -106,7 +106,10 @@ import MaxParticipantVideoDeniedComponent from "../../../commonComponents/meetin
 import MaxParticipantVideoRemovedComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
-import { raiseUnRaisedHandMainApi } from "@/store/actions/Guest_Video";
+import {
+  joinPresentationOrOpenWaitingRoom,
+  raiseUnRaisedHandMainApi,
+} from "@/store/actions/Guest_Video";
 
 const AgendaViewer = () => {
   const { t } = useTranslation();
@@ -190,6 +193,17 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.presenterMeetingId,
   );
 
+  // CR(0012249) — presenterViewFlag alone misses anyone who hasn't been
+  // admitted into the presentation yet (still waiting, or was rejected):
+  // for them it stays false even while a presentation is genuinely active,
+  // which showed "Start Presentation" instead of "Join Presentation".
+  // activePresentationMeetingID is set unconditionally for every
+  // participant on MEETING_PRESENTATION_STARTED/STOPPED (see Dashboard.js),
+  // independent of this user's own join status.
+  const activePresentationMeetingID = useSelector(
+    (state) => state.videoFeatureReducer.activePresentationMeetingID,
+  );
+
   // The meeting THIS AgendaViewer instance is displaying — same resolution
   // logic already used to fetch this page's own agenda data (see the
   // GetAdvanceMeetingAgendabyMeetingIDForView effect below), since the bare
@@ -204,7 +218,9 @@ const AgendaViewer = () => {
       : advanceMeetingModalID,
   );
   const isPresentationForThisMeeting =
-    presenterViewFlag && Number(presenterMeetingId) === thisPageMeetingID;
+    (presenterViewFlag && Number(presenterMeetingId) === thisPageMeetingID) ||
+    (activePresentationMeetingID !== null &&
+      Number(activePresentationMeetingID) === thisPageMeetingID);
 
   console.log(presenterViewFlag, "presenterViewFlagpresenterViewFlag");
 
@@ -1114,31 +1130,50 @@ const onClickVideoIconOpenVideo = () => {
           setPresenterForOneToOneOrGroup(true);
           dispatch(nonMeetingVideoGlobalModal(true));
         } else {
-          console.log("onClickStopPresenter", value);
-          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-          let data = {
-            VideoCallURL: String(currentMeetingVideoURL),
-            WasInVideo: isMeetingVideo ? true : false,
-          };
-          console.log("onClickStopPresenter", data);
-          dispatch(joinPresenterViewMainApi(navigate, t, data));
+          // CR(0012249): in meeting video (WasInVideo true) -> request is sent
+          // directly, no modal; otherwise the waiting room
+          // (maxParticipantVideoCallComponent) opens. joinPresenterViewMainApi
+          // fires only after PRESENTATION_JOIN_REQUEST_APPROVED.
+          dispatch(joinPresentationOrOpenWaitingRoom(navigate, t, RoomID));
         }
       } else if (value === 3) {
-        // if (alreadyInMeetingVideo) {
+        // Read before it is removed: a viewer who joined the presentation
+        // from meeting video also leaves the meeting video.
+        const wasInMeetingVideo = Boolean(
+          JSON.parse(sessionStorage.getItem("alreadyInMeetingVideo")),
+        );
         sessionStorage.removeItem("alreadyInMeetingVideo");
-        //   await dispatch(presenterViewGlobalState(0, false, false, false));
-        //   dispatch(maximizeVideoPanelFlag(false));
-        //   dispatch(normalizeVideoPanelFlag(true));
-        //   dispatch(minimizeVideoPanelFlag(false));
-        // } else {
+        // In meeting video participantUID is not stored for a host (and isGuid
+        // can be missing), so take the first usable guid.
+        const isUsable = (v) =>
+          Boolean(v) && !["null", "undefined", "0"].includes(String(v));
+        const meetingGuid = String(
+          [isMeetingVideoHostCheck ? isGuid : participantUID, participantUID, isGuid].find(
+            isUsable,
+          ) ?? participantUID,
+        );
         let data = {
           RoomID: String(callAcceptedRoomID),
-          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+          UserGUID: wasInMeetingVideo
+            ? meetingGuid
+            : String(isMeetingVideoHostCheck ? isGuid : participantUID),
           Name: String(currentUserName),
+        };
+        // Built before LeavePresenterView, whose response clears these keys.
+        const leaveMeetingVideoData = {
+          RoomID: String(
+            isMeetingVideoHostCheck ? newRoomID : participantRoomId,
+          ),
+          UserGUID: meetingGuid,
+          Name: String(currentUserName),
+          IsHost: isMeetingVideoHostCheck ? true : false,
+          MeetingID: Number(thisPageMeetingID),
         };
         console.log("leavePresenterViewMainApi");
         dispatch(leavePresenterViewMainApi(navigate, t, data, 1));
-        // }
+        if (wasInMeetingVideo) {
+          dispatch(LeaveMeetingVideo(leaveMeetingVideoData, navigate, t));
+        }
       }
       // }
     } catch (error) {

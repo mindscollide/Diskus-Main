@@ -22,6 +22,9 @@ import { Col, Row } from "react-bootstrap";
 import CustomButton from "../button/Button";
 import useSnackbar from "../snack_bar/useSnackbar";
 import { useApryseDocument } from "../../../context/DocumentContext";
+import { getActionValue } from "../../../commen/functions/utils";
+import { validateExtensionsforHTMLPage } from "../../../commen/functions/validations";
+import { validateEncryptedStringViewFileLinkApi } from "../../../store/actions/DataRoom2_actions";
 
 const DocumentViewer = () => {
   const { documentApryseViewer } = useApryseDocument();
@@ -89,9 +92,68 @@ const DocumentViewer = () => {
 
       return clearLocalStorage;
     } catch (error) {
-      console.error("src/components/elements/webviewer/DocumentViewer.js:", error);
+      console.error(
+        "src/components/elements/webviewer/DocumentViewer.js:",
+        error,
+      );
     }
   }, [attachmentID]);
+
+  // "View File" email link: /Diskus/documentViewer?documentViewer_action=<token>.
+  // The token is read from the URL: localStorage.documentViewer is written by
+  // PrivateRoutes' effect, which runs AFTER this child effect, so on a freshly
+  // pasted link it was still empty here and the API never fired.
+  useEffect(() => {
+    if (new URLSearchParams(location.search).has("pdfData")) return;
+
+    const href = window.location.href;
+    const token =
+      (href.includes("documentViewer_action=") &&
+        getActionValue(href, "documentViewer_action=")) || // raw: keeps + / =
+      localStorage.getItem("documentViewer"); // fallback (saved before login)
+    if (!token) return;
+
+    let cancelled = false;
+    (async () => {
+      const getResponse = await dispatch(
+        validateEncryptedStringViewFileLinkApi(token, navigate, t),
+      );
+      if (cancelled) return;
+
+      if (getResponse?.isExecuted === true && getResponse?.responseCode === 1) {
+        const fileName = getResponse.response?.fileName;
+        const ext = fileName?.split(".").pop()?.toLowerCase();
+        // HTML files aren't opened by this viewer; DataRoom opens them from
+        // the token it still has in localStorage.
+        if (validateExtensionsforHTMLPage(ext)) {
+          navigate("/Diskus/dataroom", { replace: true });
+          return;
+        }
+        localStorage.removeItem("documentViewer");
+        const fileID = getResponse.response?.response?.fileID;
+        const pdfDataJson = JSON.stringify({
+          taskId: fileID,
+          commingFrom: 4,
+          fileName,
+          attachmentID: fileID,
+          isPermission: getResponse.response?.response?.permissionID,
+        });
+        // Same tab, no popup.
+        navigate(
+          `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          { replace: true },
+        );
+      } else {
+        // Invalid link / no access: Data Room instead of a blank page.
+        localStorage.removeItem("documentViewer");
+        navigate("/Diskus/dataroom", { replace: true });
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [location.search]);
 
   // Handle File Removal via MQTT
   useEffect(() => {
@@ -376,7 +438,10 @@ const DocumentViewer = () => {
       // Reset the unsaved changes flag after successful save
       setHasUnsavedChanges(false);
     } catch (error) {
-      console.error("src/components/elements/webviewer/DocumentViewer.js:", error);
+      console.error(
+        "src/components/elements/webviewer/DocumentViewer.js:",
+        error,
+      );
     }
   };
 
@@ -420,8 +485,8 @@ const DocumentViewer = () => {
 
   return (
     <>
-      <div className='document-viewer'>
-        <div className='webviewer' ref={documentApryseViewer}></div>
+      <div className="document-viewer">
+        <div className="webviewer" ref={documentApryseViewer}></div>
       </div>
       {SnackBar}
     </>
