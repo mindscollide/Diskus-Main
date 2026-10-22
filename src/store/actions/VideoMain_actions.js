@@ -24,6 +24,7 @@ import {
 } from "./VideoFeature_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 
+import { logVideoError } from "../../components/layout/talk/videoLog";
 const getAllVideoCallUsersInitial = () => {
   return {
     type: actions.GET_ALL_VIDEOCALL_USERS_INITIAL,
@@ -97,6 +98,7 @@ const GetAllVideoCallUsers = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("GetAllVideoCallUsers", "request or response handling failed", response);
         dispatch(getAllVideoCallUsersFail(t("Something-went-wrong")));
       });
   };
@@ -227,6 +229,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("InitiateVideoCall", "request or response handling failed", response);
         dispatch(initiateVideoCallFail(t("Something-went-wrong")));
       });
   };
@@ -359,6 +362,7 @@ const VideoCallResponse = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("VideoCallResponse", "request or response handling failed", response);
         dispatch(videoCallResponseFail(t("Something-went-wrong")));
       });
   };
@@ -442,6 +446,7 @@ const GetUserRecentCalls = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("GetUserRecentCalls", "request or response handling failed", response);
         dispatch(getUserRecentCallsFail(t("Something-went-wrong")));
       });
   };
@@ -504,6 +509,7 @@ const GetUserRecentCallsScroll = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("GetUserRecentCallsScroll", "request or response handling failed", response);
         dispatch(getUserRecentCallsFail(t("Something-went-wrong")));
       });
   };
@@ -585,6 +591,7 @@ const CallRequestReceived = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("CallRequestReceived", "request or response handling failed", response);
         dispatch(callRequestReceivedFail(t("Something-went-wrong")));
       });
   };
@@ -677,6 +684,7 @@ const GetUserMissedCallCount = (navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("GetUserMissedCallCount", "request or response handling failed", response);
         dispatch(getUserMissedCallCountFail(t("Something-went-wrong")));
       });
   };
@@ -861,6 +869,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
         }
       })
       .catch((response) => {
+        logVideoError("LeaveCall", "request or response handling failed", response);
         dispatch(leaveCallAction(t("Something-went-wrong")));
       });
   };

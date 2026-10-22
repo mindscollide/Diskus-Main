@@ -23,6 +23,7 @@ import { hideUnhideSelfMainApi, muteUnMuteSelfMainApi } from "./Guest_Video";
 import { Store } from "emoji-mart";
 import store from "../store";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { logVideoError } from "../../components/layout/talk/videoLog";
 const videoChatPanel = (response) => {
   return {
     type: actions.VIDEO_CHAT_FLAG,
@@ -418,6 +419,7 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("muteUnMuteParticipantMainApi", "request or response handling failed", response);
         dispatch(muteUnmuteFail(t("Something-went-wrong")));
       });
   };
@@ -524,6 +526,7 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("hideUnHideParticipantGuestMainApi", "request or response handling failed", response);
         dispatch(hideUnHideParticipantGuestFail(t("Something-went-wrong")));
       });
   };
@@ -878,6 +881,7 @@ const getParticipantMeetingJoinMainApi = (
         }
       })
       .catch((response) => {
+        logVideoError("getParticipantMeetingJoinMainApi", "request or response handling failed", response);
         try {
           setJoinButton(false);
           dispatch(participantVideoButtonState(false));
@@ -1003,6 +1007,7 @@ const participantListWaitingListMainApi = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("participantListWaitingListMainApi", "request or response handling failed", response);
         dispatch(getParticipantMeetingJoinFail(t("Something-went-wrong")));
       });
   };
@@ -1191,6 +1196,7 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("getVideoCallParticipantsMainApi", "request or response handling failed", response);
         dispatch(getVideoCallParticipantFail(t("Something-went-wrong")));
       });
   };
@@ -1530,6 +1536,7 @@ const openPresenterViewMainApi = (
         }
       })
       .catch((response) => {
+        logVideoError("openPresenterViewMainApi", "request or response handling failed", response);
         dispatch(openPresenterFail(t("Something-went-wrong")));
       });
   };
@@ -1657,6 +1664,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
         }
       })
       .catch((response) => {
+        logVideoError("startPresenterViewMainApi", "request or response handling failed", response);
         dispatch(startPresenterFail(t("Something-went-wrong")));
       });
   };
@@ -1977,6 +1985,7 @@ const stopPresenterViewMainApi = (
         }
       })
       .catch((response) => {
+        logVideoError("stopPresenterViewMainApi", "request or response handling failed", response);
         releaseStopLock();
         dispatch(stopPresenterFail(t("Something-went-wrong")));
       });
@@ -2310,6 +2319,7 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
         }
       })
       .catch(() => {
+        logVideoError("joinPresenterViewMainApi", "request or response handling failed", undefined);
         dispatch(joinPresenterFail(t("Something-went-wrong")));
       });
   };
@@ -2562,6 +2572,7 @@ const leavePresenterViewMainApi = (
         }
       })
       .catch((response) => {
+        logVideoError("leavePresenterViewMainApi", "request or response handling failed", response);
         dispatch(leavePresenterFail(t("Something-went-wrong")));
       });
   };
@@ -2865,6 +2876,7 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("getGroupCallParticipantsMainApi", "request or response handling failed", response);
         dispatch(getGroupCallParticipantsFail(t("Something-went-wrong")));
       });
   };
@@ -2962,6 +2974,7 @@ const getVideoCallStatusToRejoinGroupCallMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("getVideoCallStatusToRejoinGroupCallMainApi", "request or response handling failed", response);
         dispatch(
           getVideoCallStatusToRejoinGroupCallFail(t("Something-went-wrong")),
         );
@@ -3082,6 +3095,7 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("isSharedScreenTriggeredApi", "request or response handling failed", response);
         dispatch(isSharedScreenFail(t("Something-went-wrong")));
       });
   };
@@ -3269,6 +3283,7 @@ const getVideoPresentationParticipantsMainApi = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("getVideoPresentationParticipantsMainApi", "request or response handling failed", response);
         dispatch(
           getVideoPresentationParticipantFail(t("Something-went-wrong")),
         );

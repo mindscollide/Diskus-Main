@@ -174,10 +174,12 @@ const PasswordVerification = () => {
     let RememberPasswordLocal = JSON.parse(
       localStorage.getItem("remeberPassword"),
     );
-    if (RememberPasswordLocal === true) {
-      let RememberPasswordLocalValue = localStorage.getItem(
-        "rememberPasswordValue",
-      );
+    let RememberPasswordLocalValue = localStorage.getItem(
+      "rememberPasswordValue",
+    );
+    // The flag can be saved without the value (getItem → null). Decrypting null
+    // crashed this screen into the error boundary, so treat it as not remembered.
+    if (RememberPasswordLocal === true && RememberPasswordLocalValue !== null) {
       SetRememberPassword(RememberPasswordLocal);
       let newPasswordDecript = decryptPassword(RememberPasswordLocalValue);
       setPassword(newPasswordDecript);

@@ -41,6 +41,7 @@ import { isArray } from "lodash";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import { findMissingVideoIds } from "../../commen/functions/videoCallIds";
 
+import { logVideoError } from "../../components/layout/talk/videoLog";
 const guestVideoNavigationScreen = (response) => {
   return {
     type: actions.GUEST_VIDEO_SCREEN_NAVIGATION,
@@ -132,6 +133,7 @@ const getMeetingGuestVideoMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("getMeetingGuestVideoMainApi", "request or response handling failed", response);
         dispatch(getMeetingGuestVideoFail(t("Something-went-wrong")));
       });
   };
@@ -307,6 +309,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("validateEncryptGuestVideoMainApi", "request or response handling failed", response);
         console.log("Hello");
 
         dispatch(validateEncryptGuestVideoFail(t("Something-went-wrong")));
@@ -432,6 +435,7 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
         }
       })
       .catch((response) => {
+        logVideoError("joinGuestVideoMainApi", "request or response handling failed", response);
         try {
           setJoinButton(false);
         } catch (error) {
@@ -605,6 +609,7 @@ const admitRejectAttendeeMainApi = (
         }
       })
       .catch((response) => {
+        logVideoError("admitRejectAttendeeMainApi", "request or response handling failed", response);
         dispatch(admitRejectFail(t("Something-went-wrong")));
       });
   };
@@ -725,6 +730,7 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("raiseUnRaisedHandMainApi", "request or response handling failed", response);
         dispatch(raiseUnRaisedFail(t("Something-went-wrong")));
       });
   };
@@ -838,6 +844,7 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
         }
       })
       .catch((response) => {
+        logVideoError("transferMeetingHostMainApi", "request or response handling failed", response);
         dispatch(transferMeetingHostFail(t("Something-went-wrong")));
       });
   };
@@ -935,6 +942,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("removeParticipantMeetingMainApi", "request or response handling failed", response);
         dispatch(removeParticipantMeetingFail(t("Something-went-wrong")));
       });
   };
@@ -1059,6 +1067,7 @@ const joinPresentationRequestMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("joinPresentationRequestMainApi", "request or response handling failed", response);
         dispatch(joinPresentationRequestFail(t("Something-went-wrong")));
       });
   };
@@ -1204,6 +1213,7 @@ const admitRejectPresentationAttendeeMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("admitRejectPresentationAttendeeMainApi", "request or response handling failed", response);
         dispatch(admitRejectPresentationFail(t("Something-went-wrong")));
       });
   };
@@ -1307,6 +1317,7 @@ const removeParticipantFromPresentationMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("removeParticipantFromPresentationMainApi", "request or response handling failed", response);
         dispatch(removeParticipantPresentationFail(t("Something-went-wrong")));
       });
   };
@@ -1415,6 +1426,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("guestLeaveMeetingVideoApi", "request or response handling failed", response);
         dispatch(guestLeaveMeetingVideoFail(t("Something-went-wrong")));
       });
   };
@@ -1512,6 +1524,7 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
         }
       })
       .catch((response) => {
+        logVideoError("muteUnMuteSelfMainApi", "request or response handling failed", response);
         dispatch(muteUnmuteSelfFail(t("Something-went-wrong")));
       });
   };
@@ -1608,6 +1621,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
         }
       })
       .catch((response) => {
+        logVideoError("hideUnhideSelfMainApi", "request or response handling failed", response);
         dispatch(hideUnhideSelfFail(t("Something-went-wrong")));
       });
   };
@@ -1756,6 +1770,7 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("getVideoCallParticipantsGuestMainApi", "request or response handling failed", response);
         dispatch(getVideoCallParticipantGuestFail(t("Something-went-wrong")));
       });
   };
