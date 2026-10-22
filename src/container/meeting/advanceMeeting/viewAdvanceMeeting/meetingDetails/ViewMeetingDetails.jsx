@@ -66,7 +66,7 @@ import {
   getMeetingGuestVideoMainApi,
 } from "@/store/actions/Guest_Video";
 
-import EndMeetingConfirmationModal from "@/container/meeting/commonComponents/EndMeetingConfirmationModal/EndMeetingConfirmationModal.js";
+import EndMeetingConfirmationModal from "@/container/meeting/commonComponents/EndMeetingConfirmationModal/EndMeetingConfirmationModal.jsx";
 import { useMeetingContext } from "@/context/MeetingContext";
 import { useCallback } from "react";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";

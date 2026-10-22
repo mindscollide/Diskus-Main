@@ -25,6 +25,7 @@
 import axios from "axios";
 import { signOut } from "../../store/actions/Auth_Sign_Out";
 import store from "../../store/store";
+import { logVideoApiResponse } from "../../components/layout/talk/videoLog";
 
 const axiosInstance = axios.create({
   // Read once at module load. Changing REACT_APP_BASE_URL needs a rebuild, not
@@ -64,6 +65,8 @@ axiosInstance.interceptors.response.use(
         console.error(error);
       }
     }
+    logVideoApiResponse(response.config, data);
+
     const code = Number(data?.responseCode);
     const message = (data?.errorMessage || "").toLowerCase().trim();
 
@@ -96,6 +99,9 @@ axiosInstance.interceptors.response.use(
   // separate copy rather than a shared helper because the two paths differ at
   // the end: this one re-rejects so call sites still see the error.
   (error) => {
+    // Before the unguarded read below, so network failures are logged too.
+    logVideoApiResponse(error.config, error.response?.data, error);
+
     let data = error.response.data;
 
     // Same arraybuffer decode as the success path - see the comment there.

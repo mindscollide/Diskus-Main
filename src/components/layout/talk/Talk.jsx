@@ -60,9 +60,9 @@ import {
 import { convertNumbersInString } from "../../../commen/functions/regex";
 import { clearMinuteReviewerMqtt } from "../../../store/actions/workflow_actions.js";
 import { MeetingContext } from "../../../context/MeetingContext";
-import { useTalkContext } from "../../../context/TalkContext.js";
+import { useTalkContext } from "../../../context/TalkContext.jsx";
 import ComplianceFeatureIcon from "../../../assets/images/ComplianceFeatureIcon.svg";
-import { useComplianceContext } from "../../../context/ComplianceContext.js";
+import { useComplianceContext } from "../../../context/ComplianceContext.jsx";
 import { HIDE_VIDEO } from "../../../commen/featureFlags.js";
 const Talk = () => {
   const { t } = useTranslation();

@@ -30,8 +30,8 @@ import { useLocation } from "react-router-dom";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 import { Button, Modal, UploadTextField, Notification } from "../../elements";
-import UpgradeNowModal from "../../../container/pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal.js";
-import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.js";
+import UpgradeNowModal from "../../../container/pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal.jsx";
+import RequestExtensionModal from "../../../container/pages/UserMangement/ModalsUserManagement/RequestExtentionModal/RequestExtensionModal.jsx";
 import {
   checkFeatureID,
   checkFeatureIDAvailability,
@@ -40,14 +40,14 @@ import {
   SideBarGlobalNavigationFunctionNew,
 } from "../../../commen/functions/utils";
 import { requestOrganizationExtendApi } from "../../../store/actions/UserManagementActions.js";
-import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote.js";
-import ModalToDoList from "../../../container/todolistModal/ModalToDoList.js";
+import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote.jsx";
+import ModalToDoList from "../../../container/todolistModal/ModalToDoList.jsx";
 import useSnackbar from "../../elements/snack_bar/useSnackbar";
 import { ClearNotesResponseMessage } from "../../../store/actions/Notes_actions.js";
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees.js";
 import { clearResponce } from "../../../store/actions/ToDoList_action.js";
 import BellNotificationIcon from "../../../assets/images/BellNotificationIcon.png";
-import WebNotfication from "../WebNotfication/WebNotfication.js";
+import WebNotfication from "../WebNotfication/WebNotfication.jsx";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
 import {
   leavePresenterViewMainApi,
@@ -57,13 +57,13 @@ import {
   stopPresenterViewMainApi,
 } from "../../../store/actions/VideoFeature_actions.js";
 import { DiskusWebNotificationActionMethodAPI } from "../../../store/actions/UpdateUserNotificationSetting.js";
-import { useNotesContext } from "../../../context/NotesContext.js";
-import CreateQuickMeeting from "../../../container/meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting.js";
-import { useMeetingContext } from "../../../context/MeetingContext.js";
+import { useNotesContext } from "../../../context/NotesContext.jsx";
+import CreateQuickMeeting from "../../../container/meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting.jsx";
+import { useMeetingContext } from "../../../context/MeetingContext.jsx";
 import { convertToArabicNumerals } from "../../../commen/functions/regex.js";
 import { convertToArabicNumber } from "../../../commen/functions/customPagination/utils.js";
 import { PSO_LOGO } from "../../../commen/featureFlags.js";
-import { useNewMeetingContext } from "../../../context/NewMeetingContext.js";
+import { useNewMeetingContext } from "../../../context/NewMeetingContext.jsx";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
