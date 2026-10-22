@@ -36,6 +36,11 @@ const initialState = {
   voiceControleForAllByHostFlag: false,
   hostTransferFlag: false,
   errorSeverity: null, // Added errorSeverity to initialState
+
+  // CR(0012249) — Presentation waiting-room / admit-reject / remove flow
+  joinPresentationRequestData: null,
+  admitRejectPresentationData: null,
+  removeParticipantPresentationData: null,
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -245,6 +250,88 @@ const GuestVideoReducer = (state = initialState, action) => {
         removeParticipantMeetingData: null,
         ResponseMessage: action.message,
         errorSeverity: "error", // Added
+      };
+    }
+
+    // CR(0012249) — Presentation waiting-room / admit-reject / remove flow
+    case actions.JOIN_PRESENTATION_REQUEST_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.JOIN_PRESENTATION_REQUEST_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        joinPresentationRequestData: action.response,
+        ResponseMessage: action.message,
+        errorSeverity: "success",
+      };
+    }
+
+    case actions.JOIN_PRESENTATION_REQUEST_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        joinPresentationRequestData: null,
+        ResponseMessage: action.message,
+        errorSeverity: "error",
+      };
+    }
+
+    case actions.ADMIT_REJECT_PRESENTATION_ATTENDEE_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.ADMIT_REJECT_PRESENTATION_ATTENDEE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        admitRejectPresentationData: action.response,
+        ResponseMessage: action.message,
+        errorSeverity: "success",
+      };
+    }
+
+    case actions.ADMIT_REJECT_PRESENTATION_ATTENDEE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        admitRejectPresentationData: null,
+        ResponseMessage: action.message,
+        errorSeverity: "error",
+      };
+    }
+
+    case actions.REMOVE_PARTICIPANT_FROM_PRESENTATION_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.REMOVE_PARTICIPANT_FROM_PRESENTATION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        removeParticipantPresentationData: action.response,
+        ResponseMessage: action.message,
+        errorSeverity: "success",
+      };
+    }
+
+    case actions.REMOVE_PARTICIPANT_FROM_PRESENTATION_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        removeParticipantPresentationData: null,
+        ResponseMessage: action.message,
+        errorSeverity: "error",
       };
     }
 
