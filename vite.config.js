@@ -115,26 +115,14 @@ export default defineConfig(({ mode }) => {
     ],
 
     /**
-     * (2) JSX INSIDE `.js` FILES.
+     * (2) JSX LIVES IN `.jsx` FILES — keep it that way.
      *
-     * 588 files in `src` contain JSX but use the `.js` extension, which esbuild
-     * treats as plain JavaScript — every one of them would fail to parse. These
-     * two settings point the JSX loader at `.js` as well.
-     *
-     * `optimizeDeps.esbuildOptions` covers the dependency pre-bundling pass and
-     * `esbuild.include` covers app source; both are needed, they run at
-     * different stages.
-     *
-     * The proper fix is renaming those files to `.jsx` — imports are
-     * extensionless so a rename is safe — at which point both blocks can go.
-     * Kept as config for now so the migration is reviewable without a
-     * 588-file rename buried in the same commit.
+     * esbuild parses `.js` as plain JavaScript, so JSX in a `.js` file fails to
+     * compile. Worse, @vitejs/plugin-react only adds Fast Refresh to files whose
+     * name ends in `x` (it runs before esbuild, on the raw source), so a
+     * component in a `.js` file gets no HMR boundary and every save of it
+     * triggers a full page reload. New components go in `.jsx`.
      */
-    esbuild: {
-      loader: "jsx",
-      include: /src\/.*\.[jt]sx?$/,
-      exclude: [],
-    },
     optimizeDeps: {
       /**
        * Without this, Vite's dependency scanner globs EVERY .html in the project
@@ -164,8 +152,8 @@ export default defineConfig(({ mode }) => {
        * is exactly the kind that gets missed, because the build looks fine.
        *
        * Keep in sync with the `moment/locale/*` imports in
-       * components/elements/calendar/Calendar.js and
-       * components/elements/time_picker/Time_picker.js.
+       * components/elements/calendar/Calendar.jsx and
+       * components/elements/time_picker/Time_picker.jsx.
        */
       include: [
         "moment",
@@ -174,10 +162,6 @@ export default defineConfig(({ mode }) => {
         "moment/dist/locale/fr",
         "moment/dist/locale/en-gb",
       ],
-
-      esbuildOptions: {
-        loader: { ".js": "jsx" },
-      },
     },
 
     define: clientEnv,
@@ -206,8 +190,8 @@ export default defineConfig(({ mode }) => {
          * alias would also rewrite `moment-timezone` and `moment/dist/...`.
          *
          * Paired with the `moment/dist/locale/*` imports in
-         * components/elements/calendar/Calendar.js and
-         * components/elements/time_picker/Time_picker.js — the two must agree.
+         * components/elements/calendar/Calendar.jsx and
+         * components/elements/time_picker/Time_picker.jsx — the two must agree.
          */
         {
           find: /^moment$/,

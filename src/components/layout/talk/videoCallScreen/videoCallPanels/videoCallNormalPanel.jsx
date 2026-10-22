@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import "./videoCallNormalPanel.css";
@@ -13,6 +13,7 @@ import {
   extractedUrl,
   generateURLCaller,
   generateURLParticipant,
+  withFreshIframeLoad,
 } from "../../../../../commen/functions/urlVideoCalls";
 import VideoOutgoing from "../videoCallBody/VideoMaxOutgoing";
 import { useTranslation } from "react-i18next";
@@ -363,6 +364,8 @@ const VideoPanelNormal = () => {
   const [participantsList, setParticipantsList] = useState([]);
 
   const [callerURL, setCallerURL] = useState("");
+  // Recomputed only when callerURL changes, so re-renders don't reload the iframe.
+  const iframeSrc = useMemo(() => withFreshIframeLoad(callerURL), [callerURL]);
 
   const [participantURL, setParticipantURL] = useState("");
 
@@ -2272,7 +2275,7 @@ const VideoPanelNormal = () => {
                           <>
                             {callerURL !== "" && (
                               <iframe
-                                src={callerURL}
+                                src={iframeSrc}
                                 ref={iframeRef}
                                 title={t("Live-video")}
                                 width='100%'

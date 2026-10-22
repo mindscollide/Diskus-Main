@@ -35,6 +35,7 @@ import { isArray } from "lodash";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import { findMissingVideoIds } from "../../commen/functions/videoCallIds";
 
+import { logVideoError } from "../../components/layout/talk/videoLog";
 const guestVideoNavigationScreen = (response) => {
   return {
     type: actions.GUEST_VIDEO_SCREEN_NAVIGATION,
@@ -126,6 +127,7 @@ const getMeetingGuestVideoMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("getMeetingGuestVideoMainApi", "request or response handling failed", response);
         dispatch(getMeetingGuestVideoFail(t("Something-went-wrong")));
       });
   };
@@ -301,6 +303,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("validateEncryptGuestVideoMainApi", "request or response handling failed", response);
         console.log("Hello");
 
         dispatch(validateEncryptGuestVideoFail(t("Something-went-wrong")));
@@ -426,6 +429,7 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
         }
       })
       .catch((response) => {
+        logVideoError("joinGuestVideoMainApi", "request or response handling failed", response);
         try {
           setJoinButton(false);
         } catch (error) {
@@ -586,6 +590,7 @@ const admitRejectAttendeeMainApi = (
         }
       })
       .catch((response) => {
+        logVideoError("admitRejectAttendeeMainApi", "request or response handling failed", response);
         dispatch(admitRejectFail(t("Something-went-wrong")));
       });
   };
@@ -706,6 +711,7 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("raiseUnRaisedHandMainApi", "request or response handling failed", response);
         dispatch(raiseUnRaisedFail(t("Something-went-wrong")));
       });
   };
@@ -819,6 +825,7 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
         }
       })
       .catch((response) => {
+        logVideoError("transferMeetingHostMainApi", "request or response handling failed", response);
         dispatch(transferMeetingHostFail(t("Something-went-wrong")));
       });
   };
@@ -916,7 +923,383 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("removeParticipantMeetingMainApi", "request or response handling failed", response);
         dispatch(removeParticipantMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// CR(0012249) — Presentation waiting-room / admit-reject / remove flow.
+// Mirrors admitRejectAttendeeMainApi / removeParticipantMeetingMainApi
+// above (same file, same request/response plumbing style), kept as pure
+// API-layer dispatches for now — no side effects on the meeting-video
+// waitingParticipantsList/admitGuestUserRequestData state, so this can't
+// affect the existing meeting-video flow. UI wiring (waiting-list state,
+// popups) comes in a later step.
+// ─────────────────────────────────────────────────────────────────────────
+
+const joinPresentationRequestInit = () => {
+  return {
+    type: actions.JOIN_PRESENTATION_REQUEST_INIT,
+  };
+};
+
+const joinPresentationRequestSuccess = (response, message) => {
+  return {
+    type: actions.JOIN_PRESENTATION_REQUEST_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const joinPresentationRequestFail = (message) => {
+  return {
+    type: actions.JOIN_PRESENTATION_REQUEST_FAIL,
+    message: message,
+  };
+};
+
+const isInMeetingVideo = () => {
+  try {
+    return Boolean(JSON.parse(localStorage.getItem("isMeetingVideo")));
+  } catch {
+    return false;
+  }
+};
+
+const joinPresentationRequestMainApi = (navigate, t, data) => {
+  return (dispatch) => {
+    dispatch(joinPresentationRequestInit());
+    let form = new FormData();
+    form.append("RequestMethod", joinPresentationRequest.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(joinPresentationRequestMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestSuccess(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestFail(t("Invalid-request-data-2")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresentationRequest_05".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresentationRequestFail(t("Something-went-wrong")),
+              );
+            }
+          } else {
+            await dispatch(
+              joinPresentationRequestFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            joinPresentationRequestFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        logVideoError("joinPresentationRequestMainApi", "request or response handling failed", response);
+        dispatch(joinPresentationRequestFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// "Join Presentation" entry point.
+// In meeting video  -> no waiting room and no JoinPresentationRequest: call
+//                      JoinPresenterView directly.
+// Not in video      -> open maxParticipantVideoCallComponent (waiting room).
+const isValidRoomID = (id) =>
+  Boolean(id) && !["null", "undefined", "0"].includes(String(id));
+
+const joinPresentationOrOpenWaitingRoom = (navigate, t, roomID) => {
+  return (dispatch) => {
+    // Room saved from MEETING_PRESENTATION_STARTED / JoinMeeting (kept until
+    // the presentation stops); the caller's roomID is only a fallback.
+    const presentationRoomID = [
+      localStorage.getItem("presentationRoomID"),
+      roomID,
+    ].find(isValidRoomID);
+
+    if (isInMeetingVideo()) {
+      localStorage.removeItem("callTypeID");
+      // this user's meeting-video guid (host: isGuid, else participantUID)
+      let isHostCheck = false;
+      try {
+        isHostCheck = Boolean(
+          JSON.parse(localStorage.getItem("isMeetingVideoHostCheck")),
+        );
+      } catch {}
+      const guid = isHostCheck
+        ? localStorage.getItem("isGuid")
+        : localStorage.getItem("participantUID");
+      dispatch(
+        joinPresenterViewMainApi(navigate, t, {
+          VideoCallURL: String(localStorage.getItem("videoCallURL")),
+          WasInVideo: true,
+          RoomID: String(presentationRoomID),
+          IsMuted: true,
+          HideVideo: true,
+          UID: String(guid),
+        }),
+      );
+    } else {
+      // Never overwrite a good room with null/"null".
+      if (presentationRoomID) {
+        localStorage.setItem("presentationRoomID", String(presentationRoomID));
+      }
+      dispatch(presentationJoinFlowFlag(true));
+      dispatch(maxParticipantVideoCallPanel(true));
+    }
+  };
+};
+
+const admitRejectPresentationInit = () => {
+  return {
+    type: actions.ADMIT_REJECT_PRESENTATION_ATTENDEE_INIT,
+  };
+};
+
+const admitRejectPresentationSuccess = (response, message) => {
+  return {
+    type: actions.ADMIT_REJECT_PRESENTATION_ATTENDEE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const admitRejectPresentationFail = (message) => {
+  return {
+    type: actions.ADMIT_REJECT_PRESENTATION_ATTENDEE_FAIL,
+    message: message,
+  };
+};
+
+const admitRejectPresentationAttendeeMainApi = (navigate, t, data) => {
+  return (dispatch) => {
+    dispatch(admitRejectPresentationInit());
+    let form = new FormData();
+    form.append("RequestMethod", admitRejectPresentationAttendee.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(admitRejectPresentationAttendeeMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AdmitRejectPresentationAttendee_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                admitRejectPresentationSuccess(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AdmitRejectPresentationAttendee_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                admitRejectPresentationFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AdmitRejectPresentationAttendee_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                admitRejectPresentationFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_AdmitRejectPresentationAttendee_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                admitRejectPresentationFail(t("Invalid-request-data-2")),
+              );
+            }
+          } else {
+            await dispatch(
+              admitRejectPresentationFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            admitRejectPresentationFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        logVideoError("admitRejectPresentationAttendeeMainApi", "request or response handling failed", response);
+        dispatch(admitRejectPresentationFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const removeParticipantPresentationInit = () => {
+  return {
+    type: actions.REMOVE_PARTICIPANT_FROM_PRESENTATION_INIT,
+  };
+};
+
+const removeParticipantPresentationSuccess = (response, message) => {
+  return {
+    type: actions.REMOVE_PARTICIPANT_FROM_PRESENTATION_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const removeParticipantPresentationFail = (message) => {
+  return {
+    type: actions.REMOVE_PARTICIPANT_FROM_PRESENTATION_FAIL,
+    message: message,
+  };
+};
+
+// Note: the backend doc gives these response codes WITHOUT the leading
+// "Meeting_" that the other three presentation APIs use (it's literally
+// "MeetingServiceManager_RemoveParticipantFromPresentation_01", not
+// "Meeting_MeetingServiceManager_..._01") — matched exactly as documented.
+const removeParticipantFromPresentationMainApi = (navigate, t, data) => {
+  return (dispatch) => {
+    dispatch(removeParticipantPresentationInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      removeParticipantFromPresentation.RequestMethod,
+    );
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(removeParticipantFromPresentationMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "MeetingServiceManager_RemoveParticipantFromPresentation_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                removeParticipantPresentationSuccess(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "MeetingServiceManager_RemoveParticipantFromPresentation_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                removeParticipantPresentationFail(t("Invalid-request-data-2")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "MeetingServiceManager_RemoveParticipantFromPresentation_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                removeParticipantPresentationFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "MeetingServiceManager_RemoveParticipantFromPresentation_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                removeParticipantPresentationFail(t("Something-went-wrong")),
+              );
+            }
+          } else {
+            await dispatch(
+              removeParticipantPresentationFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            removeParticipantPresentationFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        logVideoError("removeParticipantFromPresentationMainApi", "request or response handling failed", response);
+        dispatch(removeParticipantPresentationFail(t("Something-went-wrong")));
       });
   };
 };
@@ -1024,6 +1407,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
         }
       })
       .catch((response) => {
+        logVideoError("guestLeaveMeetingVideoApi", "request or response handling failed", response);
         dispatch(guestLeaveMeetingVideoFail(t("Something-went-wrong")));
       });
   };
@@ -1121,6 +1505,7 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
         }
       })
       .catch((response) => {
+        logVideoError("muteUnMuteSelfMainApi", "request or response handling failed", response);
         dispatch(muteUnmuteSelfFail(t("Something-went-wrong")));
       });
   };
@@ -1217,6 +1602,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
         }
       })
       .catch((response) => {
+        logVideoError("hideUnhideSelfMainApi", "request or response handling failed", response);
         dispatch(hideUnhideSelfFail(t("Something-went-wrong")));
       });
   };
@@ -1365,6 +1751,7 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
         }
       })
       .catch((response) => {
+        logVideoError("getVideoCallParticipantsGuestMainApi", "request or response handling failed", response);
         dispatch(getVideoCallParticipantGuestFail(t("Something-went-wrong")));
       });
   };

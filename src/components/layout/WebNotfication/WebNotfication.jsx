@@ -27,7 +27,7 @@ import {
   webNotificationDataLeaveVideoIntiminationModal,
 } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
-import { useGroupsContext } from "../../../context/GroupsContext.js";
+import { useGroupsContext } from "../../../context/GroupsContext.jsx";
 import {
   getbyGroupID,
   viewGroupPageFlag,
@@ -49,15 +49,15 @@ import {
   getResolutionResult,
 } from "../../../store/actions/Resolution_actions.js";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
-import { useResolutionContext } from "../../../context/ResolutionContext.js";
-import { useComplianceContext } from "../../../context/ComplianceContext.js";
+import { useResolutionContext } from "../../../context/ResolutionContext.jsx";
+import { useComplianceContext } from "../../../context/ComplianceContext.jsx";
 import { ViewComplianceDetailsByViewTypeAPI } from "../../../store/actions/ComplainSettingActions.js";
 import {
   MeetingProposedForOrganizerProposed,
   MeetingProposedForParticipantProposed,
   ViewMeetingDetails,
 } from "../../../store/actions/NotificationRouting_actions.js";
-import { useCommitteeContext } from "../../../context/CommitteeContext.js";
+import { useCommitteeContext } from "../../../context/CommitteeContext.jsx";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data

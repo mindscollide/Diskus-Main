@@ -112,6 +112,7 @@ import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
 import { getMeetingByCommitteeIdApi } from "./Committee_actions";
 import { getMeetingbyGroupIdApi } from "./Groups_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { logVideoError } from "../../components/layout/talk/videoLog";
 import store from "../store";
 import { resetViewTabs, toggleViewMeetingModal } from "./ModalStates_actions";
 import {
@@ -8414,6 +8415,7 @@ const LeaveMeetingVideo = (
         }
       })
       .catch((response) => {
+        logVideoError("LeaveMeetingVideo", "request or response handling failed", response);
         dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
       });
   };

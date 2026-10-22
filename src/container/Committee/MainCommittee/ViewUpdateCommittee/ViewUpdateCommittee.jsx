@@ -10,14 +10,14 @@ import {
   resetViewCommitteeDetails,
   viewCommitteePageFlag,
 } from "../../../../store/actions/Committee_actions";
-import ViewCommitteeDetails from "../ViewCommittee/ViewCommittee.js";
-import Polls from "../../ViewPolls/Polls/Polls.js";
-import CommitteeTodo from "../../ViewTodo/CommitteeTodo.js";
+import ViewCommitteeDetails from "../ViewCommittee/ViewCommittee.jsx";
+import Polls from "../../ViewPolls/Polls/Polls.jsx";
+import CommitteeTodo from "../../ViewTodo/CommitteeTodo.jsx";
 import { XLg } from "react-bootstrap-icons";
 import CommitteeMeetingTab from "../../committeeMeetings";
 import { useSelector } from "react-redux";
-import { usePollsContext } from "../../../../context/PollsContext.js";
-import { useCommitteeContext } from "../../../../context/CommitteeContext.js";
+import { usePollsContext } from "../../../../context/PollsContext.jsx";
+import { useCommitteeContext } from "../../../../context/CommitteeContext.jsx";
 const ViewUpdateCommittee = ({
   setViewCommitteePage,
   viewCommitteeTab,
