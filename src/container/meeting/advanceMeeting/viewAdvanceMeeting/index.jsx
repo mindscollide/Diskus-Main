@@ -123,7 +123,7 @@ const ViewMeetingModal = () => {
     iframeRef,
   } = useContext(MeetingContext);
 
-  const { editorRole, setEditorRole, setVideoTalk, setAdvanceMeetingModalID,handleCloseMeeting } =
+  const { editorRole, setEditorRole, setVideoTalk, setAdvanceMeetingModalID, handleCloseMeeting } =
     useMeetingContext();
   console.log(editorRole, "editorRoleeditorRoleeditorRole");
   const advanceMeetingOperations =
@@ -750,7 +750,7 @@ const ViewMeetingModal = () => {
         if (
           Number(localStorage.getItem("currentMeetingID")) ===
           AgendaVotingModalStartedData.meetingID &&
-          !editorRole.isPrimaryOrganizer
+          !editorRole.isPrimaryOrganizer && AgendaPollVotingStartedAction?.polls?.isVoter
         ) {
           dispatch(AgendaPollVotingStartedAction(true));
         }
@@ -1040,7 +1040,7 @@ const ViewMeetingModal = () => {
               {polls && <Polls />}
               {attendance && <Attendence />}
               {isRecording && <Recording />}
-         
+
               {/* {Number(editorRole.status) !== 10 && (
                   <Button
                     text={t("Close")}

@@ -425,7 +425,7 @@ const ReviewSignature = () => {
       key: "status",
       align: "center",
       className: "statusParticipant",
-      width: "150px",
+      width: "200px",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown

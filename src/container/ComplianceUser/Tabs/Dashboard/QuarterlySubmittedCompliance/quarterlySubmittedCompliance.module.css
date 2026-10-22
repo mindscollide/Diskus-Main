@@ -24,7 +24,6 @@
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
-  margin: 20px 0px;
 }
 
 /* PERCENT TEXT */
@@ -50,6 +49,7 @@
   border-radius: 4px;
   background-color: #fff;
   transition: all 0.3s ease;
+  padding: 16px 20px;
   /* display: flex;
   flex-direction: column;
   justify-content: center; */
@@ -63,10 +63,26 @@
   font-size: 24px;
   font-weight: 700;
   color: #6172d6;
+}
 
-  max-width: 900px; /* 🔥 SAME WIDTH AS CONTENT */
+.quarterlySubmittedCard {
   width: 100%;
-  padding: 0px 20px;
-  margin-top: 12px;
-  text-align: left;
+}
+
+.quarterlySubmittedCard .row > div:last-child {
+  min-width: 0;
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1400px) {
+  .cardHeading {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: "Montserrat";
+    color: #6172d6;
+  }
+  .NoDataCardHeading {
+    font-size: 18px;
+    font-weight: 700;
+    color: #6172d6;
+  }
 }

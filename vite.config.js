@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, transformWithEsbuild } from "vite";
 import react from "@vitejs/plugin-react";
 import fs from "fs";
 import path from "path";
@@ -81,7 +81,38 @@ export default defineConfig(({ mode }) => {
   );
 
   return {
-    plugins: [react()],
+    plugins: [
+      /**
+       * (2b) FAST REFRESH FOR JSX-IN-`.js` — dev server only.
+       *
+       * @vitejs/plugin-react decides whether a file gets React Fast Refresh by
+       * looking at its code BEFORE esbuild runs: a `.js` file still holding raw
+       * JSX has no `react/jsx-dev-runtime` import yet, so it is treated as
+       * non-React and never becomes an HMR boundary. A change to any CSS
+       * module (or component) imported from such a file then bubbles up with
+       * no boundary to accept it and Vite reloads the WHOLE page.
+       *
+       * Compiling the JSX in `src/**.js` first (this runs before plugin-react)
+       * makes the jsx-dev-runtime import visible, so those files get Fast
+       * Refresh like `.jsx` files do. Goes away together with the `.js`->`.jsx`
+       * rename described in (2) above. Build output is untouched.
+       */
+      {
+        name: "jsx-in-js-for-fast-refresh",
+        enforce: "pre",
+        apply: "serve",
+        async transform(code, id) {
+          const file = id.split("?")[0];
+          if (!/\/src\/.*\.js$/.test(file.replace(/\\/g, "/"))) return null;
+          return transformWithEsbuild(code, file, {
+            loader: "jsx",
+            jsx: "automatic",
+            jsxDev: true,
+          });
+        },
+      },
+      react(),
+    ],
 
     /**
      * (2) JSX LIVES IN `.jsx` FILES — keep it that way.
@@ -175,7 +206,7 @@ export default defineConfig(({ mode }) => {
     server: {
       // CRA's default, so existing bookmarks, CORS allow-lists and OAuth
       // redirect URIs registered against localhost:3000 keep working.
-      port: 3000,
+      // port: 3000,
       open: false,
     },
 

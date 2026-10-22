@@ -1357,240 +1357,227 @@ const Resolution = () => {
         ) : (
           <>
             <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Row>
-                  <Col
-                    lg={7}
-                    md={7}
-                    sm={12}
-                    className=' d-flex justify-content-start align-items-center  gap-3 '>
-                    <span className={styles["Resolution-heading-size"]}>
-                      {t("Resolution")}
+              <Col
+                lg={6}
+                md={6}
+                sm={12}
+                className=' d-flex justify-content-start align-items-center  gap-3 flex-wrap '>
+                <span className={styles["Resolution-heading-size"]}>
+                  {t("Resolution")}
+                </span>
+                <Button
+                  className={styles["create-Resolution-btn"]}
+                  text={
+                    <span className={styles["Btn_create_text"]}>
+                      {t("Create-new-resolution")}
                     </span>
-                    <Button
-                      className={styles["create-Resolution-btn"]}
-                      text={
-                        <span className={styles["Btn_create_text"]}>
-                          {t("Create-new-resolution")}
-                        </span>
-                      }
-                      icon={
-                        <img
-                          draggable='false'
-                          src={plusbutton}
-                          height='7.6px'
-                          width='7.6px'
-                          alt=''
-                          className='align-items-center'
-                        />
-                      }
-                      onClick={() => createresolution()}
+                  }
+                  icon={
+                    <img
+                      draggable='false'
+                      src={plusbutton}
+                      height='7.6px'
+                      width='7.6px'
+                      alt=''
+                      className='align-items-center'
                     />
-                    <Button
-                      className={
-                        buttonTab !== null && buttonTab === 3
-                          ? styles["Resolution-All-btn_Active"]
-                          : styles["Resolution-All-btn"]
-                      }
-                      text={t("All")}
-                      onClick={allbtntable}
-                    />
-                    <Button
-                      className={
-                        buttonTab !== null && buttonTab === 2
-                          ? styles["Resolution-closed-btn_Active"]
-                          : styles["Resolution-closed-btn"]
-                      }
-                      text={t("Closed")}
-                      onClick={buttonclosed}
-                    />
-                    <Button
-                      className={
-                        buttonTab !== null && buttonTab === 1
-                          ? styles["Resolution-Current-btn_Active"]
-                          : styles["Resolution-Current-btn"]
-                      }
-                      text={t("Current")}
-                      onClick={currentbuttontable}
-                    />
-                  </Col>
+                  }
+                  onClick={() => createresolution()}
+                />
+                <Button
+                  className={
+                    buttonTab !== null && buttonTab === 3
+                      ? styles["Resolution-All-btn_Active"]
+                      : styles["Resolution-All-btn"]
+                  }
+                  text={t("All")}
+                  onClick={allbtntable}
+                />
+                <Button
+                  className={
+                    buttonTab !== null && buttonTab === 2
+                      ? styles["Resolution-closed-btn_Active"]
+                      : styles["Resolution-closed-btn"]
+                  }
+                  text={t("Closed")}
+                  onClick={buttonclosed}
+                />
+                <Button
+                  className={
+                    buttonTab !== null && buttonTab === 1
+                      ? styles["Resolution-Current-btn_Active"]
+                      : styles["Resolution-Current-btn"]
+                  }
+                  text={t("Current")}
+                  onClick={currentbuttontable}
+                />
+              </Col>
 
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className=' d-flex justify-content-end  align-items-center  position-relative Search-filed-resolution'>
-                    <span className={styles["search_input"]}>
-                      <TextField
-                        width='455px'
-                        name='Title'
-                        placeholder={t("Search-on-resolution-title")}
-                        labelclass='textFieldSearch d-none'
-                        value={allSearchInput}
-                        change={(e) => filterResolution(e)}
-                        onKeyDown={handleClickSearch}
-                        applyClass={"resolution-search-input"}
-                        iconclassname={
-                          isSearching
-                            ? styles["Search_IconWithCrossIcon"]
-                            : styles["Search_Icon"]
-                        }
-                        inputicon={
-                          <>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className='d-flex gap-1 align-items-center'>
-                                {allSearchInput && enterpressed ? (
-                                  <>
-                                    <img
-                                      src={BlackCrossIcon}
-                                      className={styles["BlackCrossiconClass"]}
-                                      draggable='false'
-                                      alt=''
-                                      onClick={handleResettingPage}
-                                    />
-                                  </>
-                                ) : null}
-                                <Tooltip
-                                  placement='bottomLeft'
-                                  title={t("Search-filters")}>
-                                  <img
-                                    draggable='false'
-                                    src={searchicon}
-                                    alt=''
-                                    className={styles["searchIcon"]}
-                                    onClick={openSearchBox}
-                                  />
-                                </Tooltip>
-                              </Col>
-                            </Row>
-                          </>
-                        }
-                      />
-                      {searchIcon ? (
-                        <>
+              <Col
+                lg={6}
+                md={6}
+                sm={12}
+                className=' d-flex justify-content-end  align-items-start  position-relative Search-filed-resolution'>
+                <span className={styles["search_input"]}>
+                  <TextField
+                    name='Title'
+                    placeholder={t("Search-on-resolution-title")}
+                    labelclass='textFieldSearch d-none'
+                    value={allSearchInput}
+                    change={(e) => filterResolution(e)}
+                    onKeyDown={handleClickSearch}
+                    applyClass={"resolution-search-input"}
+                    iconclassname={
+                      isSearching
+                        ? styles["Search_IconWithCrossIcon"]
+                        : styles["Search_Icon"]
+                    }
+                    inputicon={
+                      <>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className='d-flex gap-1 align-items-center'>
+                            {allSearchInput && enterpressed ? (
+                              <>
+                                <img
+                                  src={BlackCrossIcon}
+                                  className={styles["BlackCrossiconClass"]}
+                                  draggable='false'
+                                  alt=''
+                                  onClick={handleResettingPage}
+                                />
+                              </>
+                            ) : null}
+                            <Tooltip
+                              placement='bottomLeft'
+                              title={t("Search-filters")}>
+                              <img
+                                draggable='false'
+                                src={searchicon}
+                                alt=''
+                                className={styles["searchIcon"]}
+                                onClick={openSearchBox}
+                              />
+                            </Tooltip>
+                          </Col>
+                        </Row>
+                      </>
+                    }
+                  />
+                  {searchIcon ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Search_Box_Main_Resolution_page"]}>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className={
-                                styles["Search_Box_Main_Resolution_page"]
-                              }>
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className='d-flex justify-content-end'>
-                                  <span>
-                                    <img
-                                      draggable='false'
-                                      src={Cross}
-                                      height='16px'
-                                      alt=''
-                                      width='16px'
-                                      onClick={closeSeachBar}
-                                    />
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row className='mt-3 d-flex justify-content-start align-items-start '>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={6}
-                                  className='CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular '>
-                                  <span>
-                                    {resolutionView === 2
-                                      ? t("Decision-date")
-                                      : t("Circulation-date")}
-                                  </span>
-                                  <DatePicker
-                                    onFocusedDateChange={
-                                      changeCirculateDateHandler
-                                    }
-                                    format={"DD/MM/YYYY"}
-                                    minDate={moment().toDate()}
-                                    placeholder='DD/MM/YYYY'
-                                    render={
-                                      <InputIcon
-                                        placeholder='DD/MM/YYYY'
-                                        className='datepicker_input'
-                                      />
-                                    }
-                                    editable={false}
-                                    className='datePickerTodoCreate2'
-                                    onOpenPickNewDate={false}
-                                    inputMode=''
-                                    calendar={calendarValue}
-                                    locale={localValue}
-                                    ref={calendRef}
-                                  />
-                                </Col>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={6}
-                                  className='CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular'>
-                                  <span>{t("Voting-deadline")}</span>
-                                  <DatePicker
-                                    onFocusedDateChange={
-                                      changeSearchDateHandler
-                                    }
-                                    format={"DD/MM/YYYY"}
-                                    minDate={moment().toDate()}
-                                    placeholder='DD/MM/YYYY'
-                                    render={
-                                      <InputIcon
-                                        placeholder='DD/MM/YYYY'
-                                        className='datepicker_input'
-                                      />
-                                    }
-                                    editable={false}
-                                    className='datePickerTodoCreate2'
-                                    onOpenPickNewDate={false}
-                                    inputMode=''
-                                    calendar={calendarValue}
-                                    locale={localValue}
-                                    ref={calendRef}
-                                  />
-                                </Col>
-                              </Row>
-                              <Row className='mt-3'>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className='d-flex justify-content-end gap-3'>
-                                  <Button
-                                    text={t("Reset")}
-                                    className={
-                                      styles["ResetButton_SearchBar_Resolution"]
-                                    }
-                                    onClick={hideSearchOptions}
-                                  />
-                                  <Button
-                                    text={t("Search")}
-                                    className={
-                                      styles[
-                                        "SearchButton_SearchBar_Resolution"
-                                      ]
-                                    }
-                                    onClick={showSearchOptions}
-                                  />
-                                </Col>
-                              </Row>
+                              className='d-flex justify-content-end'>
+                              <span>
+                                <img
+                                  draggable='false'
+                                  src={Cross}
+                                  height='16px'
+                                  alt=''
+                                  width='16px'
+                                  onClick={closeSeachBar}
+                                />
+                              </span>
                             </Col>
                           </Row>
-                        </>
-                      ) : null}
-                    </span>
-                  </Col>
-                </Row>
+                          <Row className='mt-3 d-flex justify-content-start align-items-start '>
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={6}
+                              className='CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular '>
+                              <span>
+                                {resolutionView === 2
+                                  ? t("Decision-date")
+                                  : t("Circulation-date")}
+                              </span>
+                              <DatePicker
+                                onFocusedDateChange={changeCirculateDateHandler}
+                                format={"DD/MM/YYYY"}
+                                minDate={moment().toDate()}
+                                placeholder='DD/MM/YYYY'
+                                render={
+                                  <InputIcon
+                                    placeholder='DD/MM/YYYY'
+                                    className='datepicker_input'
+                                  />
+                                }
+                                editable={false}
+                                className='datePickerTodoCreate2'
+                                onOpenPickNewDate={false}
+                                inputMode=''
+                                calendar={calendarValue}
+                                locale={localValue}
+                                ref={calendRef}
+                              />
+                            </Col>
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={6}
+                              className='CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular'>
+                              <span>{t("Voting-deadline")}</span>
+                              <DatePicker
+                                onFocusedDateChange={changeSearchDateHandler}
+                                format={"DD/MM/YYYY"}
+                                minDate={moment().toDate()}
+                                placeholder='DD/MM/YYYY'
+                                render={
+                                  <InputIcon
+                                    placeholder='DD/MM/YYYY'
+                                    className='datepicker_input'
+                                  />
+                                }
+                                editable={false}
+                                className='datePickerTodoCreate2'
+                                onOpenPickNewDate={false}
+                                inputMode=''
+                                calendar={calendarValue}
+                                locale={localValue}
+                                ref={calendRef}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className='mt-3'>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className='d-flex justify-content-end gap-3'>
+                              <Button
+                                text={t("Reset")}
+                                className={
+                                  styles["ResetButton_SearchBar_Resolution"]
+                                }
+                                onClick={hideSearchOptions}
+                              />
+                              <Button
+                                text={t("Search")}
+                                className={
+                                  styles["SearchButton_SearchBar_Resolution"]
+                                }
+                                onClick={showSearchOptions}
+                              />
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                </span>
               </Col>
             </Row>
 

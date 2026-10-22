@@ -39,7 +39,6 @@ import { useTranslation } from "react-i18next";
 
 // ─── Bootstrap ────────────────────────────────────────────────────────────────
 import { Row, Col } from "react-bootstrap";
-import BootstrapDropdown from "react-bootstrap/Dropdown";
 
 // ─── Bootstrap icons ──────────────────────────────────────────────────────────
 import { ChevronDown, Dash, Plus } from "react-bootstrap-icons";
@@ -230,9 +229,12 @@ import folderColor from "../../assets/images/folder_color.svg";
  * be done for a record with no identity at all.
  */
 const dataRoomRowKey = (record, index) =>
-  record?.id != null ? `${record.isFolder ? "folder" : "file"}-${record.id}` : `row-${index}`;
+  record?.id != null
+    ? `${record.isFolder ? "folder" : "file"}-${record.id}`
+    : `row-${index}`;
 
 const DataRoom = () => {
+  const [newPopoverOpen, setNewPopoverOpen] = useState(false);
   // ─── Persistent user/session values read from localStorage ──────────────
   /** Encrypted share-link token set by an external invite URL. */
   let DataRoomString = localStorage.getItem("DataRoomEmail");
@@ -268,12 +270,19 @@ const DataRoom = () => {
   let userID = localStorage.getItem("userID");
   /** Currently authenticated user's organization ID. */
   let organizationID = localStorage.getItem("organizationID");
+  /** Non-null when the user arrived via a "document signed" notification link. */
+  const docSignedCrAction = localStorage.getItem("docSignedCrAction");
+  // That link must land on view 5 (Send for Approval). currentView is read at
+  // render time, so the view has to be written before it is read below — an
+  // effect would only take effect after some later re-render. Idempotent, and
+  // it stays set after the key is consumed, so the tab doesn't flip back.
+  if (docSignedCrAction !== null) {
+    localStorage.setItem("setTableView", 5);
+  }
   /** Active tab/view ID (1–5). Read once per render from localStorage. */
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   /** ID of the folder currently being browsed; null when at root. */
   let viewFolderID = localStorage.getItem("folderID");
-  /** Non-null when the user arrived via a "document signed" notification link. */
-  const docSignedCrAction = localStorage.getItem("docSignedCrAction");
 
   // ─── DOM refs ─────────────────────────────────────────────────────────────
   /** Ref for the search bar container — used for outside-click detection. */
@@ -713,7 +722,11 @@ const DataRoom = () => {
       localStorage.removeItem("setTableView");
       localStorage.removeItem("BoardDeckFolderID");
     };
-  }, [docSignedCrAction]);
+    // Mount-only. docSignedCrAction is removed from localStorage once
+    // ApprovalSend consumes it; with it as a dependency that re-ran this
+    // effect, and its cleanup wiped setTableView — flipping Send for Approval
+    // back to inactive right after it had activated.
+  }, []);
 
   // ─── Network status listener ──────────────────────────────────────────────
   /**
@@ -2976,6 +2989,7 @@ const DataRoom = () => {
    */
   // this is file Upload
   const handleUploadFile = async ({ file }) => {
+    setNewPopoverOpen(false);
     console.log(file, "filefilefilefilefile");
     const taskId = Math.floor(Math.random() * 1000000);
     const axiosCancelSource = axios.CancelToken.source();
@@ -3135,6 +3149,7 @@ const DataRoom = () => {
    */
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
+    setNewPopoverOpen(false);
     const axiosCancelSource = axios.CancelToken.source();
 
     try {
@@ -3773,120 +3788,121 @@ const DataRoom = () => {
                 <span className={styles["Data_room_heading"]}>
                   {t("Data-room")}
                 </span>
-                {/* "New" dropdown: New Folder / File Upload / Folder Upload */}
-                <BootstrapDropdown className={styles["DataRoom_DropDown"]}>
-                  <BootstrapDropdown.Toggle title={t("New")}>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Data_room_btn"]}>
-                        <Plus width={20} height={20} fontWeight={800} />
-                        <span className={styles["font_size"]}>{t("New")}</span>
-                      </Col>
-                    </Row>
-                  </BootstrapDropdown.Toggle>
-
-                  <BootstrapDropdown.Menu
-                    className={styles["dropdown_menu_dataroom"]}>
-                    <BootstrapDropdown.Item
-                      className={styles["dataroom_dropdown_item"]}
-                      onClick={openFolderModal}>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className=' d-flex gap-2 align-items-center'>
-                          <img
-                            src={plus}
-                            height='10.8'
-                            alt=''
-                            width='12px'
-                            onClick={openFolderModal}
-                          />
-                          <span className={styles["New_folder"]}>
-                            {t("New-folder")}
-                          </span>
-                        </Col>
-                      </Row>
-                    </BootstrapDropdown.Item>
-                    <BootstrapDropdown.Item
-                      className={styles["dataroom_dropdown_item"]}>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className=' d-flex gap-2 align-items-center'>
-                          <img
-                            src={fileupload}
-                            alt=''
-                            height='10.8'
-                            width='12px'
-                          />
-                          <UploadTextField
-                            title={t("File-upload")}
-                            multiple={true}
-                            handleFileUploadRequest={handleUploadFile}
-                            setProgress={setProgress}
-                          />
-                        </Col>
-                      </Row>
-                    </BootstrapDropdown.Item>
-                    <BootstrapDropdown.Item
-                      className={styles["dataroom_dropdown_item"]}>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className=' d-flex gap-1 align-items-center'>
-                          <img
-                            src={plus}
-                            height='10.8'
-                            alt=''
-                            width='12px'
-                            draggable='false'
-                          />
-                          <UploadDataFolder
-                            title={t("Folder-upload")}
-                            setProgress={setProgress}
-                            onChange={handleChangeFolderUpload}
-                          />
-                        </Col>
-                      </Row>
-                    </BootstrapDropdown.Item>
-                  </BootstrapDropdown.Menu>
-                </BootstrapDropdown>
+                {/* Clickable Ant Design popover: New Folder / File Upload / Folder Upload */}
+                <Popover
+                  trigger='click'
+                  showArrow={false}
+                  open={newPopoverOpen}
+                  onOpenChange={setNewPopoverOpen}
+                  overlayClassName={styles["dropdown_menu_dataroom"]}
+                  content={
+                    <div className={styles["dataroom_new_popover_content"]}>
+                      <div
+                        className={styles["dataroom_dropdown_item"]}
+                        role='button'
+                        tabIndex={0}
+                        onClick={() => {
+                          setNewPopoverOpen(false);
+                          openFolderModal();
+                        }}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            setNewPopoverOpen(false);
+                            openFolderModal();
+                          }
+                        }}>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className='d-flex gap-2 align-items-center'>
+                            <img src={plus} height='10.8' alt='' width='12px' />
+                            <span className={styles["New_folder"]}>
+                              {t("New-folder")}
+                            </span>
+                          </Col>
+                        </Row>
+                      </div>
+                      <div className={styles["dataroom_dropdown_item"]}>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className='d-flex gap-2 align-items-center'>
+                            <img
+                              src={fileupload}
+                              alt=''
+                              height='10.8'
+                              width='12px'
+                            />
+                            <UploadTextField
+                              title={t("File-upload")}
+                              multiple={true}
+                              handleFileUploadRequest={handleUploadFile}
+                              setProgress={setProgress}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                      <div className={styles["dataroom_dropdown_item"]}>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className='d-flex gap-1 align-items-center'>
+                            <img
+                              src={plus}
+                              height='10.8'
+                              alt=''
+                              width='12px'
+                              draggable='false'
+                            />
+                            <UploadDataFolder
+                              title={t("Folder-upload")}
+                              setProgress={setProgress}
+                              onChange={handleChangeFolderUpload}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    </div>
+                  }>
+                  <div
+                    className={styles["Data_room_btn"]}
+                    title={t("New")}
+                    role='button'
+                    tabIndex={0}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        setNewPopoverOpen((open) => !open);
+                      }
+                    }}>
+                    <Plus width={20} height={20} fontWeight={800} />
+                    <span className={styles["font_size"]}>{t("New")}</span>
+                  </div>
+                </Popover>
               </Col>
               {currentView !== 5 && (
                 <>
-                  <Col sm={12} md={1} lg={1}></Col>
                   {/* ── Search bar ────────────────────────────────────────────── */}
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    className='d-flex position-relative Inputfield_for_data_room justify-content-end '>
-                    <SearchBarComponent
-                      setSearchDataFields={setSearchDataFields}
-                      searchDataFields={searchDataFields}
-                      setSearchTabOpen={setSearchTabOpen}
-                      searchTabOpen={searchTabOpen}
-                      setSearchbarshow={setSearchbarshow}
-                      searchbarshow={searchbarshow}
-                      setSearchResultFields={setSearchResultFields}
-                      searchResultsFields={searchResultsFields}
-                    />
-                  </Col>
-                  {/* ── Grid / List view toggle (hidden on Send-for-Approval tab) ── */}
-                  <Col
-                    lg={1}
-                    md={1}
-                    sm={12}
-                    className='d-flex justify-content-center'>
+                  <Col lg={8} md={8} sm={12} className='d-flex gap-3 justify-content-between align-items-center'>
+                    <div className="w-100">
+                      <SearchBarComponent
+                        setSearchDataFields={setSearchDataFields}
+                        searchDataFields={searchDataFields}
+                        setSearchTabOpen={setSearchTabOpen}
+                        searchTabOpen={searchTabOpen}
+                        setSearchbarshow={setSearchbarshow}
+                        searchbarshow={searchbarshow}
+                        setSearchResultFields={setSearchResultFields}
+                        searchResultsFields={searchResultsFields}
+                      />
+                    </div>
                     <span className={styles["lsit_grid_buttons"]}>
                       <Button
                         icon={
@@ -3940,6 +3956,65 @@ const DataRoom = () => {
                       />
                     </span>
                   </Col>
+                  {/* ── Grid / List view toggle (hidden on Send-for-Approval tab) ── */}
+                  {/* <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    className='d-flex  justify-content-end'>
+                    <span className={styles["lsit_grid_buttons"]}>
+                      <Button
+                        icon={
+                          <Tooltip
+                            placement='bottomLeft'
+                            title={t("Grid-view")}>
+                            <img
+                              src={
+                                gridbtnactive
+                                  ? Grid_Selected
+                                  : Grid_Not_Selected
+                              }
+                              height='25.27px'
+                              width='25.27px'
+                              alt=''
+                              className={styles["grid_view_Icon"]}
+                            />
+                          </Tooltip>
+                        }
+                        className={
+                          gridbtnactive
+                            ? `${styles["grid_view_btn_active"]}`
+                            : `${styles["grid_view_btn"]}`
+                        }
+                        onClick={handleGridView}
+                      />
+                      <Button
+                        icon={
+                          <Tooltip
+                            placement='bottomLeft'
+                            title={t("List-view")}>
+                            <img
+                              src={
+                                listviewactive
+                                  ? List_Selected
+                                  : List_Not_selected
+                              }
+                              height='25.27px'
+                              width='25.27px'
+                              alt=''
+                              className={styles["list_view_Icon"]}
+                            />
+                          </Tooltip>
+                        }
+                        className={
+                          listviewactive
+                            ? `${styles["List_view_btn_active"]}`
+                            : `${styles["List_view_btn"]}`
+                        }
+                        onClick={handlelistview}
+                      />
+                    </span>
+                  </Col> */}
                 </>
               )}
             </Row>
@@ -4485,14 +4560,17 @@ const DataRoom = () => {
                                           handleUploadFile
                                         }
                                         Icon={
-                                          <div className="position-relative">
+                                          <div className='position-relative'>
                                             <img
                                               src={DrapDropIcon}
                                               heigh='356.89'
                                               width='356.89'
                                               alt=''
                                             />
-                                            <span className={"DragDropText_dataroom"}>
+                                            <span
+                                              className={
+                                                "DragDropText_dataroom"
+                                              }>
                                               {t("Drop-files-here")}
                                             </span>
                                           </div>

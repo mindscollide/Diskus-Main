@@ -76,6 +76,8 @@ p.pendingStatus {
   font-size: 12px;
   text-transform: uppercase !important;
   color: rgb(255, 195, 0);
+  white-space: nowrap;
+
 }
 
 p.signedStatus {

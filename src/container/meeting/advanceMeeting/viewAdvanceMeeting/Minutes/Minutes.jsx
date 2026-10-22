@@ -185,7 +185,10 @@ const Minutes = () => {
       MeetingID: Number(advanceMeetingModalID),
     };
 
-    if (isMinutePublished !== null && JSON.parse(isMinutePublished) === true) {
+    if (
+      localStorage.getItem("isMinutePublished") !== null &&
+      JSON.parse(localStorage.getItem("isMinutePublished")) === true
+    ) {
       dispatch(GetPublishedMeetingMinutesApi(navigate, t, Data, "", {}));
       let MeetingDocs = {
         MDID: Data.MeetingID,
@@ -215,7 +218,7 @@ const Minutes = () => {
       setPreviousFileIDs([]);
       dispatch(cleareAllState());
     };
-  }, [isMinutePublished]);
+  }, []);
 
   const onTextChange = (content, delta, source) => {
     if (source === "user") {

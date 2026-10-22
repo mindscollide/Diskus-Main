@@ -108,7 +108,8 @@
     "build:production": "env-cmd -f .env.production vite build",
     "preview": "vite preview --outDir build",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "clean": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"Remove-Item -Recurse -Force node_modules -ErrorAction SilentlyContinue; npm cache clean --force;\""
   },
   "eslintConfig": {
     "extends": [

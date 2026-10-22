@@ -443,7 +443,8 @@ p.minutes-text {
   font-weight: 600;
   margin: 0 !important;
   overflow: hidden;
-  white-space: break-spaces;
+  word-break: break-all;
+
 }
 
 span.bar-line {

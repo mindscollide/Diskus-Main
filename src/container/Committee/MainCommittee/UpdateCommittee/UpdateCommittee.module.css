@@ -242,6 +242,8 @@ body[dir="rtl"] .Update-Committee-Heading {
   margin-top: 13px !important;
   margin-left: 4px !important;
   font-weight: 600;
+  white-space: nowrap;
+
 }
 
 body[dir="rtl"] .Label_Of_CheckBox {
@@ -282,13 +284,13 @@ body[dir="rtl"] .errorMessage_hidden {
 }
 
 .ADD-Committee-btn {
-  padding: 10px 30px !important;
+  padding: 12px 30px !important;
+  height: 39px !important;
   font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
   border-radius: 4px !important;
-  margin-top: 2px !important;
   border: 1px solid #e1e1e1 !important;
 }
 

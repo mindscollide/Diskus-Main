@@ -515,8 +515,11 @@ const Polling = () => {
       ),
       dataIndex: "pollTitle",
       key: "pollTitle",
-      width: "365px",
+      width: 225,
+
       align: "start",
+      ellipsis: true,
+
       sorter: (a, b) =>
         a.pollTitle.toLowerCase().localeCompare(b.pollTitle.toLowerCase()),
       sortOrderPollingTitle,
@@ -555,7 +558,7 @@ const Polling = () => {
       title: t("Status"),
       dataIndex: "pollStatus",
       key: "pollStatus",
-      width: "78px",
+      width: "90px",
       align: currentLanguage === "en" ? "left" : "right",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
@@ -611,7 +614,9 @@ const Polling = () => {
       ),
       dataIndex: "dueDate",
       key: "dueDate",
-      width: "89px",
+      width: "90px",
+      ellipsis: true,
+
       align: currentLanguage === "en" ? "left" : "right",
       sorter: (a, b) =>
         utcConvertintoGMT(a.dueDate) - utcConvertintoGMT(b.dueDate),
@@ -1090,7 +1095,10 @@ const Polling = () => {
           <Col sm={12} md={12} lg={12}>
             <Table
               column={PollTableColumns}
-              scroll={{ y: rows.length > 0 ? "55vh" : "auto" }}
+              scroll={{
+                y: rows.length > 0 ? "55vh" : "auto",
+                x: 1080,
+              }}
               pagination={false}
               className={"Polling_main_table"}
               rows={rows}

@@ -61,6 +61,7 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   margin: 0 20px 0 20px;
+  white-space: nowrap;
 }
 
 .createComplianceButton:is(:hover, :active, :focus, :focus-visible) {
@@ -72,4 +73,15 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   margin: 0 20px 0 20px;
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1400px) {
+  .Compliance_dashboard_heading {
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 2%;
+    vertical-align: middle;
+    color: #6172d6;
+    white-space: nowrap;
+  }
 }

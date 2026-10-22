@@ -4,9 +4,9 @@
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   background-color: #fff;
-  padding: 16px 20px;
   transition: all 0.3s ease;
   cursor: pointer;
+  padding: 16px 20px;
 }
 .upcomingComplianceCard:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -17,21 +17,20 @@
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
-  margin: 15px 0px 0px 0px;
 }
 
 .itemSpacing {
   margin-left: 30px; /* space between the two groups */
 }
 
-.checkUpcomingCenter{
+.checkUpcomingCenter {
   display: flex;
   align-items: center !important;
 }
 
 .deadlineRow {
   display: flex;
-  flex-direction: row;  /* stack */
+  flex-direction: row; /* stack */
   gap: 20px;
 }
 
@@ -45,11 +44,11 @@
 .normalText {
   font-weight: 600;
   font-family: "Montserrat";
-  font-size: 15px;
+  font-size: 1em;
   margin-left: 5px;
   color: #5a5a5a;
+  white-space: nowrap;
 }
-
 
 .NoUpcomingDeadlineCard {
   width: 100%;
@@ -59,6 +58,7 @@
   transition: all 0.3s ease;
   height: 100%;
   text-align: left;
+      padding: 16px 20px;
   /* display: flex;
   flex-direction: column;
   justify-content: center; */
@@ -77,4 +77,31 @@
   padding: 0px 20px;
   margin-top: 12px;
   text-align: left;
+}
+@media screen and (min-width: 1024px) and (max-width: 1400px) {
+  .cardHeading {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: "Montserrat";
+    color: #6172d6;
+  }
+  .NoDataCardHeading {
+    font-size: 18px;
+    font-weight: 700;
+    color: #6172d6;
+
+    max-width: 900px; /* 🔥 SAME WIDTH AS CONTENT */
+    width: 100%;
+    padding:0 !important;
+    margin: 0 !important;
+    text-align: left;
+  }
+
+  .normalText {
+    font-weight: 600;
+    font-family: "Montserrat";
+    font-size: 0.8em;
+    color: #5a5a5a;
+    white-space: nowrap;
+  }
 }

@@ -1,7 +1,7 @@
 .Create-Committee-paper {
   width: 100% !important;
   height: auto !important;
-  padding: 60px 60px 30px 60px !important;
+  padding: 60px 30px 30px 30px !important;
   margin-bottom: 20px;
   display: inline-block !important;
   border-radius: 8px !important;
@@ -54,7 +54,7 @@ body[dir="rtl"] .Create-Committee-Head-Heading {
   line-height: 15px !important;
 }
 
-.name-create-Committee {
+/* .name-create-Committee {
   color: #5a5a5a;
   font-size: 12px !important;
   font-weight: 600 !important;
@@ -66,9 +66,9 @@ body[dir="rtl"] .Create-Committee-Head-Heading {
 
 body[dir="rtl"] .name-create-Committee {
   font-weight: 600;
-}
+} */
 
-.Designation-create-Committee {
+/* .Designation-create-Committee {
   color: #5a5a5a;
   font-size: 10px !important;
   font-weight: 600 !important;
@@ -76,9 +76,9 @@ body[dir="rtl"] .name-create-Committee {
 
 body[dir="rtl"] .Designation-create-Committee {
   font-weight: 600;
-}
+} */
 
-.email-create-Committee {
+/* .email-create-Committee {
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
@@ -91,7 +91,7 @@ body[dir="rtl"] .Designation-create-Committee {
 
 body[dir="rtl"] .email-create-Committee {
   font-weight: 400;
-}
+} */
 
 body[dir="rtl"] .No-member {
   font-weight: 600;
@@ -156,7 +156,6 @@ body[dir="rtl"] .Create-CreateCommittee-btn {
   height: 39px !important;
   font-weight: 600;
   border-radius: 4px !important;
-  margin-top: 2px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
@@ -170,7 +169,6 @@ body[dir="rtl"] .ADD-Committee-btn {
 .ADD-Committee-btn:focus,
 .ADD-Committee-btn:focus-visible {
   font-size: 12px !important;
-  margin-top: 2px !important;
   padding: 12px 30px !important;
   height: 39px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
@@ -186,6 +184,7 @@ body[dir="rtl"] .ADD-Committee-btn {
   max-width: 100% !important;
   display: flex !important;
   flex-wrap: wrap !important;
+  margin-top: 12px;
 }
 
 .scrollbar-addmember-createcommittee::-webkit-scrollbar {
@@ -252,6 +251,7 @@ body[dir="rtl"] .Create-Committee-Heading {
   color: #5a5a5a;
   margin-top: 13px !important;
   margin-left: 4px !important;
+  white-space: nowrap;
 }
 
 body[dir="rtl"] .Label_Of_CheckBox {
@@ -340,6 +340,7 @@ body[dir="rtl"] .ant-upload-text {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 10px 10px !important;
+  display: flex !important;
 }
 
 .Outer_Box {
@@ -418,4 +419,7 @@ body[dir="rtl"] .Leftpolygon {
   overflow-x: hidden;
   padding-right: 20px;
   max-height: 120px;
+}
+.MembersBox{
+  line-height: 15px !important;
 }

@@ -38,19 +38,16 @@ const QuarterlyTask = () => {
 
       {hasData && (
         <div className={styles.upcomingComplianceCard}>
-          <Row>
+          <Row className="height-50_percentage">
             <Col xs={12}>
               <h2 className={styles.cardHeading}>{t("Quarterly-tasks")}</h2>
             </Col>
-          </Row>
-
-          <Row>
             <Col xs={12}>
               <div className={styles.progressWrapper}>
                 <div className={styles.progressLabel}>
                   {formatNumber(
                     GetComlianceQuarterlyTasksDashboardData?.percentCompleted ??
-                      0,
+                    0,
                   )}
                   %
                 </div>
@@ -61,7 +58,7 @@ const QuarterlyTask = () => {
                   className='complianceProgressBarColor'
                   trailColor='#E1E1E1'
                   showInfo={false}
-                  
+
                 />
 
                 {/* Overlay Text */}
@@ -87,7 +84,7 @@ const QuarterlyTask = () => {
                   <span className={styles.rightText}>
                     {`${formatNumber(
                       GetComlianceQuarterlyTasksDashboardData?.remainingTasks ??
-                        0,
+                      0,
                     )} ${t("Remaining")}`}
                   </span>
                 </div>
@@ -95,7 +92,9 @@ const QuarterlyTask = () => {
             </Col>
           </Row>
 
-          <Row>
+
+
+          <Row className="height-50_percentage">
             <Col xs={12} className={styles.deadlineRow}>
               <span className={styles.checkUpcomingCenter}>
                 <span className={styles.boldNumber}>

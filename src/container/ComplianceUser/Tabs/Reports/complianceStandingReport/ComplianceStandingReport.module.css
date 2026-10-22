@@ -1,7 +1,7 @@
 .mainDivComplianceStanding {
   width: 100%;
   padding: 10px 20px;
-  overflow-x: auto; /* prevents breaking on smaller screens */
+  overflow-x: hidden; /* prevents breaking on smaller screens */
 }
 
 .iconTextWrapper {
@@ -139,7 +139,6 @@
 }
 
 .tableWrapper {
-  margin-top: 30px;
   background: transparent;
   border-radius: 8px;
   padding: 10px 0;
@@ -552,4 +551,31 @@
 
 .dateText span {
   margin-right: 4px;
+}
+@media screen and (min-width: 1024px) and (max-width: 1400px) {
+  .iconTextWrapper p {
+    font-size: 12px;
+    color: #5a5a5a;
+    font-family: "Montserrat";
+    margin: 0;
+    font-weight: 600;
+  }
+  .insideAccordianMain p {
+    color: #5a5a5a;
+    font-size: 14px !important;
+    font-weight: 600;
+    font-family: "Montserrat";
+  }
+  .insideAccordianSubHeading p {
+    color: #5a5a5a;
+    font-size: 14px !important;
+    font-weight: 600;
+    font-family: "Montserrat";
+  }
+  .ChecklistMainHeading .titleBlueColor p {
+    color: #6172d6;
+    font-size: 14px !important;
+    font-weight: 600;
+    font-family: "Montserrat";
+  }
 }

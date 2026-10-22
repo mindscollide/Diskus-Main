@@ -545,7 +545,8 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "ComplianceName",
         key: "ComplianceName",
-        width: "27%",
+      width:220,
+         ellipsis: true,
         sorter: (a, b) =>
           a.ComplianceName?.toLowerCase().localeCompare(
             b.ComplianceName?.toLowerCase(),
@@ -562,6 +563,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "Authority",
         key: "Authority",
+        width: 120,
         sorter: (a, b) =>
           a.Authority?.toLowerCase().localeCompare(b.Authority?.toLowerCase()),
         sortOrder: authoritySort,
@@ -572,6 +574,7 @@ const ComplianceStandingReport = () => {
         dataIndex: "criticality",
         key: "criticality",
         ellipsis: true,
+        width: 120,
         align: "center",
         ...criticalityColumnProps,
         render: (value) => (
@@ -589,6 +592,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "dueDate",
         key: "dueDate",
+        width: "150px",
         sorter: (a, b) => Number(a.dueDate) - Number(b.dueDate),
         sortOrder: dueDateSort,
         render: (value) => formatDateToYMD(value),
@@ -606,7 +610,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "totalChecklists",
         key: "totalChecklists",
-        width: "12%",
+        width: "150px",
         ellipsis: true,
         align: "center",
         sorter: (a, b) => (a.totalChecklists || 0) - (b.totalChecklists || 0),
@@ -626,7 +630,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "NoOfTasks",
         key: "NoOfTasks",
-        width: "10%",
+        width: "150px",
         ellipsis: true,
         align: "center",
         sorter: (a, b) => (a.NoOfTasks || 0) - (b.NoOfTasks || 0),
@@ -646,7 +650,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "overdueTasks",
         key: "overdueTasks",
-        width: "11%",
+   width: "150px",
         ellipsis: true,
         align: "center",
         sorter: (a, b) => (a.overdueTasks || 0) - (b.overdueTasks || 0),
@@ -666,7 +670,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "Progress",
         key: "Progress",
-        width: "8%",
+        width: "150px",
         align: "center",
         ellipsis: true,
         sorter: (a, b) => (a.Progress || 0) - (b.Progress || 0),
@@ -677,7 +681,7 @@ const ComplianceStandingReport = () => {
         title: "",
         key: "arrow",
         align: "right",
-        width: "5%",
+        width: "150px",
         render: (_, record) => {
           const isExpanded = expandedRowKeys.includes(record.key);
           return (
@@ -739,8 +743,7 @@ const ComplianceStandingReport = () => {
                 </div>
               </Col>
               <Col
-                lg={5}
-                xs="auto"
+                lg={4}
                 className={`${styles.iconTextWrapper} d-flex justify-content-center`}
               >
                 <img src={ComplianceCalendar} alt="ComplianceCalendar" />
@@ -754,14 +757,14 @@ const ComplianceStandingReport = () => {
                   </p>
                 </div>
               </Col>
-              <Col lg={3} xs={4}>
+              <Col lg={3} md={3} sm={3} xs={12}>
                 <label className={styles.dueDateRange}>
                   {t("due-date-range")}
                 </label>
                 <DatePicker.RangePicker
                   format="DD/MM/YYYY"
                   placeholder={[t("Start-date"), t("End-date")]}
-                  className="custom-range-picker"
+                  className="custom-range-picker w-100"
                   separator="-"
                   inputReadOnly
                   allowClear
@@ -769,7 +772,7 @@ const ComplianceStandingReport = () => {
                   onChange={handleDateRangeChange}
                 />
               </Col>
-              <Col lg={1} xs="auto">
+              <Col lg={2} md={2} sm={2} xs={12}>
                 <CustomButton
                   text={t("Download")}
                   loading={isGenerating}
@@ -800,7 +803,6 @@ const ComplianceStandingReport = () => {
                 rows={tableData}
                 column={columns}
                 pagination={false}
-                rowKey="key"
                 onChange={handleChangeStandingReportSorter}
                 expandable={{
                   showExpandColumn: false,
@@ -934,6 +936,7 @@ const ComplianceStandingReport = () => {
                   },
                   rowExpandable: () => true,
                 }}
+                scroll={{ x: tableData.length === 0 ? 1300 : "max-content" }}
                 className="Compliance_Table Report_Table mt-3"
               />
             </div>

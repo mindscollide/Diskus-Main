@@ -166,6 +166,7 @@ p.expiredStatus {
   font-size: 12px;
   text-transform: uppercase;
   color: #f16b6b;
+   white-space: nowrap;
 }
 
 p.reviewedStatus {
@@ -175,6 +176,7 @@ p.reviewedStatus {
   font-size: 12px;
   text-transform: uppercase;
   color: #6172d6;
+   white-space: nowrap;
 }
 
 p.pendingStatus {
@@ -184,6 +186,7 @@ p.pendingStatus {
   font-size: 12px;
   text-transform: uppercase;
   color: #ffc300;
+  white-space: nowrap;
 }
 .No-Approvals {
   font-family: "Montserrat";

@@ -1,0 +1,32 @@
+.MembersBox{
+  line-height: 15px !important;
+}
+
+.name-create-Committee {
+  color: #5a5a5a;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+}
+
+
+.Designation-create-Committee {
+  color: #5a5a5a;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  height: 15px !important;
+}
+
+.email-create-Committee {
+  color: #6172d6;
+  text-decoration: underline !important;
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -57,3 +57,10 @@ body[dir="rtl"] .DragDropText_dataroom {
 .DashbaordSelectDropdown__value-container input {
   left: auto !important;
 }
+.height-50_percentage {
+  height: 50% !important;
+}
+/* For Ipad Layout Style Css */
+/* @media screen and (min-width: 1024px) and (max-width: 1400px) {
+
+} */
