@@ -51,14 +51,16 @@ import {
   hideUnHideParticipantGuestMainApi,
   muteUnMuteParticipantMainApi,
   participantAcceptandReject,
+  participantPresentationAcceptandReject,
   participantWaitingListBox,
+  presentationParticipantLeftMqtt,
   presenterLeaveParticipant,
-  presenterNewParticipantJoin,
-  updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
 import {
   admitRejectAttendeeMainApi,
+  admitRejectPresentationAttendeeMainApi,
   raiseUnRaisedHandMainApi,
+  removeParticipantFromPresentationMainApi,
   removeParticipantMeetingMainApi,
   transferMeetingHostMainApi,
 } from "../../../../../store/actions/Guest_Video";
@@ -158,6 +160,15 @@ const VideoNewParticipantList = () => {
   const waitingParticipants = useSelector(
     (s) => s.videoFeatureReducer.waitingParticipantsList,
   );
+  // CR(0012249) — presentation-host equivalent of waitingParticipants above.
+  const presentationWaitingParticipants = useSelector(
+    (s) => s.videoFeatureReducer.presentationWaitingParticipantsList,
+  );
+  // CR(0012249) — presenter-host's roster. Lives in Redux (patched by the
+  // presentation MQTT handlers) so it survives this panel being closed/reopened.
+  const presentationRoster = useSelector(
+    (s) => s.videoFeatureReducer.presentationParticipantsList,
+  );
 
   console.log(waitingParticipants, "waitingParticipantswaitingParticipants");
   const NormalizeVideoFlag = useSelector(
@@ -171,9 +182,6 @@ const VideoNewParticipantList = () => {
   );
   const presenterViewFlag = useSelector(
     (s) => s.videoFeatureReducer.presenterViewFlag,
-  );
-  const newJoinPresenterParticipant = useSelector(
-    (s) => s.videoFeatureReducer.newJoinPresenterParticipant,
   );
   const leavePresenterParticipant = useSelector(
     (s) => s.videoFeatureReducer.leavePresenterParticipant,
@@ -214,6 +222,11 @@ const VideoNewParticipantList = () => {
   /** De-duplicated waiting-room entries */
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
+  /** CR(0012249) — same, but for the presentation waiting room */
+  const [
+    filteredPresentationWaitingParticipants,
+    setFilteredPresentationWaitingParticipants,
+  ] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
   console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
@@ -223,20 +236,58 @@ const VideoNewParticipantList = () => {
    */
   const [isForAll, setIsForAll] = useState(false);
 
+  // CR(0012249) — presenter-host rows: the Redux presentation roster, minus
+  // the presenter and minus requesters still in the waiting room (JOINED
+  // fires at request time, so they're in the roster before being admitted).
+  const presenterRoster = useMemo(() => {
+    const roster = Array.isArray(presentationRoster?.participantList)
+      ? presentationRoster.participantList
+      : [];
+    const waiting = presentationWaitingParticipants || [];
+    return roster.filter(
+      (p) =>
+        Number(p.userID) !== session.presenterHostUserID &&
+        !waiting.some(
+          (w) =>
+            (w.guid && p.guid && String(w.guid) === String(p.guid)) ||
+            (w.userID && p.userID && Number(w.userID) === Number(p.userID)),
+        ),
+    );
+  }, [
+    presentationRoster,
+    presentationWaitingParticipants,
+    session.presenterHostUserID,
+  ]);
+
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: Sync participant list from Redux
   // FIX: original used Object.keys(array).length which is always > 0 for
   // arrays; replaced with Array.isArray + length check.
+  //
+  // CR(0012249): presenter-host reads the presentation roster (Redux), NOT
+  // getAllParticipantMain — that one is the generic meeting-video roster and
+  // isn't admit-gated. Reading Redux (instead of building a local list from a
+  // one-shot MQTT slot) means reopening this panel never loses participants.
   // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
-    if (Array.isArray(getAllParticipantMain) && getAllParticipantMain.length) {
+    if (presenterViewFlag && presenterViewHostFlag) {
+      setFilteredParticipants(presenterRoster);
+    } else if (
+      Array.isArray(getAllParticipantMain) &&
+      getAllParticipantMain.length
+    ) {
       setFilteredParticipants(getAllParticipantMain);
     } else {
       setFilteredParticipants([]);
     }
     // Reset search whenever the underlying list changes
     setSearchValue("");
-  }, [getAllParticipantMain]);
+  }, [
+    getAllParticipantMain,
+    presenterRoster,
+    presenterViewFlag,
+    presenterViewHostFlag,
+  ]);
 
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: Remove a participant who left (presenter view only)
@@ -264,40 +315,9 @@ const VideoNewParticipantList = () => {
     dispatch,
   ]);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // EFFECT: Add / replace a participant who just joined (presenter view only)
-  // FIX: original used [...filteredParticipants] which captured a stale
-  // closure. Using the functional updater form instead.
-  // ─────────────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (
-      !newJoinPresenterParticipant ||
-      !Object.keys(newJoinPresenterParticipant).length ||
-      !presenterViewFlag ||
-      !presenterViewHostFlag
-    )
-      return;
-
-    setFilteredParticipants((prev) => {
-      // Remove stale entry for the same user (reconnect / tab-switch scenario)
-      const withoutStale = prev.filter(
-        (p) =>
-          p.userID !== newJoinPresenterParticipant.userID &&
-          p.guid !== newJoinPresenterParticipant.guid,
-      );
-      const updated = [...withoutStale, newJoinPresenterParticipant];
-      // Keep Redux in sync so other selectors that depend on this list are accurate
-      dispatch(updatedParticipantListForPresenter(updated));
-      return updated;
-    });
-
-    dispatch(presenterNewParticipantJoin([]));
-  }, [
-    newJoinPresenterParticipant,
-    presenterViewFlag,
-    presenterViewHostFlag,
-    dispatch,
-  ]);
+  // Join / stop need no local effect: JOINED and MEETING_PRESENTATION_STOPPED
+  // patch the Redux presentation roster (see reducer), which the sync effect
+  // above mirrors into filteredParticipants.
 
   // ─────────────────────────────────────────────────────────────────────────
   // EFFECT: De-duplicate the waiting-room list
@@ -318,6 +338,24 @@ const VideoNewParticipantList = () => {
 
     setFilteredWaitingParticipants(waitingParticipants);
   }, [waitingParticipants]);
+
+  // CR(0012249) — same de-dupe/sync effect, for the presentation waiting list.
+  useEffect(() => {
+    if (!presentationWaitingParticipants?.length) {
+      setFilteredPresentationWaitingParticipants([]);
+      return;
+    }
+    setFilteredPresentationWaitingParticipants(presentationWaitingParticipants);
+  }, [presentationWaitingParticipants]);
+
+  // CR(0012249) — true only for the presentation HOST (the person who
+  // started the presentation). Used to pick the right waiting list + admit
+  // API without disturbing the existing presenterViewFlag/presenterViewHostFlag
+  // checks used everywhere else in this file.
+  const isPresenterHostContext = presenterViewFlag && presenterViewHostFlag;
+  const effectiveWaitingParticipants = isPresenterHostContext
+    ? filteredPresentationWaitingParticipants
+    : filteredWaitingParticipants;
 
   // ─────────────────────────────────────────────────────────────────────────
   // DERIVED: Mute-All button visibility and label
@@ -377,13 +415,20 @@ const VideoNewParticipantList = () => {
       const { value } = e.target;
       setSearchValue(value);
       const lower = value.toLowerCase();
+      const source =
+        presenterViewFlag && presenterViewHostFlag
+          ? presenterRoster
+          : getAllParticipantMain;
       setFilteredParticipants(
-        getAllParticipantMain.filter((p) =>
-          p.name.toLowerCase().includes(lower),
-        ),
+        source.filter((p) => p.name.toLowerCase().includes(lower)),
       );
     },
-    [getAllParticipantMain],
+    [
+      getAllParticipantMain,
+      presenterRoster,
+      presenterViewFlag,
+      presenterViewHostFlag,
+    ],
   );
 
   /**
@@ -568,12 +613,77 @@ const VideoNewParticipantList = () => {
   );
 
   /**
+   * CR(0012249) — Remove a participant from the presentation. Unlike
+   * removeParticipantMeetingOnClick above, this doesn't disconnect them —
+   * the backend sends them REMOVED_FROM_PRESENTATION_TO_WAITING_ROOM, which
+   * puts them back in the waiting room to request joining again.
+   */
+  const removeParticipantPresentationOnClick = useCallback(
+    (usersData) => {
+      setFilteredParticipants((prev) =>
+        prev.filter((p) => p.guid !== usersData.guid),
+      );
+      // Drop from the shared roster too, else the list re-syncs and shows them again.
+      dispatch(
+        presentationParticipantLeftMqtt({
+          guid: usersData.guid,
+          userID: usersData.userID,
+        }),
+      );
+      dispatch(
+        removeParticipantFromPresentationMainApi(navigate, t, {
+          RoomID: String(session.acceptedRoomID),
+          UID: usersData.guid,
+          Name: usersData.name,
+          MeetingID: session.currentMeetingID,
+        }),
+      );
+    },
+    [dispatch, navigate, t, session.acceptedRoomID, session.currentMeetingID],
+  );
+
+  /**
    * Admit or deny all participants currently in the waiting room at once.
    * flag === 1 → admit all, flag === 2 → deny all.
    */
   const handleClickAllAcceptAndReject = useCallback(
     (flag) => {
+      // CR(0012249): presenter-host gets its own list/API branch below;
+      // for everyone else this is unchanged (presenterViewFlag && !host
+      // still bails out, since a presentation viewer can't admit anyone).
+      if (isPresenterHostContext) {
+        if (!filteredPresentationWaitingParticipants.length) return;
+
+        dispatch(
+          admitRejectPresentationAttendeeMainApi(navigate, t, {
+            MeetingID: session.currentMeetingID,
+            RoomID: String(session.acceptedRoomID),
+            IsRequestAccepted: flag === 1,
+            AttendeeResponseList: filteredPresentationWaitingParticipants.map(
+              (p) => ({
+                IsGuest: p.isGuest,
+                UID: p.guid,
+                UserID: p.userID,
+              }),
+            ),
+          }),
+        );
+
+        dispatch(
+          participantPresentationAcceptandReject(
+            filteredPresentationWaitingParticipants.map((p) => ({
+              ...p,
+              meetingID: session.currentMeetingID,
+              guid: p.guid,
+            })),
+            flag === 2,
+          ),
+        );
+        return;
+      }
+
       if (presenterViewFlag || !filteredWaitingParticipants.length) return;
+      console.log("DataDataData");
 
       dispatch(
         admitRejectAttendeeMainApi(
@@ -609,10 +719,11 @@ const VideoNewParticipantList = () => {
       navigate,
       t,
       presenterViewFlag,
+      isPresenterHostContext,
       filteredWaitingParticipants,
+      filteredPresentationWaitingParticipants,
       filteredParticipants,
-      session.roomID,
-      session.currentMeetingID,
+      session,
     ],
   );
 
@@ -625,6 +736,40 @@ const VideoNewParticipantList = () => {
     (participantInfo, flag) => {
       //  ENSURE meetingID IS NOT UNDEFINED
       const meetingID = participantInfo.meetingID || session.currentMeetingID;
+
+      // CR(0012249): route presentation waiting-room rows to the
+      // presentation-specific admit/reject API + list instead.
+      if (isPresenterHostContext) {
+        dispatch(
+          admitRejectPresentationAttendeeMainApi(navigate, t, {
+            MeetingID: meetingID,
+            RoomID: String(session.acceptedRoomID),
+            IsRequestAccepted: flag === 1,
+            AttendeeResponseList: [
+              {
+                IsGuest: participantInfo.isGuest,
+                UID: participantInfo.guid,
+                UserID: participantInfo.userID,
+              },
+            ],
+          }),
+        );
+
+        dispatch(
+          participantPresentationAcceptandReject(
+            [
+              {
+                ...participantInfo,
+                meetingID: meetingID,
+                guid: participantInfo.guid,
+              },
+            ],
+            flag === 2,
+          ),
+        );
+        return;
+      }
+      console.log("DataDataData");
 
       dispatch(
         admitRejectAttendeeMainApi(
@@ -661,8 +806,8 @@ const VideoNewParticipantList = () => {
       dispatch,
       navigate,
       t,
-      session.currentMeetingID,
-      session.roomID,
+      isPresenterHostContext,
+      session,
       filteredParticipants,
     ],
   );
@@ -968,12 +1113,26 @@ const VideoNewParticipantList = () => {
                           {/* Status-only block when both mic and video are already disabled */}
                           {usersData.mute && usersData.hideCamera && (
                             <div className="presenter-status-text px-3 py-2">
-                              <span className="status-muted d-block">
+                              <span className={styles["status-muted"]}>
                                 {t("Mic Disabled")}
                               </span>
-                              <span className="status-hidden d-block">
+                              <br />
+                              <span className={styles["status-hidden"]}>
                                 {t("Video Hidden")}
                               </span>
+                              <br />
+                              {isPresenterHostContext && (
+                                <span
+                                  className={styles["status-hidden"]}
+                                  onClick={() =>
+                                    removeParticipantPresentationOnClick(
+                                      usersData,
+                                    )
+                                  }
+                                >
+                                  {t("Remove")}
+                                </span>
+                              )}
                             </div>
                           )}
                           {canMute && (
@@ -1066,10 +1225,11 @@ const VideoNewParticipantList = () => {
         </div>
       </Col>
 
-      {/* ── Waiting-room section — host-only, hidden in presenter view ── */}
-      {!presenterViewFlag &&
-        !presenterViewHostFlag &&
-        filteredWaitingParticipants.length > 0 && (
+      {/* ── Waiting-room section — host-only. Shown for the regular
+           meeting-video host, and (CR(0012249)) for the presentation host
+           too; hidden for a presentation viewer who isn't the host. ── */}
+      {(!presenterViewFlag || presenterViewHostFlag) &&
+        effectiveWaitingParticipants.length > 0 && (
           <>
             <Col sm={12}>
               <div className={styles["Waiting-New-Participant-hosttab"]}>
@@ -1106,7 +1266,7 @@ const VideoNewParticipantList = () => {
                 </Row>
 
                 {/* Per-participant admit / deny rows */}
-                {filteredWaitingParticipants.map((data) => (
+                {effectiveWaitingParticipants.map((data) => (
                   <Row className="mb-2" key={data.guid}>
                     <Col sm={5} className="d-flex align-items-center gap-2">
                       <img

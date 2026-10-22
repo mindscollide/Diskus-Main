@@ -13,6 +13,19 @@ export const extractedUrl = (dynamicUrl, endIndex) => {
   return urlExtracted;
 };
 
+// Adds a unique query param to the video iframe URL so the browser always
+// fetches the Zoom app's index.html fresh instead of reusing a cached copy that
+// still points at an old build. Only index.html is affected: its JS is
+// content-hashed and its SDK files live under a versioned /lib/<sdk>/ path, so
+// those stay cached. Apply this only to the iframe `src`, never to the stored
+// URL, because the panel compares stored URLs to decide when to reload.
+export const withFreshIframeLoad = (url) => {
+  if (!url) return url;
+  const [path, hash = ""] = url.split("#");
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}_v=${Date.now()}${hash ? `#${hash}` : ""}`;
+};
+
 // this is for caller url generator
 export const generateURLCaller = (
   baseURL,

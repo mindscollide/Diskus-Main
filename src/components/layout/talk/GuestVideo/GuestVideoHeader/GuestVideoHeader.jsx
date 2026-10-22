@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
@@ -30,6 +30,7 @@ import {
 } from "../../../../../store/actions/Guest_Video";
 import { isSharedScreenTriggeredApi } from "../../../../../store/actions/VideoFeature_actions";
 import { useSelector } from "react-redux";
+import { withFreshIframeLoad } from "../../../../../commen/functions/urlVideoCalls";
 
 /**
  * @component GuestVideoHeader
@@ -57,6 +58,8 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const navigate = useNavigate();
 
   const frameRef = useRef(null);
+  // Recomputed only when the URL changes, so re-renders don't reload the iframe.
+  const iframeSrc = useMemo(() => withFreshIframeLoad(videoUrlName), [videoUrlName]);
 
   const joinGuestData = useSelector(
     (state) => state.GuestVideoReducer.joinGuestData
@@ -637,7 +640,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       </Row>
       <div className="new-div">
         <iframe
-          src={videoUrlName}
+          src={iframeSrc}
           ref={frameRef}
           title={t("Live-video")}
           width="100%"

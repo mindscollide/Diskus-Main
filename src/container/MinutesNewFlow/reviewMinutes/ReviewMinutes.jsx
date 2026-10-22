@@ -19,7 +19,7 @@ import {
 import RejectCommentModal from "./rejectCommentModal/RejectCommentModal";
 import EditCommentModal from "./editCommentModal/EditCommentModal";
 import DeleteCommentModal from "./deleteCommentModal/DeleteCommentModal";
-import AcceptCommentModal from "./acceptAllCommentsModal/AcceptCommentModal.js";
+import AcceptCommentModal from "./acceptAllCommentsModal/AcceptCommentModal.jsx";
 import {
   AllDocumentsForAgendaWiseMinutesApiFunc,
   DocumentsOfMeetingGenralMinutesApiFunc,
@@ -32,7 +32,7 @@ import {
   DataRoomDownloadFileApiFunc,
   DataRoomDownloadFileWithFooterApiFunc,
 } from "../../../store/actions/DataRoom_actions.js";
-import { getFileExtension } from "../../DataRoom/SearchFunctionality/option.js";
+import { getFileExtension } from "../../DataRoom/SearchFunctionality/option.jsx";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils.js";
 import { forRecentActivity } from "../../../commen/functions/date_formater.js";
 
