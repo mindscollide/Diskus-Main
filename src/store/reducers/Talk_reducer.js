@@ -317,7 +317,7 @@ const talkReducer = (state = initialState, action) => {
       localStorage.setItem("token", JSON.stringify(action.response.token));
       localStorage.setItem(
         "RefreshToken",
-        JSON.stringify(action.response.refreshToken)
+        JSON.stringify(action.response.refreshToken),
       );
       return {
         ...state,
@@ -383,6 +383,7 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_USERCHATS_INIT: {
       return {
         ...state,
+        Loading: action?.loader || false,
         AllUserChats: {
           Loading: true,
           AllUserChatsData: [],
@@ -394,6 +395,7 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_USERCHATS_SUCCESS: {
       return {
         ...state,
+        Loading: false,
         AllUserChats: {
           Loading: false,
           AllUserChatsData: action.response,
@@ -406,6 +408,8 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_USERCHATS_FAIL: {
       return {
         ...state,
+        Loading: false,
+
         AllUserChats: {
           Loading: false,
           AllUserChatsData: [],
@@ -1743,11 +1747,7 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_GROUP_LEFT: {
-      
-
       let copyAllUserChatsData = { ...state.AllUserChats.AllUserChatsData };
-
-      
 
       const groupIDToRemove = action.response.data[0].groupID;
 
@@ -1755,10 +1755,8 @@ const talkReducer = (state = initialState, action) => {
       let filteredAllMessages = copyAllUserChatsData.allMessages.filter(
         (message) => {
           return message.id !== groupIDToRemove; // Compare message.id with groupIDToRemove
-        }
+        },
       );
-
-      
 
       copyAllUserChatsData.allMessages = filteredAllMessages;
 

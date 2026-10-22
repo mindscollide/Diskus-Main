@@ -124,7 +124,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     ) {
       let allChatMessages = AllUserChats?.AllUserChatsData;
       const foundRecord = allChatMessages.allMessages.find(
-        (item) => item.id === talkGroupID,
+        (item) => Number(item.id) === Number(talkGroupID),
       );
       if (foundRecord) {
         dispatch(activeChat(foundRecord));

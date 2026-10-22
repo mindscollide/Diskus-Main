@@ -56,6 +56,7 @@ import ProposedNewMeeting from "../meeting/proposedMeetingFlow/ProposedNewMeetin
 import ViewProposedMeetingModal from "../meeting/proposedMeetingFlow/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import ViewParticipantsDates from "../meeting/proposedMeetingFlow/ViewParticipantsDates/ViewParticipantsDates";
 import { useCommitteeContext } from "../../context/CommitteeContext";
+import { getTodayYYYYMMDD } from "../../commen/functions/utils";
 import {
   getMeetingDetailsByMeetingIdApi,
   resetCurrentMeetingInfo,
@@ -71,11 +72,11 @@ import {
 } from "../../store/actions/ModalStates_actions";
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
-  validateStringEmailApi,
   validateStringParticipantProposedApi,
   validateStringUserMeetingProposedDatesPollsApi,
 } from "../../store/actions/NewMeetingActions";
 import { useNewMeetingContext } from "../../context/NewMeetingContext";
+import { useMeetingLinkActions } from "../meeting/commonComponents/useMeetingLinkActions";
 
 const Committee = () => {
   const { t } = useTranslation();
@@ -171,21 +172,34 @@ const Committee = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const committeeList = localStorage.getItem("committeeList");
   const committeeViewId = localStorage.getItem("committeeView_Id");
-  const committeeMeetingView = localStorage.getItem(
-    "committee_viewMeeting_action",
-  );
-  const committee_meetingStr = localStorage.getItem(
-    "committee_meetingStr_action",
-  );
-  const committee_meetingupd = localStorage.getItem(
-    "committee_meetingUpd_action",
-  );
   const committee_meetingprop = localStorage.getItem(
     "committee_meetingprop_action",
   );
   const committee_meetingpropOrganizer = localStorage.getItem(
     "committee_UserMeetPropoDatPoll",
   );
+
+  // Committee meeting email links (viewMeeting / Startmeeting / Updatemeeting,
+  // via stored token or /Redirected navigation state): open the committee's
+  // meetings tab on Published, then the meeting itself.
+  const { handleEncryptedMeetingLink, openMeetingFromLinkData } =
+    useMeetingLinkActions();
+
+  const openCommitteeMeetingFromLinkData = async (data, viewTab) => {
+    if (Number(data.standardMeetingType) !== 3) return;
+    dispatch(
+      viewCommitteeDetails({
+        committeeID: data.commmitteeGroupID,
+        committeeTitle: data.committeeGroupTitle || "",
+      }),
+    );
+    setCurrentViewCommitteeTabs(4);
+    setCurrentCommitteeMeetingTabActive(1);
+    localStorage.setItem("ViewCommitteeID", data.commmitteeGroupID);
+    setViewCommitteePage(true);
+    dispatch(viewCommitteePageFlag(true));
+    await openMeetingFromLinkData(data, viewTab);
+  };
 
   useEffect(() => {
     try {
@@ -252,6 +266,13 @@ const Committee = () => {
   useEffect(() => {
     if (state !== null) {
       try {
+        if (state?.key === "committee_viewMeeting_action" && state?.value) {
+          openCommitteeMeetingFromLinkData(state.value, "meetingDetails").catch(
+            (error) => console.error("src/container/Committee/Committee.js:", error),
+          );
+          navigate(pathname, { replace: true, state: null });
+          return;
+        }
         const { message, response } = state;
 
         console.log(message, response, "response")
@@ -379,59 +400,26 @@ const Committee = () => {
     }
   }, [CommitteeReducerGetAllCommitteesByUserIDResponse]);
 
+  // The stash in PrivateRoutes runs before this page's first render, so read
+  // the link keys here on mount. Only the first one found is handled (the
+  // agenda-edit link opens the meeting on the Agenda Viewer tab).
   useEffect(() => {
-    if (
-      committeeMeetingView !== null ||
-      committee_meetingStr !== null ||
-      committee_meetingupd !== null
-    ) {
-      try {
-        const callFun = async () => {
-          const encryptedvalue =
-            committeeMeetingView ||
-            committee_meetingStr ||
-            committee_meetingupd;
-          const encryptedKey =
-            committeeMeetingView !== null
-              ? "committee_viewMeeting_action"
-              : committee_meetingStr !== null
-                ? "committee_meetingStr_action"
-                : committee_meetingupd
-                  ? "committee_meetingUpd_action"
-                  : "";
-          const response = await validateStringEmailApi(
-            encryptedvalue,
-            navigate,
-            t,
-            1,
-            dispatch,
-            encryptedKey,
-          );
-
-          const { standardMeetingType, commmitteeGroupID } = response;
-          if (standardMeetingType === 3) {
-            dispatch(
-              viewCommitteeDetails({
-                committeeID: commmitteeGroupID,
-                committeeTitle: "Committee Title",
-              }),
-            );
-            setCurrentViewCommitteeTabs(4);
-            localStorage.setItem("ViewCommitteeID", commmitteeGroupID);
-            setViewCommitteePage(true);
-            dispatch(viewCommitteePageFlag(true));
-          }
-
-          localStorage.removeItem("committee_viewMeeting_action");
-          localStorage.removeItem("committee_meetingStr_action");
-          localStorage.removeItem("committee_meetingUpd_action");
-        };
-        callFun();
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, [committeeMeetingView, committee_meetingStr, committee_meetingupd]);
+    const emailLinks = [
+      ["committee_viewMeeting_action", "meetingDetails"],
+      ["committee_meetingStr_action", "meetingDetails"],
+      ["committee_meetingUpd_action", "meetingDetails"],
+      ["committee_mtAgUpdate", "agendaViewer"],
+    ];
+    const [linkKey, linkTab] =
+      emailLinks.find(([key]) => localStorage.getItem(key)) || [];
+    if (!linkKey) return;
+    handleEncryptedMeetingLink(
+      localStorage.getItem(linkKey),
+      emailLinks.map(([key]) => key),
+      linkTab,
+      openCommitteeMeetingFromLinkData,
+    );
+  }, []);
 
   useEffect(() => {
     if (committee_meetingprop !== null) {
@@ -444,7 +432,15 @@ const Committee = () => {
               t,
             )(dispatch); // Ensure you're passing dispatch
             if (getApiResponse) {
-              setParticipantProposedMeetingEmailRouteData(getApiResponse);
+              // Same expiry rule as the notification path: still open the
+              // committee on Proposed, but don't open the vote screen.
+              if (
+                String(getApiResponse.deadline).slice(0, 8) < getTodayYYYYMMDD()
+              ) {
+                show(t("Vote-deadline-expired"), "success");
+              } else {
+                setParticipantProposedMeetingEmailRouteData(getApiResponse);
+              }
               console.log(
                 getApiResponse,
                 "getApiResponsegetApiResponsegetApiResponse",

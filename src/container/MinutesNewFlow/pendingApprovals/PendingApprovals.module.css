@@ -242,32 +242,35 @@ p.pendingStatus {
 
 .pendingCountValue {
   position: absolute;
-  right: -5px;
+  right: -10px;
   top: -8px;
   background: #6172d6;
   border-radius: 50%;
   color: #fff;
-  width: 18px;
-  height: 18px;
+  width: 23px;
+  height: 23px;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 11px;
 }
 .pendingCountValue_hidden {
   display: none;
 }
 .pendingSignatureValue {
+  font-size: 11px;
   position: absolute;
-  right: -5px;
+  right: -10px;
   top: -8px;
   background: #6172d6;
   border-radius: 50%;
   color: #fff;
-  width: 18px;
-  height: 18px;
+  width: 23px;
+  height: 23px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid #e1e1e1;
 }
 
 .pendingSignatureValue_hidden {

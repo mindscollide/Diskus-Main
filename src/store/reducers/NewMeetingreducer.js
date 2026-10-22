@@ -81,7 +81,7 @@ const initialState = {
   agendaWiseMinutesReducer: null,
   userWiseMeetingProposed: [],
   agendaWiseMinuteID: 0,
-  RetriveAgendaWiseDocuments: [],
+  RetriveAgendaWiseDocuments: null,
   setMeetingbyCommitteeID: null,
   getMeetingByCommitteeID: null,
   setMeetingByMeetingID: null,
@@ -576,7 +576,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       case actions.GET_ALL_MEETING_TYPES_NEW_SUCCESS: {
         return {
           ...state,
-          Loading: action.loader,
+          Loading: false,
           getALlMeetingTypes: action.response,
           errorSeverity: "success",
         };
@@ -585,7 +585,7 @@ const NewMeetingreducer = (state = initialState, action) => {
       case actions.GET_ALL_MEETING_TYPES_NEW_FAILED: {
         return {
           ...state,
-          Loading: action.loader,
+          Loading: false,
           getALlMeetingTypes: [],
           ResponseMessage: action.message,
           errorSeverity: "error",
@@ -2155,7 +2155,7 @@ const NewMeetingreducer = (state = initialState, action) => {
           addMinuteID: 0,
           agendaWiseMinutesReducer: [],
           agendaWiseMinuteID: 0,
-          RetriveAgendaWiseDocuments: [],
+          RetriveAgendaWiseDocuments: null,
           setMeetingbyCommitteeID: null,
           getMeetingByCommitteeID: null,
           setMeetingByMeetingID: null,

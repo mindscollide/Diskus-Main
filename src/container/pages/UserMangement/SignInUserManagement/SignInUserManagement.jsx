@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import {
   Button,
   Checkbox,
@@ -9,11 +9,9 @@ import {
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import PSOLogo from "../../../../assets/images/Logos/PSO_Logo.png";
-import PSOPowerdBy from "../../../../assets/images/Logos/PowerdByDiskus.png";
 import styles from "./SignInUserMangement.module.css";
-import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
-import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
+import AuthLayout from "../../../../components/layout/AuthLayout/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { validationEmail } from "../../../../commen/functions/validations";
 import {
@@ -226,197 +224,158 @@ const SignInUserManagement = () => {
 
   return (
     <>
-      <Container fluid className={styles["auth_container"]}>
-        {bestExperienceBox && (
-          <SwitchToChromeBox handleClickClose={handleCloseBrowserExpModal} />
-        )}
-        {code ? (
-          <></>
-        ) : getpayemntString !== "" ? (
-          <></>
-        ) : (
-          <>
-            {!HIDE_FREETRAIL_BAR && (
-              <Row>
-                <Col sm={12} md={12} lg={12}>
-                  {/* Commented As Per CR 0011162: Remove Start your free trial row CR */}
-                  <section className={styles["freetrail_banner"]}>
-                    <span className={styles["freetrail_heading"]}>
-                      {t("Start-your-Free-Trial-now")}
-                    </span>
-                    <span
-                      className={styles["Free-Trial_btn"]}
-                      onClick={handleClickFreeTrail}>
-                      {t("Free-Trial")}
-                    </span>
-                  </section>
-                </Col>
-              </Row>
-            )}
-            <Row className='position-relative'>
-              <Col className={styles["languageSelector"]}>
-                <LanguageSelector />
+      <AuthLayout
+        hidden={Boolean(code) || getpayemntString !== ""}
+        overlay={
+          bestExperienceBox && (
+            <SwitchToChromeBox handleClickClose={handleCloseBrowserExpModal} />
+          )
+        }
+        banner={
+          !HIDE_FREETRAIL_BAR && (
+            <Row>
+              <Col sm={12} md={12} lg={12}>
+                {/* Commented As Per CR 0011162: Remove Start your free trial row CR */}
+                <section className={styles["freetrail_banner"]}>
+                  <span className={styles["freetrail_heading"]}>
+                    {t("Start-your-Free-Trial-now")}
+                  </span>
+                  <span
+                    className={styles["Free-Trial_btn"]}
+                    onClick={handleClickFreeTrail}>
+                    {t("Free-Trial")}
+                  </span>
+                </section>
               </Col>
             </Row>
-            <Row>
-              <Col lg={4} md={4} sm={12} className={styles["SignInEmailBox"]}>
-                <span className={styles["EmailVerifyBox"]}>
-                  <Col sm={12} lg={12} md={12}>
-                    <Row>
-                      <Col
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        className='d-flex justify-content-center'>
-                        <img
-                          draggable='false'
-                          src={
-                            PSO_LOGO
-                              ? PSOLogo
-                              : localStorage.getItem("i18nextLng") === "ar"
-                                ? DiskusLogoArabic
-                                : DiskusLogo
-                          }
-                          alt='diskus_logo'
-                          width={PSO_LOGO ? 120 : 200}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className='mt-4 mb-4 text-center'>
-                      <Col>
-                        <span className={styles["signIn_heading"]}>
-                          {t("Sign-in")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Form onSubmit={loginHandler}>
-                      <Row className=''>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className='d-flex justify-content-center flex-column'>
-                          <Form.Control
-                            required
-                            className={styles["inputEmailField"]}
-                            onChange={emailChangeHandler}
-                            value={email || ""}
-                            width='100%'
-                            placeholder={t("Email")}
-                            maxLength={160}
-                            ref={emailRef}
-                          />
-                        </Col>
-                      </Row>
-
-                      <Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className='d-flex gap-2 align-items-center'>
-                          <Checkbox
-                            checked={rememberEmail}
-                            classNameDiv=''
-                            onChange={rememberChangeEmail}
-                            className={styles["RememberEmail"]}
-                          />
-                          <span className={styles["Remember-Email-text"]}>
-                            {t("Remeber-email")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className='mt-4 mb-1 d-flex justify-content-center'>
-                        <Col
-                          sm={12}
-                          lg={12}
-                          md={12}
-                          className='d-flex justify-content-center  '>
-                          <Button
-                            text={t("Next")}
-                            onClick={loginHandler}
-                            className={styles["Next_button_EmailVerify"]}
-                          />
-                        </Col>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className='d-flex justify-content-center mt-2 '>
-                          <span className={styles["TermsfDiskus"]}>
-                            {t("By-signing-in-you-agree-to-our")}
-                            <Link
-                              to={"https://diskusboard.com/terms/"}
-                              target='_blank'>
-                              {t("Terms-of-use")}
-                            </Link>
-                          </span>
-                        </Col>
-                      </Row>
-                    </Form>
-                    {process.env.REACT_APP_ENV !== "prod" && (
-                      <>
-                        <Row className='mt-3'>
-                          <Col sm={12} md={12} lg={12}>
-                            {" "}
-                            <span className={styles["havent-subscribed-text"]}>
-                              {t("Havent-subscribed-yet")}
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row className='d-flex justify-content-center mt-1'>
-                          <Col
-                            sm={12}
-                            lg={12}
-                            md={12}
-                            className='w-100 d-flex justify-content-center'>
-                            <Button
-                              text={t("Subscribe-now")}
-                              onClick={handleSubscribeNowButton}
-                              className={
-                                styles["subscribNow_button_EmailVerify"]
-                              }
-                            />
-                          </Col>
-                        </Row>
-                      </>
-                    )}
-                  </Col>
-                </span>
-              </Col>
-              <Col lg={8} md={8} sm={8} className='position-relative d-flex'>
+          )
+        }>
+        <Col lg={4} md={4} sm={12} className={styles["SignInEmailBox"]}>
+          <span className={styles["EmailVerifyBox"]}>
+            <Col sm={12} lg={12} md={12}>
+              <Row>
                 <Col
-                  md={8}
-                  lg={8}
                   sm={12}
-                  className={styles["Login_page_text"]}>
-                  <h1 className={styles["heading-1"]}>
-                    {t("Simplify-management")}
-                  </h1>
-                  <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
-                  <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
-                </Col>
-                <Col md={4} lg={4} sm={12} className='position-relative'>
+                  md={12}
+                  lg={12}
+                  className='d-flex justify-content-center'>
                   <img
                     draggable='false'
-                    src={DiskusAuthPageLogo}
-                    alt='auth_icon'
-                    width='600px'
-                    className={styles["Auth_Icon"]}
+                    src={
+                      PSO_LOGO
+                        ? PSOLogo
+                        : localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : DiskusLogo
+                    }
+                    alt='diskus_logo'
+                    width={PSO_LOGO ? 120 : 200}
                   />
-                  {PSO_LOGO && (
-                    <img
-                      className={styles["PoweredIcon_Diskus_Icon"]}
-                      src={PSOPowerdBy}
-                      alt=''
-                    />
-                  )}
                 </Col>
-              </Col>
-            </Row>
-          </>
-        )}
-      </Container>
+              </Row>
+              <Row className='mt-4 mb-4 text-center'>
+                <Col>
+                  <span className={styles["signIn_heading"]}>
+                    {t("Sign-in")}
+                  </span>
+                </Col>
+              </Row>
+              <Form onSubmit={loginHandler}>
+                <Row className=''>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className='d-flex justify-content-center flex-column'>
+                    <Form.Control
+                      required
+                      className={styles["inputEmailField"]}
+                      onChange={emailChangeHandler}
+                      value={email || ""}
+                      width='100%'
+                      placeholder={t("Email")}
+                      maxLength={160}
+                      ref={emailRef}
+                    />
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className='d-flex gap-2 align-items-center'>
+                    <Checkbox
+                      checked={rememberEmail}
+                      classNameDiv=''
+                      onChange={rememberChangeEmail}
+                      className={styles["RememberEmail"]}
+                    />
+                    <span className={styles["Remember-Email-text"]}>
+                      {t("Remeber-email")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row className='mt-4 mb-1 d-flex justify-content-center'>
+                  <Col
+                    sm={12}
+                    lg={12}
+                    md={12}
+                    className='d-flex justify-content-center  '>
+                    <Button
+                      text={t("Next")}
+                      onClick={loginHandler}
+                      className={styles["Next_button_EmailVerify"]}
+                    />
+                  </Col>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className='d-flex justify-content-center mt-2 '>
+                    <span className={styles["TermsfDiskus"]}>
+                      {`${t("By-signing-in-you-agree-to-our")} `}
+                      <Link
+                        to={"https://diskusboard.com/terms/"}
+                        target='_blank'>
+                        {t("Terms-of-use")}
+                      </Link>
+                    </span>
+                  </Col>
+                </Row>
+              </Form>
+              {process.env.REACT_APP_ENV !== "prod" && (
+                <>
+                  <Row className='mt-3'>
+                    <Col sm={12} md={12} lg={12}>
+                      {" "}
+                      <span className={styles["havent-subscribed-text"]}>
+                        {t("Havent-subscribed-yet")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row className='d-flex justify-content-center mt-1'>
+                    <Col
+                      sm={12}
+                      lg={12}
+                      md={12}
+                      className='w-100 d-flex justify-content-center'>
+                      <Button
+                        text={t("Subscribe-now")}
+                        onClick={handleSubscribeNowButton}
+                        className={
+                          styles["subscribNow_button_EmailVerify"]
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </>
+              )}
+            </Col>
+          </span>
+        </Col>
+      </AuthLayout>
       {getpayemntString && getpayemntString !== "" && <Loader />}
       {UserManagementModalsmobileAppPopUpData && <MobileAppPopUpModal />}
       {SnackBar}

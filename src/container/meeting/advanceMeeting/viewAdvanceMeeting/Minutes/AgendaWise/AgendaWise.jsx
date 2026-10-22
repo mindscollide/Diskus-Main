@@ -179,7 +179,11 @@ const AgendaWise = ({
         setAgendaOptions(NewData);
       }
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:",
+        error,
+        AllAgendas
+      );
     }
   }, [AllAgendas]);
 
@@ -585,31 +589,36 @@ const AgendaWise = ({
       AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t),
     );
   };
-
+console.log(RetriveAgendaWiseDocuments, "RetriveAgendaWiseDocumentsRetriveAgendaWiseDocuments")
   useEffect(() => {
     try {
       if (
         RetriveAgendaWiseDocuments !== null &&
-        RetriveAgendaWiseDocuments !== undefined &&
-        RetriveAgendaWiseDocuments.data.length > 0
+        RetriveAgendaWiseDocuments !== undefined
       ) {
-        let files = [];
-        let prevData = [];
-        RetriveAgendaWiseDocuments.data.map((data, index) => {
-          files.push({
-            DisplayAttachmentName: data.displayFileName,
-            fileID: data.pK_FileID,
+        if (RetriveAgendaWiseDocuments.data.length > 0) {
+          let files = [];
+          let prevData = [];
+          RetriveAgendaWiseDocuments.data.map((data, index) => {
+            files.push({
+              DisplayAttachmentName: data.displayFileName,
+              fileID: data.pK_FileID,
+            });
+            prevData.push({
+              pK_FileID: data.pK_FileID,
+              DisplayAttachmentName: data.displayFileName,
+            });
           });
-          prevData.push({
-            pK_FileID: data.pK_FileID,
-            DisplayAttachmentName: data.displayFileName,
-          });
-        });
-        setFileAttachments(files);
-        setPreviousFileIDs(prevData);
+          setFileAttachments(files);
+          setPreviousFileIDs(prevData);
+        }
       }
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:",
+        error,
+        RetriveAgendaWiseDocuments,
+      );
     }
   }, [RetriveAgendaWiseDocuments]);
 

@@ -1,0 +1,180 @@
+/* Locks the whole auth page to exactly one viewport: fixed height/width,
+   no scrollbar in either direction. The decorative swirl's intentional
+   bleed (negative right/bottom offsets on .Auth_Icon) is clipped here, at
+   the full-page container, instead of the narrow column it sits in — so it
+   can't trigger a scrollbar without being cut off relative to its own
+   (much shorter) column. */
+.auth_container {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* On very short viewports a card can be taller than the screen, so let the
+   page scroll vertically instead of silently clipping it. The swirl is then
+   clipped by its own column rather than the container. */
+@media screen and (max-height: 599.98px) {
+  .auth_container {
+    height: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .marketing_column {
+    overflow: hidden;
+  }
+}
+
+/* Scales the screen's card (the <span> directly inside each card column) with
+   the viewport. `zoom` scales every fixed-px padding, input, button and font in
+   the card together, so the screens don't each need their own sizing rules.
+   --auth-card-scale is set on the container by AuthLayout.js (always >= 1). */
+.auth_row > :not(.marketing_column) > span {
+  zoom: var(--auth-card-scale, 1);
+}
+
+.Auth_Icon {
+  /* absolute (not fixed) so it scales/reflows with its own column
+     (the parent Col has position-relative) instead of staying pinned to
+     the raw browser viewport when zoom shifts the effective breakpoint */
+  position: absolute;
+  /* Sized and offset in vw so the swirl scales with the screen like the text
+     does (the original design was 600px wide with -115px/-190px offsets on a
+     1600px-wide screen). The clamp keeps it from vanishing or ballooning on
+     very small / very large displays. */
+  width: clamp(380px, 37.5vw, 1000px);
+  height: auto;
+  right: -7.2vw;
+  bottom: -11.9vw;
+  transform: rotate(0deg);
+  z-index: 0;
+}
+
+body[dir="rtl"] .Auth_Icon {
+  transform: rotate(0deg) scaleX(-1);
+  right: auto !important;
+  left: -11.9vw;
+}
+
+.Login_page_text {
+  /* centered via flex (proportional to the column's actual height) instead
+     of a flat margin-top, so it stays aligned with its column at any zoom
+     level instead of going stale once the column reflows */
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  margin-left: 20px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.Login_page_text h1 {
+  /* Scales with the screen width. (The old `calc(60px - 20%)` was a fixed
+     ~57px: a % inside font-size resolves against the parent's font size, not
+     the viewport.) 3.55vw reproduces that size at the 1600px design width. */
+  font-size: clamp(30px, 3.55vw, 96px) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  width: 100%;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.heading-1 {
+  color: #6172d6;
+}
+
+body[dir="rtl"] .heading-1 {
+  font-weight: 600 !important;
+  font-size: clamp(34px, 4.4vw, 112px) !important;
+}
+
+.heading-2 {
+  color: #4adede;
+}
+
+body[dir="rtl"] .heading-2 {
+  font-weight: 600 !important;
+  font-size: clamp(30px, 3.75vw, 96px) !important;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px !important;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  right: -100px;
+}
+
+.PoweredIcon_Diskus_Icon {
+  position: absolute;
+  bottom: 75px;
+  right: 100px;
+}
+
+@media screen and (max-width: 480px) {
+  .Auth_Icon {
+    position: fixed;
+    top: -250px;
+    left: 155px;
+    width: 500px;
+    transform: rotate(0deg);
+    z-index: 0;
+    display: none;
+    opacity: 50%;
+    z-index: -1;
+  }
+
+  .Login_page_text h1 {
+    font-size: 30px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    width: 100%;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  .languageSelector {
+    display: none !important;
+  }
+
+  .PoweredIcon_Diskus_Icon {
+    display: none !important;
+  }
+}
+
+/* Styles for landscape orientation */
+@media screen and (max-height: 480px) and (orientation: landscape) {
+  .Auth_Icon {
+    display: none !important;
+  }
+
+  .PoweredIcon_Diskus_Icon {
+    display: none !important;
+  }
+
+  .languageSelector {
+    display: none !important;
+  }
+
+  .Login_page_text {
+    margin-top: 50px !important;
+    margin-left: 50px !important;
+  }
+
+  .Login_page_text h1 {
+    font-size: 40px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    width: 100%;
+    white-space: nowrap;
+    z-index: 1;
+  }
+}

@@ -74,6 +74,10 @@ img.delete-icon {
   right: 3px;
   cursor: pointer;
 }
+body[dir="rtl"] img.delete-icon {
+  right: auto !important;
+  left: 3px;
+}
 
 .Sizing_Saved_Minutes {
   padding: 0px 10px !important;
@@ -444,7 +448,6 @@ p.minutes-text {
   margin: 0 !important;
   overflow: hidden;
   word-break: break-all;
-
 }
 
 span.bar-line {
@@ -654,7 +657,6 @@ body[dir="rtl"] img.Attachment {
 body[dir="rtl"] .agenda-wise-minutes {
   max-height: 370px;
   overflow: hidden auto;
-  padding-right: 0;
   padding-left: 10px;
 }
 
@@ -790,4 +792,3 @@ body[dir="rtl"] .popup-agenda-menu {
   overflow: hidden;
   transition: transform 0.5s ease;
 }
-

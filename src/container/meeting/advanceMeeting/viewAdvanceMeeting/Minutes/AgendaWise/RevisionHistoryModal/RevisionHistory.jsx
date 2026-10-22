@@ -394,6 +394,7 @@ const RevisionHistory = ({
                                                     id={data.pK_FileID}
                                                     name={data.displayFileName}
                                                     fk_UID={data.fK_UserID}
+                                                    canDelete={false}
                                                   />
                                                 </Col>
                                               </>
@@ -419,7 +420,7 @@ const RevisionHistory = ({
                                       <p className={styles["uploadedbyuser"]}>
                                         {t("Uploaded-by")}
                                       </p>{" "}
-                                      <img
+                                      {/* <img
                                         className={styles["edit-icon"]}
                                         src={EditIcon}
                                         alt=''
@@ -428,7 +429,7 @@ const RevisionHistory = ({
                                             revisionHistoryData?.mainMinute,
                                           )
                                         }
-                                      />
+                                      /> */}
                                       {/* )} */}
                                       <div className={styles["gap-ti"]}>
                                         <img
@@ -748,7 +749,7 @@ const RevisionHistory = ({
                                               }>
                                               {t("Uploaded-by")}
                                             </p>{" "}
-                                            {index === 0 && (
+                                            {/* {index === 0 && (
                                               <img
                                                 className={styles["edit-icon"]}
                                                 src={EditIcon}
@@ -757,7 +758,7 @@ const RevisionHistory = ({
                                                   editMinuteFunction(reviewData)
                                                 }
                                               />
-                                            )}
+                                            )} */}
                                             <div className={styles["gap-ti"]}>
                                               <img
                                                 src={`data:image/jpeg;base64,${reviewData?.mainMinute?.userProfilePicture?.displayProfilePictureName}`}

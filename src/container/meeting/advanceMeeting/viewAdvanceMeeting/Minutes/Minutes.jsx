@@ -618,14 +618,8 @@ const Minutes = () => {
         navigate,
         t,
         Data,
-        false,
-        null,
-        false,
-        false,
-        false,
-        false,
-        false,
-        fileUploadFlag,
+        "updateGeneralMinutes",
+        {},
       ),
     );
 
@@ -965,6 +959,8 @@ const Minutes = () => {
         setMinutesData([]);
       }
     } catch (error) {
+
+      console.log(error)
       setMinutesData([]);
     }
 
@@ -1007,7 +1003,7 @@ const Minutes = () => {
       MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== undefined
     ) {
       setDeadLineDate(
-        MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow.workFlow.deadlineDatetime.slice(
+        MinutesReducer.GetMinuteReviewFlowByMeetingIdData?.workFlow?.workFlow?.deadlineDatetime?.slice(
           0,
           8,
         ),
@@ -1537,7 +1533,7 @@ const Minutes = () => {
         const visibleApprovedUsers = approvedByUsers.slice(0, maxVisibleImages);
         const remainingCount = approvedByUsers.length - maxVisibleImages;
         return (
-          <Row className='mt-2'>
+          <Row className='mt-2' key={index}>
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
               <>
                 <div>
@@ -1600,7 +1596,7 @@ const Minutes = () => {
                                     <Row>
                                       {data.minutesAttachmets.map(
                                         (subFileData, subFileIndex) => (
-                                          <Col lg={3} md={3} sm={12}>
+                                          <Col lg={3} md={3} sm={12} key={subFileIndex}>
                                             <AttachmentViewer
                                               handleClickDownload={() =>
                                                 downloadDocument(subFileData)
@@ -1863,7 +1859,7 @@ const Minutes = () => {
                               ? fileAttachments.map((data, index) => {
                                   return (
                                     <>
-                                      <Col lg={4} md={4} sm={4}>
+                                      <Col lg={4} md={4} sm={4} key={index}>
                                         <AttachmentViewer
                                           fk_UID={userID}
                                           handleClickRemove={() =>
@@ -1930,7 +1926,7 @@ const Minutes = () => {
                   : false;
 
               return (
-                <Row className='mt-2'>
+                <Row className='mt-2' key={data.minuteID}>
                   <Col
                     lg={12}
                     md={12}
@@ -2225,7 +2221,7 @@ const Minutes = () => {
                                         <Row>
                                           {data.attachments.map(
                                             (fileData, index) => (
-                                              <Col lg={3} md={3} sm={12}>
+                                              <Col lg={3} md={3} sm={12} key={fileData.pK_FileID}>
                                                 <AttachmentViewer
                                                   handleClickDownload={() =>
                                                     downloadDocument(fileData)

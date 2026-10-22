@@ -2954,5 +2954,7 @@
   "File-size-must-not-exceed-10MB": "File size must not exceed 10MB",
   "This-file-has-already-been-attached": "This file has already been attached",
   "Year": "Year",
-  "Due": "Due"
+  "Due": "Due",
+  "This-file-already-exist": "This file already exist",
+  "Browser": "Browser"
 }

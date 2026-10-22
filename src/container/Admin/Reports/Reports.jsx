@@ -35,18 +35,17 @@ import { downlooadUserloginHistoryApi } from "../../../store/actions/Download_ac
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
-const DeviceIdType = [
+const DeviceIdType = (t) => [
   {
-    label: "Browser",
+    label: t("Browser"),
     value: 1,
   },
   {
-    label: "Tablet",
+    label: t("Mobile"),
     value: 2,
   },
-
   {
-    label: "Mobile",
+    label: t("Tablet"),
     value: 3,
   },
 ];
@@ -173,7 +172,7 @@ const Reports = () => {
       title: t("User-name"),
       dataIndex: "userName",
       key: "userName",
-      align: "left",
+      align: "start",
       ellipsis: true,
       render: (text, record) => {
         return (
@@ -977,7 +976,7 @@ const Reports = () => {
                         <Col sm={12} md={6} lg={6}>
                           <Select
                             placeholder={t("Inteface-type")}
-                            options={DeviceIdType}
+                            options={DeviceIdType(t)}
                             onChange={handleChangeInterfaceType}
                           />
                         </Col>

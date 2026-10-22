@@ -9,60 +9,106 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
+import {
+  resetCreateEditTabs,
+  toggleCreateEditMeetingModal,
+} from "../../../../../../store/actions/ModalStates_actions";
+import {
+  listOfMeetingsApi,
+  resetCurrentMeetingInfo,
+} from "../../../../../../store/actions/NewMeeting2.actions";
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
-const UnsavedMinutes = ({
-  setMinutes,
-  setSceduleMeeting,
-  setFileAttachments,
-  useCase,
-  setactionsPage,
-  setMeetingMaterial,
-}) => {
+const UnsavedMinutes = ({}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+
+  const { setEditorRole } = useMeetingContext();
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
+  const committeeInfo = useSelector(
+    (state) => state.CommitteeReducer.viewCommitteeDetails,
+  );
+
+  const groupInfo = useSelector(
+    (state) => state.GroupsReducer.viewGroupDetails,
+  );
 
   const handleYesFunctionality = () => {
-    
-    if (useCase) {
-      if (useCase === 1) {
-        // Pervious Button
-        setMinutes(false);
-        setMeetingMaterial(true);
-        dispatch(showUnsaveMinutesFileUpload(false));
-      } else if (useCase === 2) {
-        // Next Tab
-        setactionsPage(true);
-        setMinutes(false);
-        dispatch(showUnsaveMinutesFileUpload(false));
-      } else if (useCase === 3) {
-        // Cancel Button
-        setMinutes(false);
-        setSceduleMeeting(false);
-        dispatch(showUnsaveMinutesFileUpload(false));
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber:
-            meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
-          Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-          ProposedMeetings:
-            currentView && Number(currentView) === 2 ? true : false,
-        };
-        
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
-        setFileAttachments([]);
-      }
+    const location = localStorage.getItem("navigateLocation");
+
+    const commonReset = () => {
+      dispatch(toggleCreateEditMeetingModal(false));
+      dispatch(resetCreateEditTabs());
+      dispatch(resetCurrentMeetingInfo());
+      // dispatch(resetViewGroupDetails());
+      // dispatch(resetViewCommitteeDetails());
+
+      setEditorRole({
+        status: null,
+        role: null,
+        isPrimaryOrganizer: false,
+      });
+    };
+
+    const navigateRoutes = {
+      dataroom: "/Diskus/dataroom",
+      resolution: "/Diskus/resolution",
+      committee: "/Diskus/committee",
+      groups: "/Diskus/groups",
+      polling: "/Diskus/polling",
+      calendar: "/Diskus/calendar",
+      todolist: "/Diskus/todolist",
+      Notes: "/Diskus/Notes",
+      MainDashBoard: "/Diskus/",
+    };
+
+    if (committeeInfo !== null) {
+      commonReset();
+      return;
     }
+
+    if (groupInfo !== null) {
+      commonReset();
+      return;
+    }
+
+    // 🔁 Handle Meeting Case Separately
+    if (location === "Meeting" || !location) {
+      commonReset();
+
+      dispatch(
+        listOfMeetingsApi(
+          navigate,
+          t,
+          {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber:
+              meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
+            Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
+            PublishedMeetings: currentView && Number(currentView) === 1,
+            ProposedMeetings: currentView && Number(currentView) === 2,
+          },
+          "",
+          {},
+        ),
+      );
+
+      //  isFunction(setRows) && setRows([]);
+    } else if (navigateRoutes[location]) {
+      // commonReset();
+      navigate(navigateRoutes[location]);
+    }
+
+    localStorage.removeItem("navigateLocation");
+    dispatch(showUnsaveMinutesFileUpload(false));
   };
   return (
     <section>
@@ -81,8 +127,7 @@ const UnsavedMinutes = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t("Any-unsaved-changes-will-be")}
                 </span>
@@ -93,8 +138,7 @@ const UnsavedMinutes = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t("Lost-continue")}
                 </span>
@@ -109,8 +153,7 @@ const UnsavedMinutes = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center gap-2"
-              >
+                className='d-flex justify-content-center gap-2'>
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}
