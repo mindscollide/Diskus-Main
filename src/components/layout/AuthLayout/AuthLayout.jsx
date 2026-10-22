@@ -44,7 +44,12 @@ const getCardScale = () => {
   return Math.min(MAX_SCALE, Math.max(1, Number(fit.toFixed(3))));
 };
 
-const AuthLayout = ({ children, banner = null, overlay = null, hidden = false }) => {
+const AuthLayout = ({
+  children,
+  banner = null,
+  overlay = null,
+  hidden = false,
+}) => {
   const { t } = useTranslation();
   const [cardScale, setCardScale] = useState(getCardScale);
 
@@ -55,55 +60,64 @@ const AuthLayout = ({ children, banner = null, overlay = null, hidden = false })
   }, []);
 
   return (
-    <Container
-      fluid
-      className={styles["auth_container"]}
-      style={{ "--auth-card-scale": cardScale }}>
-      {overlay}
-      {!hidden && (
-        <>
-          {banner}
-          <Row className='position-relative'>
-            <Col className={styles["languageSelector"]}>
-              <LanguageSelector />
-            </Col>
-          </Row>
-          <Row className={styles["auth_row"]}>
-            {children}
-            <Col
-              lg={8}
-              md={8}
-              sm={8}
-              className={`position-relative d-flex ${styles["marketing_column"]}`}>
-              <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-                <h1 className={styles["heading-1"]}>
-                  {t("Simplify-management")}
-                </h1>
-                <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
-                <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
+    <>
+      <Container
+        fluid
+        className={styles["auth_container"]}
+        style={{ "--auth-card-scale": cardScale }}
+      >
+        {overlay}
+        {!hidden && (
+          <>
+            {banner}
+            <Row className="position-relative">
+              <Col className={styles["languageSelector"]}>
+                <LanguageSelector />
               </Col>
-              <Col md={4} lg={4} sm={12} className='position-relative'>
-                <img
-                  draggable='false'
-                  src={DiskusAuthPageLogo}
-                  alt='auth_icon'
-                  width='600px'
-                  className={styles["Auth_Icon"]}
-                />
-                {PSO_LOGO && (
+            </Row>
+            <Row className={styles["auth_row"]}>
+              {children}
+              <Col
+                lg={8}
+                md={8}
+                sm={8}
+                className={`position-relative d-flex ${styles["marketing_column"]}`}
+              >
+                <Col
+                  md={8}
+                  lg={8}
+                  sm={12}
+                  className={styles["Login_page_text"]}
+                >
+                  <h1 className={styles["heading-1"]}>
+                    {t("Simplify-management")}
+                  </h1>
+                  <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
+                  <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
+                </Col>
+                <Col md={4} lg={4} sm={12} className="position-relative">
                   <img
-                    className={styles["PoweredIcon_Diskus_Icon"]}
-                    src={PSOPowerdBy}
-                    alt=''
-                    draggable='false'
+                    draggable="false"
+                    src={DiskusAuthPageLogo}
+                    alt="auth_icon"
+                    width="600px"
+                    className={styles["Auth_Icon"]}
                   />
-                )}
+                  {PSO_LOGO && (
+                    <img
+                      className={styles["PoweredIcon_Diskus_Icon"]}
+                      src={PSOPowerdBy}
+                      alt=""
+                      draggable="false"
+                    />
+                  )}
+                </Col>
               </Col>
-            </Col>
-          </Row>
-        </>
-      )}
-    </Container>
+            </Row>
+          </>
+        )}
+      </Container>
+    </>
   );
 };
 
