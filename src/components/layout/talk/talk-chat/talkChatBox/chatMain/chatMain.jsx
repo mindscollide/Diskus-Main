@@ -120,7 +120,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //Current language
   let lang = localStorage.getItem("i18nextLng");
 
-  const { talkStateData } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
   var currentDateToday = moment().format("YYYYMMDD");
 
   let currentDateTime = new Date();

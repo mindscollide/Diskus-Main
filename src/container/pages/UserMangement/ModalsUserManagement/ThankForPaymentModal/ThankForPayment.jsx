@@ -9,7 +9,7 @@ import { Col, Row } from "react-bootstrap";
 const ThankForPayment = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { UserManagementModals } = useSelector((state) => state);
+  const UserManagementModals = useSelector((state) => state.UserManagementModals);
 
   const UserManagementModalsthanksForPaymentModalData = useSelector(
     (state) => state.UserManagementModals.thanksForPaymentModal

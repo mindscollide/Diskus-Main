@@ -23,7 +23,7 @@ const ModalArchivedCommittee = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { CommitteeReducer } = useSelector((state) => state);
+  const CommitteeReducer = useSelector((state) => state.CommitteeReducer);
   const CommitteeReducerrealtimeCommitteeStatus = useSelector(
     (state) => state.CommitteeReducer.realtimeCommitteeStatus,
   );

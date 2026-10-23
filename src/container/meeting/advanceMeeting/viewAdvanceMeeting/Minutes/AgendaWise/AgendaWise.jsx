@@ -103,8 +103,11 @@ const AgendaWise = ({
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const { NewMeetingreducer, AgendaWiseAgendaListReducer, MinutesReducer } =
-    useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const AgendaWiseAgendaListReducer = useSelector(
+    (state) => state.AgendaWiseAgendaListReducer,
+  );
+  const MinutesReducer = useSelector((state) => state.MinutesReducer);
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage,
   );
@@ -163,13 +166,13 @@ const AgendaWise = ({
     try {
       if (AllAgendas !== null && AllAgendas !== undefined) {
         let NewData = [];
-        AllAgendas.agendaList.map((agenda, index) => {
+        AllAgendas.agendaList.forEach((agenda, index) => {
           NewData.push({
             value: agenda.id,
             label: agenda.title,
           });
 
-          agenda.subAgenda.map((subajendaData, index) => {
+          agenda.subAgenda.forEach((subajendaData, index) => {
             NewData.push({
               value: subajendaData.subAgendaID,
               label: subajendaData.subTitle,
@@ -182,7 +185,7 @@ const AgendaWise = ({
       console.error(
         "src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:",
         error,
-        AllAgendas
+        AllAgendas,
       );
     }
   }, [AllAgendas]);
@@ -589,7 +592,10 @@ const AgendaWise = ({
       AgendaWiseRetriveDocumentsMeetingMinutesApiFunc(navigate, Data, t),
     );
   };
-console.log(RetriveAgendaWiseDocuments, "RetriveAgendaWiseDocumentsRetriveAgendaWiseDocuments")
+  console.log(
+    RetriveAgendaWiseDocuments,
+    "RetriveAgendaWiseDocumentsRetriveAgendaWiseDocuments",
+  );
   useEffect(() => {
     try {
       if (

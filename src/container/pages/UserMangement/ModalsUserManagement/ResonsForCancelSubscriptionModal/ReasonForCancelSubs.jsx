@@ -15,9 +15,8 @@ const ReasonForCancelSubs = ({ completionContract, subscriptionID }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { UserManagementModals, UserMangementReducer } = useSelector(
-    (state) => state
-  );
+  const UserManagementModals = useSelector((state) => state.UserManagementModals);
+  const UserMangementReducer = useSelector((state) => state.UserMangementReducer);
 
   // state for cancel Subscription
   const [cancelSubs, setCancelSubs] = useState([]);

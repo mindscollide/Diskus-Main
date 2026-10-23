@@ -21,7 +21,7 @@ const UnsavedMinutes = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");

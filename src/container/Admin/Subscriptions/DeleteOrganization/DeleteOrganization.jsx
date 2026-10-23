@@ -13,7 +13,7 @@ import { cleareMessage } from "../../../../store/actions/Admin_PackageUpgrade";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 const DeleteOrganization = () => {
   const [show, SnackBar] = useSnackbar();
-  const { adminReducer } = useSelector((state) => state);
+  const adminReducer = useSelector((state) => state.adminReducer);
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
   const [deleteSuccessModal, setDeleteSuccesModal] = useState(false);

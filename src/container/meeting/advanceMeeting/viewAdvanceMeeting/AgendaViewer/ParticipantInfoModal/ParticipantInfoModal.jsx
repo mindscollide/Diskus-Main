@@ -17,7 +17,7 @@ const ParticipantInfoModal = ({
   setParticipantInfoView,
   advanceMeetingModalID,
 }) => {
-  const { MeetingAgendaReducer } = useSelector((state) => state);
+  const MeetingAgendaReducer = useSelector((state) => state.MeetingAgendaReducer);
 
   const { t } = useTranslation();
 

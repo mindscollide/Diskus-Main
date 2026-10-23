@@ -18,7 +18,7 @@ const DeleteCommentAgenda = ({
   setFileAttachments,
   addNoteFields,
 }) => {
-  const { MinutesReducer } = useSelector((state) => state);
+  const MinutesReducer = useSelector((state) => state.MinutesReducer);
 
   const { t } = useTranslation(); // Translation hook
 

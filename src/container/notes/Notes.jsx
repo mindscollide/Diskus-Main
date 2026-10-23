@@ -49,7 +49,7 @@ const Notes = () => {
   const navigate = useNavigate();
   const calendRef = useRef();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { NotesReducer } = useSelector((state) => state);
+  const NotesReducer = useSelector((state) => state.NotesReducer);
   const { createNotesModal, setCreateNotesModal } = useNotesContext();
 
   //Get Current User ID

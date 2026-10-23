@@ -51,9 +51,8 @@ const AgendaContributorsModal = ({
     message: "",
     severity: "error",
   });
-  const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
-    (state) => state
-  );
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const MeetingOrganizersReducer = useSelector((state) => state.MeetingOrganizersReducer);
 
   useEffect(() => {
     let Data = {

@@ -29,7 +29,7 @@ import CloseChatIcon from "../../../../../assets/images/Cross-Chat-Icon.png";
  * validation warning when no participants are selected.
  */
 const CreateNewGroup = () => {
-  const { talkStateData } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
 
   const dispatch = useDispatch();
 

@@ -47,13 +47,11 @@ const Actions = ({ dataroomMapFolderId }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    NewMeetingreducer,
-    actionMeetingReducer,
-    getTodosStatus,
-    toDoListReducer,
-    todoStatus,
-  } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const actionMeetingReducer = useSelector((state) => state.actionMeetingReducer);
+  const getTodosStatus = useSelector((state) => state.getTodosStatus);
+  const toDoListReducer = useSelector((state) => state.toDoListReducer);
+  const todoStatus = useSelector((state) => state.todoStatus);
   const { meetingID = 0, mapFolderId = 0 } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );

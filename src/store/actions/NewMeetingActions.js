@@ -4367,6 +4367,17 @@ const UpdateAgendaWiseMinutesApiFunc = (
                   t("Record-updated"),
                 ),
               );
+              const meetingId =
+                store.getState().NewMeetingreducer?.currentMeetingInfo
+                  ?.meetingID || 0;
+              dispatch(
+                GetMinuteReviewStatsForOrganizerByMeetingId(navigate, t, {
+                  isAgenda: true,
+                  MeetingID: Number(meetingId),
+                }),
+                "",
+                {},
+              );
               setAgendaOptionValue({
                 label: "",
                 value: 0,
@@ -4383,17 +4394,6 @@ const UpdateAgendaWiseMinutesApiFunc = (
               setFileAttachments([]);
               setFileForSend([]);
               setisEdit(false);
-              if (resendFlag === true) {
-                dispatch(
-                  ResendUpdatedMinuteForReview(navigate, t, resendData, "", {
-                    setEditMinute,
-                    setConfirmationEdit,
-                    setResendMinuteForReview,
-                    setShowRevisionHistory,
-                    isAgenda,
-                  }),
-                );
-              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4439,17 +4439,33 @@ const UpdateAgendaWiseMinutesApiFunc = (
                   t("Minutes-revised-by-organizer"),
                 ),
               );
-              if (resendFlag === true) {
-                dispatch(
-                  ResendUpdatedMinuteForReview(navigate, t, resendData, "", {
-                    setEditMinute,
-                    setConfirmationEdit,
-                    setResendMinuteForReview,
-                    setShowRevisionHistory,
-                    isAgenda,
-                  }),
-                );
-              }
+              const meetingId =
+                store.getState().NewMeetingreducer?.currentMeetingInfo
+                  ?.meetingID || 0;
+              dispatch(
+                GetMinuteReviewStatsForOrganizerByMeetingId(navigate, t, {
+                  isAgenda: true,
+                  MeetingID: Number(meetingId),
+                }),
+                "",
+                {},
+              );
+              setAgendaOptionValue({
+                label: "",
+                value: 0,
+              });
+              setAddNoteFields({
+                ...addNoteFields,
+                Description: {
+                  value: "",
+                  errorMessage: "",
+                  errorStatus: true,
+                },
+              });
+
+              setFileAttachments([]);
+              setFileForSend([]);
+              setisEdit(false);
             }
           } else {
             dispatch(

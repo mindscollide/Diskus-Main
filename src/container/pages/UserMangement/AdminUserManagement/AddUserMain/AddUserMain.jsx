@@ -30,7 +30,8 @@ const AddUserMain = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { UserMangementReducer, adminReducer } = useSelector((state) => state);
+  const UserMangementReducer = useSelector((state) => state.UserMangementReducer);
+  const adminReducer = useSelector((state) => state.adminReducer);
 
   // organizationName from Local Storage
   const organizationName = localStorage.getItem("organizatioName");

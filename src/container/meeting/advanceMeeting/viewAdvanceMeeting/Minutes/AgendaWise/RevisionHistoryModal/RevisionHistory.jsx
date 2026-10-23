@@ -588,6 +588,8 @@ const RevisionHistory = ({
                       revisionHistoryData.minuteVersionHistory
                         ?.sort((a, b) => b.versionNumber - a.versionNumber)
                         .map((reviewData, index) => {
+
+                          console.log(reviewData, "reviewDatareviewData")
                           return (
                             <>
                               <Row>

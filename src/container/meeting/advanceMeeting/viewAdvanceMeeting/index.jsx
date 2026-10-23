@@ -153,8 +153,9 @@ const ViewMeetingModal = () => {
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
-  const { meetingIdReducer, NewMeetingreducer, MeetingAgendaReducer } =
-    useSelector((state) => state);
+  const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const MeetingAgendaReducer = useSelector((state) => state.MeetingAgendaReducer);
   const { meetingID } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );

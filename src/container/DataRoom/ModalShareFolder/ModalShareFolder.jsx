@@ -37,7 +37,7 @@ const ModalShareFolder = ({
 }) => {
   const { t } = useTranslation();
   const [showaccessrequest, setShowaccessrequest] = useState(false);
-  const { assignees } = useSelector((state) => state);
+  const assignees = useSelector((state) => state.assignees);
   const getSharedFolderUsers = useSelector(
     (state) => state.DataRoomReducer.getSharedFolderUsers
   );

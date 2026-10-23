@@ -15,7 +15,7 @@ const AgenItemremovedModal = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
 
   const handleYesButton = () => {
     let subRows = [...rows];

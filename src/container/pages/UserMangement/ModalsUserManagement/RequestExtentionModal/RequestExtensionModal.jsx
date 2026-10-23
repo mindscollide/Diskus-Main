@@ -10,7 +10,7 @@ import { Button, Modal } from "../../../../../components/elements";
 const RequestExtensionModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { UserManagementModals } = useSelector((state) => state);
+  const UserManagementModals = useSelector((state) => state.UserManagementModals);
 
   const UserManagementModalsrequestExtentionModalData = useSelector(
     (state) => state.UserManagementModals.requestExtentionModal

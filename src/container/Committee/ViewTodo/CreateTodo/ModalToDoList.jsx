@@ -44,8 +44,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
-  const state = useSelector((state) => state);
-  const { toDoListReducer, CommitteeReducer } = state;
+  const toDoListReducer = useSelector((state) => state.toDoListReducer);
+  const CommitteeReducer = useSelector((state) => state.CommitteeReducer);
   //To Display Modal
   const dispatch = useDispatch();
   const navigate = useNavigate();

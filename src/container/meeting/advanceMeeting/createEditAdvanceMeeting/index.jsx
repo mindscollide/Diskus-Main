@@ -46,7 +46,7 @@ const CreateEditAdvanceMeeting = () => {
 
   // ─── Redux State ──────────────────────────────────────────────────────────
 
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
 
   const isCreateEditMeetingModal = useSelector(
     (state) => state.ModalStatesReducer.isCreateEditMeetingModal,

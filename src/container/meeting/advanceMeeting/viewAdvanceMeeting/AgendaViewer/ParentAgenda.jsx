@@ -58,7 +58,7 @@ const ParentAgenda = ({
   let currentLanguage = localStorage.getItem("i18nextLng");
   let currentUserID = localStorage.getItem("userID");
 
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
 
   const [show, SnackBar] = useSnackbar();
 

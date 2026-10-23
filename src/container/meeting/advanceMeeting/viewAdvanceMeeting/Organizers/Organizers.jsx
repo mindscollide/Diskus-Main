@@ -61,7 +61,7 @@ const Organizers = () => {
 
   const [cancelModalView, setCancelModalView] = useState(false);
 
-  const { MeetingOrganizersReducer } = useSelector((state) => state);
+  const MeetingOrganizersReducer = useSelector((state) => state.MeetingOrganizersReducer);
 
   const currentOrganizerData = {
     displayPicture: "",

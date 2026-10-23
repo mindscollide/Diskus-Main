@@ -49,7 +49,6 @@ const ReviewSignature = () => {
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   const workflowResponseMessage = useSelector((state) => state.webViewer);
-  const globalState = useSelector((state) => state);
 
   const workflowsignaturedocument = useSelector(
     (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument,

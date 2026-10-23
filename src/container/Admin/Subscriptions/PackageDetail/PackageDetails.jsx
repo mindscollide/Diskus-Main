@@ -12,7 +12,7 @@ import { isHTML } from "../../../../commen/functions/html_formater";
 import { packagesforUpgrade } from "../../../../store/actions/Admin_PackageUpgrade";
 const PackageDetails = () => {
   const dispatch = useDispatch();
-  const { GetSubscriptionPackage } = useSelector((state) => state);
+  const GetSubscriptionPackage = useSelector((state) => state.GetSubscriptionPackage);
   const [maxAdminUser, setMaxAdminUser] = useState(0);
   const [maxBoardMembers, setBoardMembers] = useState(0);
   const [maxOtherUsers, setOtherUsers] = useState(0);

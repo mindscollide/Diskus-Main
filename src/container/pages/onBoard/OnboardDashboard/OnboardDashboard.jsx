@@ -31,8 +31,9 @@ const OnboardDashboard = () => {
   
   //For Localization
   const { t } = useTranslation();
-  const state = useSelector((state) => state);
-  const { settingReducer, calendarReducer, auth } = state;
+  const settingReducer = useSelector((state) => state.settingReducer);
+  const calendarReducer = useSelector((state) => state.calendarReducer);
+  const auth = useSelector((state) => state.auth);
   const { RecentActivityData } = settingReducer;
 
   const dispatch = useDispatch();

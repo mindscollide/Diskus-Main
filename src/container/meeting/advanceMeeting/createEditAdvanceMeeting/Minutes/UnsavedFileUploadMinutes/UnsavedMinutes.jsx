@@ -23,7 +23,7 @@ const UnsavedMinutes = ({}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
 
   const { setEditorRole } = useMeetingContext();
   let userID = localStorage.getItem("userID");

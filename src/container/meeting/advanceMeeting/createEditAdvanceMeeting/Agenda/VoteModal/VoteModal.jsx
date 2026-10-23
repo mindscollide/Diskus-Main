@@ -46,8 +46,9 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     localStorage.getItem("currentAgendaVotingID"),
   );
 
-  const { NewMeetingreducer, MeetingAgendaReducer, MeetingOrganizersReducer } =
-    useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const MeetingAgendaReducer = useSelector((state) => state.MeetingAgendaReducer);
+  const MeetingOrganizersReducer = useSelector((state) => state.MeetingOrganizersReducer);
 
   const [addOptions, setAddOptions] = useState(false);
   const [show, SnackBar] = useSnackbar();

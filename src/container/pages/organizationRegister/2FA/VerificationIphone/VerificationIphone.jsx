@@ -23,7 +23,8 @@ import { LoginFlowRoutes } from "../../../../../store/actions/UserManagementActi
 const VerificationIphone = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  const Authreducer = useSelector((state) => state.Authreducer);
+  const LanguageReducer = useSelector((state) => state.LanguageReducer);
   const dispatch = useDispatch();
   const [devices, setDevices] = useState([]);
   const [selectDevice, setSelectDevice] = useState(null);

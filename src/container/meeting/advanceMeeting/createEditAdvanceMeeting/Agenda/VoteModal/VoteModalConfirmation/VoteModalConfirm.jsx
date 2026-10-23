@@ -12,7 +12,7 @@ import { getAgendaVotingDetails_fail } from "../../../../../../../store/actions/
 const VoteModalConfirm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
 
   const noBtnFunctionality = () => {
     dispatch(showVoteAgendaModal(true));

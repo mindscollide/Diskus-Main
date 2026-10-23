@@ -28,7 +28,8 @@ const DeviceFor2FAVerify = () => {
 
   const dispatch = useDispatch();
 
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  const Authreducer = useSelector((state) => state.Authreducer);
+  const LanguageReducer = useSelector((state) => state.LanguageReducer);
 
   const AuthreducerAuthenticateAFAResponse = useSelector(
     (state) => state.Authreducer.AuthenticateAFAResponse,

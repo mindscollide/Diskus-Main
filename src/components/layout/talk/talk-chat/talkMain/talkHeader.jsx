@@ -20,7 +20,7 @@ import {
 } from "../../../../../store/actions/Talk_Feature_actions";
 
 const TalkHeader = () => {
-  const { talkFeatureStates } = useSelector((state) => state);
+  const talkFeatureStates = useSelector((state) => state.talkFeatureStates);
 
   const dispatch = useDispatch();
 
