@@ -1441,6 +1441,8 @@
   "Contact": "اتصال",
   "Recent": "مؤخرًا",
   "Video": "فيديو",
+  "Video-name-and-one-other": "{{name}} وشخص آخر",
+  "Video-name-and-others": "{{name}} و{{count}} آخرين",
   "Videos": "فيديو",
   "Calling": "الاتصال",
   "Ringing": "رنين",

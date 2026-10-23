@@ -565,7 +565,7 @@ const VideoPanelBodyContact = () => {
                   <Tooltip placement='bottomLeft' title={t("Start-video-call")}>
                     <img
                       alt=''
-                      className='cursor-pointer'
+                      className='cursor-pointer video-call-start-icon'
                       src={VideoCallIcon}
                       onClick={() => otoVideoCall(userData)}
                     />

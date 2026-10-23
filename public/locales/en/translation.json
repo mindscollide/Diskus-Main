@@ -1445,6 +1445,8 @@
   "Contact": "Contact",
   "Recent": "Recent",
   "Video": "Video",
+  "Video-name-and-one-other": "{{name}} and 1 other",
+  "Video-name-and-others": "{{name}} and {{count}} others",
   "Videos": "Videos",
   "Calling": "Calling",
   "Ringing": "Ringing",

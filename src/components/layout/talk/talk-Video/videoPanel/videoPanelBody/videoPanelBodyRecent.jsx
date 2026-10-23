@@ -749,9 +749,16 @@ const VideoPanelBodyRecent = () => {
     if (remainingCount === 0) {
       return firstUser.userName;
     } else if (remainingCount === 1) {
-      return `${firstUser.userName} and 1 other`;
+      return t("Video-name-and-one-other", {
+        name: firstUser.userName,
+        interpolation: { escapeValue: false },
+      });
     } else {
-      return `${firstUser.userName} and ${remainingCount} others`;
+      return t("Video-name-and-others", {
+        name: firstUser.userName,
+        count: remainingCount,
+        interpolation: { escapeValue: false },
+      });
     }
   };
 
@@ -856,7 +863,12 @@ const VideoPanelBodyRecent = () => {
                         />
                       )} */}
                     </Col>
-                    <Col lg={8} md={8} sm={12} className="bottom-border">
+                    <Col
+                      lg={recentCallData.isRecordingAvailable ? 7 : 8}
+                      md={recentCallData.isRecordingAvailable ? 7 : 8}
+                      sm={12}
+                      className="bottom-border"
+                    >
                       <div className={"video-block"}>
                         {(recentCallData.callStatus.status === "Unanswered" ||
                           recentCallData.callStatus.status === "Busy") &&
@@ -869,7 +881,7 @@ const VideoPanelBodyRecent = () => {
                                   recentCallData.callerName === currentUserName
                                     ? recentCallData.recipients[0].userName
                                     : recentCallData.callerName
-                                }}`}
+                                }`}
                               >
                                 {recentCallData.callerName === currentUserName
                                   ? recentCallData.recipients[0].userName
@@ -980,11 +992,16 @@ const VideoPanelBodyRecent = () => {
                         </p>
                       </div>
                     </Col>
-                    <Col lg={2} md={2} sm={12} className="video_call_icon">
+                    <Col
+                      lg={recentCallData.isRecordingAvailable ? 3 : 2}
+                      md={recentCallData.isRecordingAvailable ? 3 : 2}
+                      sm={12}
+                      className="video_call_icon"
+                    >
                       {recentCallData.isRecordingAvailable ? (
                         <Tooltip placement="bottomLeft" title={t("Download")}>
                           <img
-                            className="cursor-pointer me-2"
+                            className="cursor-pointer"
                             src={VideoDownload}
                             alt=""
                             onClick={() => downloadVideoCall(recentCallData)}
@@ -1013,7 +1030,7 @@ const VideoPanelBodyRecent = () => {
                         >
                           <img
                             alt=""
-                            className="cursor-pointer"
+                            className="cursor-pointer video-call-start-icon"
                             src={VideoCallIcon}
                             onClick={() => otoVideoCall(recentCallData)}
                           />
