@@ -14,24 +14,12 @@ import {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
 } from "../../../../store/actions/VideoFeature_actions";
-import { useMeetingContext } from "../../../../context/MeetingContext";
+import { setViewTab } from "../../../../store/actions/ModalStates_actions";
 const PollsCastVoteInitimationModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [pollDetails, setPollDetails] = useState(null);
-  const {
-    setAgenda,
-    setParticipants,
-    setAgendaContributors,
-    setorganizers,
-    setmeetingDetails,
-    setMinutes,
-    setactionsPage,
-    setAttendance,
-    setPolls,
-    setMeetingMaterial,
-    setAttendees,
-  } = useMeetingContext();
+
   const castYourVotePollModalState = useSelector(
     (state) => state.PollsReducer.castPollVoteModal,
   );
@@ -40,6 +28,13 @@ const PollsCastVoteInitimationModal = () => {
     (state) => state.PollsReducer.newPollMeeting,
   );
 
+
+  useEffect(() => {
+    return () => {
+      dispatch(castYourVotePollModal(false));
+
+    }
+  }, [])
   useEffect(() => {
     try {
       if (newPollMeeting !== null) {
@@ -69,17 +64,18 @@ const PollsCastVoteInitimationModal = () => {
   const handleClickCastYourVote = () => {
     try {
       dispatch(setCastVoteID(pollDetails));
-      setAgenda(false);
-      setParticipants(false);
-      setAgendaContributors(false);
-      setorganizers(false);
-      setmeetingDetails(false);
-      setMinutes(false);
-      setactionsPage(false);
-      setAttendance(false);
-      setPolls(true);
-      setMeetingMaterial(false);
-      setAttendees(false);
+      dispatch(setViewTab("polls"));
+      // setAgenda(false);
+      // setParticipants(false);
+      // setAgendaContributors(false);
+      // setorganizers(false);
+      // setmeetingDetails(false);
+      // setMinutes(false);
+      // setactionsPage(false);
+      // setAttendance(false);
+      // setPolls(true);
+      // setMeetingMaterial(false);
+      // setAttendees(false);
 
       if (
         localStorage.getItem("isMeeting") === "true" &&

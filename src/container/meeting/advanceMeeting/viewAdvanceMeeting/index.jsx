@@ -750,8 +750,7 @@ const ViewMeetingModal = () => {
       ) {
         if (
           Number(localStorage.getItem("currentMeetingID")) ===
-          AgendaVotingModalStartedData.meetingID &&
-          !editorRole.isPrimaryOrganizer && AgendaPollVotingStartedAction?.polls?.isVoter
+          AgendaVotingModalStartedData.meetingID
         ) {
           dispatch(AgendaPollVotingStartedAction(true));
         }

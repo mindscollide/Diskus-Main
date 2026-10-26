@@ -10,7 +10,7 @@ import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { GetAgendaAndVotingInfo, GetCurrentAgendaDetails } from "../../../../../../store/actions/MeetingAgenda_action";
+import { GetAgendaAndVotingInfo, GetCurrentAgendaDetails, meetingAgendaStartedMQTT } from "../../../../../../store/actions/MeetingAgenda_action";
 const VotingPollAgendaIntiminationModal = ({
   AgendaVotingModalStartedData,
 }) => {
@@ -22,7 +22,7 @@ const VotingPollAgendaIntiminationModal = ({
     (state) => state.NewMeetingreducer.agendavotingPollStartedData
   );
 
-  
+
   //Handle Discard Button
   const handleCastYourAgendaVoteBtn = () => {
     localStorage.setItem("CastedAgendaVoteFromIntimination", true);
@@ -32,12 +32,18 @@ const VotingPollAgendaIntiminationModal = ({
       AgendaVotingID: Number(AgendaVotingModalStartedData.votingID),
     };
     dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
-      dispatch(GetCurrentAgendaDetails(AgendaVotingModalStartedData));
+    dispatch(GetCurrentAgendaDetails(AgendaVotingModalStartedData));
   };
 
   const handleDiscardFunction = () => {
     dispatch(AgendaPollVotingStartedAction(false));
   };
+
+  useEffect(() => {
+    return ( ) => {
+      dispatch(meetingAgendaStartedMQTT(null))
+    }
+  }, [])
 
   return (
     <section>
