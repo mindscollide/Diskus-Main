@@ -1375,7 +1375,7 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
                 dispatch(
                   deleteFileDataroom_success(
                     response.data.responseResult,
-                    t("File-deleted"),
+                    t("File-deleted-successfully"),
                   ),
                 );
               } catch (error) {

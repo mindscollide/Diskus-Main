@@ -143,7 +143,6 @@ const ViewMeetingModal = () => {
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData,
   );
 
-  console.log(AgendaVotingModalStartedData, "AgendaVotingModalStartedDataAgendaVotingModalStartedData")
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag,
   );
@@ -750,13 +749,7 @@ const ViewMeetingModal = () => {
       ) {
         if (
           Number(localStorage.getItem("currentMeetingID")) ===
-<<<<<<< Updated upstream
-          AgendaVotingModalStartedData.meetingID
-=======
-          AgendaVotingModalStartedData.meetingID 
-          // &&
-          // !editorRole.isPrimaryOrganizer && AgendaPollVotingStartedAction?.polls?.isVoter
->>>>>>> Stashed changes
+          AgendaVotingModalStartedData?.meetingID
         ) {
           dispatch(AgendaPollVotingStartedAction(true));
         }

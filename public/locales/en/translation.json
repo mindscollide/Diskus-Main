@@ -2956,5 +2956,6 @@
   "Year": "Year",
   "Due": "Due",
   "This-file-already-exist": "This file already exist",
-  "Browser": "Browser"
+  "Browser": "Browser",
+  "File-deleted-successfully":"File deleted successfully"
 }
