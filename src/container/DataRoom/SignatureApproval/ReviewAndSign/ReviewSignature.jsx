@@ -160,6 +160,7 @@ const ReviewSignature = () => {
         EncryptedString: docSignAction,
       };
       dispatch(validateEncryptedStringSignatureDataApi(Data, navigate, t, 1));
+      localStorage.removeItem("docSignAction")
     }
   }, [docSignAction]);
 
@@ -169,6 +170,8 @@ const ReviewSignature = () => {
         EncryptedString: docSignedAction,
       };
       dispatch(validateEncryptedStringSignatureDataApi(Data, navigate, t, 2));
+
+      localStorage.removeItem("docSignedAction")
     }
   }, [docSignedAction]);
 

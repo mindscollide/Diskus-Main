@@ -750,7 +750,13 @@ const ViewMeetingModal = () => {
       ) {
         if (
           Number(localStorage.getItem("currentMeetingID")) ===
+<<<<<<< Updated upstream
           AgendaVotingModalStartedData.meetingID
+=======
+          AgendaVotingModalStartedData.meetingID 
+          // &&
+          // !editorRole.isPrimaryOrganizer && AgendaPollVotingStartedAction?.polls?.isVoter
+>>>>>>> Stashed changes
         ) {
           dispatch(AgendaPollVotingStartedAction(true));
         }

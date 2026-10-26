@@ -26,7 +26,7 @@ const Recording = () => {
   const meetingRecordingFiles = useSelector(
     (state) => state.NewMeetingreducer.meetingRecordingFiles,
   );
-  const { advanceMeetingModalID, handleCloseMeeting, editorRole } =
+  const { advanceMeetingModalID, handleCloseMeeting, editorRole, setStepDownloadModal } =
     useMeetingContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const Recording = () => {
   useEffect(() => {
     let Data = { MeetingID: advanceMeetingModalID };
 
-    dispatch(getMeetingRecordingFilesApi(navigate, t, Data));
+    dispatch(getMeetingRecordingFilesApi(navigate, t, Data, setStepDownloadModal));
   }, []);
 
   useEffect(() => {
@@ -273,7 +273,7 @@ const Recording = () => {
                       </span>
                     </Col>
                   </Row>
-              
+
                 </section>
               ), //
             }}
