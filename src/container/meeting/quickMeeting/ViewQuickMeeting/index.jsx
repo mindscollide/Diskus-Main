@@ -1495,7 +1495,7 @@ const ModalView = ({ ModalTitle }) => {
         closeButton={true}
         modalBodyClassName='modalMeetingViewBody'
         modalFooterClassName='modalMeetingViewFooter'
-        // modalHeaderClassName='d-none'
+        modalHeaderClassName='d-none'
         ModalBody={
           <>
             <Row>

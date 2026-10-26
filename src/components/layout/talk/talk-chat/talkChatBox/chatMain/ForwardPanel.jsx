@@ -16,7 +16,7 @@ const ForwardPanel = ({
   onCancel,
 }) => {
   const { t } = useTranslation();
-  const { talkStateData } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
 
   const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([]);
   const [searchUserValue, setSearchUserValue] = useState("");

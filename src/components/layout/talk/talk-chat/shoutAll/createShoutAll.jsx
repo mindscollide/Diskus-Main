@@ -28,7 +28,7 @@ import CloseChatIcon from "../../../../../assets/images/Cross-Chat-Icon.png";
  * when no participants are selected before submission.
  */
 const CreateNewShoutAll = () => {
-  const { talkStateData } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
 
   const dispatch = useDispatch();
 

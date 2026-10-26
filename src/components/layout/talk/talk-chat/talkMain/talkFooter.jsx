@@ -18,7 +18,7 @@ import AddChatIcon from '../../../../../assets/images/Add-Plus-Icon.png'
 const TalkFooter = () => {
   const dispatch = useDispatch()
 
-  const { talkFeatureStates } = useSelector((state) => state)
+  const talkFeatureStates = useSelector((state) => state.talkFeatureStates)
 
   const createBehaviorAction = () => {
     if (talkFeatureStates.RecentChatsFlag === true) {

@@ -23,9 +23,8 @@ const PakageDetailsUMUpgrade = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { UserMangementReducer, LanguageReducer } = useSelector(
-    (state) => state
-  );
+  const UserMangementReducer = useSelector((state) => state.UserMangementReducer);
+  const LanguageReducer = useSelector((state) => state.LanguageReducer);
 
   const UserMangementReducergetAllUserTypePackagesData = useSelector(
     (state) => state.UserMangementReducer.getAllUserTypePackagesData

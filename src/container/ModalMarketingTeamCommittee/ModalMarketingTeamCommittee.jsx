@@ -23,7 +23,7 @@ const ModalMarketingTeamCommittee = ({
   mapgroupsData,
 }) => {
   const { t } = useTranslation();
-  const { GroupsReducer } = useSelector((state) => state);
+  const GroupsReducer = useSelector((state) => state.GroupsReducer);
   const [Groups, setGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
   const [committeeData, setCommitteeData] = useState(null);

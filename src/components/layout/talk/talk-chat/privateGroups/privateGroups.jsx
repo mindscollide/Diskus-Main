@@ -42,7 +42,8 @@ const PrivateGroups = () => {
   //Current language
   let lang = localStorage.getItem("i18nextLng");
 
-  const { talkStateData, talkFeatureStates } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
+  const talkFeatureStates = useSelector((state) => state.talkFeatureStates);
 
   console.log(talkStateData.AllUserChats.AllUserChatsData, "AllUserChatsData");
 

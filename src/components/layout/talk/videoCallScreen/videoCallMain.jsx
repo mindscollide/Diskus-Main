@@ -8,44 +8,42 @@ import { leaveCallModal } from "../../../../store/actions/VideoFeature_actions";
 import LeaveVideoIntimationModal from "./LeaveVideoIntimationModal/LeaveVideoIntimationModal";
 
 const VideoMain = () => {
-  const {
-    videoFeatureReducer,
-    assignees,
-    CommitteeReducer,
-    toDoListReducer,
-    getTodosStatus,
-    downloadReducer,
-    todoStatus,
-    uploadReducer,
-    settingReducer,
-    fAQsReducer,
-    meetingIdReducer,
-    calendarReducer,
-    postAssigneeComments,
-    VideoChatReducer,
-    minuteofMeetingReducer,
-    countryNamesReducer,
-    GetSubscriptionPackage,
-    Authreducer,
-    roleListReducer,
-    NotesReducer,
-    GroupsReducer,
-    ResolutionReducer,
-    RealtimeNotification,
-    OrganizationBillingReducer,
-    PollsReducer,
-    NewMeetingreducer,
-    LanguageReducer,
-    webViewer,
-    MeetingOrganizersReducer,
-    MeetingAgendaReducer,
-    attendanceMeetingReducer,
-    actionMeetingReducer,
-    AgendaWiseAgendaListReducer,
-    DataRoomReducer,
-    DataRoomFileAndFoldersDetailsReducer,
-    SignatureWorkFlowReducer,
-  } = useSelector((state) => state);
+  const videoFeatureReducer = useSelector((state) => state.videoFeatureReducer);
+  const assignees = useSelector((state) => state.assignees);
+  const CommitteeReducer = useSelector((state) => state.CommitteeReducer);
+  const toDoListReducer = useSelector((state) => state.toDoListReducer);
+  const getTodosStatus = useSelector((state) => state.getTodosStatus);
+  const downloadReducer = useSelector((state) => state.downloadReducer);
+  const todoStatus = useSelector((state) => state.todoStatus);
+  const uploadReducer = useSelector((state) => state.uploadReducer);
+  const settingReducer = useSelector((state) => state.settingReducer);
+  const fAQsReducer = useSelector((state) => state.fAQsReducer);
+  const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
+  const calendarReducer = useSelector((state) => state.calendarReducer);
+  const postAssigneeComments = useSelector((state) => state.postAssigneeComments);
+  const VideoChatReducer = useSelector((state) => state.VideoChatReducer);
+  const minuteofMeetingReducer = useSelector((state) => state.minuteofMeetingReducer);
+  const countryNamesReducer = useSelector((state) => state.countryNamesReducer);
+  const GetSubscriptionPackage = useSelector((state) => state.GetSubscriptionPackage);
+  const Authreducer = useSelector((state) => state.Authreducer);
+  const roleListReducer = useSelector((state) => state.roleListReducer);
+  const NotesReducer = useSelector((state) => state.NotesReducer);
+  const GroupsReducer = useSelector((state) => state.GroupsReducer);
+  const ResolutionReducer = useSelector((state) => state.ResolutionReducer);
+  const RealtimeNotification = useSelector((state) => state.RealtimeNotification);
+  const OrganizationBillingReducer = useSelector((state) => state.OrganizationBillingReducer);
+  const PollsReducer = useSelector((state) => state.PollsReducer);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
+  const LanguageReducer = useSelector((state) => state.LanguageReducer);
+  const webViewer = useSelector((state) => state.webViewer);
+  const MeetingOrganizersReducer = useSelector((state) => state.MeetingOrganizersReducer);
+  const MeetingAgendaReducer = useSelector((state) => state.MeetingAgendaReducer);
+  const attendanceMeetingReducer = useSelector((state) => state.attendanceMeetingReducer);
+  const actionMeetingReducer = useSelector((state) => state.actionMeetingReducer);
+  const AgendaWiseAgendaListReducer = useSelector((state) => state.AgendaWiseAgendaListReducer);
+  const DataRoomReducer = useSelector((state) => state.DataRoomReducer);
+  const DataRoomFileAndFoldersDetailsReducer = useSelector((state) => state.DataRoomFileAndFoldersDetailsReducer);
+  const SignatureWorkFlowReducer = useSelector((state) => state.SignatureWorkFlowReducer);
   console.log("hell");
   return (
     <>

@@ -41,7 +41,8 @@ const PrivateChats = () => {
   //Current language
   let lang = localStorage.getItem("i18nextLng");
 
-  const { talkStateData, talkFeatureStates } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
+  const talkFeatureStates = useSelector((state) => state.talkFeatureStates);
 
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");

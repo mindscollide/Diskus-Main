@@ -117,7 +117,8 @@ const AgendaViewer = () => {
   const navigate = useNavigate();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
-  const { MeetingAgendaReducer, talkStateData } = useSelector((state) => state);
+  const MeetingAgendaReducer = useSelector((state) => state.MeetingAgendaReducer);
+  const talkStateData = useSelector((state) => state.talkStateData);
   const {
     editorRole,
     setEditorRole,

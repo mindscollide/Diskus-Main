@@ -27,7 +27,7 @@ const RejectCommentModal = ({
 }) => {
   const { t } = useTranslation(); // Initializing translation function
 
-  const { MinutesReducer } = useSelector((state) => state);
+  const MinutesReducer = useSelector((state) => state.MinutesReducer);
 
   const dispatch = useDispatch(); // Initializing dispatch function from Redux
 

@@ -767,8 +767,8 @@ const Dashboard = () => {
           dispatch(participantWaitingListBox(false));
           let presentationRoomID = String(
             payload?.roomID ||
-              payload?.RoomID ||
-              localStorage.getItem("acceptedRoomID"),
+            payload?.RoomID ||
+            localStorage.getItem("acceptedRoomID"),
           );
           localStorage.setItem("presentationRoomID", presentationRoomID);
           // CR(0012249): clear any stale approved/rejected/stopped capture
@@ -2289,7 +2289,7 @@ const Dashboard = () => {
                 "presentationRoomID",
                 String(
                   data.payload?.roomID ||
-                    localStorage.getItem("acceptedRoomID"),
+                  localStorage.getItem("acceptedRoomID"),
                 ),
               );
               localStorage.removeItem("isWebCamEnabled");
@@ -2342,7 +2342,7 @@ const Dashboard = () => {
                 IsHost: hostCheck ? true : false,
                 MeetingID: Number(
                   data.payload?.meetingID ??
-                    localStorage.getItem("currentMeetingID"),
+                  localStorage.getItem("currentMeetingID"),
                 ),
               };
               sessionStorage.removeItem("alreadyInMeetingVideo");
@@ -3521,7 +3521,7 @@ const Dashboard = () => {
               : 0;
           console.log(currentMeetingActive, "currentMeetingActive");
           if (
-            Number(data?.payload?.meetingID) === Number(currentMeetingActive)
+            Number(data?.payload?.meetingID) === Number(currentMeetingActive) && data.payload?.polls?.isVoter
           ) {
             dispatch(castYourVotePollModal(true));
           }
@@ -4204,7 +4204,7 @@ const Dashboard = () => {
 
           let RoomID =
             presenterViewFlag &&
-            (presenterViewHostFlag || presenterViewJoinFlag)
+              (presenterViewHostFlag || presenterViewJoinFlag)
               ? roomID
               : JSON.parse(localStorage.getItem("activeCall"))
                 ? localStorage.getItem("activeRoomID") != 0 &&
@@ -4752,8 +4752,8 @@ const Dashboard = () => {
 
             RoomID =
               presenterViewFlagRef.current &&
-              (presenterViewHostFlagFlagRef.current ||
-                presenterViewJoinFlagRef.current)
+                (presenterViewHostFlagFlagRef.current ||
+                  presenterViewJoinFlagRef.current)
                 ? String(roomID)
                 : isMeetingVideo
                   ? isMeetingVideoHostCheck
@@ -4765,8 +4765,8 @@ const Dashboard = () => {
           } else {
             RoomID =
               presenterViewFlagRef.current &&
-              (presenterViewHostFlagFlagRef.current ||
-                presenterViewJoinFlagRef.current)
+                (presenterViewHostFlagFlagRef.current ||
+                  presenterViewJoinFlagRef.current)
                 ? Number(roomID)
                 : isMeetingVideo
                   ? isMeetingVideoHostCheck
@@ -4997,7 +4997,7 @@ const Dashboard = () => {
             !isMeetingVideo && isZoomEnabled
               ? String(data.payload.roomID) === String(roomID)
               : Number(data.payload.roomID) === Number(roomID) &&
-                userID !== data.senderID
+              userID !== data.senderID
           ) {
             console.log("mqtt", data.payload.callTypeID);
             if (data.payload.callTypeID === 1) {
@@ -5260,7 +5260,7 @@ const Dashboard = () => {
             }
           } else if (
             data.payload.message.toLowerCase() ===
-              "FILE_SHARING_REMOVED".toLowerCase() ||
+            "FILE_SHARING_REMOVED".toLowerCase() ||
             "FILE_DELETED".toLowerCase()
           ) {
             try {
@@ -5350,15 +5350,15 @@ const Dashboard = () => {
                 message:
                   data.payload.callTypeID === 1
                     ? changeMQTTJSONOne(
-                        t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
-                        "[Participant Name]",
-                        data.payload?.callReceipents[0]?.name,
-                      )
+                      t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
+                      "[Participant Name]",
+                      data.payload?.callReceipents[0]?.name,
+                    )
                     : changeMQTTJSONOne(
-                        t("VIDEO_RECORDING_GROUP_RECEIVED"),
-                        "[Participant Name]",
-                        data.payload?.callReceipents[0]?.name,
-                      ),
+                      t("VIDEO_RECORDING_GROUP_RECEIVED"),
+                      "[Participant Name]",
+                      data.payload?.callReceipents[0]?.name,
+                    ),
               });
               setNotificationID(id);
             }
@@ -5916,7 +5916,7 @@ const Dashboard = () => {
         )}
         <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ||
-          location.pathname.includes("meetingDocumentViewer") ? null : (
+            location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
           )}
           <Layout>
@@ -5978,10 +5978,10 @@ const Dashboard = () => {
             )}
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true &&
-          !(
-            JSON.parse(localStorage.getItem("isMeetingVideo")) ||
-            presenterViewFlag
-          ) ? (
+            !(
+              JSON.parse(localStorage.getItem("isMeetingVideo")) ||
+              presenterViewFlag
+            ) ? (
             // Meeting/Presentation chat is opened via a different mechanism
             // (onClickCloseChatHandler → openMeetingGroupChat →
             // ActiveChatBoxGS → <TalkNew/> → ChatBoxActiveFlag-gated
@@ -5999,9 +5999,9 @@ const Dashboard = () => {
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
           {!HIDE_VIDEO &&
-          (NormalizeVideoFlag === true ||
-            MinimizeVideoFlag === true ||
-            MaximizeVideoFlag === true) ? (
+            (NormalizeVideoFlag === true ||
+              MinimizeVideoFlag === true ||
+              MaximizeVideoFlag === true) ? (
             <VideoCallScreen />
           ) : null}
           {/* Disconnectivity Modal  */}

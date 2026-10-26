@@ -18,7 +18,7 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
   const dispatch = useDispatch();
-  const { Authreducer } = useSelector((state) => state);
+  const Authreducer = useSelector((state) => state.Authreducer);
   const { t } = useTranslation();
   const navigate = useNavigate();
   

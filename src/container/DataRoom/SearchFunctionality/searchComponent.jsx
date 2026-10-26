@@ -94,7 +94,8 @@ const SearchComponent = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const calendRef = useRef();
-  const { DataRoomReducer, assignees } = useSelector((state) => state);
+  const DataRoomReducer = useSelector((state) => state.DataRoomReducer);
+  const assignees = useSelector((state) => state.assignees);
   const [searchAllData, setSearchAllData] = useState([]);
   const [sRowsData, setSRowsData] = useState(0);
   const [customRangeVisible, setCustomRangeVisible] = useState(false);

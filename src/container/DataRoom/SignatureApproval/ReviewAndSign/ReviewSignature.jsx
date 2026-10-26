@@ -49,7 +49,6 @@ const ReviewSignature = () => {
     ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   const workflowResponseMessage = useSelector((state) => state.webViewer);
-  const globalState = useSelector((state) => state);
 
   const workflowsignaturedocument = useSelector(
     (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument,
@@ -161,6 +160,7 @@ const ReviewSignature = () => {
         EncryptedString: docSignAction,
       };
       dispatch(validateEncryptedStringSignatureDataApi(Data, navigate, t, 1));
+      localStorage.removeItem("docSignAction")
     }
   }, [docSignAction]);
 
@@ -170,6 +170,8 @@ const ReviewSignature = () => {
         EncryptedString: docSignedAction,
       };
       dispatch(validateEncryptedStringSignatureDataApi(Data, navigate, t, 2));
+
+      localStorage.removeItem("docSignedAction")
     }
   }, [docSignedAction]);
 

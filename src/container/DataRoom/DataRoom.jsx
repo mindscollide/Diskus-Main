@@ -249,7 +249,8 @@ const DataRoom = () => {
 
   // ─── Redux selectors ─────────────────────────────────────────────────────
   /** Full DataRoom reducer slice + webViewer attachment state. */
-  const { DataRoomReducer, webViewer } = useSelector((state) => state);
+  const DataRoomReducer = useSelector((state) => state.DataRoomReducer);
+  const webViewer = useSelector((state) => state.webViewer);
 
   /** Breadcrumb path array for folder navigation. */
   const BreadCrumbsListArr = useSelector(

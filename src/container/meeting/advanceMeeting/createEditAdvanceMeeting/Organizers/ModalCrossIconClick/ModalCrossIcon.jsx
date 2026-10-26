@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 const ModalCrossIcon = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
   const handleYesFunction = () => {
     dispatch(showCrossConfirmationModal(false));
   };

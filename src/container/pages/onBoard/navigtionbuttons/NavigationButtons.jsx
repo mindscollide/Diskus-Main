@@ -22,8 +22,7 @@ const NavigationButtons = () => {
   const navigate = useNavigate();
   const { currentStep, setCurrentStep } = useTour();
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-  const { OnBoardModal } = state;
+  const OnBoardModal = useSelector((state) => state.OnBoardModal);
   const goNextStep = () => {
     if (OnBoardModal.modalSteps) {
       if (OnBoardModal.show) {

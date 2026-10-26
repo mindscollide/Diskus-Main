@@ -35,7 +35,7 @@ const ModalShareFile = ({
   folderId,
   fileName,
 }) => {
-  const { assignees } = useSelector((state) => state);
+  const assignees = useSelector((state) => state.assignees);
   const getSharedFileUsers = useSelector(
     (state) => state.DataRoomReducer.getSharedFileUsers
   );

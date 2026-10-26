@@ -784,7 +784,7 @@ const PendingSignatureViewer = () => {
   const { t, i18n } = useTranslation();
   const { pendingSignatureViewer } = useApryseDocument();
 
-  const { webViewer } = useSelector((s) => s);
+  const webViewer = useSelector((s) => s.webViewer);
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,

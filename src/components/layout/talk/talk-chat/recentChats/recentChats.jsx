@@ -45,7 +45,8 @@ const RecentChats = () => {
   //Current language
   let lang = localStorage.getItem("i18nextLng");
 
-  const { talkFeatureStates, talkStateData } = useSelector((state) => state);
+  const talkFeatureStates = useSelector((state) => state.talkFeatureStates);
+  const talkStateData = useSelector((state) => state.talkStateData);
 
   console.log(
     talkStateData.talkSocketData.socketInsertOTOMessageData,

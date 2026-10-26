@@ -40,7 +40,8 @@ const AddReviewers = ({
 }) => {
   const { t } = useTranslation();
 
-  const { MinutesReducer, NewMeetingreducer } = useSelector((state) => state);
+  const MinutesReducer = useSelector((state) => state.MinutesReducer);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
 
   const generalminutesDocumentForMeeting = useSelector(
     (state) => state.NewMeetingreducer.generalminutesDocumentForMeeting,
@@ -725,6 +726,7 @@ const AddReviewers = ({
                     className={styles["Add-Button-Reviewers"]}
                     text={t("Send")}
                     onClick={sendReviewerScreen}
+                    disableBtn={selectedMinuteIDs.length === 0 ? false : true}
                   />
                 ) : null}
               </Col>

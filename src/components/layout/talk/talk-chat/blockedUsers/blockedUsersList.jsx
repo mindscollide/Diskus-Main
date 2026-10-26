@@ -34,7 +34,8 @@ const BlockedUsersList = () => {
 
   const { t } = useTranslation();
 
-  const { talkFeatureStates, talkStateData } = useSelector((state) => state);
+  const talkFeatureStates = useSelector((state) => state.talkFeatureStates);
+  const talkStateData = useSelector((state) => state.talkStateData);
 
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");

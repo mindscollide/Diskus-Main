@@ -33,9 +33,8 @@ const CancelSubs = () => {
   const [forrevokeCancel, setForRevokeCancel] = useState(false);
   const [enableTextArea, setEnableTextArea] = useState(false);
   const [isReason, setReason] = useState("");
-  const { GetSubscriptionPackage, adminReducer } = useSelector(
-    (state) => state
-  );
+  const GetSubscriptionPackage = useSelector((state) => state.GetSubscriptionPackage);
+  const adminReducer = useSelector((state) => state.adminReducer);
 
   const [maxAdminUser, setMaxAdminUser] = useState(0);
   const [maxBoardMembers, setBoardMembers] = useState(0);

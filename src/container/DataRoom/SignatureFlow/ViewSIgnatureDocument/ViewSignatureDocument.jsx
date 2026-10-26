@@ -106,7 +106,7 @@ const ViewSignatureDocument = () => {
   const navigate = useNavigate();
   const { SignedDocumentViewer } = useApryseDocument();
   const { t, i18n } = useTranslation();
-  const { webViewer } = useSelector((state) => state);
+  const webViewer = useSelector((state) => state.webViewer);
   const {
     getAllFieldsByWorkflowID,
     getWorkfFlowByFileId,

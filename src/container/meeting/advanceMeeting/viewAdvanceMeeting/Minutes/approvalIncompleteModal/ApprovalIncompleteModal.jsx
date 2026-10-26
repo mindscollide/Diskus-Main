@@ -20,7 +20,7 @@ const ApprovalIncompleteModal = ({
 
   const navigate = useNavigate();
 
-  const { MinutesReducer } = useSelector((state) => state);
+  const MinutesReducer = useSelector((state) => state.MinutesReducer);
 
   const [rejectedUserData, setRejectedUserData] = useState(null);
   const [pendingUserData, setPendingUserData] = useState(null);

@@ -18,7 +18,8 @@ const StarredMessagesList = () => {
 
   const { t } = useTranslation();
 
-  const { talkStateData, talkFeatureStates } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
+  const talkFeatureStates = useSelector((state) => state.talkFeatureStates);
 
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");

@@ -46,7 +46,7 @@ const AgendaContributers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [specificUser, setSpecifiUser] = useState(0);
-  const { NewMeetingreducer } = useSelector((state) => state);
+  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
   const [isEdit, setIsEdit] = useState(false);
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [isPublishedState, setIsPublishedState] = useState(false);

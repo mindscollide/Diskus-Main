@@ -34,9 +34,8 @@ const VideoPanelFooter = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state
-  );
+  const videoFeatureReducer = useSelector((state) => state.videoFeatureReducer);
+  const VideoMainReducer = useSelector((state) => state.VideoMainReducer);
 
   const { t } = useTranslation();
 

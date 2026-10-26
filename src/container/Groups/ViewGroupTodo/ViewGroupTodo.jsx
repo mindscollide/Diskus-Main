@@ -37,8 +37,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const state = useSelector((state) => state);
-  const { todoStatus } = state;
+  const todoStatus = useSelector((state) => state.todoStatus);
 
   const toDoListReducersocketTodoStatusData = useSelector(
     (state) => state.toDoListReducer.socketTodoStatusData,

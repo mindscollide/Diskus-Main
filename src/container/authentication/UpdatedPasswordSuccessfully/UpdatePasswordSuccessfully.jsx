@@ -17,7 +17,7 @@ import LanguageSelector from "../../../components/elements/languageSelector/Lang
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 
 const UpdatePasswordSuccessfully = () => {
-  const { Authreducer } = useSelector((state) => state);
+  const Authreducer = useSelector((state) => state.Authreducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();

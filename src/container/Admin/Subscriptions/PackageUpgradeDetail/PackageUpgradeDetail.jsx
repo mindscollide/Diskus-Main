@@ -11,8 +11,7 @@ import { getSubscriptionUpgradeAmountInfoApi } from "../../../../store/actions/A
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 
 const PackageUpgradeDetail = () => {
-  const Data = useSelector((state) => state);
-  const { GetSubscriptionPackage } = Data;
+  const GetSubscriptionPackage = useSelector((state) => state.GetSubscriptionPackage);
   const [show, SnackBar] = useSnackbar();
   const navigate = useNavigate();
   const dispatch = useDispatch();

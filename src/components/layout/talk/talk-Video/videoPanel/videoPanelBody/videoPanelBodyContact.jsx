@@ -35,9 +35,8 @@ import VideoPanelFooter from "../videoPanelFooter/videoPanelFooter";
 import { LeaveMeetingVideo } from "../../../../../../store/actions/NewMeetingActions";
 
 const VideoPanelBodyContact = () => {
-  const { videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state
-  );
+  const videoFeatureReducer = useSelector((state) => state.videoFeatureReducer);
+  const VideoMainReducer = useSelector((state) => state.VideoMainReducer);
 
   const dispatch = useDispatch();
 
@@ -536,8 +535,8 @@ const VideoPanelBodyContact = () => {
         VideoMainReducer.Loading === false ? (
           allUsers.map((userData, index) => {
             return (
-              <Row className='single-chat' key={index}>
-                <Col lg={1} md={1} sm={1} className='mt-4'>
+              <Row className='single-chat px-1' key={index}>
+                <Col lg={1} md={1} sm={1} className="video_call_icon">
                   <Checkbox
                     checked={groupCallUsers.includes(userData.userID)}
                     onChange={() => groupCallUsersHandler(userData)}
@@ -561,7 +560,7 @@ const VideoPanelBodyContact = () => {
                     </p>
                   </div>
                 </Col>
-                <Col lg={2} md={2} sm={2} className='video_call_icon mt-4'>
+                <Col lg={2} md={2} sm={2} className='video_call_icon '>
                   <Tooltip placement='bottomLeft' title={t("Start-video-call")}>
                     <img
                       alt=''

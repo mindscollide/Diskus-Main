@@ -21,7 +21,7 @@ const GroupInfoPanel = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { talkStateData } = useSelector((state) => state);
+  const talkStateData = useSelector((state) => state.talkStateData);
 
   const [groupInfoData, setGroupInfoData] = useState([]);
   const [groupInfoSearchValue, setGroupInfoSearchValue] = useState("");

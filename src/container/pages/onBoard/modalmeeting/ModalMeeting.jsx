@@ -32,8 +32,7 @@ const ModalMeeting = ({ ModalTitle }) => {
   //For Localization
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-  const { OnBoardModal } = state;
+  const OnBoardModal = useSelector((state) => state.OnBoardModal);
   const { setCurrentStep } = useTour();
 
   let meetingDateTime =
