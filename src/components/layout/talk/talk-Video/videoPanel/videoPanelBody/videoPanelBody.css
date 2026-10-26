@@ -76,7 +76,8 @@ span.call-status-icon {
 
 body[dir="rtl"] span.call-status-icon {
   position: absolute; /* Change to absolute positioning */
-  right: 0; /* Position the icon at the right end of the p element */
+  right: auto;
+  left: 0; /* RTL: the icon goes to the end (left) of the p element */
   top: 50%; /* Center the icon vertically within the p element */
   transform: translateY(-50%); /* Adjust for perfect centering */
 }
@@ -131,10 +132,25 @@ body[dir="rtl"] .video-profile-icon {
   justify-content: end;
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
-body[dir="rtl"] .video_call_icon img {
-  transform: rotate(180deg);
+/* RTL: mirror only the start-call camera. The old rule rotated every icon in
+   the column by 180deg, which also turned the download arrow upside down. */
+body[dir="rtl"] .video_call_icon img.video-call-start-icon {
+  transform: scaleX(-1);
+}
+
+/* RTL: titles are often English (LTR) inside an RTL paragraph, which put the
+   ellipsis at the wrong end. Let each title pick its own direction but keep
+   it right-aligned. */
+body[dir="rtl"] p.Video-chat-username {
+  unicode-bidi: plaintext;
+  text-align: right;
+  /* The 20px reserve for the call-status icon is on the right in LTR; in RTL
+     it left a gap before the title, so the title started left of the date. */
+  padding-right: 0;
+  padding-left: 20px;
 }
 
 p.disconnection-text {

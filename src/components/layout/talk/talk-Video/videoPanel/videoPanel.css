@@ -25,7 +25,7 @@ body[dir="rtl"] .chatBox-video {
   height: 88.5vh;
   background: #fff;
   border: 1px solid #4cd7de;
-  overflow: hidden auto;
+  overflow: hidden;
   border-radius: 4px;
   top: 73px;
   left: 85px;
