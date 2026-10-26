@@ -76,7 +76,7 @@ const SelectAgendaModal = ({
                 <CustomRadioGroup
                   onChange={(e) => handleRadioChange(e.target.value)}
                   value={radioValue}
-                  className='AgendaSelectGroup'
+                  className={styles['AgendaSelectGroup']}
                   options={[
                     { value: 1, label: t("Agenda-with-attachment") },
                     { value: 2, label: t("Agenda-without-attachment") },
