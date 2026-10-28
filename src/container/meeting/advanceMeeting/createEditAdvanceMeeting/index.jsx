@@ -271,7 +271,8 @@ const CreateEditAdvanceMeeting = () => {
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12} className='mb-4'>
-          <span className={styles["Scedule_meeting_paper"]}>
+          <span
+            className={`${styles["Scedule_meeting_paper"]} screen-fade-host`}>
             <Row>
               <Col
                 lg={12}

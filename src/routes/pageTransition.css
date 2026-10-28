@@ -16,12 +16,19 @@
   }
 }
 
-.dashbaord_data > * {
+/*
+ * Same fade for screens that are swapped by state instead of by URL (e.g. Committee
+ * list -> Create Committee). Add `screen-fade-host` to the container that renders ONE
+ * screen at a time; whichever screen is mounted becomes its direct child and fades in.
+ */
+.dashbaord_data > *,
+.screen-fade-host > * {
   animation: pageFadeIn 0.18s ease-out backwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dashbaord_data > * {
+  .dashbaord_data > *,
+  .screen-fade-host > * {
     animation: none;
   }
 }

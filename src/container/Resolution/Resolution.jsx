@@ -1324,7 +1324,7 @@ const Resolution = () => {
 
   return (
     <>
-      <section className={styles["resolution_container"]}>
+      <section className={`${styles["resolution_container"]} screen-fade-host`}>
         {ResolutionReducercreateResolutionModal ? (
           <>
             <ScheduleNewResolution />
