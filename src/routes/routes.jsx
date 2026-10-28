@@ -26,89 +26,21 @@ import {
 } from "react-router-dom";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import React from "react";
+import { lazyPage } from "./lazyPage.js";
+import "./pageTransition.css";
 
 import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateRoutes from "./private_routes";
-import SignatureViewer from "../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer";
-import PendingSignature from "../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue";
-import ViewSignatureDocument from "../container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument";
 import RouteWrapperUser from "./RouteWrapperUser";
 import RouteWrapperAdmin from "./RouteWrapperAdmin";
-import NewDashobard from "../container/NewDashboardLayout/NewDashobard";
-import SubscriptionDetailsUserManagement from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement";
-import DowngradeSubscription from "../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription";
-import UpdatedCancelSubscription from "../container/pages/UserMangement/AdminUserManagement/UpdatedCancelSubscription/UpdatedCancelSubscription";
 import PrivateVideoMeeting from "./PrivateVideoMeetingRoute";
-import VideoMeetingBoardDeck from "../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck";
-import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
-import GuestVideoCall from "../components/layout/talk/GuestVideo/GuestVideoCall/GuestVideoCall";
 
-import ChangePassword from "../container/Admin/ChangePassword/ChangePassword.jsx";
-import CustomMiscellaneous from "../container/miscellaneous/Miscellaneous.jsx";
-import Dashboard from "../container/dashboard/Dashboard.jsx";
-import DeleteOrganization from "../container/Admin/Subscriptions/DeleteOrganization/DeleteOrganization.jsx";
 import NotFound from "../container/page_404/Page_404.jsx";
-import OnBoard from "../container/pages/onBoard/OnBoard.jsx";
-import TodoList from "../container/pages/todolist/Todolist.jsx";
-import PaymentHistory from "../container/Admin/BillingInfo/PaymentHistory/PaymentHistory.jsx";
-import PayOutstanding from "../container/Admin/BillingInfo/PayOutstanding/PayOutstanding.jsx";
-import Summary from "../container/Admin/BillingInfo/Summary/Summary.jsx";
-import CustomerInformation from "../container/Admin/CustomerInfo/CustomerInformation/CustomerInformation.jsx";
-import AdminHome from "../container/Admin/Main/AdminHome.jsx";
-import Groups from "../container/Groups/Groups.jsx";
-import AllMeetings from "../container/Admin/Meetings/AllMeeting/AllMeetings.jsx";
-import CancelSubs from "../container/Admin/Subscriptions/CancelSub/CancelSubs.jsx";
-import PackageDetails from "../container/Admin/Subscriptions/PackageDetail/PackageDetails.jsx";
-import PackageUpgrade from "../container/Admin/Subscriptions/PackageUpgrade/PackageUpgrade.jsx";
-import PackageUpgradeDetail from "../container/Admin/Subscriptions/PackageUpgradeDetail/PackageUpgradeDetail.jsx";
-import PackageUpgradeSelect from "../container/Admin/Subscriptions/PackageUpgradeSelected/PackageUpgradeSelect.jsx";
-import PasswordUpdateMessage from "../container/authentication/password_update_message/Password_Update_Message.jsx";
-import Notes from "../container/notes/Notes.jsx";
-import CalendarPage from "../container/calendarpage/CalendarPage.jsx";
-import ForgotPasswordVerification from "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification.jsx";
-import UpdatePasswordSuccessfully from "../container/authentication/UpdatedPasswordSuccessfully/UpdatePasswordSuccessfully.jsx";
-import Committee from "../container/Committee/Committee.jsx";
-import Resolution from "../container/Resolution/Resolution.jsx";
-import DataRoom from "../container/DataRoom/DataRoom.jsx";
-import Polling from "../container/Polling/Polling.jsx";
-import PaymentForm2 from "../container/Admin/Subscriptions/PaymentForm2/PaymentForm2.jsx";
 // import NewMeeting from "../container/pages/meeting/MeetingTwo.js";
-import UserSettings from "../container/setting/UserLevelSettings/UserSettings.jsx";
 // import NewMeeting from "../container/pages/meeting/MeetingTwo.js";
-import EmptyState from "../container/Admin/Subscriptions/PackageDetail/EmptyStatePage/EmptyState.jsx";
-import RSVP from "@/container/meeting/commonComponents/RSVP.jsx";
-import MinutesFlow from "../container/MinutesNewFlow/Main.jsx";
-import UserManagementProcess from "../container/pages/UserManagementProcess/UserManagementProcess.jsx";
-import SignupProcessUserManagement from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement.jsx";
-import PakageDetailsUserManagement from "../container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement.jsx";
-import BillingMethodUsermanagement from "../container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement.jsx";
-import ManageUsers from "../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers";
-import Reports from "../container/Admin/Reports/Reports.jsx";
-import PakageDetailsUMUpgrade from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade.jsx";
-import AddUsers from "../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers.jsx";
-import UserLevelConfigUM from "../container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM.jsx";
-import AddUserMain from "../container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain.jsx";
-import PaymentMethodBillInfo from "../container/pages/UserMangement/AdminUserManagement/PaymentMethodBillInfoUserManagement/PaymentMethodBillInfo.jsx";
-import OrganizationLevelConfigUM from "../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM.jsx";
-import CancelSubscriptionAdmin from "../container/pages/UserMangement/AdminUserManagement/CancelSubscriptionAdmin/CancelSubscriptionAdmin.jsx";
-import PakageDetailsAdmin from "../container/pages/UserMangement/AdminUserManagement/PakageDetailsAdmin/PakageDetailsAdmin.jsx";
-import DeleteOrganizationAdmin from "../container/pages/UserMangement/AdminUserManagement/DeleteOrganizationAdmin/DeleteOrganizationAdmin.jsx";
-import {
-  ErrorFallback,
-  logErrors,
-} from "../components/elements/ErrorFallBack/index.jsx";
-import { ErrorBoundary } from "react-error-boundary";
-import AuditTrial from "../container/Admin/Reports/AuditTrial/AuditTrial.jsx";
-import UserSettingsWrapper from "./UserSettingsWrapper.jsx";
-import MeetingDocumentViewer from "../components/elements/meetingDocumentViewer/meetingDocumentViewer.jsx";
-import AlreadyInGroupAndOtoCall from "../components/layout/talk/videoCallScreen/alreadyInGroupAndOtoCall/AlreadyInGroupAndOtoCall.jsx";
-import ManageAuthority from "../container/Admin/Compliance/Authority/index.jsx";
-import GeneralSetting from "../container/Admin/Compliance/GeneralSettings/index.jsx";
+import RouteBoundary from "./RouteBoundary.jsx";
 import { AuthorityProvider } from "../context/AuthorityContext.jsx";
-import MainCompliance from "../container/ComplianceUser/index.jsx";
-import EmailActionHandler from "../container/emailAction/EmailActionHandler.jsx";
 import { NewMeetingProvider } from "../context/NewMeetingContext.jsx";
-import MainMeeting from "../container/meeting/index.jsx";
 import { TalkProvider } from "../context/TalkContext.jsx";
 import { MeetingProvider } from "../context/MeetingContext.jsx";
 import { GroupsProvider } from "../context/GroupsContext.jsx";
@@ -120,6 +52,74 @@ import { ResolutionProvider } from "../context/ResolutionContext.jsx";
 import { ComlianceProvider } from "../context/ComplianceContext.jsx";
 import { DocumentProvider } from "../context/DocumentContext.jsx";
 
+// Pages are loaded on demand: each becomes its own chunk, fetched the first
+// time its route renders (RouteBoundary supplies the Suspense fallback).
+const SignatureViewer = lazyPage(() => import("../container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer"));
+const PendingSignature = lazyPage(() => import("../container/DataRoom/SignatureFlow/pendingSignature/pendingSignatrue"));
+const ViewSignatureDocument = lazyPage(() => import("../container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument"));
+const NewDashobard = lazyPage(() => import("../container/NewDashboardLayout/NewDashobard"));
+const SubscriptionDetailsUserManagement = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/SubscriptionDetailsUserManagement"));
+const DowngradeSubscription = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/SubscriptionDetailsUserManagement/DowngradeSubscription/DowngradeSubscription"));
+const UpdatedCancelSubscription = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/UpdatedCancelSubscription/UpdatedCancelSubscription"));
+const VideoMeetingBoardDeck = lazyPage(() => import("../container/VideoMeetingBoardDeck/VideoMeetingBoardDeck"));
+const DocumentViewer = lazyPage(() => import("../components/elements/webviewer/DocumentViewer"));
+const GuestVideoCall = lazyPage(() => import("../components/layout/talk/GuestVideo/GuestVideoCall/GuestVideoCall"));
+const ChangePassword = lazyPage(() => import("../container/Admin/ChangePassword/ChangePassword.jsx"));
+const CustomMiscellaneous = lazyPage(() => import("../container/miscellaneous/Miscellaneous.jsx"));
+const Dashboard = lazyPage(() => import("../container/dashboard/Dashboard.jsx"));
+const DeleteOrganization = lazyPage(() => import("../container/Admin/Subscriptions/DeleteOrganization/DeleteOrganization.jsx"));
+const OnBoard = lazyPage(() => import("../container/pages/onBoard/OnBoard.jsx"));
+const TodoList = lazyPage(() => import("../container/pages/todolist/Todolist.jsx"));
+const PaymentHistory = lazyPage(() => import("../container/Admin/BillingInfo/PaymentHistory/PaymentHistory.jsx"));
+const PayOutstanding = lazyPage(() => import("../container/Admin/BillingInfo/PayOutstanding/PayOutstanding.jsx"));
+const Summary = lazyPage(() => import("../container/Admin/BillingInfo/Summary/Summary.jsx"));
+const CustomerInformation = lazyPage(() => import("../container/Admin/CustomerInfo/CustomerInformation/CustomerInformation.jsx"));
+const AdminHome = lazyPage(() => import("../container/Admin/Main/AdminHome.jsx"));
+const Groups = lazyPage(() => import("../container/Groups/Groups.jsx"));
+const AllMeetings = lazyPage(() => import("../container/Admin/Meetings/AllMeeting/AllMeetings.jsx"));
+const CancelSubs = lazyPage(() => import("../container/Admin/Subscriptions/CancelSub/CancelSubs.jsx"));
+const PackageDetails = lazyPage(() => import("../container/Admin/Subscriptions/PackageDetail/PackageDetails.jsx"));
+const PackageUpgrade = lazyPage(() => import("../container/Admin/Subscriptions/PackageUpgrade/PackageUpgrade.jsx"));
+const PackageUpgradeDetail = lazyPage(() => import("../container/Admin/Subscriptions/PackageUpgradeDetail/PackageUpgradeDetail.jsx"));
+const PackageUpgradeSelect = lazyPage(() => import("../container/Admin/Subscriptions/PackageUpgradeSelected/PackageUpgradeSelect.jsx"));
+const PasswordUpdateMessage = lazyPage(() => import("../container/authentication/password_update_message/Password_Update_Message.jsx"));
+const Notes = lazyPage(() => import("../container/notes/Notes.jsx"));
+const CalendarPage = lazyPage(() => import("../container/calendarpage/CalendarPage.jsx"));
+const ForgotPasswordVerification = lazyPage(() => import("../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification.jsx"));
+const UpdatePasswordSuccessfully = lazyPage(() => import("../container/authentication/UpdatedPasswordSuccessfully/UpdatePasswordSuccessfully.jsx"));
+const Committee = lazyPage(() => import("../container/Committee/Committee.jsx"));
+const Resolution = lazyPage(() => import("../container/Resolution/Resolution.jsx"));
+const DataRoom = lazyPage(() => import("../container/DataRoom/DataRoom.jsx"));
+const Polling = lazyPage(() => import("../container/Polling/Polling.jsx"));
+const PaymentForm2 = lazyPage(() => import("../container/Admin/Subscriptions/PaymentForm2/PaymentForm2.jsx"));
+const EmptyState = lazyPage(() => import("../container/Admin/Subscriptions/PackageDetail/EmptyStatePage/EmptyState.jsx"));
+const RSVP = lazyPage(() => import("@/container/meeting/commonComponents/RSVP.jsx"));
+const MinutesFlow = lazyPage(() => import("../container/MinutesNewFlow/Main.jsx"));
+const UserManagementProcess = lazyPage(() => import("../container/pages/UserManagementProcess/UserManagementProcess.jsx"));
+const SignupProcessUserManagement = lazyPage(() => import("../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement.jsx"));
+const PakageDetailsUserManagement = lazyPage(() => import("../container/pages/UserMangement/PakageDetailsUserManagement/PakageDetailsUserManagement.jsx"));
+const BillingMethodUsermanagement = lazyPage(() => import("../container/pages/UserMangement/BillingMethodUserManagement/BillingMethodUsermanagement.jsx"));
+const ManageUsers = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/ManageUsers/ManageUsers"));
+const Reports = lazyPage(() => import("../container/Admin/Reports/Reports.jsx"));
+const PakageDetailsUMUpgrade = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade.jsx"));
+const AddUsers = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/AddUsers/AddUsers.jsx"));
+const UserLevelConfigUM = lazyPage(() => import("../container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM.jsx"));
+const AddUserMain = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain.jsx"));
+const PaymentMethodBillInfo = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/PaymentMethodBillInfoUserManagement/PaymentMethodBillInfo.jsx"));
+const OrganizationLevelConfigUM = lazyPage(() => import("../container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM.jsx"));
+const CancelSubscriptionAdmin = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/CancelSubscriptionAdmin/CancelSubscriptionAdmin.jsx"));
+const PakageDetailsAdmin = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/PakageDetailsAdmin/PakageDetailsAdmin.jsx"));
+const DeleteOrganizationAdmin = lazyPage(() => import("../container/pages/UserMangement/AdminUserManagement/DeleteOrganizationAdmin/DeleteOrganizationAdmin.jsx"));
+const AuditTrial = lazyPage(() => import("../container/Admin/Reports/AuditTrial/AuditTrial.jsx"));
+const UserSettingsWrapper = lazyPage(() => import("./UserSettingsWrapper.jsx"));
+const MeetingDocumentViewer = lazyPage(() => import("../components/elements/meetingDocumentViewer/meetingDocumentViewer.jsx"));
+const AlreadyInGroupAndOtoCall = lazyPage(() => import("../components/layout/talk/videoCallScreen/alreadyInGroupAndOtoCall/AlreadyInGroupAndOtoCall.jsx"));
+const ManageAuthority = lazyPage(() => import("../container/Admin/Compliance/Authority/index.jsx"));
+const GeneralSetting = lazyPage(() => import("../container/Admin/Compliance/GeneralSettings/index.jsx"));
+const MainCompliance = lazyPage(() => import("../container/ComplianceUser/index.jsx"));
+const EmailActionHandler = lazyPage(() => import("../container/emailAction/EmailActionHandler.jsx"));
+const MainMeeting = lazyPage(() => import("../container/meeting/index.jsx"));
+
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
 export const router = createBrowserRouter(
@@ -130,87 +130,85 @@ export const router = createBrowserRouter(
         <Route
           path='/Diskus/video'
           element={
-            <ErrorBoundary
-              FallbackComponent={ErrorFallback}
-              onError={logErrors}>
+            <RouteBoundary>
               <VideoMeetingBoardDeck />
-            </ErrorBoundary>
+            </RouteBoundary>
           }
         />
       </Route>
       <Route
         path='/GuestVideoCall'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <GuestVideoCall />
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       <Route
         path='/AlreadyInGroupAndOtoCall'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <AlreadyInGroupAndOtoCall />
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       {/* for all login Routes  */}
       <Route
         path='/'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <UserManagementProcess />
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       {/* For All Signup Route */}
       <Route
         path='/Signup'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <SignupProcessUserManagement />{" "}
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       {/* ============================================================ */}
       <Route
         path='/PakageDetailsUserManagement'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <PakageDetailsUserManagement />{" "}
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       <Route
         path='/forgotpasswordVerification'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <ForgotPasswordVerification />{" "}
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       <Route
         path='/updatepassword'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <UpdatePasswordSuccessfully />{" "}
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       <Route
         path='/PaymentFormUserManagement'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <BillingMethodUsermanagement />
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       <Route
         path='/updatePasswordSuccess'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <PasswordUpdateMessage />{" "}
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       <Route path='/404' element={<NotFound />} />
@@ -218,9 +216,9 @@ export const router = createBrowserRouter(
       <Route
         path='/onboard'
         element={
-          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+          <RouteBoundary>
             <OnBoard />{" "}
-          </ErrorBoundary>
+          </RouteBoundary>
         }
       />
       {/* ============================================================ */}
@@ -229,9 +227,7 @@ export const router = createBrowserRouter(
           path='/Diskus/'
           element={
             <RouteWrapperUser name='Diskus'>
-              <ErrorBoundary
-                FallbackComponent={ErrorFallback}
-                onError={logErrors}>
+              <RouteBoundary>
                 <NewMeetingProvider>
                   <DocumentProvider>
                     <TalkProvider>
@@ -255,18 +251,16 @@ export const router = createBrowserRouter(
                     </TalkProvider>
                   </DocumentProvider>
                 </NewMeetingProvider>
-              </ErrorBoundary>
+              </RouteBoundary>
             </RouteWrapperUser>
           }>
           <Route
             path=''
             element={
               <RouteWrapperUser name=''>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <NewDashobard />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -274,11 +268,9 @@ export const router = createBrowserRouter(
             path='Minutes'
             element={
               <RouteWrapperUser name='Minutes'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <MinutesFlow />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -286,11 +278,9 @@ export const router = createBrowserRouter(
             path='home'
             element={
               <RouteWrapperUser name='home'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <NewDashobard />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -299,11 +289,9 @@ export const router = createBrowserRouter(
             path='todolist'
             element={
               <RouteWrapperUser name='todolist'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <TodoList />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -311,11 +299,9 @@ export const router = createBrowserRouter(
             path='documentViewer'
             element={
               <RouteWrapperUser name='documentViewer'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <DocumentViewer />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -323,11 +309,9 @@ export const router = createBrowserRouter(
             path='meetingDocumentViewer'
             element={
               <RouteWrapperUser name='documentViewer'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <MeetingDocumentViewer />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -336,11 +320,9 @@ export const router = createBrowserRouter(
             path='signatureviewer'
             element={
               <RouteWrapperUser name='signatureviewer'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <SignatureViewer />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -348,11 +330,9 @@ export const router = createBrowserRouter(
             path='signeddocument'
             element={
               <RouteWrapperUser name='signatureviewer'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PendingSignature />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -360,11 +340,9 @@ export const router = createBrowserRouter(
             path='viewSignDocument'
             element={
               <RouteWrapperUser name='signatureviewer'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <ViewSignatureDocument />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -372,11 +350,9 @@ export const router = createBrowserRouter(
             path='calendar'
             element={
               <RouteWrapperUser name='calendar'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <CalendarPage />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -384,14 +360,12 @@ export const router = createBrowserRouter(
             path='Meeting'
             element={
               <RouteWrapperUser name='Meeting'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <NewMeetingProvider>
                     <MainMeeting />
                     {/* <NewMeeting /> */}
                   </NewMeetingProvider>
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -399,11 +373,9 @@ export const router = createBrowserRouter(
             path='Meeting/Useravailabilityformeeting'
             element={
               <RouteWrapperUser name='Meeting'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <RSVP />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -411,11 +383,9 @@ export const router = createBrowserRouter(
             path='setting'
             element={
               <RouteWrapperUser name='setting'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <UserSettingsWrapper />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -423,11 +393,9 @@ export const router = createBrowserRouter(
             path="faq's"
             element={
               <RouteWrapperUser name="faq's">
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <CustomMiscellaneous />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -435,11 +403,9 @@ export const router = createBrowserRouter(
             path='groups'
             element={
               <RouteWrapperUser name='groups'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <Groups />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -447,11 +413,9 @@ export const router = createBrowserRouter(
             path='changePassword'
             element={
               <RouteWrapperUser name='changePassword'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <ChangePassword />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -459,11 +423,9 @@ export const router = createBrowserRouter(
             path='notes'
             element={
               <RouteWrapperUser name='notes'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <Notes />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -471,11 +433,9 @@ export const router = createBrowserRouter(
             path='committee'
             element={
               <RouteWrapperUser name='committee'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <Committee />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -483,11 +443,9 @@ export const router = createBrowserRouter(
             path='resolution'
             element={
               <RouteWrapperUser name='resolution'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <Resolution />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -495,11 +453,9 @@ export const router = createBrowserRouter(
             path='dataroom'
             element={
               <RouteWrapperUser name='dataroom'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <DataRoom />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -507,11 +463,9 @@ export const router = createBrowserRouter(
             path='polling'
             element={
               <RouteWrapperUser name='polling'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <Polling />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
@@ -519,22 +473,18 @@ export const router = createBrowserRouter(
             path='compliance'
             element={
               <RouteWrapperUser name='compliance'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <MainCompliance />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
             path='Redirected'
             element={
-              <ErrorBoundary
-                FallbackComponent={ErrorFallback}
-                onError={logErrors}>
+              <RouteBoundary>
                 <EmailActionHandler />
-              </ErrorBoundary>
+              </RouteBoundary>
             }
           />
         </Route>
@@ -545,9 +495,7 @@ export const router = createBrowserRouter(
           path='/Admin/'
           element={
             <RouteWrapperAdmin name='Admin'>
-              <ErrorBoundary
-                FallbackComponent={ErrorFallback}
-                onError={logErrors}>
+              <RouteBoundary>
                 <NewMeetingProvider>
                   <TalkProvider>
                     <MeetingProvider>
@@ -569,20 +517,18 @@ export const router = createBrowserRouter(
                     </MeetingProvider>
                   </TalkProvider>
                 </NewMeetingProvider>
-              </ErrorBoundary>
+              </RouteBoundary>
             </RouteWrapperAdmin>
           }>
           <Route
             path='manageAuthority'
             element={
               <RouteWrapperAdmin name='Admin'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <AuthorityProvider>
                     <ManageAuthority />
                   </AuthorityProvider>
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -590,11 +536,9 @@ export const router = createBrowserRouter(
             path='generalSetting'
             element={
               <RouteWrapperAdmin name='Admin'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <GeneralSetting />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -603,11 +547,9 @@ export const router = createBrowserRouter(
             path=''
             element={
               <RouteWrapperAdmin name='Admin'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   {roleRoute ? <PayOutstanding /> : <ManageUsers />}
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -615,11 +557,9 @@ export const router = createBrowserRouter(
             path='PaymentFormUserManagement'
             element={
               <RouteWrapperAdmin name='PaymentFormUserManagement'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <BillingMethodUsermanagement />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -629,11 +569,9 @@ export const router = createBrowserRouter(
             path='PakageDetailsUserManagement'
             element={
               <RouteWrapperAdmin name='PakageDetailsUserManagement'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PakageDetailsUserManagement />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -641,11 +579,9 @@ export const router = createBrowserRouter(
             path='loginreport'
             element={
               <RouteWrapperAdmin name='loginreport'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <Reports />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -653,11 +589,9 @@ export const router = createBrowserRouter(
             path='PackageDetailUMupgrade'
             element={
               <RouteWrapperAdmin name='PackageDetailUMupgrade'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PakageDetailsUMUpgrade />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -666,11 +600,9 @@ export const router = createBrowserRouter(
             path='AddUsers'
             element={
               <RouteWrapperAdmin name='AddUsers'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <AddUsers />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -678,11 +610,9 @@ export const router = createBrowserRouter(
             path='ManageUsers'
             element={
               <RouteWrapperAdmin name='ManageUsers'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <ManageUsers />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -690,11 +620,9 @@ export const router = createBrowserRouter(
             path='UserLevelConfigUM'
             element={
               <RouteWrapperAdmin name='UserLevelConfigUM'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <UserLevelConfigUM />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -702,11 +630,9 @@ export const router = createBrowserRouter(
             path='AddUsersUsermanagement'
             element={
               <RouteWrapperAdmin name='AddUsersUsermanagement'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <AddUserMain />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -714,11 +640,9 @@ export const router = createBrowserRouter(
             path='PayOutstanding'
             element={
               <RouteWrapperAdmin name='PayOutstanding'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PayOutstanding />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -726,11 +650,9 @@ export const router = createBrowserRouter(
             path='PaymentHistory'
             element={
               <RouteWrapperAdmin name='PaymentHistory'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PaymentHistory />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -738,11 +660,9 @@ export const router = createBrowserRouter(
             path='PaymentHistoryusermanagement'
             element={
               <RouteWrapperAdmin name='PaymentHistoryusermanagement'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PaymentMethodBillInfo />
-                </ErrorBoundary>{" "}
+                </RouteBoundary>{" "}
               </RouteWrapperAdmin>
             }
           />
@@ -750,11 +670,9 @@ export const router = createBrowserRouter(
             path='Summary'
             element={
               <RouteWrapperAdmin name='Summary'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <Summary />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -762,11 +680,9 @@ export const router = createBrowserRouter(
             path='OrganizationlevelConfigUM'
             element={
               <RouteWrapperAdmin name='OrganizationlevelConfigUM'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <OrganizationLevelConfigUM />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -774,11 +690,9 @@ export const router = createBrowserRouter(
             path='AllMeeting'
             element={
               <RouteWrapperAdmin name='AllMeeting'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <AllMeetings />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -786,11 +700,9 @@ export const router = createBrowserRouter(
             path='CancelSub'
             element={
               <RouteWrapperAdmin name='CancelSub'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <CancelSubs />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -798,11 +710,9 @@ export const router = createBrowserRouter(
             path='CancelSubscriptionUserManagement'
             element={
               <RouteWrapperAdmin name='CancelSubscriptionUserManagement'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <CancelSubscriptionAdmin />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -810,11 +720,9 @@ export const router = createBrowserRouter(
             path='PackageDetail'
             element={
               <RouteWrapperAdmin name='PackageDetail'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PackageDetails />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -822,11 +730,9 @@ export const router = createBrowserRouter(
             path='PackageDetailsUserManagement'
             element={
               <RouteWrapperAdmin name='PackageDetailsUserManagement'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PakageDetailsAdmin />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -834,11 +740,9 @@ export const router = createBrowserRouter(
             path='subscriptionDetailsUserManagement'
             element={
               <RouteWrapperAdmin name='subscriptionDetailsUserManagement'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <SubscriptionDetailsUserManagement />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -846,11 +750,9 @@ export const router = createBrowserRouter(
             path='downgradeSubscription'
             element={
               <RouteWrapperAdmin name='downgradeSubscription'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <DowngradeSubscription />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -858,11 +760,9 @@ export const router = createBrowserRouter(
             path='updatedCancelSubscription'
             element={
               <RouteWrapperAdmin name='updatedCancelSubscription'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <UpdatedCancelSubscription />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -870,11 +770,9 @@ export const router = createBrowserRouter(
             path='EmptyState'
             element={
               <RouteWrapperAdmin name='EmptyState'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <EmptyState />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -882,11 +780,9 @@ export const router = createBrowserRouter(
             path='UpgradePackage'
             element={
               <RouteWrapperAdmin name='UpgradePackage'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PackageUpgrade />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -894,11 +790,9 @@ export const router = createBrowserRouter(
             path='changePassword'
             element={
               <RouteWrapperAdmin name='changePassword'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <ChangePassword />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -906,11 +800,9 @@ export const router = createBrowserRouter(
             path="faq's"
             element={
               <RouteWrapperAdmin name="faq's">
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <CustomMiscellaneous />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -918,11 +810,9 @@ export const router = createBrowserRouter(
             path='deleteorganization'
             element={
               <RouteWrapperAdmin name='deleteorganization'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <DeleteOrganization />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -930,11 +820,9 @@ export const router = createBrowserRouter(
             path='deleteorganizationUserMangement'
             element={
               <RouteWrapperAdmin name='deleteorganizationUserMangement'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <DeleteOrganizationAdmin />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -942,11 +830,9 @@ export const router = createBrowserRouter(
             path='paymentForm'
             element={
               <RouteWrapperAdmin name='paymentForm'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PaymentForm2 />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -954,11 +840,9 @@ export const router = createBrowserRouter(
             path='UpgradePackageDetail'
             element={
               <RouteWrapperAdmin name='UpgradePackageDetail'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PackageUpgradeDetail />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -966,11 +850,9 @@ export const router = createBrowserRouter(
             path='UpgradePackageSelect'
             element={
               <RouteWrapperAdmin name='UpgradePackageSelect'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <PackageUpgradeSelect />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -978,11 +860,9 @@ export const router = createBrowserRouter(
             path='CustomerInformation'
             element={
               <RouteWrapperAdmin name='CustomerInformation'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <CustomerInformation />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />
@@ -990,11 +870,9 @@ export const router = createBrowserRouter(
             path='AuditTrial'
             element={
               <RouteWrapperAdmin name='AuditTrial'>
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                <RouteBoundary>
                   <AuditTrial />
-                </ErrorBoundary>
+                </RouteBoundary>
               </RouteWrapperAdmin>
             }
           />

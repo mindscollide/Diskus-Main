@@ -1,0 +1,60 @@
+.bar {
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  height: 3px;
+  z-index: 100000;
+  pointer-events: none;
+  background: linear-gradient(90deg, #6172d6, #49dbdb);
+  box-shadow: 0 0 8px rgba(97, 114, 214, 0.55);
+}
+
+/* jumps to ~65% almost at once (so a fast navigation still reads as a real sweep),
+   then creeps towards ~92% and waits there until the page is ready */
+.running {
+  width: 0;
+  animation: navProgressRun 10s linear forwards;
+}
+
+.finishing {
+  width: 100%;
+  animation: navProgressFinish 0.3s ease-out forwards;
+}
+
+@keyframes navProgressRun {
+  0% {
+    width: 0;
+  }
+  2.5% {
+    width: 65%;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    width: 92%;
+  }
+}
+
+@keyframes navProgressFinish {
+  0% {
+    width: 80%;
+    opacity: 1;
+  }
+  40% {
+    width: 100%;
+    opacity: 1;
+  }
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .running {
+    width: 60%;
+    animation: none;
+  }
+  .finishing {
+    animation-duration: 0.01s;
+  }
+}

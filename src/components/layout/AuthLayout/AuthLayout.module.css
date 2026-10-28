@@ -115,8 +115,8 @@ body[dir="rtl"] .languageSelector {
 
 .PoweredIcon_Diskus_Icon {
   position: absolute;
-  bottom: 75px;
-  right: 100px;
+  bottom: 65px;
+  right: 70px;
 }
 
 @media screen and (max-width: 480px) {
