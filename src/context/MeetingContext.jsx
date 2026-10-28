@@ -122,18 +122,6 @@ export const MeetingProvider = ({ children }) => {
   const [currentMeetingID, setCurrentMeetingID] = useState(0);
 
   // State for managing meeting tabs and their visibility
-  const [meetingDetails, setmeetingDetails] = useState(true);
-  const [organizers, setorganizers] = useState(false);
-  const [agendaContributors, setAgendaContributors] = useState(false);
-  const [participants, setParticipants] = useState(false);
-  const [agenda, setAgenda] = useState(false);
-  const [meetingMaterial, setMeetingMaterial] = useState(false);
-  const [minutes, setMinutes] = useState(false);
-  const [actionsPage, setactionsPage] = useState(false);
-  const [polls, setPolls] = useState(false);
-  const [attendance, setAttendance] = useState(false);
-  const [attendees, setAttendees] = useState(false);
-  const [isRecording, setRecording] = useState(false);
 
   // State for managing polls view mode
   const [editPolls, setEditPolls] = useState(false);
@@ -327,13 +315,13 @@ export const MeetingProvider = ({ children }) => {
     }
   }, [currentMeetingInfo]);
 
-  const joinMeetingFunction = (isQuickMeeting, routeValue, propValue) => {};
+  const joinMeetingFunction = (isQuickMeeting, routeValue, propValue) => { };
 
-  const startMeetingFunction = (isQuickMeeting, routeValue, propValue) => {};
+  const startMeetingFunction = (isQuickMeeting, routeValue, propValue) => { };
 
-  const leaveMeetingFunction = () => {};
+  const leaveMeetingFunction = () => { };
 
-  const leaveMeetingVideoFunction = () => {};
+  const leaveMeetingVideoFunction = () => { };
 
   // For Web Notification Count
   const [unReadCountNotification, setUnReadCountNotification] = useState(0);
@@ -414,28 +402,7 @@ export const MeetingProvider = ({ children }) => {
     setDeleteMeetingConfirmationModal,
     setAdvanceMeetingModalID,
     advanceMeetingModalID,
-    meetingDetails,
-    setmeetingDetails,
-    organizers,
-    setorganizers,
-    agendaContributors,
-    setAgendaContributors,
-    participants,
-    setParticipants,
-    agenda,
-    setAgenda,
-    meetingMaterial,
-    setMeetingMaterial,
-    minutes,
-    setMinutes,
-    actionsPage,
-    setactionsPage,
-    polls,
-    setPolls,
-    attendance,
-    setAttendance,
-    attendees,
-    setAttendees,
+
     setConfirmationModal,
     confirmationModal,
     editPolls,
@@ -522,8 +489,6 @@ export const MeetingProvider = ({ children }) => {
     stepDownloadModal,
     downloadMeetinModal,
     setDownloadMeeting,
-    isRecording,
-    setRecording,
     leaveOneToOne,
     setLeaveOneToOne,
     joinMeetingVideoParticipant,

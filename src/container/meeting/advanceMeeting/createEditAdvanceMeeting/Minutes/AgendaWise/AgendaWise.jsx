@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import {
   AttachmentViewer,
   Button,
-  Notification,
 } from "../../../../../../components/elements";
 import Select from "react-select";
 import { Accordion, Col, Row } from "react-bootstrap";
@@ -22,7 +21,6 @@ import { newTimeFormaterAsPerUTCFullDate } from "../../../../../../commen/functi
 import {
   AddAgendaWiseMinutesApiFunc,
   AgendaWiseRetriveDocumentsMeetingMinutesApiFunc,
-  CleareMessegeNewMeeting,
   DeleteAgendaWiseMinutesDocumentsApiFunc,
   SaveAgendaWiseDocumentsApiFunc,
   UpdateAgendaWiseMinutesApiFunc,
@@ -69,9 +67,7 @@ const AgendaWise = ({
   const agendaWiseMinuteID = useSelector(
     (state) => state.NewMeetingreducer.agendaWiseMinuteID,
   );
-  const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage,
-  );
+
   const RetriveAgendaWiseDocuments = useSelector(
     (state) => state.NewMeetingreducer.RetriveAgendaWiseDocuments,
   );
@@ -572,8 +568,7 @@ const AgendaWise = ({
         value: findOptionValue.value,
       });
       setisEdit(true);
-    } else {
-    }
+    } 
   };
 
   //Retirive Document of Specific Minutes
@@ -677,7 +672,6 @@ const AgendaWise = ({
           {},
         ),
       );
-    } else {
     }
 
     setAgendaOptionValue({

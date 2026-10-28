@@ -295,57 +295,7 @@ const WebNotfication = ({
         return;
       }
       if (isMeeting) {
-        // COMMENTED: All meeting-related logic
-        // if (
-        //   polls &&
-        //   PayLoadData.MeetingID ===
-        //     Number(localStorage.getItem("currentMeetingID"))
-        // ) {
-        //   let data = {
-        //     PollID: Number(PayLoadData.PollID),
-        //     UserID: Number(localStorage.getItem("userID")),
-        //   };
-        //   dispatch(
-        //     getPollByPollIdforMeeting(
-        //       navigate,
-        //       data,
-        //       2,
-        //       t,
-        //       setEditPolls,
-        //       setvotePolls,
-        //       setUnPublished,
-        //       setViewPublishedPoll,
-        //     ),
-        //   );
-        // } else if (!polls) {
-        //   setMeetingMaterial(false);
-        //   setAgendaContributors(false);
-        //   setorganizers(false);
-        //   setmeetingDetails(false);
-        //   setMinutes(false);
-        //   setAttendance(false);
-        //   setAgenda(false);
-        //   setParticipants(false);
-        //   setAttendees(false);
-        //   setRecording(false);
-        //   setactionsPage(false);
-        //   setPolls(true);
-        //   localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
-        //   localStorage.setItem("AdvanceMeetingOperations", true);
-        //   localStorage.setItem(
-        //     "NotificationAdvanceMeetingID",
-        //     PayLoadData.MeetingID,
-        //   );
-        //   localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
-        //   //set Local storage flag for identification for polls
-        //   localStorage.setItem("viewadvanceMeetingPolls", true);
-        // } else {
-        //   await dispatch(
-        //     webNotificationDataLeaveVideoIntiminationModal(NotificationData),
-        //   );
-        //   localStorage.setItem("webNotifactionDataRoutecheckFlag", true);
-        //   await dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-        // }
+    
         return;
       } else {
         if (NotificationData.notificationActionID === 1) {

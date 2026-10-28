@@ -30,8 +30,6 @@ import {
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import { useEffect } from "react";
-import NextModal from "../meetingDetails/NextModal/NextModal";
-import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { Tooltip } from "antd";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";

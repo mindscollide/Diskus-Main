@@ -4,7 +4,6 @@ import {
   Button,
   Table,
   TextField,
-  Notification,
 } from "../../../../../components/elements";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import addmore from "../../../../../assets/images/addmore.png";
@@ -22,18 +21,6 @@ import { useNavigate } from "react-router-dom";
 import {
   showAddUserModal,
   sendRecentNotificationOrganizerModal,
-  UpdateMeetingUserForOrganizers,
-  meetingDetailsGlobalFlag,
-  organizersGlobalFlag,
-  agendaContributorsGlobalFlag,
-  participantsGlobalFlag,
-  agendaGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  actionsGlobalFlag,
-  pollsGlobalFlag,
-  attendanceGlobalFlag,
   uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
@@ -58,9 +45,6 @@ import {
   uploadDocument_success,
   getAllVotingResultDisplay_success,
 } from "../../../../../store/actions/MeetingAgenda_action";
-import CancelModalOrganizer from "./CancelModalOrganizer/CancelModalOrganizer";
-import NextModal from "../meetingDetails/NextModal/NextModal";
-import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
@@ -1013,22 +997,7 @@ const Organizers = () => {
         <SendNotificationOrganizer />
       ) : null}
 
-      {NewMeetingreducer.ShowPreviousModal && (
-        <PreviousModal
-          // setAgendaContributors={setAgendaContributors}
-          // setmeetingDetails={setmeetingDetails}
-          // setorganizers={setorganizers}
-          // setParticipants={setParticipants}
-          // setAgenda={setAgenda}
-          // setMinutes={setMinutes}
-          // setactionsPage={setactionsPage}
-          // setAttendance={setAttendance}
-          // setPolls={setPolls}
-          // setMeetingMaterial={setMeetingMaterial}
-          setRowsData={setRowsData}
-          prevFlag={prevFlag}
-        />
-      )}
+     
       {SnackBar}
     </>
   );

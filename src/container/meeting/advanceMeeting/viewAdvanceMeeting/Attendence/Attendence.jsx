@@ -47,13 +47,8 @@ const Attendence = () => {
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
-  const [useCase, setUseCase] = useState(0);
   const {
-    setPolls,
-    setMinutes,
-    setAgenda,
     advanceMeetingModalID,
-    setAttendance,
     setViewAdvanceMeetingModal,
     setAdvanceMeetingModalID,
     setEditorRole,
@@ -171,7 +166,7 @@ const Attendence = () => {
               md={12}
               sm={12}
               className='d-flex align-items-center gap-4'>
-              {}
+              { }
               {/* Add this line for debugging */}
               {text === 1 ? (
                 <>
@@ -317,11 +312,10 @@ const Attendence = () => {
 
       if (response && response.success) {
         handleSaveNotification();
-      } else {
       }
     } catch (error) {
       handleSaveNotification();
-      
+
     }
   };
 
@@ -364,11 +358,10 @@ const Attendence = () => {
         ProposedMeetings:
           currentView && Number(currentView) === 2 ? true : false,
       };
-      
+
       dispatch(searchNewUserMeeting(navigate, searchData, t));
     } else {
       dispatch(showAttendanceConfirmationModal(true));
-      setUseCase(2);
     }
   };
 
@@ -428,25 +421,21 @@ const Attendence = () => {
           setCancelModalView={setCancelModalView}
           cancelModalView={cancelModalView}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
-          setAgenda={setAgenda}
-          setPolls={setPolls}
-          setAttendance={setAttendance}
-          setMinutes={setMinutes}
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
         />
       )}
 
-      {attendanceConfirmationModal && (
+      {/* {attendanceConfirmationModal && (
         <ModalCancelAttendance
           setAttendance={setAttendance}
           setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
           useCase={useCase}
           setPolls={setPolls}
         />
-      )}
+      )} */}
 
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };

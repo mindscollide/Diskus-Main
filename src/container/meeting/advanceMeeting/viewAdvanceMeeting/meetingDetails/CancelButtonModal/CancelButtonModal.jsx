@@ -20,10 +20,6 @@ import { listOfMeetingsApi, resetCurrentMeetingInfo } from "../../../../../../st
 const CancelButtonModal = ({
   setCancelModalView,
   cancelModalView,
-  setAgenda,
-  setPolls,
-  setMinutes,
-  setAttendance,
   setAdvanceMeetingModalID,
 }) => {
   const { t } = useTranslation();
@@ -50,7 +46,7 @@ const CancelButtonModal = ({
         currentView && Number(currentView) === 1 ? true : false,
     };
     dispatch(cleareAllState());
-    dispatch(listOfMeetingsApi(navigate,t, searchData));
+    dispatch(listOfMeetingsApi(navigate, t, searchData));
     setCancelModalView(false);
     setEditorRole({ status: null, role: null });
     dispatch(resetCurrentMeetingInfo());
