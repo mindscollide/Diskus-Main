@@ -16,6 +16,7 @@ import { EditmeetingDateFormat } from "../../../../commen/functions/date_formate
 import moment from "moment";
 import {
   castVoteApi,
+  deletePollsMQTT,
   UpdatedCastVoteAPI,
 } from "../../../../store/actions/Polls_actions";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
@@ -24,6 +25,11 @@ import { formatNumber } from "../../../../commen/functions/utils";
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
   const Allpolls = useSelector((state) => state.PollsReducer.Allpolls);
+
+
+  const newPollDelete = useSelector(
+    (state) => state.PollsReducer.newPollDelete,
+  );
   let userID = localStorage.getItem("userID");
   const [show, SnackBar] = useSnackbar();
   const dispatch = useDispatch();
@@ -148,6 +154,21 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
     }
   }, [Allpolls]);
 
+  useEffect(() => {
+    try {
+      if (newPollDelete !== null) {
+        const polls = newPollDelete;
+        if (viewProgressPollsDetails?.PollID === polls?.pollID) {
+          dispatch(deletePollsMQTT(null));
+          setvotePolls(false)
+        }
+
+      }
+    } catch (error) {
+      console.error("src/container/Committee/ViewPolls/Polls/Polls.js:", error);
+    }
+  }, [newPollDelete]);
+
   const handleCancelButton = () => {
     setvotePolls(false);
   };
@@ -174,89 +195,89 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                 <Row>
                   {pollsOption.length > 0
                     ? pollsOption.map((data, index) => {
-                        return (
-                          <>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="mt-2 cursor-pointer"
-                              key={index}
-                              onClick={() =>
-                                handleSectionClick(data.pollAnswerID)
-                              }
-                            >
-                              <section>
-                                <Row>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span
-                                      className={styles["Messege_span_Class"]}
+                      return (
+                        <>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="mt-2 cursor-pointer"
+                            key={index}
+                            onClick={() =>
+                              handleSectionClick(data.pollAnswerID)
+                            }
+                          >
+                            <section>
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <span
+                                    className={styles["Messege_span_Class"]}
+                                  >
+                                    {data.answer}{" "}
+                                    <span>({formatNumber(data.totalVotes)})</span>
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
                                     >
-                                      {data.answer}{" "}
-                                  <span>({formatNumber(data.totalVotes)})</span>
-                                    </span>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <Row>
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                      >
-                                        {viewProgressPollsDetails.AllowMultipleAnswers ===
+                                      {viewProgressPollsDetails.AllowMultipleAnswers ===
                                         true ? (
-                                          <Checkbox
-                                            name={data.pollAnswerID}
-                                            checked={handleForCheck(
-                                              data.pollAnswerID,
-                                            )}
-                                            onChange={handleCheckBoxYes}
-                                            classNameCheckBoxP="d-none"
-                                          />
-                                        ) : (
-                                          <CustomRadioGroup
-                                            className="AnotherRadioSelect"
-                                            value={
-                                              viewProgressPollsDetails
-                                                .answer?.[0]
-                                            }
-                                            onChange={(e) =>
-                                              setViewProgressPollsDetails(
-                                                (prev) => ({
-                                                  ...prev,
-                                                  answer: [e.target.value],
-                                                }),
-                                              )
-                                            }
-                                            options={[
-                                              {
-                                                value: data.pollAnswerID,
-                                                label: data.answerText ?? null,
-                                              },
-                                            ]}
-                                          />
-                                        )}
-                                        <Progress
-                                          className="Progress_bar_Polls"
-                                          percent={data.votePercentage}
-                                          status="active"
-                                          onClick={() =>
-                                            handleSectionClick(
-                                              data.pollAnswerID,
+                                        <Checkbox
+                                          name={data.pollAnswerID}
+                                          checked={handleForCheck(
+                                            data.pollAnswerID,
+                                          )}
+                                          onChange={handleCheckBoxYes}
+                                          classNameCheckBoxP="d-none"
+                                        />
+                                      ) : (
+                                        <CustomRadioGroup
+                                          className="AnotherRadioSelect"
+                                          value={
+                                            viewProgressPollsDetails
+                                              .answer?.[0]
+                                          }
+                                          onChange={(e) =>
+                                            setViewProgressPollsDetails(
+                                              (prev) => ({
+                                                ...prev,
+                                                answer: [e.target.value],
+                                              }),
                                             )
                                           }
+                                          options={[
+                                            {
+                                              value: data.pollAnswerID,
+                                              label: data.answerText ?? null,
+                                            },
+                                          ]}
                                         />
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </Row>
-                              </section>
-                            </Col>
-                          </>
-                        );
-                      })
+                                      )}
+                                      <Progress
+                                        className="Progress_bar_Polls"
+                                        percent={data.votePercentage}
+                                        status="active"
+                                        onClick={() =>
+                                          handleSectionClick(
+                                            data.pollAnswerID,
+                                          )
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                            </section>
+                          </Col>
+                        </>
+                      );
+                    })
                     : null}
                 </Row>
               </Col>
@@ -360,8 +381,8 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           </Col>
         </Row>
       </section>
-      
-    {SnackBar}
+
+      {SnackBar}
     </>
   );
 };
