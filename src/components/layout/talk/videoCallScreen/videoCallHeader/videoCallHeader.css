@@ -810,6 +810,30 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
   cursor: pointer;
 }
 
+/* Read-only recording dot shown to participants: it pulses (zooms in/out and
+   fades dark/light) only while a recording is actually running. */
+.recording-indicator-live {
+  animation: recordingIndicatorPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes recordingIndicatorPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recording-indicator-live {
+    animation: none;
+  }
+}
+
 .Record-Start-Background {
   position: relative;
   cursor: pointer;
@@ -967,7 +991,7 @@ body[dir="rtl"] .Bunch-Start-Record-Button-2 {
   position: relative;
   cursor: pointer;
   top: 2px;
-  right: 71px;
+  right: 83px; /* 12px more than before: gap between the pill and the mic icon */
   height: 40px;
   width: 190px;
   padding: 0px 20px;
@@ -984,7 +1008,7 @@ body[dir="rtl"] .Record-Start-Background-MeetingVideo {
   cursor: pointer;
   top: 2px;
   right: auto;
-  left: 71px;
+  left: 83px;
   height: 40px;
   width: auto;
   min-width: 175px;
@@ -999,7 +1023,7 @@ body[dir="rtl"] .Record-Start-Background-MeetingVideo {
 
 .Record-Start-BackgroundRed-VideoMeeting {
   position: relative;
-  right: 70px;
+  right: 82px;
   top: 2px;
   height: 40px;
   background-color: red !important;
@@ -1012,7 +1036,7 @@ body[dir="rtl"] .Record-Start-Background-MeetingVideo {
 body[dir="rtl"] .Record-Start-BackgroundRed-VideoMeeting {
   position: relative;
   right: auto;
-  left: 70px;
+  left: 82px;
   top: 2px;
   gap: 8px;
   height: 40px;

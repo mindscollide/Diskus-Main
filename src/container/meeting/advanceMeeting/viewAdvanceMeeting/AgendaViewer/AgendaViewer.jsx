@@ -100,7 +100,6 @@ import {
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import MaxHostVideoCallComponent from "../../../commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import NormalHostVideoCallComponent from "../../../commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import ParticipantVideoCallComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
 import NormalParticipantVideoComponent from "../../../commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import MaxParticipantVideoDeniedComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
@@ -1579,7 +1578,6 @@ const onClickVideoIconOpenVideo = () => {
 
       {MaximizeHostVideoFlag && <MaxHostVideoCallComponent />}
       {NormalHostVideoFlag && <NormalHostVideoCallComponent />}
-      {maximizeParticipantVideoFlag && <ParticipantVideoCallComponent />}
       {normalParticipantVideoFlag && <NormalParticipantVideoComponent />}
       {maxParticipantVideoDeniedFlag && <MaxParticipantVideoDeniedComponent />}
       {maxParticipantVideoRemovedFlag && (

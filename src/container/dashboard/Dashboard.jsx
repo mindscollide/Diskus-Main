@@ -2052,7 +2052,32 @@ const Dashboard = () => {
 
               console.log("mqtt check 22", userID);
               console.log("mqtt check 22", data.receiverID[0]);
-              if (userID === data.receiverID[0] && isMeetingVideo) {
+              // The handler moves participantRoomId -> newRoomId and then
+              // removes participantRoomId, so a second delivery of the same
+              // message (or a later run) finds it gone and would overwrite the
+              // valid newRoomId / hostUrl / isGuid with "null". Only a user who
+              // still has their participant room can be promoted.
+              const transferParticipantRoomId =
+                localStorage.getItem("participantRoomId");
+              const hasParticipantRoom =
+                transferParticipantRoomId !== null &&
+                !["", "null", "undefined", "0"].includes(
+                  String(transferParticipantRoomId).trim(),
+                );
+              if (
+                userID === data.receiverID[0] &&
+                isMeetingVideo &&
+                !hasParticipantRoom
+              ) {
+                console.warn(
+                  "TRANSFER_HOST_TO_PARTICIPANT skipped — participantRoomId already moved (duplicate message)",
+                );
+              }
+              if (
+                userID === data.receiverID[0] &&
+                isMeetingVideo &&
+                hasParticipantRoom
+              ) {
                 console.log("mqtt check 22");
 
                 const meetingHost = {
@@ -2098,12 +2123,16 @@ const Dashboard = () => {
                 localStorage.removeItem("participantRoomId");
                 // set host url
                 let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
-                localStorage.setItem("hostUrl", refinedVideoUrl);
+                if (refinedVideoUrl) {
+                  localStorage.setItem("hostUrl", refinedVideoUrl);
+                }
                 // remove host url
                 localStorage.removeItem("refinedVideoUrl");
                 // change participant id to host id
                 let participantUID = localStorage.getItem("participantUID");
-                localStorage.setItem("isGuid", participantUID);
+                if (participantUID) {
+                  localStorage.setItem("isGuid", participantUID);
+                }
                 dispatch(participantWaitingListBox(false));
                 dispatch(toggleParticipantsVisibility(false));
                 dispatch(acceptHostTransferAccessGlobalFunc(true));

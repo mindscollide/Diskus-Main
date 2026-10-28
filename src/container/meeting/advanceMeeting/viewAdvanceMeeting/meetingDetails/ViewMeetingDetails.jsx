@@ -72,7 +72,6 @@ import { useCallback } from "react";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import MaxHostVideoCallComponent from "../../../commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
 import NormalHostVideoCallComponent from "../../../commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import ParticipantVideoCallComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
 import MaxParticipantVideoDeniedComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
 import MaxParticipantVideoRemovedComponent from "../../../commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import NormalParticipantVideoComponent from "../../../commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
@@ -914,9 +913,6 @@ const ViewMeetingDetails = () => {
                             )}
                             {NormalHostVideoFlag && (
                               <NormalHostVideoCallComponent />
-                            )}
-                            {maximizeParticipantVideoFlag && (
-                              <ParticipantVideoCallComponent />
                             )}
                             {normalParticipantVideoFlag && (
                               <NormalParticipantVideoComponent />

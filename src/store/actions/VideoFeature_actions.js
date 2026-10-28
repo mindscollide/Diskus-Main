@@ -944,8 +944,40 @@ const participantListAndWaitingListFail = (message) => {
   };
 };
 
-const participantListWaitingListMainApi = (Data, navigate, t) => {
+// GetVideoCallParticipantsAndWaitingList: RoomID must be a real value, and the
+// same room is not requested twice within a short window (a repeated MQTT /
+// handler run used to send it twice, the second time sometimes with "null").
+// The 417 token-refresh retry passes isRetry and is never dropped.
+const WAITING_LIST_DEDUPE_MS = 1500;
+const recentWaitingListRequests = new Map();
+
+const participantListWaitingListMainApi = (
+  Data,
+  navigate,
+  t,
+  isRetry = false,
+) => {
   return (dispatch) => {
+    const requestRoomID = Data?.RoomID;
+    if (
+      requestRoomID === null ||
+      requestRoomID === undefined ||
+      ["", "null", "undefined", "0"].includes(String(requestRoomID).trim())
+    ) {
+      console.error(
+        "src/store/actions/VideoFeature_actions.js: GetVideoCallParticipantsAndWaitingList not sent — RoomID missing",
+        Data,
+      );
+      return;
+    }
+    if (!isRetry) {
+      const now = Date.now();
+      const last = recentWaitingListRequests.get(String(requestRoomID));
+      if (last && now - last < WAITING_LIST_DEDUPE_MS) {
+        return;
+      }
+      recentWaitingListRequests.set(String(requestRoomID), now);
+    }
     dispatch(participantListAndWaitingListInit());
     let form = new FormData();
     form.append(
@@ -958,7 +990,7 @@ const participantListWaitingListMainApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(participantListWaitingListMainApi(Data, navigate, t));
+          dispatch(participantListWaitingListMainApi(Data, navigate, t, true));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1112,8 +1144,41 @@ const getVideoCallParticipantFail = (message) => {
   };
 };
 
-const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
+// GetVideoCallParticipants: same protection as the waiting-list call below —
+// RoomID must be real, and the same room is not requested twice within a short
+// window (a host transfer triggers this from both the TransferMeetingHost
+// response and the HOST_TRANSFERRED_NOTIFICATION MQTT). The 417 token-refresh
+// retry passes isRetry and is never dropped.
+const PARTICIPANTS_DEDUPE_MS = 1500;
+const recentParticipantsRequests = new Map();
+
+const getVideoCallParticipantsMainApi = (
+  Data,
+  navigate,
+  t,
+  isRetry = false,
+) => {
   return (dispatch) => {
+    const requestRoomID = Data?.RoomID;
+    if (
+      requestRoomID === null ||
+      requestRoomID === undefined ||
+      ["", "null", "undefined", "0"].includes(String(requestRoomID).trim())
+    ) {
+      console.error(
+        "src/store/actions/VideoFeature_actions.js: GetVideoCallParticipants not sent — RoomID missing",
+        Data,
+      );
+      return;
+    }
+    if (!isRetry) {
+      const now = Date.now();
+      const last = recentParticipantsRequests.get(String(requestRoomID));
+      if (last && now - last < PARTICIPANTS_DEDUPE_MS) {
+        return;
+      }
+      recentParticipantsRequests.set(String(requestRoomID), now);
+    }
     dispatch(getVideoCallParticipantInit());
     let form = new FormData();
     form.append(
@@ -1126,7 +1191,7 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
+          dispatch(getVideoCallParticipantsMainApi(Data, navigate, t, true));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
