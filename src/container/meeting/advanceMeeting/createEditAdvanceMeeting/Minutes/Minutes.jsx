@@ -47,7 +47,7 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../../../commen/functions/date_formater";
 import AgendaWise from "./AgendaWise/AgendaWise";
-import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
+// import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { removeHTMLTagsAndTruncate } from "../../../../../commen/functions/utils";
 import {
   MeetingContext,
@@ -90,9 +90,7 @@ const Minutes = () => {
   const addMinuteID = useSelector(
     (state) => state.NewMeetingreducer.addMinuteID,
   );
-  const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage,
-  );
+ 
 
   const [useCase, setUseCase] = useState(null);
   const [fileSize, setFileSize] = useState(0);

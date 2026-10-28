@@ -833,7 +833,7 @@ const ViewMeetingModal = () => {
         <Row>
           <Col lg={12} md={12} sm={12} className='mb-4 '>
             <span
-              className={`${styles["Scedule_meeting_paper"]} ${"position-relative"}`}>
+              className={`${styles["Scedule_meeting_paper"]} ${"position-relative"} screen-fade-host`}>
               <Row>
                 <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button

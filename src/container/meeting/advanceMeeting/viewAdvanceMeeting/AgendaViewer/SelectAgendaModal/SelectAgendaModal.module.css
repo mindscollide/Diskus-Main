@@ -69,3 +69,20 @@ body[dir="rtl"] img.image-close {
   cursor: pointer;
   left: 10px;
 }
+.AgendaSelectGroup label  {
+  width: 100%;
+  padding:10px 10px;
+  margin: 0 0 10px 0 !important;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center !important;
+  gap: 10px;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 8px;
+}
+.AgendaSelectGroup label span {
+  top: 0 !important;
+}
+.AgendaSelectGroup label.ant-radio-wrapper-checked {
+  box-shadow: 0px 0px 5px #ccc !important;
+}

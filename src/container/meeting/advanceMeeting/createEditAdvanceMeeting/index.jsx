@@ -271,7 +271,8 @@ const CreateEditAdvanceMeeting = () => {
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12} className='mb-4'>
-          <span className={styles["Scedule_meeting_paper"]}>
+          <span
+            className={`${styles["Scedule_meeting_paper"]} screen-fade-host`}>
             <Row>
               <Col
                 lg={12}
@@ -340,32 +341,15 @@ const CreateEditAdvanceMeeting = () => {
                       }
                       onClick={showMeetingMaterial}
                     />
-
-                    <Button
-                      text={t("Minutes")}
-                      className={
-                        createEditMinutesTab
-                          ? styles["Schedule_meetings_options_active"]
-                          : styles["Schedule_meetings_options"]
-                      }
-                      onClick={showMinutes}
-                      disableBtn={
-                        Number(editorRole.status) === 10 ||
-                          Number(editorRole.status) === 9
-                          ? false
-                          : true
-                      }
-                    />
-
-                    {checkFeatureIDAvailability(14) && (
-                      <Button
-                        text={t("Task")}
+                    {(Number(editorRole.status) === 10 ||
+                      Number(editorRole.status) === 9) && <Button
+                        text={t("Minutes")}
                         className={
-                          createEditActionsPageTab
+                          createEditMinutesTab
                             ? styles["Schedule_meetings_options_active"]
                             : styles["Schedule_meetings_options"]
                         }
-                        onClick={showActions}
+                        onClick={showMinutes}
                         disableBtn={
                           Number(editorRole.status) === 10 ||
                             Number(editorRole.status) === 9
@@ -373,9 +357,29 @@ const CreateEditAdvanceMeeting = () => {
                             : true
                         }
                       />
-                    )}
+                    }
 
-                    {checkFeatureIDAvailability(15) && (
+                    {checkFeatureIDAvailability(14) && (Number(editorRole.status) === 10 ||
+                      Number(editorRole.status) === 9) && (
+                        <Button
+                          text={t("Task")}
+                          className={
+                            createEditActionsPageTab
+                              ? styles["Schedule_meetings_options_active"]
+                              : styles["Schedule_meetings_options"]
+                          }
+                          onClick={showActions}
+                          disableBtn={
+                            Number(editorRole.status) === 10 ||
+                              Number(editorRole.status) === 9
+                              ? false
+                              : true
+                          }
+                        />
+                      )}
+
+                    {checkFeatureIDAvailability(15) && (Number(editorRole.status) === 10 ||
+                      Number(editorRole.status) === 9) && (
                       <Button
                         text={t("Polls")}
                         className={
@@ -394,7 +398,7 @@ const CreateEditAdvanceMeeting = () => {
                     )}
 
                     {Number(editorRole.status) === 10 &&
-                      editorRole.role === "Organizer" && (
+                      editorRole.role === "Organizer" &&  (
                         <Button
                           text={t("Attendence")}
                           className={

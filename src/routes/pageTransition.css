@@ -1,0 +1,34 @@
+/*
+ * Fade the page in when the private area swaps routes.
+ *
+ * `.dashbaord_data` (Dashboard.jsx) holds the <Outlet />, so its direct children are
+ * the page that was just mounted; an element animates when it is inserted, which is
+ * exactly the moment a new route's page replaces the old one. Opacity only: no
+ * transform, so position:fixed descendants and layout are untouched, and no extra
+ * wrapper element is added (a lot of this app's CSS relies on child selectors).
+ */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+ * Same fade for screens that are swapped by state instead of by URL (e.g. Committee
+ * list -> Create Committee). Add `screen-fade-host` to the container that renders ONE
+ * screen at a time; whichever screen is mounted becomes its direct child and fades in.
+ */
+.dashbaord_data > *,
+.screen-fade-host > * {
+  animation: pageFadeIn 0.18s ease-out backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashbaord_data > *,
+  .screen-fade-host > * {
+    animation: none;
+  }
+}

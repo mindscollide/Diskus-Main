@@ -11,21 +11,8 @@ import {
   ResultMessage,
 } from "../../../../../components/elements";
 import NoMeetingsIcon from "../../../../../assets/images/No-Meetings.png";
-import CancelMeetingMaterial from "./CancelMeetingMaterial/CancelMeetingMaterial";
 import { useSelector } from "react-redux";
 import {
-  searchNewUserMeeting,
-  meetingDetailsGlobalFlag,
-  organizersGlobalFlag,
-  agendaContributorsGlobalFlag,
-  participantsGlobalFlag,
-  agendaGlobalFlag,
-  meetingMaterialGlobalFlag,
-  minutesGlobalFlag,
-  proposedMeetingDatesGlobalFlag,
-  actionsGlobalFlag,
-  pollsGlobalFlag,
-  attendanceGlobalFlag,
   uploadGlobalFlag,
 } from "../../../../../store/actions/NewMeetingActions";
 import { getMeetingMaterialAPI } from "../../../../../store/actions/NewMeetingActions";
@@ -33,8 +20,6 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../../DataRoom/SearchFunctionality/option"; // Remove the getFileExtensionMeeting import
-import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
-import NextModal from "../meetingDetails/NextModal/NextModal";
 import {
   DataRoomDownloadFileApiFunc,
   DataRoomDownloadFileWithFooterApiFunc,
@@ -45,9 +30,7 @@ import { useCommitteeContext } from "../../../../../context/CommitteeContext";
 import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { UpdateMeetingStatusApi } from "../../../../../store/actions/NewMeeting2.actions";
 import {
-  setAdvanceMeetingRoute,
   setCreateEditTab,
-  toggleCreateEditMeetingModal,
 } from "../../../../../store/actions/ModalStates_actions";
 
 const MeetingMaterial = ({
@@ -516,7 +499,7 @@ const MeetingMaterial = ({
 
           {(Number(editorRole.status) === 11 ||
             Number(editorRole.status) === 12) &&
-          editorRole.role !== "Agenda Contributor" ? (
+            editorRole.role !== "Agenda Contributor" ? (
             <Button
               disableBtn={
                 Number(currentMeeting) === 0 || isPublishedState === false

@@ -78,11 +78,8 @@ const Polls = () => {
     setViewPublishedPoll,
     advanceMeetingModalID,
     setViewAdvanceMeetingModal,
-    setPolls,
-    setAttendance,
     currentMeeting,
     setAdvanceMeetingModalID,
-    setactionsPage,
     handleCloseMeeting,
   } = useMeetingContext();
 

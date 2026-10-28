@@ -5,36 +5,28 @@ import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Switch,
   TextField,
-  Notification,
 } from "../../../../../components/elements";
 import desh from "../../../../../assets/images/desh.svg";
 import { validateInput } from "../../../../../commen/functions/regex";
 import moment from "moment";
 import { useDispatch } from "react-redux";
-import {
-  SaveMeetingDetialsNewApiFunction,
-  clearResponseNewMeetingReducerMessage,
-} from "../../../../../store/actions/NewMeetingActions";
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  convertDateTimetoGMTMeetingDetail,
   createConvert,
   resolutionResultTable,
 } from "../../../../../commen/functions/date_formater";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
-import NextModal from "./NextModal/NextModal";
 import { areAllValuesNotEmpty } from "../../../../../commen/functions/CompareArrayObjectValues";
 import {
   getAgendaAndVotingInfo_success,
@@ -51,11 +43,9 @@ import {
   getCurrentDate,
   getEndTimeWitlCeilFunction,
   getStartTimeWithCeilFunction,
-  incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
-import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
 import { useCommitteeContext } from "../../../../../context/CommitteeContext";
 import { useGroupsContext } from "../../../../../context/GroupsContext";
 import { SaveMeetingDetailsApi } from "../../../../../store/actions/NewMeeting2.actions";

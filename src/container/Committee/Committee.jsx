@@ -1001,7 +1001,7 @@ const Committee = () => {
   }
   return (
     <>
-      <div className={styles["CommitteeContainer"]}>
+      <div className={`${styles["CommitteeContainer"]} screen-fade-host`}>
         {creategrouppage && CommitteeReducercreateCommitteePageFlag === true ? (
           <>
             <CreateCommittee setCreategrouppage={setCreategrouppage} />

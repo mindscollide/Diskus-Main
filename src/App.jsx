@@ -44,6 +44,7 @@ import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagemen
 import GlobalSnackbar from "./components/elements/snack_bar/GlobalSnackbar";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
+import NavigationProgress from "./routes/NavigationProgress";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 import { useSelector } from "react-redux";
 import { getHomeRoute } from "./commen/functions/utils";
@@ -322,6 +323,17 @@ const App = () => {
   return (
     <>
       {/* Define your routes here */}
+      {/*
+        v7_startTransition: true makes React Router run every navigation as a React
+        transition. With lazy routes that means: while the next page's chunk is still
+        downloading/compiling, the OLD page stays on screen and no Suspense fallback is
+        shown (measured on login -> /Signup in dev: old page stayed 1,050 ms after the
+        URL changed). That is the smooth behaviour we want, but ONLY together with a
+        visible "loading" signal, otherwise the app looks frozen. NavigationProgress
+        (top bar, driven by lazyPage in routes/) is that signal. If you ever remove the
+        bar, set this to false so the route's Suspense fallback shows instead.
+      */}
+      <NavigationProgress router={router} />
       <RouterProvider
         router={router}
         future={{ v7_startTransition: true, v7_fetcherPersist: true }}

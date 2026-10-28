@@ -836,7 +836,7 @@ const Groups = () => {
   }
   return (
     <>
-      <div className={styles["Groupscontainer"]}>
+      <div className={`${styles["Groupscontainer"]} screen-fade-host`}>
         {creategrouppage && GroupsReducercreateGroupPageFlag === true ? (
           <>
             <CreateGroup setCreategrouppage={setCreategrouppage} />
