@@ -4306,8 +4306,10 @@ const Dashboard = () => {
               }
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
+              // ResponseMessage feeds the global snackbar: show the MQTT key as
+              // readable words ("VIDEO CALL UNANSWERED") instead of with underscores.
               dispatch(
-                callRequestReceivedMQTT(data.payload, data.payload.message),
+                callRequestReceivedMQTT(data.payload, data.payload.message.replace(/_/g, " ")),
               );
               console.log(data.payload.message, "datapayloadmessage");
             } else {
@@ -4397,7 +4399,7 @@ const Dashboard = () => {
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
                 dispatch(
-                  callRequestReceivedMQTT(data.payload, data.payload.message),
+                  callRequestReceivedMQTT(data.payload, data.payload.message.replace(/_/g, " ")),
                 );
               }
             }
@@ -4412,7 +4414,7 @@ const Dashboard = () => {
             localStorage.setItem("ringerRoomId", data.payload.roomID);
             localStorage.setItem("initiateVideoCall", true);
             dispatch(
-              callRequestReceivedMQTT(data.payload, data.payload.message),
+              callRequestReceivedMQTT(data.payload, data.payload.message.replace(/_/g, " ")),
             );
             let existingData =
               JSON.parse(localStorage.getItem("callerStatusObject")) || [];

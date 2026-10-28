@@ -243,6 +243,8 @@ const VideoPanelNormal = () => {
 
   const videoControlRef = useRef(videoControl);
   videoControlRef.current = videoControl;
+  const audioControlRef = useRef(audioControl);
+  audioControlRef.current = audioControl;
 
   const participantsVisible = useSelector(
     (state) => state.videoFeatureReducer.participantsVisible,
@@ -1617,6 +1619,36 @@ const VideoPanelNormal = () => {
             setTimeout(() => {
               dispatch(disableZoomBeforeJoinSession(false));
             }, 4000);
+          }
+
+          // Meeting-video participant: the iframe starts with its own default
+          // mic / camera, and the MicOn/VidOn effects below only fire when the
+          // value CHANGES — before the iframe exists, so the chosen state was
+          // never delivered. Once the stream is up, tell the iframe the state
+          // the icons show (sent twice in case it is not ready the first time;
+          // the messages set a state, they do not toggle).
+          if (
+            isMeetingVideo &&
+            !isMeetingVideoHostChecker &&
+            !presenterViewFlag &&
+            JSON.parse(localStorage.getItem("meetinHostInfo"))
+              ?.isDashboardVideo
+          ) {
+            [1500, 4500].forEach((delay) =>
+              setTimeout(() => {
+                const syncIframe = iframeRef.current;
+                if (syncIframe && syncIframe.contentWindow) {
+                  syncIframe.contentWindow.postMessage(
+                    audioControlRef.current ? "MicOn" : "MicOff",
+                    "*",
+                  );
+                  syncIframe.contentWindow.postMessage(
+                    videoControlRef.current ? "VidOn" : "VidOff",
+                    "*",
+                  );
+                }
+              }, delay),
+            );
           }
 
           // Presentation recording starts automatically (like meeting video

@@ -1640,6 +1640,11 @@ const videoFeatureReducer = (state = initialState, action) => {
       );
       return {
         ...state,
+        // Also drop a user who left while still waiting to be admitted, so
+        // the presenter's waiting list and join-request popup clear too.
+        presentationWaitingParticipantsList: (
+          state.presentationWaitingParticipantsList || []
+        ).filter((p) => !isSamePresentationUser(p, leaving)),
         presentationParticipantsList: {
           ...(typeof state.presentationParticipantsList === "object" &&
           !Array.isArray(state.presentationParticipantsList)
