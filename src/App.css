@@ -8389,3 +8389,14 @@ td.ant-table-column-sort {
 .Pagination_pagesizer__value-container .css-mohuvp-dummyInput-DummyInput {
   left: 0 !important;
 }
+
+/* Wrapper of the camera preview in the meeting-video waiting room / call
+   components. It was only defined in GuestJoinVideo.css, which loads with the
+   lazy GuestVideoCall route, so logged-in pages lost it (preview shifted down).
+   Same values as the guest page. */
+.avatar-class {
+  height: 235px;
+  display: flex;
+  justify-content: center;
+  align-items: center !important;
+}

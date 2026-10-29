@@ -37,6 +37,7 @@ import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
 import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
+import ParticipantVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
 import { cleareAllState } from "../../../../store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -140,6 +141,12 @@ const ViewMeetingModal = () => {
     (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData,
   );
 
+  // The participant waiting room (e.g. when a presentation starts) opens from
+  // this flag. Rendered here, not inside a single tab, so it opens (and stays
+  // mounted) on whichever tab the user is on.
+  const maximizeParticipantVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
+  );
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag,
   );
@@ -1056,6 +1063,7 @@ const ViewMeetingModal = () => {
       )}
       {castYourVotePollModalState && <PollsCastVoteInitimationModal />}
       {endMeetingModal && <NewEndMeetingModal />}
+      {maximizeParticipantVideoFlag && <ParticipantVideoCallComponent />}
 
       {NewMeetingreducer.castVoteAgendaPage && (
         <CastVoteAgendaModal

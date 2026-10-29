@@ -559,9 +559,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
             isMeetingVideoHostCheck &&
             !presenterViewJoinFlag &&
             !presenterViewHostFlag) ||
-            (presenterViewFlag &&
-              (presenterViewHostFlag ||
-                (presenterViewJoinFlag && isMeetingVideoHostCheck))))
+            (presenterViewFlag && presenterViewHostFlag))
         ) {
           setTimeout(sendMessage, 1000); // 1s delay for host
         } else {

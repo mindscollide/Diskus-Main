@@ -924,14 +924,6 @@ const VideoCallNormalHeader = ({
           IsHost: isMeetingVideoHostCheck ? true : false,
           MeetingID: Number(currentMeetingID),
         };
-        // A meeting-video host who was recording the presentation stops it.
-        if (
-          isZoomEnabled &&
-          isMeetingVideoHostCheck &&
-          (pauseRecordingState || resumeRecordingState)
-        ) {
-          await onStopRecording();
-        }
         // Leave presenter view
         if (isMeetingVideoHostCheck) {
           dispatch(videoIconOrButtonState(false));
@@ -2026,16 +2018,23 @@ const VideoCallNormalHeader = ({
   };
 
   // Recording controls: the meeting-video host, or — during a presentation —
-  // the presenter and the meeting-video host.
+  // only the presenter (the meeting host watching it gets none).
   const showRecordingControls = Boolean(
     isMeeting &&
       ((isMeetingVideo &&
         isMeetingVideoHostCheck &&
         !presenterViewJoinFlag &&
         !presenterViewHostFlag) ||
-        (presenterViewFlag &&
-          (presenterViewHostFlag ||
-            (presenterViewJoinFlag && isMeetingVideoHostCheck)))),
+        (presenterViewFlag && presenterViewHostFlag)),
+  );
+  // Everyone else (meeting-video / presentation participants and the meeting
+  // host watching a presentation) only sees a read-only dot while recording.
+  const showRecordingIndicator = Boolean(
+    isZoomEnabled &&
+      isMeeting &&
+      (isMeetingVideo || presenterViewFlag) &&
+      !showRecordingControls &&
+      (pauseRecordingState || resumeRecordingState),
   );
 
   return (
@@ -2170,6 +2169,31 @@ const VideoCallNormalHeader = ({
                       </div>
                     )}
                   </>
+                ) : showRecordingIndicator ? (
+                  <Tooltip
+                    placement={presenterViewFlag ? "bottom" : "topRight"}
+                    title={
+                      pauseRecordingState
+                        ? t("Recording...")
+                        : t("Recording-paused")
+                    }
+                    overlayClassName={
+                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                    }>
+                    <img
+                      src={StartRecordLarge}
+                      className={
+                        pauseRecordingState
+                          ? "Start-Record-Button recording-indicator-live"
+                          : "Start-Record-Button"
+                      }
+                      style={{
+                        pointerEvents: "none",
+                        opacity: pauseRecordingState ? 1 : 0.5,
+                      }}
+                      alt='Recording'
+                    />
+                  </Tooltip>
                 ) : null}
               </>
             )}

@@ -243,6 +243,8 @@ const VideoPanelNormal = () => {
 
   const videoControlRef = useRef(videoControl);
   videoControlRef.current = videoControl;
+  const audioControlRef = useRef(audioControl);
+  audioControlRef.current = audioControl;
 
   const participantsVisible = useSelector(
     (state) => state.videoFeatureReducer.participantsVisible,
@@ -1128,6 +1130,23 @@ const VideoPanelNormal = () => {
     }
   }, [presenterViewFlag]);
 
+  // A user already in the meeting video who starts / joins a presentation keeps
+  // the SAME iframe session, so no new StreamConnected fires and the recording
+  // state of that session was never read for the presentation header. Ask the
+  // iframe for the current status when the presentation begins.
+  useEffect(() => {
+    if (!isZoomEnabled || !presenterViewFlag) return undefined;
+    const timers = [1000, 4000].map((delay) =>
+      setTimeout(() => {
+        const statusIframe = iframeRef.current;
+        if (statusIframe && statusIframe.contentWindow) {
+          statusIframe.contentWindow.postMessage("RequestRecordingStatus", "*");
+        }
+      }, delay),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [presenterViewFlag, presenterViewHostFlag, presenterViewJoinFlag]);
+
   // Add this useEffect to watch for the transfer completion
   useEffect(() => {
     if (hostTransferFlag) {
@@ -1619,6 +1638,55 @@ const VideoPanelNormal = () => {
             }, 4000);
           }
 
+          // Meeting-video participant: the iframe starts with its own default
+          // mic / camera, and the MicOn/VidOn effects below only fire when the
+          // value CHANGES — before the iframe exists, so the chosen state was
+          // never delivered. Once the stream is up, tell the iframe the state
+          // the icons show (sent twice in case it is not ready the first time;
+          // the messages set a state, they do not toggle).
+          if (
+            isMeetingVideo &&
+            !isMeetingVideoHostChecker &&
+            !presenterViewFlag &&
+            JSON.parse(localStorage.getItem("meetinHostInfo"))
+              ?.isDashboardVideo
+          ) {
+            [1500, 4500].forEach((delay) =>
+              setTimeout(() => {
+                const syncIframe = iframeRef.current;
+                if (syncIframe && syncIframe.contentWindow) {
+                  syncIframe.contentWindow.postMessage(
+                    audioControlRef.current ? "MicOn" : "MicOff",
+                    "*",
+                  );
+                  syncIframe.contentWindow.postMessage(
+                    videoControlRef.current ? "VidOn" : "VidOff",
+                    "*",
+                  );
+                }
+              }, delay),
+            );
+          }
+
+          // Everyone in a meeting video / presentation asks the iframe for the
+          // CURRENT recording status once connected. Recording-change events
+          // only fire on a change, so a user who joins while a recording is
+          // already running (participants, a host watching a presentation)
+          // otherwise never learns about it and shows no recording UI.
+          if (isZoomEnabled && (isMeetingVideo || presenterViewFlag)) {
+            [2000, 5000].forEach((delay) =>
+              setTimeout(() => {
+                const statusIframe = iframeRef.current;
+                if (statusIframe && statusIframe.contentWindow) {
+                  statusIframe.contentWindow.postMessage(
+                    "RequestRecordingStatus",
+                    "*",
+                  );
+                }
+              }, delay),
+            );
+          }
+
           // Presentation recording starts automatically (like meeting video
           // does on join) for the presenter / meeting-video host.
           if (
@@ -2023,7 +2091,7 @@ const VideoPanelNormal = () => {
   }, [participantWaitinglistBox]);
 
   // Recording controls: the meeting-video host (not during a presentation), or
-  // — during a presentation — the presenter and the meeting-video host.
+  // — during a presentation — only the presenter.
   const canControlRecording = () =>
     Boolean(
       isMeeting &&
@@ -2031,9 +2099,7 @@ const VideoPanelNormal = () => {
           isMeetingVideoHostChecker &&
           !presenterViewJoinFlag &&
           !presenterViewHostFlag) ||
-          (presenterViewFlag &&
-            (presenterViewHostFlag ||
-              (presenterViewJoinFlag && isMeetingVideoHostChecker)))),
+          (presenterViewFlag && presenterViewHostFlag)),
     );
 
   const onHandleClickForStartRecording = () => {

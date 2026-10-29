@@ -44,6 +44,7 @@ import {
   setAudioControlHost,
   setVideoControlHost,
   joinPresenterViewMainApi,
+  leavePresenterViewMainApi,
   presentationJoinFlowFlag,
   presentationJoinRequestApprovedMqtt,
   presentationJoinRequestRejectedMqtt,
@@ -104,6 +105,10 @@ const ParticipantVideoCallComponent = () => {
     (state) => state.videoFeatureReducer.isPresentationJoinFlow,
   );
 
+  // Response of JoinPresentationRequest (carries this user's guid).
+  const joinPresentationRequestData = useSelector(
+    (state) => state.GuestVideoReducer.joinPresentationRequestData,
+  );
   const presentationJoinApprovedData = useSelector(
     (state) => state.videoFeatureReducer.presentationJoinApprovedData,
   );
@@ -156,6 +161,17 @@ const ParticipantVideoCallComponent = () => {
   useEffect(() => {
     streamAudioRef.current = streamAudio;
   }, [streamAudio]);
+
+  // Join request sent and now waiting for the host: stop the camera and mic
+  // right away (they used to stay live until the host admitted this user).
+  // The state objects are kept — other effects still check `stream`.
+  useEffect(() => {
+    if (!isWaiting || isPresentationJoinFlow) return;
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+    streamAudioRef.current?.getTracks().forEach((track) => track.stop());
+    sessionStorage.setItem("streamOnOff", JSON.stringify(false));
+    sessionStorage.setItem("audioStreamOnOff", JSON.stringify(false));
+  }, [isWaiting]);
 
   useEffect(() => {
     // Enable webcam and microphone once on mount; later toggles are handled by
@@ -365,6 +381,10 @@ const ParticipantVideoCallComponent = () => {
     if (isPresentationJoinFlow && enable) {
       return;
     }
+    // Join request already sent and waiting for the host: mic is locked.
+    if (isWaiting) {
+      return;
+    }
     dispatch(setAudioControlHost(enable));
     localStorage.setItem("isMicEnabled", enable);
     if (!enable) {
@@ -402,6 +422,10 @@ const ParticipantVideoCallComponent = () => {
   const toggleVideo = (enable) => {
     // CR(0012249): see the matching guard in toggleAudio above.
     if (isPresentationJoinFlow && enable) {
+      return;
+    }
+    // Join request already sent and waiting for the host: camera is locked.
+    if (isWaiting) {
       return;
     }
     dispatch(setVideoControlHost(enable));
@@ -595,7 +619,52 @@ const ParticipantVideoCallComponent = () => {
     await dispatch(participantVideoButtonState(false));
 
     setIsMicEnabled(false); // Microphone is now disabled
-    if (isWaiting) {
+    if (isWaiting && isPresentationJoinFlow) {
+      // Request sent but the presenter has not admitted this user yet: withdraw
+      // it with LeavePresenterView so the user leaves the presenter's waiting
+      // list. (No LeaveMeetingVideo — the user is not in the meeting video.)
+      // Only a real value is sent: missing / "null" / "0" ids fall back to the
+      // next source, and if one is still missing the call is skipped.
+      const isUsable = (v) =>
+        v !== null &&
+        v !== undefined &&
+        String(v).trim() !== "" &&
+        !["null", "undefined", "0"].includes(String(v).trim());
+      const pick = (...values) => values.find(isUsable);
+      const leaveRoomID = pick(
+        localStorage.getItem("presentationRoomID"),
+        joinPresentationRequestData?.roomID,
+        localStorage.getItem("acceptedRoomID"),
+      );
+      const leaveGuid = pick(
+        joinPresentationRequestData?.guid,
+        joinPresentationRequestData?.uid,
+      );
+      const leaveName = pick(newName, localStorage.getItem("userName"));
+      if (!presentationJoinApprovedData) {
+        if (leaveRoomID && leaveGuid && leaveName) {
+          dispatch(
+            leavePresenterViewMainApi(
+              navigate,
+              t,
+              {
+                RoomID: String(leaveRoomID),
+                UserGUID: String(leaveGuid),
+                Name: String(leaveName),
+              },
+              1,
+            ),
+          );
+        } else {
+          console.error(
+            "LeavePresenterView not sent — missing RoomID, UserGUID or Name",
+            { leaveRoomID, leaveGuid, leaveName },
+          );
+        }
+      }
+      dispatch(presentationJoinFlowFlag(false));
+      dispatch(maxParticipantVideoCallPanel(false));
+    } else if (isWaiting) {
       let Data = {
         RoomID: roomID,
         UserGUID: userGUID,
@@ -702,6 +771,10 @@ const ParticipantVideoCallComponent = () => {
 
   const isEndCallEnabled = !joinButton || isWaiting || getReady;
 
+  // Mic / camera icons are usable only before the join request is sent: not
+  // for a presentation request, and not while waiting for the host to admit.
+  const iconsUnlocked = canVideoPlay && !isPresentationJoinFlow && !isWaiting;
+
   return (
     <Container fluid>
       <div
@@ -742,13 +815,9 @@ const ParticipantVideoCallComponent = () => {
                 // CR(0012249): in the presentation waiting room the
                 // participant can't control mic/camera at all — same
                 // locked look as the existing canVideoPlay readiness gate.
-                pointerEvents:
-                  canVideoPlay && !isPresentationJoinFlow ? "auto" : "none",
-                opacity: canVideoPlay && !isPresentationJoinFlow ? 1 : 0.4,
-                cursor:
-                  canVideoPlay && !isPresentationJoinFlow
-                    ? "pointer"
-                    : "not-allowed",
+                pointerEvents: iconsUnlocked ? "auto" : "none",
+                opacity: iconsUnlocked ? 1 : 0.4,
+                cursor: iconsUnlocked ? "pointer" : "not-allowed",
               }}
             >
               {isMicEnabled ? (
@@ -778,13 +847,9 @@ const ParticipantVideoCallComponent = () => {
               style={{
                 // CR(0012249): same presentation-mode lock as the mic block
                 // above.
-                pointerEvents:
-                  canVideoPlay && !isPresentationJoinFlow ? "auto" : "none",
-                opacity: canVideoPlay && !isPresentationJoinFlow ? 1 : 0.4,
-                cursor:
-                  canVideoPlay && !isPresentationJoinFlow
-                    ? "pointer"
-                    : "not-allowed",
+                pointerEvents: iconsUnlocked ? "auto" : "none",
+                opacity: iconsUnlocked ? 1 : 0.4,
+                cursor: iconsUnlocked ? "pointer" : "not-allowed",
               }}
             >
               {isWebCamEnabled ? (
