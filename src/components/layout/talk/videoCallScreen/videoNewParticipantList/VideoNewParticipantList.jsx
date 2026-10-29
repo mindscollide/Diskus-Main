@@ -423,7 +423,12 @@ const VideoNewParticipantList = () => {
         source.filter((p) => p.name.toLowerCase().includes(lower)),
       );
     },
-    [getAllParticipantMain, presenterRoster, presenterViewFlag, presenterViewHostFlag],
+    [
+      getAllParticipantMain,
+      presenterRoster,
+      presenterViewFlag,
+      presenterViewHostFlag,
+    ],
   );
 
   /**
@@ -631,6 +636,7 @@ const VideoNewParticipantList = () => {
           UID: usersData.guid,
           Name: usersData.name,
           MeetingID: session.currentMeetingID,
+          UserID: usersData.userID,
         }),
       );
     },
