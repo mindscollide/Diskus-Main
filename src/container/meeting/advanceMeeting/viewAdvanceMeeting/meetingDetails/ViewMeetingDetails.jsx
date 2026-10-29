@@ -42,6 +42,7 @@ import {
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import moment from "moment";
 import { FetchMeetingURLApi } from "@/store/actions/NewMeetingActions";
+import { setViewTab } from "@/store/actions/ModalStates_actions";
 import {
   callRequestReceivedMQTT,
   LeaveCall,
@@ -93,13 +94,9 @@ const ViewMeetingDetails = () => {
     endMeetingConfirmationModal,
     editorRole,
     setEditorRole,
-    setorganizers,
-    setmeetingDetails,
     setViewAdvanceMeetingModal,
     setAdvanceMeetingModalID,
     setDataroomMapFolderId,
-    setMeetingMaterial,
-    setAgenda,
     handleCloseMeeting,
   } = useMeetingContext();
 
@@ -348,14 +345,11 @@ const ViewMeetingDetails = () => {
 
   const handleUpdateNext = () => {
     if (editorRole.role === "Participant") {
-      setmeetingDetails(false);
-      setMeetingMaterial(true);
+      dispatch(setViewTab("agendaViewer"));
     } else if (editorRole.role === "Agenda Contributor") {
-      setAgenda(true);
-      setmeetingDetails(false);
+      dispatch(setViewTab("agenda"));
     } else {
-      setmeetingDetails(false);
-      setorganizers(true);
+      dispatch(setViewTab("organizers"));
     }
   };
 

@@ -93,23 +93,20 @@ const ViewMeetingModal = () => {
     severity: "error",
   });
 
-  // Fix: read all tab states from Redux instead of context
-  const viewTabs = useSelector((state) => state.ModalStatesReducer.viewTabs);
-
-  const {
-    meetingDetails,
-    organizers,
-    agendaContributors,
-    participants,
-    agenda,
-    agendaViewer,
-    minutes,
-    actionsPage,
-    polls,
-    attendance,
-    attendees,
-    isRecording,
-  } = viewTabs;
+  // Single source of truth for the visible tab (names: see ModalState_reducer.js)
+  const activeTab = useSelector((state) => state.ModalStatesReducer.viewActiveTab);
+  const meetingDetails = activeTab === "meetingDetails";
+  const organizers = activeTab === "organizers";
+  const agendaContributors = activeTab === "agendaContributors";
+  const participants = activeTab === "participants";
+  const agenda = activeTab === "agenda";
+  const agendaViewer = activeTab === "agendaViewer";
+  const minutes = activeTab === "minutes";
+  const actionsPage = activeTab === "actionsPage";
+  const polls = activeTab === "polls";
+  const attendance = activeTab === "attendance";
+  const attendees = activeTab === "attendees";
+  const isRecording = activeTab === "isRecording";
 
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
 

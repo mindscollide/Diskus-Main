@@ -3154,8 +3154,10 @@ export const SideBarGlobalNavigationFunctionNew = async (
   let createEditMeetingModal =
     store.getState().ModalStatesReducer.isCreateEditMeetingModal;
 
-  const { minutes, polls, actions } =
-    store.getState()?.ModalStatesReducer?.viewTabs;
+  const viewActiveTab = store.getState()?.ModalStatesReducer?.viewActiveTab;
+  const minutes = viewActiveTab === "minutes";
+  const polls = viewActiveTab === "polls";
+  const actions = viewActiveTab === "actionsPage";
 
   if (viewMeetingModal) {
     if (Number(editorRole?.status) === 10) {

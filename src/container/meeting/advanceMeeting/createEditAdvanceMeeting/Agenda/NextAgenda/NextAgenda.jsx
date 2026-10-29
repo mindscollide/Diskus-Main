@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { nextTabAgenda } from "../../../../../../store/actions/MeetingAgenda_action";
 import { Col, Row } from "react-bootstrap";
 import { Button, Modal } from "../../../../../../components/elements";
+import { setCreateEditTab } from "../../../../../../store/actions/ModalStates_actions";
 
-const NextAgenda = ({ setMeetingMaterial, setAgenda }) => {
+const NextAgenda = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const MeetingAgendaReducer = useSelector((state) => state.MeetingAgendaReducer);
@@ -15,8 +16,7 @@ const NextAgenda = ({ setMeetingMaterial, setAgenda }) => {
   };
 
   const handleYesFunctionality = async () => {
-    setMeetingMaterial(true);
-    setAgenda(false);
+    dispatch(setCreateEditTab("meetingMaterial"));
     dispatch(nextTabAgenda(false));
   };
   return (

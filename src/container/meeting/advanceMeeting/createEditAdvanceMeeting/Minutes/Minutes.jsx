@@ -692,7 +692,7 @@ const Minutes = () => {
         dispatch(showUnsaveMinutesFileUpload(true));
         setUseCase(2);
       } else {
-        dispatch(setCreateEditTab("actions"));
+        dispatch(setCreateEditTab("actionsPage"));
       }
     } else if (general) {
       if (
@@ -702,7 +702,7 @@ const Minutes = () => {
         dispatch(showUnsaveMinutesFileUpload(true));
         setUseCase(2);
       } else {
-        dispatch(setCreateEditTab("actions"));
+        dispatch(setCreateEditTab("actionsPage"));
       }
     }
 

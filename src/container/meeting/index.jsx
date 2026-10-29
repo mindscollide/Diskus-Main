@@ -186,6 +186,7 @@ const MainMeeting = () => {
       ["viewMeetingLink", "meetingDetails"],
       ["meetingStr", "meetingDetails"],
       ["meetingUpd", "meetingDetails"],
+      ["viewPublishMinutesLink", "minutes"],
     ];
     const [linkKey, linkTab] =
       emailLinks.find(([key]) => localStorage.getItem(key)) || [];

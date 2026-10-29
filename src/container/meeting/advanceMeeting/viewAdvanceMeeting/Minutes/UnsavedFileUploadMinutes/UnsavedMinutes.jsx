@@ -5,19 +5,17 @@ import {
   searchNewUserMeeting,
   showUnsaveMinutesFileUpload,
 } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  resetViewTabs,
+  setViewTab,
+  toggleViewMeetingModal,
+} from "../../../../../../store/actions/ModalStates_actions";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 
-const UnsavedMinutes = ({
-  setMinutes,
-  setSceduleMeeting,
-  useCase,
-  setactionsPage,
-  setMeetingMaterial,
-  setFileAttachments,
-}) => {
+const UnsavedMinutes = ({ useCase, setFileAttachments }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,19 +30,17 @@ const UnsavedMinutes = ({
     if (useCase) {
       if (useCase === 1) {
         // Pervious Button
-        setMinutes(false);
-        setMeetingMaterial(true);
+        dispatch(setViewTab("agendaViewer"));
         dispatch(showUnsaveMinutesFileUpload(false));
       } else if (useCase === 2) {
         // Next Tab
-        setactionsPage(true);
-        setMinutes(false);
+        dispatch(setViewTab("actionsPage"));
         dispatch(showUnsaveMinutesFileUpload(false));
       } else if (useCase === 3) {
         // Cancel Button
         setFileAttachments([]);
-        setMinutes(false);
-        setSceduleMeeting(false);
+        dispatch(resetViewTabs());
+        dispatch(toggleViewMeetingModal(false));
         dispatch(showUnsaveMinutesFileUpload(false));
         let searchData = {
           Date: "",

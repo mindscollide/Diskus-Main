@@ -13,7 +13,10 @@ import {
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
 } from "../../../../../store/actions/NewMeetingActions";
-import { toggleViewMeetingModal } from "../../../../../store/actions/ModalStates_actions";
+import {
+  resetViewTabs,
+  toggleViewMeetingModal,
+} from "../../../../../store/actions/ModalStates_actions";
 import { useSelector } from "react-redux";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
@@ -28,7 +31,6 @@ const Attendees = () => {
     editorRole,
     setEditorRole,
     advanceMeetingModalID,
-    setAttendees,
     handleCloseMeeting,
   } = useMeetingContext();
 
@@ -107,7 +109,7 @@ const Attendees = () => {
       dispatch(toggleViewMeetingModal(false));
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-      setAttendees(false);
+      dispatch(resetViewTabs());
     } else {
       if (editorRole.status === 10 || editorRole.status === "10") {
         let leaveMeetingData = {
@@ -151,7 +153,7 @@ const Attendees = () => {
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
       }
-      setAttendees(false);
+      dispatch(resetViewTabs());
     }
   };
   let currentLanauge = localStorage.getItem("i18nextLng");

@@ -23,38 +23,15 @@ const initialState = {
   // ─── End Meeting Modal ───────────────────────────────────────────────────
   isEndMeetingModal: false,
 
-  // ─── Create & Edit Meeting Tabs ──────────────────────────────────────────
-  // Only one should be true at a time
-  createEditTabs: {
-    meetingDetails: true, // default landing tab
-    organizers: false,
-    agendaContributors: false,
-    participants: false,
-    agenda: false,
-    meetingMaterial: false,
-    minutes: false,
-    attendance: false,
-    recording: false,
-    polls: false,
-    actions: false,
-  },
-
-  // ─── View Meeting Tabs ───────────────────────────────────────────────────
-  // Only one should be true at a time
-  viewTabs: {
-    meetingDetails: true, // default landing tab
-    organizers: false,
-    agendaContributors: false,
-    participants: false,
-    agenda: false,
-    agendaViewer: false,
-    minutes: false,
-    attendance: false,
-    recording: false,
-    polls: false,
-    actions: false,
-    attendees: false,
-  },
+  // ─── Create & Edit / View Meeting Tabs ───────────────────────────────────
+  // One string per screen: the name of the tab that is showing.
+  //   create/edit: meetingDetails | organizers | agendaContributors | participants
+  //                | agenda | meetingMaterial | minutes | actionsPage | polls | attendance
+  //   view:        meetingDetails | organizers | agendaContributors | participants
+  //                | agenda | agendaViewer | minutes | actionsPage | polls | attendance
+  //                | attendees | isRecording
+  createEditActiveTab: "meetingDetails",
+  viewActiveTab: "meetingDetails",
   isParticiapntRespondProposedMeeting: false,
   isOrganizerRespondProposedMeeting: false,
 };
@@ -102,80 +79,18 @@ const ModalStatesReducer = (state = initialState, action) => {
       return { ...state, isOrganizerRespondProposedMeeting: action.payload };
     }
     case actions.SET_CREATE_EDIT_TAB:
-      return {
-        ...state,
-        createEditTabs: {
-          meetingDetails: false,
-          organizers: false,
-          agendaContributors: false,
-          participants: false,
-          agenda: false,
-          meetingMaterial: false,
-          minutes: false,
-          attendance: false,
-          recording: false,
-          polls: false,
-          actions: false,
-          [action.payload]: true,
-        },
-      };
+      return { ...state, createEditActiveTab: action.payload };
 
     case actions.RESET_CREATE_EDIT_TABS:
-      return {
-        ...state,
-        createEditTabs: {
-          meetingDetails: true, // back to default
-          organizers: false,
-          agendaContributors: false,
-          participants: false,
-          agenda: false,
-          agendaViewer: false,
-          minutes: false,
-          attendance: false,
-          recording: false,
-          polls: false,
-          actions: false,
-        },
-      };
+      return { ...state, createEditActiveTab: "meetingDetails" };
 
     // ─── View Meeting Tabs ────────────────────────────────────────────────────────
 
     case actions.SET_VIEW_TAB:
-      return {
-        ...state,
-        viewTabs: {
-          meetingDetails: false,
-          organizers: false,
-          agendaContributors: false,
-          agenda: false,
-          agendaViewer: false,
-          minutes: false,
-          attendance: false,
-          recording: false,
-          polls: false,
-          actions: false,
-          attendees: false,
-          [action.payload]: true,
-        },
-      };
+      return { ...state, viewActiveTab: action.payload };
 
     case actions.RESET_VIEW_TABS:
-      return {
-        ...state,
-        viewTabs: {
-          meetingDetails: true,
-          agendaContributors: false,
-          agenda: false, // back to default
-          agendaViewer: false,
-          organizers: false,
-          minutes: false,
-          attendance: false,
-          recording: false,
-          polls: false,
-          actions: false,
-          attendees: false,
-        },
-      };
+      return { ...state, viewActiveTab: "meetingDetails" };
 
     default:
       return { ...state };
