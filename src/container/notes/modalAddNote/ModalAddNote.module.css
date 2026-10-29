@@ -248,3 +248,54 @@ body[dir="rtl"] .modal-Note-Title-Input {
   font-size: 12pt;
   font-weight: 600 !important;
 }
+
+:global(.ql-editor .ql-font-impact) {
+  font-family: Impact, sans-serif !important;
+}
+
+:global(.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="impact"]::before),
+:global(.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="impact"]::before) {
+  content: "Impact";
+  font-family: Impact, sans-serif;
+}
+/* Font family applied to editor content */
+:global(.ql-editor .ql-font-impact) {
+  font-family: Impact, sans-serif;
+}
+
+:global(.ql-editor .ql-font-courier) {
+  font-family: "Courier New", monospace;
+}
+
+:global(.ql-editor .ql-font-comic) {
+  font-family: "Comic Sans MS", cursive;
+}
+
+:global(.ql-editor .ql-font-Montserrat) {
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Font dropdown labels */
+:global(.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="impact"]::before),
+:global(.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="impact"]::before) {
+  content: "Impact";
+  font-family: Impact, sans-serif;
+}
+
+:global(.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="courier"]::before),
+:global(.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="courier"]::before) {
+  content: "Courier New";
+  font-family: "Courier New", monospace;
+}
+
+:global(.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="comic"]::before),
+:global(.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="comic"]::before) {
+  content: "Comic Sans MS";
+  font-family: "Comic Sans MS", cursive;
+}
+
+:global(.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Montserrat"]::before),
+:global(.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Montserrat"]::before) {
+  content: "Montserrat";
+  font-family: "Montserrat", sans-serif;
+}

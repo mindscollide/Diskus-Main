@@ -58,6 +58,7 @@ import {
   GetMinuteReviewFlowByMeetingId,
   GetStatsForPublishingMinutesByWorkFlowId,
 } from "../../../../../store/actions/Minutes_action";
+import { setViewTab } from "../../../../../store/actions/ModalStates_actions";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 import {
   DataRoomDownloadFileApiFunc,
@@ -80,11 +81,7 @@ const Minutes = () => {
   const dispatch = useDispatch();
   const {
     editorRole,
-    setMinutes,
     advanceMeetingModalID,
-    setViewAdvanceMeetingModal,
-    setMeetingMaterial,
-    setactionsPage,
     handleCloseMeeting,
   } = useMeetingContext();
 
@@ -692,8 +689,7 @@ const Minutes = () => {
         dispatch(showUnsaveMinutesFileUpload(true));
         setUseCase(2);
       } else {
-        setactionsPage(true);
-        setMinutes(false);
+        dispatch(setViewTab("actionsPage"));
       }
     } else if (general) {
       if (
@@ -703,8 +699,7 @@ const Minutes = () => {
         dispatch(showUnsaveMinutesFileUpload(true));
         setUseCase(2);
       } else {
-        setactionsPage(true);
-        setMinutes(false);
+        dispatch(setViewTab("actionsPage"));
       }
     }
   };
@@ -2436,12 +2431,8 @@ const Minutes = () => {
 
         {unsaveFileUploadMinutes && (
           <UnsavedMinutes
-            setMinutes={setMinutes}
-            setSceduleMeeting={setViewAdvanceMeetingModal}
             setFileAttachments={setFileAttachments}
             useCase={useCase}
-            setactionsPage={setactionsPage}
-            setMeetingMaterial={setMeetingMaterial}
           />
         )}
         {addReviewers && (

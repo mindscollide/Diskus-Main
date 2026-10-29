@@ -67,20 +67,20 @@ const CreateEditAdvanceMeeting = () => {
     (state) => state.GroupsReducer.viewGroupDetails,
   );
 
-  // Fix: read all tab states from Redux MeetingModalsReducer instead of
-  // individual NewMeetingreducer global flags
-  const {
-    meetingDetails: createEditMeetingDetailsTab,
-    organizers: createEditOrganizersTab,
-    agendaContributors: createEditAgendaContributorsTab,
-    participants: createEditParticipantsTab,
-    agenda: createEditAgendaTab,
-    meetingMaterial: createEditMeetingMaterialTab,
-    minutes: createEditMinutesTab,
-    actionsPage: createEditActionsPageTab,
-    polls: createEditPollsTab,
-    attendance: createEditAttendanceTab,
-  } = useSelector((state) => state.ModalStatesReducer.createEditTabs);
+  // Single source of truth for the visible tab (names: see ModalState_reducer.js)
+  const activeTab = useSelector(
+    (state) => state.ModalStatesReducer.createEditActiveTab,
+  );
+  const createEditMeetingDetailsTab = activeTab === "meetingDetails";
+  const createEditOrganizersTab = activeTab === "organizers";
+  const createEditAgendaContributorsTab = activeTab === "agendaContributors";
+  const createEditParticipantsTab = activeTab === "participants";
+  const createEditAgendaTab = activeTab === "agenda";
+  const createEditMeetingMaterialTab = activeTab === "meetingMaterial";
+  const createEditMinutesTab = activeTab === "minutes";
+  const createEditActionsPageTab = activeTab === "actionsPage";
+  const createEditPollsTab = activeTab === "polls";
+  const createEditAttendanceTab = activeTab === "attendance";
 
   // ─── Context ──────────────────────────────────────────────────────────────
 

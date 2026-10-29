@@ -49,21 +49,30 @@ const ModalAddNote = ({ ModalTitle }) => {
   const [isCreateNote, setIsCreateNote] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
-  
+  const [currentFont, setCurrentFont] = useState("impact");
+
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
   const [show, SnackBar] = useSnackbar();
 
-  var Size = Quill.import("attributors/style/size");
+
+  const Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
 
-  var FontAttributor = Quill.import("formats/font");
-  var fonts = ["impact", "courier", "comic"];
-  FontAttributor.whitelist = fonts;
+  const FontAttributor = Quill.import("formats/font");
+
+  FontAttributor.whitelist = [
+    "impact",
+    "courier",
+    "comic",
+    "Montserrat",
+  ];
+
   Quill.register(FontAttributor, true);
+
   const [isStarrted, setIsStarrted] = useState(false);
   // for add notes textfields states
   const [addNoteFields, setAddNoteFields] = useState({
@@ -84,7 +93,7 @@ const ModalAddNote = ({ ModalTitle }) => {
     let searchIndex = tasksAttachments.TasksAttachments;
     setFileForSend((prev) => {
       return prev.filter((fileData, index) => {
-        
+
         return fileData.name !== data.DisplayAttachmentName;
       });
     });
@@ -162,6 +171,8 @@ const ModalAddNote = ({ ModalTitle }) => {
     }
   };
 
+
+
   // for save button hit
 
   //Upload File Handler
@@ -223,21 +234,45 @@ const ModalAddNote = ({ ModalTitle }) => {
     setIsAddNote(false);
   };
 
+
   const modules = {
     toolbar: {
       container: [
         [{ header: [2, 3, 4, false] }],
-        [{ font: ["impact", "courier", "comic", "Montserrat"] }],
+        [
+          {
+            font: [
+              "impact",
+              "courier",
+              "comic",
+              "Montserrat",
+            ],
+          },
+        ],
+        [{ size: ["14px", "16px", "18px"] }],
         ["bold", "italic", "underline", "blockquote"],
         [{ color: [] }],
         [{ list: "ordered" }, { list: "bullet" }],
       ],
-      handlers: {},
     },
     clipboard: {
       matchVisual: true,
     },
   };
+
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "blockquote",
+    "color",
+    "list",
+    "bullet",
+  ];
+
 
   const handleClick = async () => {
     if (addNoteFields.Title.value !== "") {
@@ -278,7 +313,7 @@ const ModalAddNote = ({ ModalTitle }) => {
     let newFolder = [];
     let newfile = [];
     if (fileForSend.length > 0) {
-      
+
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
           uploadDocumentsNotesApi(
@@ -338,51 +373,51 @@ const ModalAddNote = ({ ModalTitle }) => {
 
   return (
     <>
-        <Modal
-          show={createNotesModal}
-          onHide={() => {
-            setCloseConfirmationBox(true);
-            setIsCreateNote(false);
-            setIsAddNote(false);
-          }}
-          setShow={setCreateNotesModal}
-          ButtonTitle={ModalTitle}
-          modalHeaderClassName={
-            isCreateNote === true
-              ? "d-none"
-              : isCreateNote === false
+      <Modal
+        show={createNotesModal}
+        onHide={() => {
+          setCloseConfirmationBox(true);
+          setIsCreateNote(false);
+          setIsAddNote(false);
+        }}
+        setShow={setCreateNotesModal}
+        ButtonTitle={ModalTitle}
+        modalHeaderClassName={
+          isCreateNote === true
+            ? "d-none"
+            : isCreateNote === false
               ? styles["header-AddNotesModal-close-btn"]
               : isAddNote
-              ? styles["addNoteHeader"]
-              : null
-          }
-          centered
-          modalFooterClassName={styles["modal-userprofile-footer"]}
-          size={
-            isAddNote === true
-              ? "md"
-              : isCreateNote
+                ? styles["addNoteHeader"]
+                : null
+        }
+        centered
+        modalFooterClassName={styles["modal-userprofile-footer"]}
+        size={
+          isAddNote === true
+            ? "md"
+            : isCreateNote
               ? "md"
               : closeConfirmationBox
-              ? null
-              : "md"
-          }
-          ModalBody={
-            <>
-              {isAddNote ? (
-                <>
-                  <Row className="d-flex  align-items-center">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className="d-flex align-items-center justify-content-start  gap-3"
-                    >
-                      <h2 className={styles["Addnote-heading"]}>
-                        {t("Add-note")}
-                      </h2>
-                      {/* {isStarrted ? (
+                ? null
+                : "md"
+        }
+        ModalBody={
+          <>
+            {isAddNote ? (
+              <>
+                <Row className="d-flex  align-items-center">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    xs={12}
+                    className="d-flex align-items-center justify-content-start  gap-3"
+                  >
+                    <h2 className={styles["Addnote-heading"]}>
+                      {t("Add-note")}
+                    </h2>
+                    {/* {isStarrted ? (
                         <Tooltip placement="topLeft" title={t("Starred")}>
                           <img
                             draggable="false"
@@ -403,214 +438,221 @@ const ModalAddNote = ({ ModalTitle }) => {
                           />
                         </Tooltip>
                       )} */}
-                    </Col>
-                  </Row>
+                  </Col>
+                </Row>
 
-                  <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className="modalAddNote-fields"
-                    >
-                      <Form.Control
-                        placeholder={t("Note-title")}
-                        className={styles["modal-Note-Title-Input"]}
-                        name="Title"
-                        ref={NoteTitle}
-                        onKeyDown={(event) => enterKeyHandler(event, editorRef)}
-                        maxLength={290}
-                        value={addNoteFields.Title.value || ""}
-                        onChange={addNotesFieldHandler}
-                      />
-
-                      <Row>
-                        <Col>
-                          <p
-                            className={
-                              addNoteFields.Title.errorStatus &&
-                              addNoteFields.Title.value === ""
-                                ? ` ${styles["errorNotesMessage"]} `
-                                : `${styles["errorNotesMessage_hidden"]}`
-                            }
-                          >
-                            {addNoteFields.Title.errorMessage}
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-
-                  <Row className={styles["Add-note-QuillRow"]}>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className={styles["Arabic_font_Applied"]}
-                    >
-                      <ReactQuill
-                        ref={editorRef}
-                        theme="snow"
-                        value={addNoteFields.Description.value}
-                        placeholder={t("Note-details")}
-                        onChange={onTextChange}
-                        modules={modules}
-                        className={styles["quill-height-addNote"]}
-                        style={{
-                          direction: currentLanguage === "ar" ? "rtl" : "ltr",
-                        }}
-                      />
-
-                      <Row className="mt-2">
-                        <Col>
-                          <p
-                            className={
-                              addNoteFields.Description.errorStatus &&
-                              addNoteFields.Description.value === ""
-                                ? ` ${styles["errorNotesMessage_description"]} `
-                                : `${styles["errorNotesMessage_hidden_description"]}`
-                            }
-                          >
-                            {addNoteFields.Description.errorMessage}
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} xs={12}>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          xs={12}
-                          className="mb-3 mt-2"
-                        >
-                          <label className={styles["Add-Notes-Attachment"]}>
-                            {t("Attachments")}
-                          </label>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={12} md={12} sm={12} xs={12}>
-                          <span
-                            className={styles["Notes-upload-input-AddModal"]}
-                          >
-                            <CustomUpload
-                              change={uploadFilesToDo}
-                              multiple={true}
-                              onClick={(event) => {
-                                event.target.value = null;
-                              }}
-                              className="UploadFileButton"
-                            />
-
-                            <Row>
-                              <Col
-                                sm={12}
-                                lg={12}
-                                md={12}
-                                className={styles["notes-create-attachment"]}
-                              >
-                                {tasksAttachments.TasksAttachments.length > 0
-                                  ? tasksAttachments.TasksAttachments.map(
-                                      (data, index) => {
-                                        return (
-                                          <AttachmentViewer
-                                            handleClickRemove={() =>
-                                              deleteFilefromAttachments(
-                                                data,
-                                                index
-                                              )
-                                            }
-                                            data={data}
-                                            name={data.DisplayAttachmentName}
-                                            id={0}
-                                            fk_UID={data.userID}
-                                          />
-                                        );
-                                      }
-                                    )
-                                  : null}
-                              </Col>
-                            </Row>
-                          </span>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                  </>
-              ) : closeConfirmationBox ? (
-                <>
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className={styles["Confirmationmodal_body_text"]}
-                    >
-                      {t("Are-you-sure-note-reset-closed")}
-                    </Col>
-                  </Row>
-                </>
-              ) : null}
-            </>
-          }
-          ModalFooter={
-            <>
-              {isAddNote ? (
-                <Row>
+                <Row className="mt-2">
                   <Col
                     lg={12}
                     md={12}
+                    sm={12}
                     xs={12}
-                    className=" d-flex justify-content-end mt-2 gap-3"
+                    className="modalAddNote-fields"
+                  >
+                    <Form.Control
+                      placeholder={t("Note-title")}
+                      className={styles["modal-Note-Title-Input"]}
+                      name="Title"
+                      ref={NoteTitle}
+                      onKeyDown={(event) => enterKeyHandler(event, editorRef)}
+                      maxLength={290}
+                      value={addNoteFields.Title.value || ""}
+                      onChange={addNotesFieldHandler}
+                    />
+
+                    <Row>
+                      <Col>
+                        <p
+                          className={
+                            addNoteFields.Title.errorStatus &&
+                              addNoteFields.Title.value === ""
+                              ? ` ${styles["errorNotesMessage"]} `
+                              : `${styles["errorNotesMessage_hidden"]}`
+                          }
+                        >
+                          {addNoteFields.Title.errorMessage}
+                        </p>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+
+                <Row className={styles["Add-note-QuillRow"]}>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    xs={12}
+                    className={styles["Arabic_font_Applied"]}
+                  >
+                    <ReactQuill
+                      ref={editorRef}
+                      theme="snow"
+                      value={addNoteFields.Description.value}
+                      placeholder={t("Note-details")}
+                      onChange={onTextChange}
+                      modules={modules}
+                      formats={formats}
+                      onChangeSelection={(range, source, editor) => {
+                        if (range && range.length === 0) {
+                          const format = editor.getFormat(range);
+                          setCurrentFont(format.font || "impact");
+                        }
+                      }}
+                      className={styles["quill-height-addNote"]}
+                      style={{
+                        direction: currentLanguage === "ar" ? "rtl" : "ltr",
+                      }}
+                    />
+
+                    <Row className="mt-2">
+                      <Col>
+                        <p
+                          className={
+                            addNoteFields.Description.errorStatus &&
+                              addNoteFields.Description.value === ""
+                              ? ` ${styles["errorNotesMessage_description"]} `
+                              : `${styles["errorNotesMessage_hidden_description"]}`
+                          }
+                        >
+                          {addNoteFields.Description.errorMessage}
+                        </p>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12} xs={12}>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        xs={12}
+                        className="mb-3 mt-2"
+                      >
+                        <label className={styles["Add-Notes-Attachment"]}>
+                          {t("Attachments")}
+                        </label>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} xs={12}>
+                        <span
+                          className={styles["Notes-upload-input-AddModal"]}
+                        >
+                          <CustomUpload
+                            change={uploadFilesToDo}
+                            multiple={true}
+                            onClick={(event) => {
+                              event.target.value = null;
+                            }}
+                            className="UploadFileButton"
+                          />
+
+                          <Row>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className={styles["notes-create-attachment"]}
+                            >
+                              {tasksAttachments.TasksAttachments.length > 0
+                                ? tasksAttachments.TasksAttachments.map(
+                                  (data, index) => {
+                                    return (
+                                      <AttachmentViewer
+                                        handleClickRemove={() =>
+                                          deleteFilefromAttachments(
+                                            data,
+                                            index
+                                          )
+                                        }
+                                        data={data}
+                                        name={data.DisplayAttachmentName}
+                                        id={0}
+                                        fk_UID={data.userID}
+                                      />
+                                    );
+                                  }
+                                )
+                                : null}
+                            </Col>
+                          </Row>
+                        </span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </>
+            ) : closeConfirmationBox ? (
+              <>
+                <Row>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className={styles["Confirmationmodal_body_text"]}
+                  >
+                    {t("Are-you-sure-note-reset-closed")}
+                  </Col>
+                </Row>
+              </>
+            ) : null}
+          </>
+        }
+        ModalFooter={
+          <>
+            {isAddNote ? (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  xs={12}
+                  className=" d-flex justify-content-end mt-2 gap-3"
+                >
+                  <Button
+                    text={t("Cancel")}
+                    className={styles["cancel-Add-notes-Modal"]}
+                    onClick={cancelNewNoteModal}
+                  />
+                  <Button
+                    text={t("Save")}
+                    onClick={handleClick}
+                    type="submit"
+                    className={styles["save-Add-notes-Modal"]}
+                  />
+                </Col>
+              </Row>
+            ) : closeConfirmationBox ? (
+              <>
+                <Row>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="d-flex justify-content-center gap-3"
                   >
                     <Button
-                      text={t("Cancel")}
+                      onClick={() => setIsAddNote(true)}
                       className={styles["cancel-Add-notes-Modal"]}
-                      onClick={cancelNewNoteModal}
+                      text={t("Cancel")}
                     />
                     <Button
-                      text={t("Save")}
-                      onClick={handleClick}
-                      type="submit"
-                      className={styles["save-Add-notes-Modal"]}
+                      onClick={() => setCreateNotesModal(false)}
+                      className={styles["close-Add-notes-Modal"]}
+                      text={t("Close")}
                     />
                   </Col>
                 </Row>
-              ) : closeConfirmationBox ? (
-                <>
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className="d-flex justify-content-center gap-3"
-                    >
-                      <Button
-                        onClick={() => setIsAddNote(true)}
-                        className={styles["cancel-Add-notes-Modal"]}
-                        text={t("Cancel")}
-                      />
-                      <Button
-                        onClick={() => setCreateNotesModal(false)}
-                        className={styles["close-Add-notes-Modal"]}
-                        text={t("Close")}
-                      />
-                    </Col>
-                  </Row>
-                </>
-              ) : null}
-            </>
-          }
-        />
-      
-    {SnackBar}
+              </>
+            ) : null}
+          </>
+        }
+      />
+
+      {SnackBar}
     </>
   );
 };

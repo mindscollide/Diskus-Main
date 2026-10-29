@@ -46,7 +46,11 @@ import ArrowDownIcon from "../../../../../assets/images/sortingIcons/Arrow-down.
 import ArrowUpIcon from "../../../../../assets/images/sortingIcons/Arrow-up.png";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import AccessDeniedModal from "../../../../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
-import { toggleViewMeetingModal } from "../../../../../store/actions/ModalStates_actions";
+import {
+  resetViewTabs,
+  setViewTab,
+  toggleViewMeetingModal,
+} from "../../../../../store/actions/ModalStates_actions";
 import { listOfMeetingsApi } from "../../../../../store/actions/NewMeeting2.actions";
 const Actions = () => {
   const { t } = useTranslation();
@@ -54,8 +58,6 @@ const Actions = () => {
   const navigate = useNavigate();
   const {
     editorRole,
-    setactionsPage,
-    setPolls,
     advanceMeetingModalID,
     dataroomMapFolderId,
     handleCloseMeeting,
@@ -735,7 +737,7 @@ const Actions = () => {
     dispatch(toggleViewMeetingModal(false));
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
     dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-    setactionsPage(false);
+    dispatch(resetViewTabs());
     localStorage.removeItem("AdvanceMeetingOperations");
     localStorage.removeItem("NotificationAdvanceMeetingID");
   };
@@ -747,8 +749,7 @@ const Actions = () => {
 
   // to move in next to polls handler
   const nextTabToPolls = () => {
-    setactionsPage(false);
-    setPolls(true);
+    dispatch(setViewTab("polls"));
   };
   const viewActionModal = (record) => {
     let Data = { ToDoListID: Number(record.pK_TID) };
