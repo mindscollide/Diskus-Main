@@ -219,6 +219,8 @@ const SubAgendaMappingDragging = ({
     <>
       {data.subAgenda.length > 0 &&
         data.subAgenda.map((subAgendaData, subIndex) => {
+
+          console.log(subAgendaData, "subAgendaDatasubAgendaData")
           const isLastIndex = subIndex === data.subAgenda.length - 1;
           const hasNextViewFalse =
             subIndex < data.subAgenda.length - 1 &&
@@ -342,7 +344,7 @@ const SubAgendaMappingDragging = ({
                                                   md={12}
                                                   sm={12}
                                                   className={
-                                                    "d-flex align-items-center justify-content-center gap-3 "
+                                                    "d-flex align-items-center justify-content-center gap-3 mt-2 "
                                                   }>
                                                   {ALLOW_AGENDA_START_TIME_AND_END_TIME && (
                                                     <p
@@ -504,7 +506,7 @@ const SubAgendaMappingDragging = ({
                                                           "Organizer" ? (
                                                         <Button
                                                           text={
-                                                            data?.hasAlreadyVoted
+                                                            subAgendaData?.hasAlreadyVoted
                                                               ? t("Voted")
                                                               : t(
                                                                   "Cast-your-vote",

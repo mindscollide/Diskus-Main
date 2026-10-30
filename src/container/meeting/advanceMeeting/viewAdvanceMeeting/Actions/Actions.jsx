@@ -135,7 +135,7 @@ const Actions = () => {
         dispatch(ViewToDoList(navigate, Data, t, setViewTaskModal, null));
       }
     }
-    return () => {};
+    return () => { };
   }, []);
 
   // dispatch Api in useEffect
@@ -187,39 +187,51 @@ const Actions = () => {
     setStatusOptions(optionsArr);
   }, [Response]);
 
-  // Remove task from mqtt response
+  // Remove or update task from MQTT response
   useEffect(() => {
     try {
-      if (socketTodoStatusData !== null) {
-        let payloadData = socketTodoStatusData;
-        if (payloadData.todoStatusID === 6) {
-          setActionsRows((rowsData) => {
-            return rowsData.filter((newData, index) => {
-              return newData.pK_TID !== payloadData.todoid;
-            });
-          });
-        } else {
-          setActionsRows((rowsData) => {
-            return rowsData.map((newData) => {
-              if (newData.pK_TID === payloadData.todoid) {
-                const newObj = {
-                  ...newData,
-                  status: {
-                    pK_TSID: payloadData.todoStatusID,
-                    status: statusValues[payloadData.todoStatusID],
-                  },
-                };
-                return newObj;
-              }
-              return newData;
-            });
-          });
+      if (!socketTodoStatusData) return;
+
+      const payloadData = socketTodoStatusData;
+
+      setActionsRows((rowsData) => {
+        // Remove task when status is completed
+        if (Number(payloadData.todoStatusID) === 6) {
+          return rowsData.filter(
+            (item) => item.pK_TID !== payloadData.todoid
+          );
         }
-      }
+
+        // Find updated status
+        const findStatusValue = statusOptions.find(
+          (item) => Number(item.id) === Number(payloadData.todoStatusID)
+        );
+
+        // Update only the matching task
+        return rowsData.map((item) => {
+          if (item.pK_TID !== payloadData.todoid) {
+            return item;
+          }
+
+          return {
+            ...item,
+            status: {
+              ...item.status,
+              pK_TSID: payloadData.todoStatusID,
+              status: findStatusValue
+                ? t(findStatusValue.status)
+                : item.status?.status,
+            },
+          };
+        });
+      });
     } catch (error) {
-      console.error("src/container/meeting/advanceMeeting/viewAdvanceMeeting/Actions/Actions.js:", error);
+      console.error(
+        "src/container/meeting/advanceMeeting/viewAdvanceMeeting/Actions/Actions.js:",
+        error
+      );
     }
-  }, [socketTodoStatusData]);
+  }, [socketTodoStatusData, statusOptions, t]);
 
   useEffect(() => {
     if (removeTodo !== 0) {
