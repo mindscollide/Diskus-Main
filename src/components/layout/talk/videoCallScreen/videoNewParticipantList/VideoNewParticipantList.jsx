@@ -230,11 +230,12 @@ const VideoNewParticipantList = () => {
   const [searchValue, setSearchValue] = useState("");
 
   console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
-  /**
-   * true  → at least one non-self participant is muted → button shows "Unmute All"
-   * false → all non-self participants are unmuted      → button shows "Mute All"
-   */
-  const [isForAll, setIsForAll] = useState(false);
+  // Mute All / Unmute All removed from the UI — state below kept commented out.
+  // /**
+  //  * true  → at least one non-self participant is muted → button shows "Unmute All"
+  //  * false → all non-self participants are unmuted      → button shows "Mute All"
+  //  */
+  // const [isForAll, setIsForAll] = useState(false);
 
   // CR(0012249) — presenter-host rows: the Redux presentation roster, minus
   // the presenter and minus requesters still in the waiting room (JOINED
@@ -361,48 +362,43 @@ const VideoNewParticipantList = () => {
   // DERIVED: Mute-All button visibility and label
   //
   // Business rule (SRS):
-  //   The "Mute All / Unmute All" button is shown ONLY when there are at
-  //   least 2 participants EXCLUDING the current host/presenter. With fewer
-  //   than 2 others the per-row icon is sufficient and the bulk button
-  //   adds no value.
-  //
-  // Why useMemo instead of a useEffect+state pair:
-  //   Both `nonSelfCount` and `shouldMuteAll` are pure derivations of
-  //   existing state. Computing them inline avoids a second render cycle
-  //   that the original useEffect/setIsForAll pattern caused.
+  //   The "Mute All / Unmute All" button 
+
+
   // ─────────────────────────────────────────────────────────────────────────
-  const { nonSelfParticipants, showMuteAllButton, shouldMuteAll } =
-    useMemo(() => {
-      const nonSelf = filteredParticipants.filter((p) => {
-        // In presenter-host view, exclude the presenter themselves by userID
-        if (presenterViewFlag && presenterViewHostFlag) {
-          return p.userID !== session.presenterHostUserID;
-        }
-        // In regular host view, exclude host-flagged participants
-        return !p.isHost;
-      });
-
-      // At least one non-self participant is muted → show "Unmute All"
-      const anyMuted = nonSelf.some((p) => p.mute === true);
-
-      return {
-        nonSelfParticipants: nonSelf,
-        // Only render the button when there are 2+ non-self participants
-        showMuteAllButton: nonSelf.length > 1,
-        shouldMuteAll: anyMuted,
-      };
-    }, [
-      filteredParticipants,
-      presenterViewFlag,
-      presenterViewHostFlag,
-      session.presenterHostUserID,
-    ]);
-
-  // Keep isForAll state in sync with the derived value so existing
-  // handler logic that reads `isForAll` still works correctly
-  useEffect(() => {
-    setIsForAll(shouldMuteAll);
-  }, [shouldMuteAll]);
+  // Mute All / Unmute All removed from the UI — logic below kept commented out.
+  // const { nonSelfParticipants, showMuteAllButton, shouldMuteAll } =
+  //   useMemo(() => {
+  //     const nonSelf = filteredParticipants.filter((p) => {
+  //       // In presenter-host view, exclude the presenter themselves by userID
+  //       if (presenterViewFlag && presenterViewHostFlag) {
+  //         return p.userID !== session.presenterHostUserID;
+  //       }
+  //       // In regular host view, exclude host-flagged participants
+  //       return !p.isHost;
+  //     });
+  //
+  //     // At least one non-self participant is muted → show "Unmute All"
+  //     const anyMuted = nonSelf.some((p) => p.mute === true);
+  //
+  //     return {
+  //       nonSelfParticipants: nonSelf,
+  //       // Only render the button when there are 2+ non-self participants
+  //       showMuteAllButton: nonSelf.length > 1,
+  //       shouldMuteAll: anyMuted,
+  //     };
+  //   }, [
+  //     filteredParticipants,
+  //     presenterViewFlag,
+  //     presenterViewHostFlag,
+  //     session.presenterHostUserID,
+  //   ]);
+  //
+  // // Keep isForAll state in sync with the derived value so existing
+  // // handler logic that reads `isForAll` still works correctly
+  // useEffect(() => {
+  //   setIsForAll(shouldMuteAll);
+  // }, [shouldMuteAll]);
 
   // ─────────────────────────────────────────────────────────────────────────
   // HANDLERS
@@ -533,38 +529,39 @@ const VideoNewParticipantList = () => {
     ],
   );
 
-  /**
-   * Mute or unmute all non-self participants at once.
-   * Excludes the current user from the UID list so they never accidentally
-   * mute themselves via this action.
-   *
-   * FIX: original had 6+ repeated console.logs and re-read localStorage
-   * inside the function. Now uses the memoised `nonSelfParticipants` list
-   * and `roomContext` derived above.
-   */
-  const muteUnmuteAllByHost = useCallback(
-    (currentlyMuted) => {
-      const allUids = nonSelfParticipants.map((p) => ({ UID: p.guid }));
-
-      // Resolve RoomID for the "mute all" context (presenter path uses acceptedRoomID)
-      const RoomID = presenterViewFlag
-        ? session.acceptedRoomID || session.roomID
-        : session.isMeetingVideoHostCheck
-          ? session.roomID
-          : session.participantRoomId;
-
-      dispatch(
-        muteUnMuteParticipantMainApi(navigate, t, {
-          RoomID,
-          IsMuted: !currentlyMuted, // toggle
-          isForAll: true,
-          MuteUnMuteList: allUids,
-          MeetingID: session.currentMeetingID,
-        }),
-      );
-    },
-    [dispatch, navigate, t, nonSelfParticipants, presenterViewFlag, session],
-  );
+  // Mute All / Unmute All removed from the UI — logic below kept commented out.
+  // /**
+  //  * Mute or unmute all non-self participants at once.
+  //  * Excludes the current user from the UID list so they never accidentally
+  //  * mute themselves via this action.
+  //  *
+  //  * FIX: original had 6+ repeated console.logs and re-read localStorage
+  //  * inside the function. Now uses the memoised `nonSelfParticipants` list
+  //  * and `roomContext` derived above.
+  //  */
+  // const muteUnmuteAllByHost = useCallback(
+  //   (currentlyMuted) => {
+  //     const allUids = nonSelfParticipants.map((p) => ({ UID: p.guid }));
+  //
+  //     // Resolve RoomID for the "mute all" context (presenter path uses acceptedRoomID)
+  //     const RoomID = presenterViewFlag
+  //       ? session.acceptedRoomID || session.roomID
+  //       : session.isMeetingVideoHostCheck
+  //         ? session.roomID
+  //         : session.participantRoomId;
+  //
+  //     dispatch(
+  //       muteUnMuteParticipantMainApi(navigate, t, {
+  //         RoomID,
+  //         IsMuted: !currentlyMuted, // toggle
+  //         isForAll: true,
+  //         MuteUnMuteList: allUids,
+  //         MeetingID: session.currentMeetingID,
+  //       }),
+  //     );
+  //   },
+  //   [dispatch, navigate, t, nonSelfParticipants, presenterViewFlag, session],
+  // );
 
   /**
    * Show or hide a participant's camera feed.
@@ -963,29 +960,14 @@ const VideoNewParticipantList = () => {
         </div>
       </Col>
 
-      {/* ── Participants header + conditional Mute All / Unmute All button ──
-           Business rule: button is hidden when there are fewer than 2 non-self
-           participants. With only one other person the individual row mic
-           toggle is sufficient and the bulk button adds no value.
-      ── */}
+      {/* ── Participants header ──
+           The Mute All / Unmute All button was removed from the host and
+           presenter panels (muteUnmuteAllByHost above is kept, unused). ── */}
       <Col sm={12}>
         <div className={styles["Waiting-New-Participant-hosttab"]}>
-          <Row>
-            <Col sm={6} className="d-flex justify-content-start">
-              <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
-                {t("Participants")}
-              </p>
-            </Col>
-            <Col sm={6} className="d-flex justify-content-end">
-              {showMuteAllButton && (
-                <Button
-                  text={isForAll ? t("Unmute-all") : t("Mute-all")}
-                  className={styles["Waiting-New-Participant-muteAll"]}
-                  onClick={() => muteUnmuteAllByHost(isForAll)}
-                />
-              )}
-            </Col>
-          </Row>
+          <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
+            {t("Participants")}
+          </p>
         </div>
       </Col>
 

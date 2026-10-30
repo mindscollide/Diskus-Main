@@ -1979,6 +1979,32 @@ const VideoPanelNormal = () => {
     dispatch(toggleParticipantsVisibility(false));
   };
 
+  // Participants popup: close on any outside click. The header icon is skipped
+  // (its own click already toggles it) and a click inside the call iframe
+  // doesn't bubble to this document, so it's caught via the window blur.
+  useEffect(() => {
+    if (!participantsVisible) return undefined;
+    const onOutsideClick = (e) => {
+      if (
+        e.target?.closest?.(
+          '.Participants-Lists, img[alt="Participants"], img[alt="Active participants"]',
+        )
+      )
+        return;
+      dispatch(toggleParticipantsVisibility(false));
+    };
+    const onWindowBlur = () => {
+      if (document.activeElement?.tagName === "IFRAME")
+        dispatch(toggleParticipantsVisibility(false));
+    };
+    document.addEventListener("mousedown", onOutsideClick);
+    window.addEventListener("blur", onWindowBlur);
+    return () => {
+      document.removeEventListener("mousedown", onOutsideClick);
+      window.removeEventListener("blur", onWindowBlur);
+    };
+  }, [participantsVisible, dispatch]);
+
   useEffect(() => {
     try {
       if (makeParticipantAsHost) {
@@ -2461,32 +2487,24 @@ const VideoPanelNormal = () => {
                                     console.log(participant, "checkcheck");
                                     return (
                                       <>
-                                        <Row
+                                        <div
                                           key={participant.guid}
-                                          className='mb-1'>
-                                          <Col
-                                            lg={7}
-                                            md={7}
-                                            sm={12}
-                                            className='d-flex justify-content-start'>
+                                          className='participantModal_row'>
+                                          <div className='participantModal_info'>
                                             <p className='participantModal_name'>
-                                              {participant.name}
+                                              <span
+                                                className='participantModal_nameText'
+                                                dir='auto'>
+                                                {participant.name}
+                                              </span>
                                               {participant.isHost && (
-                                                <Tooltip
-                                                  title={t("Host")}
-                                                  placement='top-right'>
-                                                  <span className='hostName-in-participant'>
-                                                    ({t("Host")})
-                                                  </span>
-                                                </Tooltip>
+                                                <span className='hostName-in-participant'>
+                                                  ({t("Host")})
+                                                </span>
                                               )}
-                                            </p>{" "}
-                                          </Col>
-                                          <Col
-                                            lg={5}
-                                            md={5}
-                                            sm={12}
-                                            className='d-flex justify-content-end gap-2'>
+                                            </p>
+                                          </div>
+                                          <div className='participantModal_icons'>
                                             <img
                                               src={VideoOff}
                                               width='20px'
@@ -2523,8 +2541,8 @@ const VideoPanelNormal = () => {
                                                     : "hidden",
                                               }}
                                             />
-                                          </Col>
-                                        </Row>
+                                          </div>
+                                        </div>
                                       </>
                                     );
                                   })}
@@ -2577,23 +2595,19 @@ const VideoPanelNormal = () => {
                                   return (
                                     presentationRoster.length > 0 &&
                                     presentationRoster.map((participant) => (
-                                      <Row
+                                      <div
                                         key={participant.guid}
-                                        className='mb-1'>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className='d-flex justify-content-start'>
+                                        className='participantModal_row'>
+                                        <div className='participantModal_info'>
                                           <p className='participantModal_name'>
-                                            {participant.name}
-                                          </p>{" "}
-                                        </Col>
-                                        <Col
-                                          lg={5}
-                                          md={5}
-                                          sm={12}
-                                          className='d-flex justify-content-end gap-2'>
+                                            <span
+                                              className='participantModal_nameText'
+                                              dir='auto'>
+                                              {participant.name}
+                                            </span>
+                                          </p>
+                                        </div>
+                                        <div className='participantModal_icons'>
                                           <img
                                             src={VideoOff}
                                             width='20px'
@@ -2627,8 +2641,8 @@ const VideoPanelNormal = () => {
                                                 : "hidden",
                                             }}
                                           />
-                                        </Col>
-                                      </Row>
+                                        </div>
+                                      </div>
                                     ))
                                   );
                                 })()}

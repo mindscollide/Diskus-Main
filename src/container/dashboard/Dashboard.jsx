@@ -2256,7 +2256,7 @@ const Dashboard = () => {
               setNotification({
                 ...notification,
                 notificationShow: true,
-                message: t("Presentation-stopped-by-host"),
+                message: t("Presentation-stopped-by-Presenter"),
               });
               setNotificationID(id);
             } else if (
@@ -2294,6 +2294,17 @@ const Dashboard = () => {
             ) {
               // CR(0012249): sent to the requesting participant if the
               // host rejects them.
+              // Only the declined user sees the toast (matters for Deny all,
+              // which sends one message per requester): payload.userID, or
+              // the "<hex>_<userID>" suffix of payload.uid, must be this user.
+              const myUserID = String(localStorage.getItem("userID"));
+              const declinedUserID = String(
+                data.payload?.userID ||
+                  String(data.payload?.uid || "").split("_").pop(),
+              );
+              if (declinedUserID === myUserID) {
+                show(t("Presenter-has-declined-your-request"), "info");
+              }
               dispatch(presentationJoinRequestRejectedMqtt(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
