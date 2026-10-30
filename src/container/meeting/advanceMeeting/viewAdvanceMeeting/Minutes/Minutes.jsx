@@ -320,8 +320,8 @@ const Minutes = () => {
         }
       }
     },
-    onDrop(e) {},
-    customRequest() {},
+    onDrop(e) { },
+    customRequest() { },
   };
 
   //Edit Button Function
@@ -820,11 +820,11 @@ const Minutes = () => {
 
       const updatedAttachments = matchedMinute
         ? (item.minutesAttachmets || []).map((attachment) => {
-            const matchedFile = (matchedMinute.files || []).find(
-              (file) => file.pK_FileID === attachment.fileID,
-            );
-            return matchedFile ? matchedFile : attachment;
-          })
+          const matchedFile = (matchedMinute.files || []).find(
+            (file) => file.pK_FileID === attachment.fileID,
+          );
+          return matchedFile ? matchedFile : attachment;
+        })
         : item.minutesAttachmets || [];
 
       return {
@@ -858,11 +858,11 @@ const Minutes = () => {
 
         const updatedAttachments = matchedDocument
           ? (minute.minutesAttachmets || []).map((attachment) => {
-              const matchedFile = (matchedDocument.files || []).find(
-                (file) => file.pK_FileID === attachment.fileID,
-              );
-              return matchedFile ? matchedFile : attachment;
-            })
+            const matchedFile = (matchedDocument.files || []).find(
+              (file) => file.pK_FileID === attachment.fileID,
+            );
+            return matchedFile ? matchedFile : attachment;
+          })
           : minute.minutesAttachmets || [];
 
         return {
@@ -903,11 +903,11 @@ const Minutes = () => {
 
       const updatedAttachments = matchedMinute
         ? (item.minutesAttachmets || []).map((attachment) => {
-            const matchedFile = (matchedMinute.files || []).find(
-              (file) => file.pK_FileID === attachment.fileID,
-            );
-            return matchedFile ? matchedFile : attachment;
-          })
+          const matchedFile = (matchedMinute.files || []).find(
+            (file) => file.pK_FileID === attachment.fileID,
+          );
+          return matchedFile ? matchedFile : attachment;
+        })
         : item.minutesAttachmets || [];
 
       return {
@@ -983,7 +983,7 @@ const Minutes = () => {
     if (
       MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !== null &&
       MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData !==
-        undefined
+      undefined
     ) {
       setMinuteReviewData(
         MinutesReducer.GetMinuteReviewStatsForOrganizerByMeetingIdData,
@@ -1370,7 +1370,7 @@ const Minutes = () => {
                                                 }></p>
                                               {childAgendaMinuteData
                                                 .minutesAttachmets.length >
-                                              0 ? (
+                                                0 ? (
                                                 <Row>
                                                   {childAgendaMinuteData.minutesAttachmets.map(
                                                     (
@@ -1492,7 +1492,7 @@ const Minutes = () => {
                                                       <span
                                                         className={
                                                           styles[
-                                                            "reviewer-count"
+                                                          "reviewer-count"
                                                           ]
                                                         }>
                                                         +{remainingCount}
@@ -1719,27 +1719,27 @@ const Minutes = () => {
             sm={12}
             className='d-flex justify-content-between align-items-center'>
             {Number(editorRole.status) === 1 ||
-            Number(editorRole.status) === 11 ||
-            Number(editorRole.status) === 12 ? null : (editorRole.role ===
+              Number(editorRole.status) === 11 ||
+              Number(editorRole.status) === 12 ? null : (editorRole.role ===
                 "Organizer" &&
                 Number(editorRole.status) === 9) ||
-              (Number(editorRole.status) === 10 &&
-                editorRole.role === "Organizer") ? (
+                (Number(editorRole.status) === 10 &&
+                  editorRole.role === "Organizer") ? (
               <p className={styles["Attachments"]}>{t("Attachments")}</p>
             ) : (
               <p></p>
             )}
             <div className={styles["button-block"]}>
               {isMinutePublishable === true ||
-              (editorRole.role === "Organizer" &&
-                Number(editorRole.status) === 9 &&
-                deadLineDate &&
-                deadLineDate <= currentDateOnly) ||
-              (Number(editorRole.status) === 10 &&
-                editorRole.role === "Organizer" &&
-                deadLineDate &&
-                deadLineDate <= currentDateOnly &&
-                isMinutePublishable === true) ? (
+                (editorRole.role === "Organizer" &&
+                  Number(editorRole.status) === 9 &&
+                  deadLineDate &&
+                  deadLineDate <= currentDateOnly) ||
+                (Number(editorRole.status) === 10 &&
+                  editorRole.role === "Organizer" &&
+                  deadLineDate &&
+                  deadLineDate <= currentDateOnly &&
+                  isMinutePublishable === true) ? (
                 <Button
                   text={t("Publish-minutes")}
                   className={styles["PublishMinutes"]}
@@ -1771,12 +1771,12 @@ const Minutes = () => {
         ) : general ? (
           <>
             {Number(editorRole.status) === 1 ||
-            Number(editorRole.status) === 11 ||
-            Number(editorRole.status) === 12 ? null : (editorRole.role ===
+              Number(editorRole.status) === 11 ||
+              Number(editorRole.status) === 12 ? null : (editorRole.role ===
                 "Organizer" &&
                 Number(editorRole.status) === 9) ||
-              (Number(editorRole.status) === 10 &&
-                editorRole.role === "Organizer") ? (
+                (Number(editorRole.status) === 10 &&
+                  editorRole.role === "Organizer") ? (
               <>
                 <Row className='mt-4'>
                   <Col lg={6} md={6} sm={6}>
@@ -1806,7 +1806,7 @@ const Minutes = () => {
                         <p
                           className={
                             addNoteFields.Description.errorStatus &&
-                            addNoteFields.Description.value === ""
+                              addNoteFields.Description.value === ""
                               ? ` ${styles["errorNotesMessage"]} `
                               : `${styles["errorNotesMessage_hidden"]}`
                           }>
@@ -1853,22 +1853,22 @@ const Minutes = () => {
                           <Row>
                             {fileAttachments.length > 0
                               ? fileAttachments.map((data, index) => {
-                                  return (
-                                    <>
-                                      <Col lg={4} md={4} sm={4} key={index}>
-                                        <AttachmentViewer
-                                          fk_UID={userID}
-                                          handleClickRemove={() =>
-                                            handleRemoveFile(data)
-                                          }
-                                          data={fileAttachments}
-                                          id={0}
-                                          name={data.DisplayAttachmentName}
-                                        />
-                                      </Col>
-                                    </>
-                                  );
-                                })
+                                return (
+                                  <>
+                                    <Col lg={4} md={4} sm={4} key={index}>
+                                      <AttachmentViewer
+                                        fk_UID={userID}
+                                        handleClickRemove={() =>
+                                          handleRemoveFile(data)
+                                        }
+                                        data={fileAttachments}
+                                        id={0}
+                                        name={data.DisplayAttachmentName}
+                                      />
+                                    </Col>
+                                  </>
+                                );
+                              })
                               : null}
                           </Row>
                         </>
@@ -1917,7 +1917,7 @@ const Minutes = () => {
               const isOpenReviewer = openReviewerDetail.includes(index);
               let isRejectedMemberHas =
                 data?.MinuteStats &&
-                data?.MinuteStats?.rejectedByUsers.length > 0
+                  data?.MinuteStats?.rejectedByUsers.length > 0
                   ? true
                   : false;
 
@@ -1980,8 +1980,8 @@ const Minutes = () => {
                         {isOpen ? (
                           <>
                             {isOpenReviewer &&
-                            minuteReviewData !== null &&
-                            data?.MinuteStats ? (
+                              minuteReviewData !== null &&
+                              data?.MinuteStats ? (
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <div
@@ -2115,8 +2115,8 @@ const Minutes = () => {
                                             data?.MinuteStats?.pendingUsers.map(
                                               (minutePendingUser, index) =>
                                                 index ===
-                                                data.MinuteStats.pendingUsers
-                                                  .length -
+                                                  data.MinuteStats.pendingUsers
+                                                    .length -
                                                   1
                                                   ? `${minutePendingUser}`
                                                   : `${minutePendingUser}, `,
@@ -2135,8 +2135,8 @@ const Minutes = () => {
                                             data?.MinuteStats?.acceptedByUsers.map(
                                               (minuteAcceptedUser, index) =>
                                                 index ===
-                                                data.MinuteStats.acceptedByUsers
-                                                  .length -
+                                                  data.MinuteStats.acceptedByUsers
+                                                    .length -
                                                   1
                                                   ? `${minuteAcceptedUser}`
                                                   : `${minuteAcceptedUser}, `,
@@ -2161,8 +2161,8 @@ const Minutes = () => {
                                             data?.MinuteStats?.rejectedByUsers.map(
                                               (minuteRejectedUser, index) =>
                                                 index ===
-                                                data.MinuteStats.rejectedByUsers
-                                                  .length -
+                                                  data.MinuteStats.rejectedByUsers
+                                                    .length -
                                                   1
                                                   ? `${minuteRejectedUser}`
                                                   : `${minuteRejectedUser}, `,
@@ -2181,7 +2181,7 @@ const Minutes = () => {
                                 sm={12}
                                 className='position-relative'>
                                 <div className={styles["uploaded-details"]}>
-                                  {(
+                                  {/* {(
                                     Number(editorRole.status) === 1 ||
                                     Number(editorRole.status) === 11 ||
                                     Number(editorRole.status) === 12
@@ -2204,6 +2204,27 @@ const Minutes = () => {
                                         dispatch(DeleteMinuteReducer(data));
                                       }}
                                       alt=''
+                                    />
+                                  ) : null} */}
+
+                                  {(
+                                    Number(localStorage.getItem("userID")) === Number(data.userID) &&
+                                    (
+                                      editorRole.role === "Organizer" &&
+                                      [9, 10].includes(Number(editorRole.status))
+                                    )
+                                  ) ? (
+                                    <img
+                                      draggable={false}
+                                      src={RedCroseeIcon}
+                                      height="20.76px"
+                                      width="20.76px"
+                                      className={styles["RedCrossClass"]}
+                                      onClick={() => {
+                                        dispatch(deleteCommentModalGeneral(true));
+                                        dispatch(DeleteMinuteReducer(data));
+                                      }}
+                                      alt=""
                                     />
                                   ) : null}
                                   <Row className={styles["inherit-height"]}>
@@ -2289,20 +2310,35 @@ const Minutes = () => {
                                           className='d-grid justify-content-end p-0'>
                                           <div>
                                             {(
+                                              Number(localStorage.getItem("userID")) === Number(data.userID) &&
+                                              (
+
+                                                editorRole.role === "Organizer" &&
+                                                [9, 10].includes(Number(editorRole.status))
+                                              )
+                                            ) ? (
+                                              <img
+                                                className="cursor-pointer mx-2"
+                                                src={EditIcon}
+                                                onClick={() => handleEditFunc(data)}
+                                                alt=""
+                                              />
+                                            ) : null}
+                                            {/* {(
                                               Number(editorRole.status) === 1 ||
-                                              Number(editorRole.status) ===
+                                                Number(editorRole.status) ===
                                                 11 ||
-                                              Number(editorRole.status) === 12
+                                                Number(editorRole.status) === 12
                                                 ? null
                                                 : (editorRole.role ===
-                                                    "Organizer" &&
-                                                    Number(
-                                                      editorRole.status,
-                                                    ) === 9) ||
-                                                  (Number(editorRole.status) ===
-                                                    10 &&
-                                                    editorRole.role ===
-                                                      "Organizer")
+                                                  "Organizer" &&
+                                                  Number(
+                                                    editorRole.status,
+                                                  ) === 9) ||
+                                                (Number(editorRole.status) ===
+                                                  10 &&
+                                                  editorRole.role ===
+                                                  "Organizer")
                                             ) ? (
                                               <img
                                                 className='cursor-pointer mx-2'
@@ -2312,7 +2348,7 @@ const Minutes = () => {
                                                 }
                                                 alt=''
                                               />
-                                            ) : null}
+                                            ) : null} */}
                                             <div
                                               onClick={() =>
                                                 menuPopupMinute(data.minuteID)
@@ -2327,16 +2363,14 @@ const Minutes = () => {
                                               <div
                                                 className={
                                                   openMenuId === data.minuteID
-                                                    ? `${
-                                                        styles[
-                                                          "popup-agenda-menu"
-                                                        ]
-                                                      } ${"opacity-1 pe-auto"}`
-                                                    : `${
-                                                        styles[
-                                                          "popup-agenda-menu"
-                                                        ]
-                                                      } ${"opacity-0 pe-none"}`
+                                                    ? `${styles[
+                                                    "popup-agenda-menu"
+                                                    ]
+                                                    } ${"opacity-1 pe-auto"}`
+                                                    : `${styles[
+                                                    "popup-agenda-menu"
+                                                    ]
+                                                    } ${"opacity-0 pe-none"}`
                                                 }>
                                                 <span
                                                   onClick={() =>
@@ -2373,14 +2407,14 @@ const Minutes = () => {
                                             className={styles["time-uploader"]}>
                                             {convertToGMTMinuteTime(
                                               data.lastUpdatedDate +
-                                                data.lastUpdatedTime,
+                                              data.lastUpdatedTime,
                                             )}
                                           </p>
                                           <p
                                             className={styles["date-uploader"]}>
                                             {convertDateToGMTMinute(
                                               data.lastUpdatedDate +
-                                                data.lastUpdatedTime,
+                                              data.lastUpdatedTime,
                                             )}
                                           </p>
                                         </Col>

@@ -278,8 +278,8 @@ const AgendaWise = ({
         }
       }
     },
-    onDrop(e) {},
-    customRequest() {},
+    onDrop(e) { },
+    customRequest() { },
   };
   // Initialize previousFileList to an empty array
   let previousFileList = [];
@@ -854,10 +854,10 @@ const AgendaWise = ({
             let agendaTitle = isParentData
               ? parentAgendaMinutes[0].agendaTitle
               : parentAgenda.childAgendas.find((childAgenda) =>
-                  subMinutes.some(
-                    (minute) => minute.agendaID === childAgenda.pK_MAID,
-                  ),
-                )?.parentTitle || "";
+                subMinutes.some(
+                  (minute) => minute.agendaID === childAgenda.pK_MAID,
+                ),
+              )?.parentTitle || "";
 
             let parentAgendaObj = {
               agendaID: parentAgenda.pK_MAID,
@@ -1013,12 +1013,12 @@ const AgendaWise = ({
   return (
     <section className={styles["agenda-wise-minutes"]}>
       {Number(editorRole.status) === 1 ||
-      Number(editorRole.status) === 11 ||
-      Number(editorRole.status) === 12 ? null : (editorRole.role ===
+        Number(editorRole.status) === 11 ||
+        Number(editorRole.status) === 12 ? null : (editorRole.role ===
           "Organizer" &&
           Number(editorRole.status) === 9) ||
-        (Number(editorRole.status) === 10 &&
-          editorRole.role === "Organizer") ? (
+          (Number(editorRole.status) === 10 &&
+            editorRole.role === "Organizer") ? (
         <>
           <Row className='mt-4'>
             <Col lg={6} md={6} sm={6}>
@@ -1035,9 +1035,9 @@ const AgendaWise = ({
                     value={
                       agendaOptionvalue.value !== 0
                         ? {
-                            value: agendaOptionvalue.value,
-                            label: agendaOptionvalue.label,
-                          }
+                          value: agendaOptionvalue.value,
+                          label: agendaOptionvalue.label,
+                        }
                         : null
                     }
                     placeholder={t("Select-agenda")}
@@ -1063,7 +1063,7 @@ const AgendaWise = ({
                   <p
                     className={
                       addNoteFields.Description.errorStatus &&
-                      addNoteFields.Description.value === ""
+                        addNoteFields.Description.value === ""
                         ? ` ${styles["errorNotesMessage"]} `
                         : `${styles["errorNotesMessage_hidden"]}`
                     }>
@@ -1110,22 +1110,22 @@ const AgendaWise = ({
                     <Row className='mt-1'>
                       {fileAttachments.length > 0
                         ? fileAttachments.map((data, index) => {
-                            return (
-                              <>
-                                <Col lg={4} md={4} sm={4}>
-                                  <AttachmentViewer
-                                    data={data}
-                                    id={0}
-                                    name={data.DisplayAttachmentName}
-                                    fk_UID={userID}
-                                    handleClickRemove={() =>
-                                      handleRemoveFile(data)
-                                    }
-                                  />
-                                </Col>
-                              </>
-                            );
-                          })
+                          return (
+                            <>
+                              <Col lg={4} md={4} sm={4}>
+                                <AttachmentViewer
+                                  data={data}
+                                  id={0}
+                                  name={data.DisplayAttachmentName}
+                                  fk_UID={userID}
+                                  handleClickRemove={() =>
+                                    handleRemoveFile(data)
+                                  }
+                                />
+                              </Col>
+                            </>
+                          );
+                        })
                         : null}
                     </Row>
                   </>
@@ -1231,7 +1231,7 @@ const AgendaWise = ({
                             return (
                               <>
                                 {minuteReviewData !== null &&
-                                parentMinutedata?.MinuteStats ? (
+                                  parentMinutedata?.MinuteStats ? (
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <div
@@ -1293,7 +1293,7 @@ const AgendaWise = ({
                                               src={DropdownPurple}
                                               className={
                                                 isOpenDrawerMinute ===
-                                                parentMinutedata.minuteID
+                                                  parentMinutedata.minuteID
                                                   ? `${styles["Arrow"]} cursor-pointer`
                                                   : `${styles["Arrow_Expanded"]} cursor-pointer`
                                               }
@@ -1312,11 +1312,11 @@ const AgendaWise = ({
                                             sm={12}
                                             className={
                                               isOpenDrawerMinute ===
-                                              parentMinutedata.minuteID
+                                                parentMinutedata.minuteID
                                                 ? styles["ParentMinuteExtend"]
                                                 : styles[
-                                                    "ParentMinuteNotExtend"
-                                                  ]
+                                                "ParentMinuteNotExtend"
+                                                ]
                                             }>
                                             <p
                                               className={`${styles["text-wrapper-review"]}`}>
@@ -1331,8 +1331,8 @@ const AgendaWise = ({
                                                 parentMinutedata?.MinuteStats?.pendingUsers.map(
                                                   (pendingUserData, index) =>
                                                     index ===
-                                                    parentMinutedata.MinuteStats
-                                                      .pendingUsers.length -
+                                                      parentMinutedata.MinuteStats
+                                                        .pendingUsers.length -
                                                       1
                                                       ? `${pendingUserData}`
                                                       : `${pendingUserData}, `,
@@ -1351,8 +1351,8 @@ const AgendaWise = ({
                                                 parentMinutedata?.MinuteStats?.acceptedByUsers.map(
                                                   (acceptedUser, index) =>
                                                     index ===
-                                                    parentMinutedata.MinuteStats
-                                                      .acceptedByUsers.length -
+                                                      parentMinutedata.MinuteStats
+                                                        .acceptedByUsers.length -
                                                       1
                                                       ? `${acceptedUser}`
                                                       : `${acceptedUser}, `,
@@ -1377,8 +1377,8 @@ const AgendaWise = ({
                                                 parentMinutedata?.MinuteStats?.rejectedByUsers.map(
                                                   (rejectedUser, index) =>
                                                     index ===
-                                                    parentMinutedata.MinuteStats
-                                                      .rejectedByUsers.length -
+                                                      parentMinutedata.MinuteStats
+                                                        .rejectedByUsers.length -
                                                       1
                                                       ? `${rejectedUser}`
                                                       : `${rejectedUser}, `,
@@ -1397,16 +1397,16 @@ const AgendaWise = ({
                                     sm={12}
                                     className='position-relative'>
                                     <div className={styles["uploaded-details"]}>
-                                      {(
+                                      {/* {(
                                         Number(editorRole.status) === 1 ||
-                                        Number(editorRole.status) === 11 ||
-                                        Number(editorRole.status) === 12
+                                          Number(editorRole.status) === 11 ||
+                                          Number(editorRole.status) === 12
                                           ? null
                                           : (editorRole.role === "Organizer" &&
-                                              Number(editorRole.status) ===
-                                                9) ||
-                                            (Number(editorRole.status) === 10 &&
-                                              editorRole.role === "Organizer")
+                                            Number(editorRole.status) ===
+                                            9) ||
+                                          (Number(editorRole.status) === 10 &&
+                                            editorRole.role === "Organizer")
                                       ) ? (
                                         <img
                                           className={styles["delete-icon"]}
@@ -1421,6 +1421,24 @@ const AgendaWise = ({
                                                 parentMinutedata,
                                               ),
                                             );
+                                          }}
+                                        />
+                                      ) : null} */}
+                                      {(
+                                        Number(localStorage.getItem("userID")) ===
+                                        Number(parentMinutedata.userID) &&
+                                        (
+                                          editorRole.role === "Organizer" &&
+                                          [9, 10].includes(Number(editorRole.status))
+                                        )
+                                      ) ? (
+                                        <img
+                                          className={styles["delete-icon"]}
+                                          src={DeleteIcon}
+                                          alt=""
+                                          onClick={() => {
+                                            dispatch(deleteCommentModalAgenda(true));
+                                            dispatch(DeleteMinuteReducer(parentMinutedata));
                                           }}
                                         />
                                       ) : null}
@@ -1516,7 +1534,7 @@ const AgendaWise = ({
                                               sm={12}
                                               className='d-grid justify-content-end p-0'>
                                               <div className='d-flex justify-content-center align-items-center'>
-                                                {(
+                                                {/* {(
                                                   Number(editorRole.status) ===
                                                     1 ||
                                                   Number(editorRole.status) ===
@@ -1546,6 +1564,26 @@ const AgendaWise = ({
                                                       )
                                                     }
                                                   />
+                                                ) : null} */}
+                                                {(
+                                                  Number(localStorage.getItem("userID")) ===
+                                                  Number(parentMinutedata.userID) &&
+                                                  (
+                                                    editorRole.role === "Organizer" &&
+                                                    [9, 10].includes(Number(editorRole.status))
+                                                  )
+                                                ) ? (
+                                                  <img
+                                                    className="cursor-pointer mx-2"
+                                                    src={EditIcon}
+                                                    alt=""
+                                                    onClick={() =>
+                                                      handleEditFunc(
+                                                        parentMinutedata,
+                                                        data.agendaTitle
+                                                      )
+                                                    }
+                                                  />
                                                 ) : null}
                                                 <div
                                                   onClick={() =>
@@ -1565,17 +1603,15 @@ const AgendaWise = ({
                                                   <div
                                                     className={
                                                       openMenuId ===
-                                                      parentMinutedata.minuteID
-                                                        ? `${
-                                                            styles[
-                                                              "popup-agenda-menu"
-                                                            ]
-                                                          } ${"opacity-1 pe-auto"}`
-                                                        : `${
-                                                            styles[
-                                                              "popup-agenda-menu"
-                                                            ]
-                                                          } ${"opacity-0 pe-none"}`
+                                                        parentMinutedata.minuteID
+                                                        ? `${styles[
+                                                        "popup-agenda-menu"
+                                                        ]
+                                                        } ${"opacity-1 pe-auto"}`
+                                                        : `${styles[
+                                                        "popup-agenda-menu"
+                                                        ]
+                                                        } ${"opacity-0 pe-none"}`
                                                     }>
                                                     <span
                                                       onClick={
@@ -1613,7 +1649,7 @@ const AgendaWise = ({
                                                 }>
                                                 {convertToGMTMinuteTime(
                                                   parentMinutedata.lastUpdatedDate +
-                                                    parentMinutedata.lastUpdatedTime,
+                                                  parentMinutedata.lastUpdatedTime,
                                                 ) + ","}
                                               </p>
                                               <p
@@ -1622,7 +1658,7 @@ const AgendaWise = ({
                                                 }>
                                                 {convertDateToGMTMinute(
                                                   parentMinutedata.lastUpdatedDate +
-                                                    parentMinutedata.lastUpdatedTime,
+                                                  parentMinutedata.lastUpdatedTime,
                                                 )}
                                               </p>
                                             </Col>
@@ -1660,7 +1696,7 @@ const AgendaWise = ({
                                 (minuteDataSubminute) => (
                                   <>
                                     {minuteReviewData !== null &&
-                                    minuteDataSubminute?.MinuteStats ? (
+                                      minuteDataSubminute?.MinuteStats ? (
                                       <Row
                                         className={
                                           currentLanguage === "ar"
@@ -1671,7 +1707,7 @@ const AgendaWise = ({
                                           <div
                                             className={
                                               styles[
-                                                "reviewer-progress-wrapper"
+                                              "reviewer-progress-wrapper"
                                               ]
                                             }>
                                             <Row>
@@ -1679,7 +1715,7 @@ const AgendaWise = ({
                                                 <div
                                                   className={
                                                     styles[
-                                                      "reviewer-progress-text"
+                                                    "reviewer-progress-text"
                                                     ]
                                                   }>
                                                   <p className='m-0'>
@@ -1730,7 +1766,7 @@ const AgendaWise = ({
                                                   src={DropdownPurple}
                                                   className={
                                                     minuteDataSubminute.minuteID ===
-                                                    isOpenDrawerSubMinute
+                                                      isOpenDrawerSubMinute
                                                       ? `${styles["Arrow"]} cursor-pointer`
                                                       : `${styles["Arrow_Expanded"]} cursor-pointer`
                                                   }
@@ -1749,11 +1785,11 @@ const AgendaWise = ({
                                                 sm={12}
                                                 className={
                                                   minuteDataSubminute.minuteID ===
-                                                  isOpenDrawerSubMinute
+                                                    isOpenDrawerSubMinute
                                                     ? styles["subMinuteExtend"]
                                                     : styles[
-                                                        "subMinuteNotExtend"
-                                                      ]
+                                                    "subMinuteNotExtend"
+                                                    ]
                                                 }>
                                                 <p
                                                   className={`${styles["text-wrapper-review"]}`}>
@@ -1772,9 +1808,9 @@ const AgendaWise = ({
                                                         index,
                                                       ) =>
                                                         index ===
-                                                        minuteDataSubminute
-                                                          .MinuteStats
-                                                          .pendingUsers.length -
+                                                          minuteDataSubminute
+                                                            .MinuteStats
+                                                            .pendingUsers.length -
                                                           1
                                                           ? `${pendingUserData}`
                                                           : `${pendingUserData}, `,
@@ -1798,10 +1834,10 @@ const AgendaWise = ({
                                                         index,
                                                       ) =>
                                                         index ===
-                                                        minuteDataSubminute
-                                                          .MinuteStats
-                                                          .acceptedByUsers
-                                                          .length -
+                                                          minuteDataSubminute
+                                                            .MinuteStats
+                                                            .acceptedByUsers
+                                                            .length -
                                                           1
                                                           ? `${acceptedUserData}`
                                                           : `${acceptedUserData}, `,
@@ -1825,10 +1861,10 @@ const AgendaWise = ({
                                                         index,
                                                       ) =>
                                                         index ===
-                                                        minuteDataSubminute
-                                                          .MinuteStats
-                                                          .rejectedByUsers
-                                                          .length -
+                                                          minuteDataSubminute
+                                                            .MinuteStats
+                                                            .rejectedByUsers
+                                                            .length -
                                                           1
                                                           ? `${rejectedUserData}`
                                                           : `${rejectedUserData}, `,
@@ -1972,27 +2008,27 @@ const AgendaWise = ({
                                                   sm={12}
                                                   className='d-grid justify-content-end p-0'>
                                                   <div className='d-flex justify-content-center align-items-center'>
-                                                    {(
+                                                    {/* {(
                                                       Number(
                                                         editorRole.status,
                                                       ) === 1 ||
-                                                      Number(
-                                                        editorRole.status,
-                                                      ) === 11 ||
-                                                      Number(
-                                                        editorRole.status,
-                                                      ) === 12
+                                                        Number(
+                                                          editorRole.status,
+                                                        ) === 11 ||
+                                                        Number(
+                                                          editorRole.status,
+                                                        ) === 12
                                                         ? null
                                                         : (editorRole.role ===
-                                                            "Organizer" &&
-                                                            Number(
-                                                              editorRole.status,
-                                                            ) === 9) ||
-                                                          (Number(
+                                                          "Organizer" &&
+                                                          Number(
                                                             editorRole.status,
-                                                          ) === 10 &&
-                                                            editorRole.role ===
-                                                              "Organizer")
+                                                          ) === 9) ||
+                                                        (Number(
+                                                          editorRole.status,
+                                                        ) === 10 &&
+                                                          editorRole.role ===
+                                                          "Organizer")
                                                     ) ? (
                                                       <img
                                                         className='cursor-pointer mx-2'
@@ -2002,6 +2038,27 @@ const AgendaWise = ({
                                                           handleEditFunc(
                                                             minuteDataSubminute,
                                                             subMinuteData.agendaTitle,
+                                                          )
+                                                        }
+                                                      />
+                                                    ) : null} */}
+
+                                                    {(
+                                                      Number(localStorage.getItem("userID")) ===
+                                                      Number(minuteDataSubminute.userID) &&
+                                                      (
+                                                        editorRole.role === "Organizer" &&
+                                                        [9, 10].includes(Number(editorRole.status))
+                                                      )
+                                                    ) ? (
+                                                      <img
+                                                        className="cursor-pointer mx-2"
+                                                        src={EditIcon}
+                                                        alt=""
+                                                        onClick={() =>
+                                                          handleEditFunc(
+                                                            minuteDataSubminute,
+                                                            subMinuteData.agendaTitle
                                                           )
                                                         }
                                                       />
@@ -2024,17 +2081,15 @@ const AgendaWise = ({
                                                       <div
                                                         className={
                                                           openMenuId ===
-                                                          minuteDataSubminute.minuteID
-                                                            ? `${
-                                                                styles[
-                                                                  "popup-agenda-menu"
-                                                                ]
-                                                              } ${"opacity-1 pe-auto"}`
-                                                            : `${
-                                                                styles[
-                                                                  "popup-agenda-menu"
-                                                                ]
-                                                              } ${"opacity-0 pe-none"}`
+                                                            minuteDataSubminute.minuteID
+                                                            ? `${styles[
+                                                            "popup-agenda-menu"
+                                                            ]
+                                                            } ${"opacity-1 pe-auto"}`
+                                                            : `${styles[
+                                                            "popup-agenda-menu"
+                                                            ]
+                                                            } ${"opacity-0 pe-none"}`
                                                         }>
                                                         <span
                                                           onClick={
@@ -2070,7 +2125,7 @@ const AgendaWise = ({
                                                     }>
                                                     {convertToGMTMinuteTime(
                                                       minuteDataSubminute.lastUpdatedDate +
-                                                        minuteDataSubminute.lastUpdatedTime,
+                                                      minuteDataSubminute.lastUpdatedTime,
                                                     ) + ","}
                                                   </p>
                                                   <p
@@ -2079,7 +2134,7 @@ const AgendaWise = ({
                                                     }>
                                                     {convertDateToGMTMinute(
                                                       minuteDataSubminute.lastUpdatedDate +
-                                                        minuteDataSubminute.lastUpdatedTime,
+                                                      minuteDataSubminute.lastUpdatedTime,
                                                     )}
                                                   </p>
                                                 </Col>
@@ -2087,14 +2142,14 @@ const AgendaWise = ({
                                             </Col>
                                           </Row>
                                         </div>
-                                        {Number(editorRole.status) === 1 ||
-                                        Number(editorRole.status) === 11 ||
-                                        Number(editorRole.status) ===
+                                        {/* {Number(editorRole.status) === 1 ||
+                                          Number(editorRole.status) === 11 ||
+                                          Number(editorRole.status) ===
                                           12 ? null : (editorRole.role ===
                                             "Organizer" &&
                                             Number(editorRole.status) === 9) ||
-                                          (Number(editorRole.status) === 10 &&
-                                            editorRole.role === "Organizer") ? (
+                                            (Number(editorRole.status) === 10 &&
+                                              editorRole.role === "Organizer") ? (
                                           <img
                                             className={styles["delete-icon"]}
                                             src={DeleteIcon}
@@ -2108,6 +2163,26 @@ const AgendaWise = ({
                                                   minuteDataSubminute,
                                                 ),
                                               );
+                                            }}
+                                          />
+                                        ) : null} */}
+
+                                        {(
+                                          Number(localStorage.getItem("userID")) ===
+                                          Number(minuteDataSubminute.userID) &&
+                                          (
+
+                                            editorRole.role === "Organizer" &&
+                                            [9, 10].includes(Number(editorRole.status))
+                                          )
+                                        ) ? (
+                                          <img
+                                            className={styles["delete-icon"]}
+                                            src={DeleteIcon}
+                                            alt=""
+                                            onClick={() => {
+                                              dispatch(deleteCommentModalAgenda(true));
+                                              dispatch(DeleteMinuteReducer(minuteDataSubminute));
                                             }}
                                           />
                                         ) : null}
