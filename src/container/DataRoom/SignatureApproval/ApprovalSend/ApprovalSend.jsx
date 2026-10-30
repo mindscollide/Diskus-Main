@@ -48,7 +48,7 @@ const ApprovalSend = () => {
       state.SignatureWorkFlowReducer.workflowSignaturedocumentStatusChange,
   );
 
-  
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -66,7 +66,7 @@ const ApprovalSend = () => {
     title: 0,
     statusID: [],
   });
-  
+
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
@@ -210,7 +210,7 @@ const ApprovalSend = () => {
       align: "start",
       ellipsis: true,
       tooltip: false,
-      width: "30%",
+      width: 160,
       sortDirections: ["ascend", "descend"],
       sorter: (a, b) => a.fileName - b.fileName, // Custom sorter function for sorting by name
       onHeaderCell: () => ({
@@ -219,7 +219,7 @@ const ApprovalSend = () => {
         },
       }),
       render: (text, record) => {
-        
+
         return (
           <span
             className="d-flex gap-2 align-items-center cursor-pointer"
@@ -241,7 +241,8 @@ const ApprovalSend = () => {
       dataIndex: "numberOfSignatories",
       key: "numberOfSignatories",
       ellipsis: true,
-      width: "20%",
+      width: 160,
+
       align: "center",
 
       render: (text, record) => {
@@ -279,7 +280,8 @@ const ApprovalSend = () => {
       dataIndex: "sentOn",
       key: "sentOn",
       className: "leaveTimeParticipant",
-      width: "15%",
+      width: 160,
+
       onHeaderCell: () => ({
         onClick: () => {
           handleSortingFunc("sentOn");
@@ -315,7 +317,8 @@ const ApprovalSend = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "200px",
+      width: 200,
+
       ellipsis: true,
       className: "statusParticipant",
 
@@ -346,7 +349,7 @@ const ApprovalSend = () => {
                     : styles["draftStatus"]
             }
           >
-            {status === "Pending Signature" ? t("Pending-signature") :t(status)}
+            {status === "Pending Signature" ? t("Pending-signature") : t(status)}
           </p>
         );
       },
@@ -357,7 +360,7 @@ const ApprovalSend = () => {
       dataIndex: "delete",
       key: "delete",
       align: "center",
-      width: "10%",
+      width: 100,
       render: (text, record) => {
         // Render status text with appropriate styles
         if (Number(record?.workFlowStatusID) === 4) {
@@ -374,7 +377,7 @@ const ApprovalSend = () => {
   ];
 
   const handleClickSignatoriesList = (record) => {
-    
+
     // setSignatureListVal(value);
     // setSignatoriesList(true);
     let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
@@ -527,11 +530,11 @@ const ApprovalSend = () => {
             approvalsDataCopy.map((data2) =>
               data2.workFlowID === data.workFlowID
                 ? {
-                    ...data2,
-                    status: data.status,
-                    workFlowStatusID: data.workFlowStatusID,
-                    sentOn: data.sentOn,
-                  }
+                  ...data2,
+                  status: data.status,
+                  workFlowStatusID: data.workFlowStatusID,
+                  sentOn: data.sentOn,
+                }
                 : data2,
             ),
           );
@@ -539,11 +542,11 @@ const ApprovalSend = () => {
             approvalsDataCopy.map((data2) =>
               data2.workFlowID === data.workFlowID
                 ? {
-                    ...data2,
-                    status: data.status,
-                    workFlowStatusID: data.workFlowStatusID,
-                    sentOn: data.sentOn,
-                  }
+                  ...data2,
+                  status: data.status,
+                  workFlowStatusID: data.workFlowStatusID,
+                  sentOn: data.sentOn,
+                }
                 : data2,
             ),
           );
@@ -566,10 +569,10 @@ const ApprovalSend = () => {
           approvalsDataCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
-                  ...data2,
-                  status: data.status,
-                  workFlowStatusID: data.workFlowStatusID,
-                }
+                ...data2,
+                status: data.status,
+                workFlowStatusID: data.workFlowStatusID,
+              }
               : data2,
           ),
         );
@@ -587,9 +590,9 @@ const ApprovalSend = () => {
       spin
     />
   );
-  
+
   useTableScrollBottom(async (hasReachedBottom) => {
-    
+
 
     if (approvalsData.length > 0 && rowsDataLength !== totalRecords) {
       setIsScrolling(true);
@@ -678,7 +681,7 @@ const ApprovalSend = () => {
             }}
             pagination={false}
             showHeader={true}
-            scroll={{ y: "50vh", x: "100%" }}
+            scroll={{ y: 400, x: "760px" }}
             id={(record, index) =>
               index === approvalsData.length - 1 ? "last-row-class" : ""
             }

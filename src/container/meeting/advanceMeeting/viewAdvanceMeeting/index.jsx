@@ -268,6 +268,13 @@ const ViewMeetingModal = () => {
     };
   }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
 
+  // The flag is written when a meeting is opened (listings, ViewMeetingDetails) and
+  // only means something while this view is open. The view unmounts on every way of
+  // closing it (close button, cancel, leave/end, route change), so clear it here.
+  useEffect(() => {
+    return () => localStorage.removeItem("isMinutePublished");
+  }, []);
+
   // ─── Recording Stop Handler ───────────────────────────────────────────────
 
   const onHandleClickForStopRecording = () => {

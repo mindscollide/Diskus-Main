@@ -898,7 +898,7 @@ const deleteCommentApi = (navigate, t, commmentID, taskID) => {
               await dispatch(
                 deleteComment_success(
                   response.data.responseResult,
-                  t("Comment-deleted")
+                  t("Comment-deleted-successfully")
                 )
               );
               dispatch(deleteTodoCommentSpinner(false));

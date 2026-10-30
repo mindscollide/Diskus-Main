@@ -1031,7 +1031,7 @@ const Agenda = () => {
             />
             {!isEnded && (
               <Button
-                text={t("Next")}
+                text={t("Save")}
                 className={styles["Save_Agenda_btn"]}
                 onClick={() => saveAgendaData(SAVE_FLAG.SAVE_ONLY)}
               />

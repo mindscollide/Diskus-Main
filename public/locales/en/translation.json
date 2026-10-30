@@ -2959,5 +2959,8 @@
   "Due": "Due",
   "This-file-already-exist": "This file already exist",
   "Browser": "Browser",
-  "File-deleted-successfully":"File deleted successfully"
+  "File-deleted-successfully": "File deleted successfully",
+  "Comment-deleted-successfully": "Comment deleted successfully",
+  "The-owner-has-removed-this-file": "The owner has removed this file",
+  "The-owner-has-removed-this-folder": "The owner has removed this folder"
 }
