@@ -2953,5 +2953,8 @@
   "This-file-already-exist": "هذا الملف موجود بالفعل",
   "Browser": "المتصفح",
   "File-deleted-successfully": "تم حذف الملف بنجاح",
-  "Presenter-has-declined-your-request": "رفض مقدم العرض طلبك"
+  "Presenter-has-declined-your-request": "رفض مقدم العرض طلبك",
+  "Comment-deleted-successfully": "تم حذف التعليق بنجاح",
+  "The-owner-has-removed-this-file": "قام مالك الملف بإزالة هذا الملف",
+  "The-owner-has-removed-this-folder": "قام مالك المجلد بإزالة هذا المجلد"
 }

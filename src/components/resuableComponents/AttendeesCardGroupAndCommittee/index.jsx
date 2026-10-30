@@ -45,11 +45,6 @@ const GroupAndCommitteeMembersCard = ({ members, isExists, handleChange, index }
                 <div className='d-flex align-items-start justify-content-start' >
                     <Checkbox
                         checked={isExists
-                            //   attendees.includes(
-                            //     data.pK_UID
-                            //   )
-                            //     ? true
-                            //     : false
                         }
                         classNameDiv=""
                         onChange={handleChange

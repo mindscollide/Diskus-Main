@@ -443,7 +443,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     }
   };
 
-  const checkAttendeeBox = (data, id, index) => {
+  const checkAttendeeBox = (id) => {
     if (attendees.includes(id)) {
       setAttendees((prevFiles) =>
         prevFiles.filter((attnedeeID) => attnedeeID !== id),
