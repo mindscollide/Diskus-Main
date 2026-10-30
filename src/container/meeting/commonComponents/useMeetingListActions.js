@@ -79,6 +79,8 @@ export const useMeetingListActions = ({
 
     // Set state synchronously BEFORE dispatch — no stale closure issue
     localStorage.setItem("videoCallURL", record.videoCallURL);
+    localStorage.setItem("isMinutePublished", record.isMinutePublished);
+
     setVideoTalk(buildVideoTalk(record));
     setEditorRole({
       status: record.status,

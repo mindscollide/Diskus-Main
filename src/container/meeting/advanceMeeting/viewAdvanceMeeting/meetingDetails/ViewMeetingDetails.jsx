@@ -94,6 +94,7 @@ const ViewMeetingDetails = () => {
     editorRole,
     setEditorRole,
     setViewAdvanceMeetingModal,
+    advanceMeetingModalID,
     setAdvanceMeetingModalID,
     setDataroomMapFolderId,
     handleCloseMeeting,
@@ -114,6 +115,29 @@ const ViewMeetingDetails = () => {
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
+
+  // Same "is a presentation running for THIS meeting" check AgendaViewer uses
+  // for its video icon: presenterViewFlag only covers people already in the
+  // presentation, activePresentationMeetingID covers everyone else too
+  // (set on MEETING_PRESENTATION_STARTED, cleared on STOPPED).
+  const presenterMeetingId = useSelector(
+    (state) => state.videoFeatureReducer.presenterMeetingId,
+  );
+  const activePresentationMeetingID = useSelector(
+    (state) => state.videoFeatureReducer.activePresentationMeetingID,
+  );
+  const thisPageMeetingID = Number(
+    advanceMeetingModalID === "0" ||
+      advanceMeetingModalID === 0 ||
+      advanceMeetingModalID === null ||
+      advanceMeetingModalID === undefined
+      ? meetingID
+      : advanceMeetingModalID,
+  );
+  const isPresentationForThisMeeting =
+    (presenterViewFlag && Number(presenterMeetingId) === thisPageMeetingID) ||
+    (activePresentationMeetingID !== null &&
+      Number(activePresentationMeetingID) === thisPageMeetingID);
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails,
@@ -890,6 +914,7 @@ const ViewMeetingDetails = () => {
                                 disableBtn={
                                   enableDisableVideoState ||
                                   participantEnableVideoState ||
+                                  isPresentationForThisMeeting ||
                                   (presenterViewFlag &&
                                     (presenterViewJoinFlag ||
                                       presenterViewHostFlag))

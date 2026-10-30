@@ -2256,7 +2256,7 @@ const Dashboard = () => {
               setNotification({
                 ...notification,
                 notificationShow: true,
-                message: t("Presentation-stopped-by-host"),
+                message: t("Presentation-stopped-by-Presenter"),
               });
               setNotificationID(id);
             } else if (
@@ -2294,6 +2294,17 @@ const Dashboard = () => {
             ) {
               // CR(0012249): sent to the requesting participant if the
               // host rejects them.
+              // Only the declined user sees the toast (matters for Deny all,
+              // which sends one message per requester): payload.userID, or
+              // the "<hex>_<userID>" suffix of payload.uid, must be this user.
+              const myUserID = String(localStorage.getItem("userID"));
+              const declinedUserID = String(
+                data.payload?.userID ||
+                  String(data.payload?.uid || "").split("_").pop(),
+              );
+              if (declinedUserID === myUserID) {
+                show(t("Presenter-has-declined-your-request"), "info");
+              }
               dispatch(presentationJoinRequestRejectedMqtt(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
@@ -5291,14 +5302,29 @@ const Dashboard = () => {
             }
           } else if (
             data.payload.message.toLowerCase() ===
-            "FILE_SHARING_REMOVED".toLowerCase() ||
             "FILE_DELETED".toLowerCase()
           ) {
             try {
-              if (data.viewable) {
+              if (data.viewable && Number(data.senderID) !== Number(localStorage.getItem("userID"))) {
                 setNotification({
                   notificationShow: true,
-                  message: `file remove to you`,
+                  message: `${t("The-owner-has-removed-this-file")} ${data.payload.fileName}`,
+                });
+              }
+              setNotificationID(id);
+              dispatch(fileRemoveMQTT(data?.payload?.fileID));
+            } catch (error) {
+              console.error("src/container/dashboard/Dashboard.js:", error);
+            }
+          } else if (
+            data.payload.message.toLowerCase() ===
+            "FILE_SHARING_REMOVED".toLowerCase()
+          ) {
+            try {
+              if (data.viewable && Number(data.senderID) !== Number(localStorage.getItem("userID"))) {
+                setNotification({
+                  notificationShow: true,
+                  message: `${t("The-owner-has-removed-this-file")} ${data.payload.fileName}`,
                 });
               }
               setNotificationID(id);
@@ -5314,7 +5340,7 @@ const Dashboard = () => {
               if (data.viewable) {
                 setNotification({
                   notificationShow: true,
-                  message: `folder remove to you`,
+                  message: `${t("The-owner-has-removed-this-folder")} ${data.payload.folderName}`,
                 });
               }
               setNotificationID(id);
@@ -5327,10 +5353,10 @@ const Dashboard = () => {
             "FOLDER_DELETED".toLowerCase()
           ) {
             try {
-              if (data.viewable) {
+              if (data.viewable && Number(data.senderID) !== Number(localStorage.getItem("userID"))) {
                 setNotification({
                   notificationShow: true,
-                  message: `folder remove to you`,
+                  message: `${t("The-owner-has-removed-this-folder")} ${data.payload.folderName}`,
                 });
               }
               setNotificationID(id);

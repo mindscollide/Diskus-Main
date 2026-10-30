@@ -2419,7 +2419,7 @@
   "Stop-presentation": "Stop Presentation",
   "Leave-presentation": "Leave Presentation",
   "Join-presentation": "Join Presentation",
-  "Presentation-stopped-by-host": "The presentation has been stopped by the host.",
+  "Presentation-stopped-by-Presenter": "The presentation has been stopped by the presenter.",
   "Start-presenting": "Start Presenting",
   "Stop-presenting": "Stop Presenting",
   "Leave-presenting": "Leave presenting view",
@@ -2959,5 +2959,9 @@
   "Due": "Due",
   "This-file-already-exist": "This file already exist",
   "Browser": "Browser",
-  "File-deleted-successfully":"File deleted successfully"
+  "Presenter-has-declined-your-request": "Presenter has declined your request",
+  "File-deleted-successfully": "File deleted successfully",
+  "Comment-deleted-successfully": "Comment deleted successfully",
+  "The-owner-has-removed-this-file": "The owner has removed this file",
+  "The-owner-has-removed-this-folder": "The owner has removed this folder"
 }

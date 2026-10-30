@@ -804,6 +804,28 @@ const VideoCallNormalHeader = ({
     dispatch(toggleParticipantsVisibility(false));
   };
 
+  // Leave/Cancel popup: close on any click outside it. The red end-call icon
+  // is skipped (its own click already opens/closes the popup); a click inside
+  // the call iframe doesn't bubble here, so it's caught via the window blur.
+  useEffect(() => {
+    if (LeaveCallModalFlag !== true || MinimizeVideoFlag) return undefined;
+    const onOutsideClick = (e) => {
+      if (leaveModalPopupRef.current?.contains(e.target)) return;
+      if (e.target?.closest?.('img[alt="End Call"]')) return;
+      dispatch(leaveCallModal(false));
+    };
+    const onWindowBlur = () => {
+      if (document.activeElement?.tagName === "IFRAME")
+        dispatch(leaveCallModal(false));
+    };
+    document.addEventListener("mousedown", onOutsideClick);
+    window.addEventListener("blur", onWindowBlur);
+    return () => {
+      document.removeEventListener("mousedown", onOutsideClick);
+      window.removeEventListener("blur", onWindowBlur);
+    };
+  }, [LeaveCallModalFlag, MinimizeVideoFlag, dispatch]);
+
   function leaveSuccess() {
     console.log("busyCall");
     localStorage.setItem("isCaller", false);
@@ -2862,7 +2884,14 @@ const VideoCallNormalHeader = ({
             </div>
           ) : (LeaveCallModalFlag === false && callerID === currentUserID) ||
             getMeetingHostInfo?.isDashboardVideo ? (
+            // open={false} while the leave popup is open: the cursor is still
+            // on the icon, so the tooltip would stay on top of the popup.
             <Tooltip
+              open={LeaveCallModalFlag ? false : undefined}
+              placement={presenterViewFlag ? "bottomRight" : "topRight"}
+              overlayClassName={
+                presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+              }
               title={
                 isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")
               }>
@@ -2877,7 +2906,8 @@ const VideoCallNormalHeader = ({
             </Tooltip>
           ) : LeaveCallModalFlag === false && callerID !== currentUserID ? (
             <Tooltip
-              placement={presenterViewFlag ? "bottom" : "topRight"}
+              open={LeaveCallModalFlag ? false : undefined}
+              placement={presenterViewFlag ? "bottomRight" : "topRight"}
               overlayClassName={
                 presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
               }

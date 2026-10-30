@@ -2183,13 +2183,13 @@ const Minutes = () => {
                                 <div className={styles["uploaded-details"]}>
                                   {/* {(
                                     Number(editorRole.status) === 1 ||
-                                    Number(editorRole.status) === 11 ||
-                                    Number(editorRole.status) === 12
+                                      Number(editorRole.status) === 11 ||
+                                      Number(editorRole.status) === 12
                                       ? null
                                       : (editorRole.role === "Organizer" &&
-                                          Number(editorRole.status) === 9) ||
-                                        (Number(editorRole.status) === 10 &&
-                                          editorRole.role === "Organizer")
+                                        Number(editorRole.status) === 9) ||
+                                      (Number(editorRole.status) === 10 &&
+                                        editorRole.role === "Organizer")
                                   ) ? (
                                     <img
                                       draggable={false}
@@ -2227,6 +2227,7 @@ const Minutes = () => {
                                       alt=""
                                     />
                                   ) : null}
+
                                   <Row className={styles["inherit-height"]}>
                                     <Col lg={9} md={9} sm={12}>
                                       <p
@@ -2303,11 +2304,13 @@ const Minutes = () => {
                                             </p>
                                           </div>
                                         </Col>
+
                                         <Col
                                           lg={3}
                                           md={3}
                                           sm={12}
-                                          className='d-grid justify-content-end p-0'>
+                                          className="d-grid justify-content-end p-0"
+                                        >
                                           <div>
                                             {(
                                               Number(localStorage.getItem("userID")) === Number(data.userID) &&
@@ -2341,25 +2344,23 @@ const Minutes = () => {
                                                   "Organizer")
                                             ) ? (
                                               <img
-                                                className='cursor-pointer mx-2'
+                                                className="cursor-pointer mx-2"
                                                 src={EditIcon}
-                                                onClick={() =>
-                                                  handleEditFunc(data)
-                                                }
-                                                alt=''
+                                                onClick={() => handleEditFunc(data)}
+                                                alt=""
                                               />
                                             ) : null} */}
                                             <div
-                                              onClick={() =>
-                                                menuPopupMinute(data.minuteID)
-                                              }
+                                              onClick={() => menuPopupMinute(data.minuteID)}
                                               className={styles["box-agendas"]}
-                                              ref={closeMenuMinute}>
+                                              ref={closeMenuMinute}
+                                            >
                                               <img
-                                                className='cursor-pointer'
+                                                className="cursor-pointer"
                                                 src={MenuIcon}
-                                                alt=''
+                                                alt=""
                                               />
+
                                               <div
                                                 className={
                                                   openMenuId === data.minuteID
@@ -2374,32 +2375,25 @@ const Minutes = () => {
                                                 }>
                                                 <span
                                                   onClick={() =>
-                                                    // setShowRevisionHistory(
-                                                    //   true
-                                                    // )
-                                                    handleClickShowRevision(
-                                                      data,
-                                                      data.minuteID,
-                                                    )
-                                                  }>
+                                                    handleClickShowRevision(data, data.minuteID)
+                                                  }
+                                                >
                                                   {t("Revisions")}
                                                 </span>
+
                                                 <span
-                                                  onClick={
-                                                    () =>
-                                                      handleClickShowVersionHistory(
-                                                        data,
-                                                        data.minuteID,
-                                                      )
-                                                    // setShowVersionHistory(true)
+                                                  onClick={() =>
+                                                    handleClickShowVersionHistory(data, data.minuteID)
                                                   }
-                                                  className='border-0'>
+                                                  className="border-0"
+                                                >
                                                   {t("Version-history")}
                                                 </span>
                                               </div>
                                             </div>
                                           </div>
                                         </Col>
+
                                       </Row>
                                       <Row>
                                         <Col lg={12} md={12} sm={12}>

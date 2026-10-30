@@ -204,7 +204,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
               await dispatch(
                 validateEncryptGuestVideoSuccess(
                   response.data.responseResult,
-                  t("Active-meeting"),
+                  // t("Active-meeting"),
                 ),
               );
             } else if (

@@ -1855,7 +1855,7 @@ const DataRoom = () => {
       ),
       dataIndex: "name",
       key: "name",
-      width: "30%",
+      width: 220,
       align: "start",
       ellipsis: true,
       onHeaderCell: () => ({
@@ -1879,9 +1879,8 @@ const DataRoom = () => {
                   {/* <abbr title={text} className='d-flex gap-1'> */}
 
                   <span
-                    className={`${
-                      styles["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}>
+                    className={`${styles["dataroom_table_heading"]
+                      } ${"cursor-pointer"}`}>
                     {text}
                   </span>
                   <img src={sharedIcon} alt='' draggable='false' />
@@ -1928,9 +1927,8 @@ const DataRoom = () => {
                   <img src={folderColor} alt='' draggable='false' />
 
                   <span
-                    className={`${
-                      styles["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}>
+                    className={`${styles["dataroom_table_heading"]
+                      } ${"cursor-pointer"}`}>
                     {text}{" "}
                   </span>
                 </Tooltip>
@@ -1974,7 +1972,8 @@ const DataRoom = () => {
       dataIndex: "owner",
       key: "owner",
       align: "center",
-      width: "10%",
+      width: 160,
+
       onHeaderCell: () => ({
         onClick: () => {
           handeClickSortingFunc(1, 5);
@@ -1999,7 +1998,7 @@ const DataRoom = () => {
       ),
       dataIndex: "modifiedDate",
       key: "modifiedDate",
-      width: "20%",
+      width: 160,
       align: "center",
       filterIcon: (filtered) => (
         <ChevronDown className='ChevronPolls' onClick={handleClickChevron} />
@@ -2029,7 +2028,7 @@ const DataRoom = () => {
       title: t("File-size"),
       dataIndex: "fileSizeOnDisk",
       key: "fileSizeOnDisk",
-      width: "10%",
+      width: 110,
       align: "center",
       render: (text, record) => {
         if (record.isFolder) {
@@ -2051,7 +2050,7 @@ const DataRoom = () => {
       ),
       dataIndex: "location",
       key: "location",
-      width: "10%",
+      width: 120,
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         return (
@@ -2064,7 +2063,7 @@ const DataRoom = () => {
     {
       dataIndex: "OtherStuff",
       key: "OtherStuff",
-      width: "20%",
+      width: 220,
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         const pdfData = {
@@ -2099,7 +2098,7 @@ const DataRoom = () => {
                 <>
                   <div className='tablerowFeatures'>
                     {record.permissionID === 1 ||
-                    record.permissionID === 3 ? null : (
+                      record.permissionID === 3 ? null : (
                       //  Share Icon
 
                       <Tooltip placement='topRight' title={t("Share")}>
@@ -2147,17 +2146,17 @@ const DataRoom = () => {
                     {" "}
                     {record.isFolder
                       ? // Folder Logic
-                        record.permissionID === 2
+                      record.permissionID === 2
                         ? getMenuPopover(optionsforFolderEditor)
                         : record.permissionID === 1
                           ? getMenuPopover(optionsforFolderViewer)
                           : record.permissionID === 3
                             ? getMenuPopover(
-                                optionsforFolderEditableNonShareable,
-                              )
+                              optionsforFolderEditableNonShareable,
+                            )
                             : null
                       : // File Logic
-                        record.permissionID === 2
+                      record.permissionID === 2
                         ? getMenuPopover(optionsforFileEditor)
                         : record.permissionID === 1
                           ? getMenuPopover(optionsforFileViewer)
@@ -2250,10 +2249,10 @@ const DataRoom = () => {
                     {record.isFolder
                       ? getMenuPopover(optionsforFolder)
                       : [
-                            "pdf".toLowerCase(),
-                            "docx".toLowerCase(),
-                            "doc".toLowerCase(),
-                          ].includes(fileExtension.toLowerCase())
+                        "pdf".toLowerCase(),
+                        "docx".toLowerCase(),
+                        "doc".toLowerCase(),
+                      ].includes(fileExtension.toLowerCase())
                         ? getMenuPopover(optionsforPDFandSignatureFlow) // Example: Adjust as needed
                         : getMenuPopover(optionsforFile)}
                   </span>
@@ -2323,9 +2322,8 @@ const DataRoom = () => {
                   className='d-flex gap-1'>
                   {" "}
                   <span
-                    className={`${
-                      styles["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}
+                    className={`${styles["dataroom_table_heading"]
+                      } ${"cursor-pointer"}`}
                     onClick={() => getFolderDocuments(data.id, data)}>
                     {text} <img src={sharedIcon} alt='' draggable='false' />
                   </span>
@@ -2365,9 +2363,8 @@ const DataRoom = () => {
                   className='d-flex gap-1'>
                   <img src={folderColor} alt='' draggable='false' />
                   <span
-                    className={`${
-                      styles["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}
+                    className={`${styles["dataroom_table_heading"]
+                      } ${"cursor-pointer"}`}
                     onClick={() => getFolderDocuments(data.id, data)}>
                     {text}{" "}
                   </span>
@@ -2493,7 +2490,7 @@ const DataRoom = () => {
                 <>
                   <div className='tablerowFeatures'>
                     {record.permissionID === 1 ||
-                    record.permissionID === 3 ? null : (
+                      record.permissionID === 3 ? null : (
                       //  Share Icon
 
                       <Tooltip placement='topRight' title={t("Share")}>
@@ -2541,17 +2538,17 @@ const DataRoom = () => {
                     {" "}
                     {record.isFolder
                       ? // Folder Logic
-                        record.permissionID === 2
+                      record.permissionID === 2
                         ? getMenuPopover(optionsforFolderEditor)
                         : record.permissionID === 1
                           ? getMenuPopover(optionsforFolderViewer)
                           : record.permissionID === 3
                             ? getMenuPopover(
-                                optionsforFolderEditableNonShareable,
-                              )
+                              optionsforFolderEditableNonShareable,
+                            )
                             : null
                       : // File Logic
-                        record.permissionID === 2
+                      record.permissionID === 2
                         ? getMenuPopover(optionsforFileEditor)
                         : record.permissionID === 1
                           ? getMenuPopover(optionsforFileViewer)
@@ -2644,8 +2641,8 @@ const DataRoom = () => {
                     {record.isFolder
                       ? getMenuPopover(optionsforFolder)
                       : ["pdf".toLowerCase(), "docx".toLowerCase()].includes(
-                            fileExtension.toLowerCase(),
-                          )
+                        fileExtension.toLowerCase(),
+                      )
                         ? getMenuPopover(optionsforPDFandSignatureFlow) // Example: Adjust as needed
                         : getMenuPopover(optionsforFile)}
                   </span>
@@ -2723,7 +2720,7 @@ const DataRoom = () => {
       dataIndex: "name",
       key: "name",
       align: "start",
-      width: "250px",
+      width: 220,
       render: (text, record) => {
         let ext = record.name.split(".").pop();
 
@@ -2775,7 +2772,7 @@ const DataRoom = () => {
       title: t("Shared-by"),
       dataIndex: "owner",
       key: "owner",
-      width: "90px",
+      width: 160,
       align: "center",
       render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
@@ -2796,7 +2793,7 @@ const DataRoom = () => {
       ),
       dataIndex: "sharedDate",
       key: "sharedDate",
-      width: "90px",
+      width: 160,
       align: "center",
       onHeaderCell: () => ({
         onClick: () => {
@@ -2816,7 +2813,7 @@ const DataRoom = () => {
     {
       dataIndex: "OtherStuff",
       key: "OtherStuff",
-      width: "180px",
+      width: 220,
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         // Simplify MenuPopover props setup
@@ -2840,7 +2837,7 @@ const DataRoom = () => {
                 <>
                   <div className='tablerowFeatures'>
                     {record.permissionID === 1 ||
-                    record.permissionID === 3 ? null : (
+                      record.permissionID === 3 ? null : (
                       //  Share Icon
 
                       <Tooltip placement='topRight' title={t("Share")}>
@@ -2888,17 +2885,17 @@ const DataRoom = () => {
                     {" "}
                     {record.isFolder
                       ? // Folder Logic
-                        record.permissionID === 2
+                      record.permissionID === 2
                         ? getMenuPopover(optionsforFolderEditor)
                         : record.permissionID === 1
                           ? getMenuPopover(optionsforFolderViewer)
                           : record.permissionID === 3
                             ? getMenuPopover(
-                                optionsforFolderEditableNonShareable,
-                              )
+                              optionsforFolderEditableNonShareable,
+                            )
                             : null
                       : // File Logic
-                        record.permissionID === 2
+                      record.permissionID === 2
                         ? getMenuPopover(optionsforFileEditor)
                         : record.permissionID === 1
                           ? getMenuPopover(optionsforFileViewer)
@@ -3818,7 +3815,7 @@ const DataRoom = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex gap-2 align-items-center'>
+                            className='d-flex  gap-1 align-items-center'>
                             <img src={plus} height='10.8' alt='' width='12px' />
                             <span className={styles["New_folder"]}>
                               {t("New-folder")}
@@ -3832,7 +3829,7 @@ const DataRoom = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex gap-2 align-items-center'>
+                            className='d-flex  gap-1 align-items-center'>
                             <img
                               src={fileupload}
                               alt=''
@@ -4086,7 +4083,7 @@ const DataRoom = () => {
                             onClick={SharewithmeButonShow}
                           />
                           {checkFeatureIDAvailability(19) ||
-                          checkFeatureIDAvailability(21) ? (
+                            checkFeatureIDAvailability(21) ? (
                             <Button
                               text={t("Send-for-approval")}
                               className={
@@ -4138,7 +4135,7 @@ const DataRoom = () => {
                                                 key={item.id}
                                                 className={
                                                   styles[
-                                                    "breadCrumbsThreeDotsDiv"
+                                                  "breadCrumbsThreeDotsDiv"
                                                   ]
                                                 }
                                                 onClick={() =>
@@ -4151,7 +4148,7 @@ const DataRoom = () => {
                                                 <div
                                                   className={
                                                     styles[
-                                                      "breadCrumbsThreeDotsDiv_Row"
+                                                    "breadCrumbsThreeDotsDiv_Row"
                                                     ]
                                                   }
                                                   onClick={togglePopover}>
@@ -4243,9 +4240,9 @@ const DataRoom = () => {
                           <Row className='mt-3'>
                             <Col lg={12} sm={12} md={12}>
                               {getAllData.length > 0 &&
-                              getAllData !== undefined &&
-                              getAllData !== null &&
-                              gridbtnactive ? (
+                                getAllData !== undefined &&
+                                getAllData !== null &&
+                                gridbtnactive ? (
                                 <>
                                   <GridViewDataRoom
                                     data={getAllData}
@@ -4273,7 +4270,7 @@ const DataRoom = () => {
                                     onChange={handleSortChange}
                                     rows={getAllData}
                                     pagination={false}
-                                    scroll={{ y: 400, x: "100%" }}
+                                    scroll={{ y: 400, x: "760px" }}
                                   />
                                 </>
                               ) : (
@@ -4448,9 +4445,9 @@ const DataRoom = () => {
                           <Row className='mt-3'>
                             <Col lg={12} sm={12} md={12}>
                               {getAllData.length > 0 &&
-                              getAllData !== undefined &&
-                              getAllData !== null &&
-                              gridbtnactive ? (
+                                getAllData !== undefined &&
+                                getAllData !== null &&
+                                gridbtnactive ? (
                                 <>
                                   <InfiniteScroll
                                     dataLength={getAllData.length}
@@ -4502,7 +4499,7 @@ const DataRoom = () => {
                                     className={"DataRoom_Table"}
                                     rows={getAllData}
                                     pagination={false}
-                                    scroll={{ y: 400, x: "100%" }}
+                                    scroll={{ y: 400, x: "990px" }}
                                     footer={() => {
                                       return (
                                         DataRoomReducer.dataBehaviour && (

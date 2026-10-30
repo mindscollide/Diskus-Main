@@ -1442,6 +1442,7 @@ const AgendaWise = ({
                                           }}
                                         />
                                       ) : null}
+
                                       <Row className={styles["inherit-height"]}>
                                         <Col lg={9} md={9} sm={12}>
                                           <p
@@ -1537,21 +1538,21 @@ const AgendaWise = ({
                                                 {/* {(
                                                   Number(editorRole.status) ===
                                                     1 ||
-                                                  Number(editorRole.status) ===
+                                                    Number(editorRole.status) ===
                                                     11 ||
-                                                  Number(editorRole.status) ===
+                                                    Number(editorRole.status) ===
                                                     12
                                                     ? null
                                                     : (editorRole.role ===
-                                                        "Organizer" &&
-                                                        Number(
-                                                          editorRole.status,
-                                                        ) === 9) ||
-                                                      (Number(
+                                                      "Organizer" &&
+                                                      Number(
                                                         editorRole.status,
-                                                      ) === 10 &&
-                                                        editorRole.role ===
-                                                          "Organizer")
+                                                      ) === 9) ||
+                                                    (Number(
+                                                      editorRole.status,
+                                                    ) === 10 &&
+                                                      editorRole.role ===
+                                                      "Organizer")
                                                 ) ? (
                                                   <img
                                                     className='cursor-pointer mx-2'
@@ -2063,6 +2064,7 @@ const AgendaWise = ({
                                                         }
                                                       />
                                                     ) : null}
+
                                                     <div
                                                       onClick={() =>
                                                         menuPopupMinute(
