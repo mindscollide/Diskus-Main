@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import "antd/dist/antd.min.css";
 import "./Time_picker.css";
 import { TimePicker } from "antd";
 import moment from "moment";

@@ -54,7 +54,6 @@ import {
   checklistStatusErrorMap,
   isFunction,
 } from "../../commen/functions/utils";
-import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 
 const GetAllAuthorityInit = () => {
   return {

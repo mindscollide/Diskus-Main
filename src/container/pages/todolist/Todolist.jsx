@@ -79,7 +79,6 @@ import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 
-import "antd/dist/antd.min.css";
 import "./Todolist.css";
 
 // ─────────────────────────────────────────────────────────────────────────────

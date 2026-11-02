@@ -1,4 +1,3 @@
-import html2pdf from "html2pdf.js";
 import dairaStudioLogo from "./../../../assets/images/Daira-Logo.png";
 
 export const parseUTCDateString = (dateStr) => {
@@ -282,6 +281,9 @@ export const generatePdfHtml = async ({
     },
   };
 
+  // html2pdf.js (with jsPDF and html2canvas, ~970 KB) is only needed when a PDF is
+  // generated, so it is loaded here instead of being part of the main bundle.
+  const { default: html2pdf } = await import("html2pdf.js");
   const worker = html2pdf().set(opt).from(element).toPdf();
   const pdf = await worker.get("pdf");
 

@@ -31,7 +31,6 @@ import { AccessDeniedPolls } from "./Polls_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import { setCreateEditTab } from "./ModalStates_actions";
 import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
-import { error } from "pdf-lib";
 
 const clearMessagesGroup = () => {
   return {

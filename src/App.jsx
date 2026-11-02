@@ -22,28 +22,53 @@ import "./App.css";
 import "./fr.css";
 import "./ar.css";
 import "./assets/font-icons/font-icons.css";
-import "@fontsource/montserrat"; // Defaults to weight 400
-import "@fontsource/montserrat/100.css";
-import "@fontsource/montserrat/200.css";
-import "@fontsource/montserrat/300.css";
-import "@fontsource/montserrat/400.css";
-import "@fontsource/montserrat/500.css";
-import "@fontsource/montserrat/600.css";
-import "@fontsource/montserrat/700.css";
-import "@fontsource/montserrat/800.css";
-import "@fontsource/montserrat/900.css";
-import "@fontsource/ibm-plex-sans-arabic"; // Defaults to weight 400
-import "@fontsource/ibm-plex-sans-arabic/100.css";
-import "@fontsource/ibm-plex-sans-arabic/200.css";
-import "@fontsource/ibm-plex-sans-arabic/300.css";
-import "@fontsource/ibm-plex-sans-arabic/400.css";
-import "@fontsource/ibm-plex-sans-arabic/500.css";
-import "@fontsource/ibm-plex-sans-arabic/600.css";
-import "@fontsource/ibm-plex-sans-arabic/700.css";
+// Fonts: only the subsets the app uses. The plain "<weight>.css" files declare every
+// subset (cyrillic, cyrillic-ext, vietnamese, ...) which put 83 @font-face rules in the
+// entry CSS. Montserrat covers Latin text (latin + latin-ext for accented names) and
+// IBM Plex Sans Arabic covers Arabic (+ Latin for mixed text). Weights are unchanged.
+import "@fontsource/montserrat/latin-100.css";
+import "@fontsource/montserrat/latin-ext-100.css";
+import "@fontsource/montserrat/latin-200.css";
+import "@fontsource/montserrat/latin-ext-200.css";
+import "@fontsource/montserrat/latin-300.css";
+import "@fontsource/montserrat/latin-ext-300.css";
+import "@fontsource/montserrat/latin-400.css";
+import "@fontsource/montserrat/latin-ext-400.css";
+import "@fontsource/montserrat/latin-500.css";
+import "@fontsource/montserrat/latin-ext-500.css";
+import "@fontsource/montserrat/latin-600.css";
+import "@fontsource/montserrat/latin-ext-600.css";
+import "@fontsource/montserrat/latin-700.css";
+import "@fontsource/montserrat/latin-ext-700.css";
+import "@fontsource/montserrat/latin-800.css";
+import "@fontsource/montserrat/latin-ext-800.css";
+import "@fontsource/montserrat/latin-900.css";
+import "@fontsource/montserrat/latin-ext-900.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-100.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-100.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-ext-100.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-200.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-200.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-ext-200.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-300.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-300.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-ext-300.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-400.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-400.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-ext-400.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-500.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-500.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-ext-500.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-600.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-600.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-ext-600.css";
+import "@fontsource/ibm-plex-sans-arabic/arabic-700.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-700.css";
+import "@fontsource/ibm-plex-sans-arabic/latin-ext-700.css";
+import "./antdStyles";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
 import GlobalSnackbar from "./components/elements/snack_bar/GlobalSnackbar";
 import { router } from "./routes/routes";
-import { startIdlePrefetch } from "./routes/lazyPage";
 import { RouterProvider } from "react-router-dom";
 import NavigationProgress from "./routes/NavigationProgress";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
@@ -200,15 +225,6 @@ const App = () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, []);
-
-  // Warm up every lazy page while the browser is idle, so wherever the user goes
-  // next is already downloaded. A user who is already signed in starts it now; one
-  // who signs in later starts it on the first navigation after the token exists
-  // (startIdlePrefetch itself runs only once).
-  useEffect(() => {
-    startIdlePrefetch();
-    return router.subscribe(() => startIdlePrefetch());
   }, []);
 
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);

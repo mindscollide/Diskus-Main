@@ -43,7 +43,6 @@ import {
   openDocumentViewer,
 } from "../../commen/functions/utils";
 import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
-import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import axios from "axios";
 import montserratBlackFont from "../../assets/fonts/Montserrat-Black.ttf";

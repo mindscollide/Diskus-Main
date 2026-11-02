@@ -93,11 +93,8 @@ const importWithRetry = async (factory) => {
   }
 };
 
-// Every page created with lazyPage, in creation order, for startIdlePrefetch.
-const allPages = [];
-
-export const lazyPage = (factory) => {
-  const Component = lazy(() => {
+export const lazyPage = (factory) =>
+  lazy(() => {
     pending += 1;
     emit();
     return importWithRetry(factory).finally(() => {
@@ -105,63 +102,3 @@ export const lazyPage = (factory) => {
       emit();
     });
   });
-  // Plain import for idle prefetching: it does not touch the pending counter (no
-  // spinner / progress bar) and has no retries, a failure just stops the prefetch.
-  Component.preload = () => factory();
-  allPages.push(Component);
-  return Component;
-};
-
-const whenIdle = (callback) =>
-  typeof window.requestIdleCallback === "function"
-    ? window.requestIdleCallback(callback, { timeout: 5000 })
-    : setTimeout(callback, 2000);
-
-// Not on data-saver mode or a 2G connection, where a background download would cost
-// the user more than it saves.
-const connectionAllowsPrefetch = () => {
-  const connection = navigator.connection;
-  return !(
-    connection &&
-    (connection.saveData || /(^|-)2g$/.test(connection.effectiveType || ""))
-  );
-};
-
-let prefetchStarted = false;
-
-/**
- * Downloads every lazyPage component in the background, one at a time, each only
- * when the browser is idle. Runs once, and only for a signed-in user.
- *  - waits while a page the user opened is still loading, so it never competes
- *    with a real navigation;
- *  - stops at the first failure: if the server is struggling, extra background
- *    requests would only make it worse, and the page still loads on demand.
- */
-export const startIdlePrefetch = () => {
-  if (
-    prefetchStarted ||
-    !localStorage.getItem("token") ||
-    !connectionAllowsPrefetch()
-  ) {
-    return;
-  }
-  prefetchStarted = true;
-
-  const queue = [...allPages];
-  const step = () =>
-    whenIdle(async () => {
-      if (pending > 0) {
-        step();
-        return;
-      }
-      const page = queue.shift();
-      if (!page) return;
-      try {
-        await page.preload();
-        step();
-      } catch (error) {
-        // stop prefetching; the page will load on demand
-      }
-    });
-  step();
-};
