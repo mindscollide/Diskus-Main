@@ -260,8 +260,20 @@ export const convertDateToGMTMinute = (dateStr) => {
       "December",
     ];
 
-    // English date format
-    const formattedDate = `${date.getUTCDate()}th ${
+    // English date format with the right ordinal (1st, 2nd, 3rd, 4th ... 11th, 12th, 13th, 21st)
+    const dayOfMonth = date.getUTCDate();
+    const lastDigit = dayOfMonth % 10;
+    const ordinal =
+      dayOfMonth >= 11 && dayOfMonth <= 13
+        ? "th"
+        : lastDigit === 1
+          ? "st"
+          : lastDigit === 2
+            ? "nd"
+            : lastDigit === 3
+              ? "rd"
+              : "th";
+    const formattedDate = `${dayOfMonth}${ordinal} ${
       monthNames[date.getUTCMonth()]
     }, ${date.getUTCFullYear()}`;
 

@@ -836,7 +836,7 @@ const AgendaWise = ({
       if (reducerData && Object.keys(reducerData).length > 0) {
         let transformedData = [];
 
-        reducerData.agendaHierarchyList.forEach((parentAgenda) => {
+        reducerData.agendaHierarchyList.forEach((parentAgenda, parentIndex) => {
           let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
             (minute) => minute.agendaID === parentAgenda.pK_MAID,
           );
@@ -862,6 +862,9 @@ const AgendaWise = ({
             let parentAgendaObj = {
               agendaID: parentAgenda.pK_MAID,
               agendaTitle: agendaTitle,
+              // Position in the full agenda list, so an agenda without minutes
+              // earlier in the list doesn't shift this number up.
+              agendaNumber: parentIndex + 1,
               isParentData: isParentData,
               minuteData: parentAgendaMinutes.map((minute) => ({
                 minuteID: minute.minuteID,
@@ -1186,7 +1189,7 @@ const AgendaWise = ({
                             : styles["agenda-wrapper-open"]
                         }>
                         <p className={styles["agenda-title"]}>
-                          {index + 1 + "." + " " + data.agendaTitle}
+                          {data.agendaNumber + ". " + data.agendaTitle}
                         </p>
 
                         <span className='d-flex align-items-start justify-content-center'>
@@ -1681,13 +1684,15 @@ const AgendaWise = ({
                               <Row className='mx-50'>
                                 <Col lg={12} md={12} sm={12}>
                                   <p className={styles["Parent-title-heading"]}>
-                                    {index +
-                                      1 +
-                                      "." +
-                                      subMinuteIndex +
-                                      1 +
-                                      " " +
-                                      subMinuteData.agendaTitle}
+                                    {/* numbered among the sub-agendas that are shown (have minutes) */}
+                                    {`${data.agendaNumber}.${
+                                      data.subMinutes
+                                        .filter(
+                                          (subItem) =>
+                                            subItem.minuteData.length > 0,
+                                        )
+                                        .indexOf(subMinuteData) + 1
+                                    } ${subMinuteData.agendaTitle}`}
                                   </p>
                                 </Col>
                               </Row>
