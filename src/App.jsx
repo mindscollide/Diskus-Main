@@ -43,6 +43,7 @@ import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
 import GlobalSnackbar from "./components/elements/snack_bar/GlobalSnackbar";
 import { router } from "./routes/routes";
+import { startIdlePrefetch } from "./routes/lazyPage";
 import { RouterProvider } from "react-router-dom";
 import NavigationProgress from "./routes/NavigationProgress";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
@@ -199,6 +200,15 @@ const App = () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("storage", handleStorageChange);
     };
+  }, []);
+
+  // Warm up every lazy page while the browser is idle, so wherever the user goes
+  // next is already downloaded. A user who is already signed in starts it now; one
+  // who signs in later starts it on the first navigation after the token exists
+  // (startIdlePrefetch itself runs only once).
+  useEffect(() => {
+    startIdlePrefetch();
+    return router.subscribe(() => startIdlePrefetch());
   }, []);
 
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);

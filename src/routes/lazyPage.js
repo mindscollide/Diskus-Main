@@ -42,10 +42,48 @@ const dropFailedAssetLinks = () => {
     .forEach((link) => link.remove());
 };
 
+// Vite adds a chunk's stylesheet as a <link> and skips any <link> that is already in
+// the document, treating it as "already requested" without waiting for it. When a
+// stylesheet is still downloading (or failed) because another page asked for it a
+// moment earlier, this page's import() resolves immediately and the page renders
+// unstyled. So before a page is shown, make sure every /assets stylesheet really
+// loaded: any link without a `sheet` is requested again and awaited, and a failure
+// is thrown so importWithRetry can try again.
+const waitForStylesheets = () =>
+  Promise.all(
+    Array.from(
+      document.querySelectorAll('link[rel="stylesheet"][href*="/assets/"]'),
+    )
+      .filter((link) => !link.sheet)
+      .map(
+        (stale) =>
+          new Promise((resolve, reject) => {
+            const fresh = document.createElement("link");
+            fresh.rel = "stylesheet";
+            fresh.crossOrigin = stale.crossOrigin;
+            // same attribute text as the original so Vite's own lookup still matches
+            fresh.setAttribute("href", stale.getAttribute("href"));
+            fresh.onload = () => {
+              stale.remove();
+              resolve();
+            };
+            fresh.onerror = () => {
+              fresh.remove();
+              reject(
+                new Error(`Unable to preload CSS for ${stale.getAttribute("href")}`),
+              );
+            };
+            document.head.appendChild(fresh);
+          }),
+      ),
+  );
+
 const importWithRetry = async (factory) => {
   for (let attempt = 0; ; attempt += 1) {
     try {
-      return await factory();
+      const module = await factory();
+      await waitForStylesheets();
+      return module;
     } catch (error) {
       const retriesLeft = attempt < RETRY_DELAYS_MS.length;
       if (!retriesLeft || !LOAD_ERROR.test(String(error?.message))) throw error;
@@ -55,8 +93,11 @@ const importWithRetry = async (factory) => {
   }
 };
 
-export const lazyPage = (factory) =>
-  lazy(() => {
+// Every page created with lazyPage, in creation order, for startIdlePrefetch.
+const allPages = [];
+
+export const lazyPage = (factory) => {
+  const Component = lazy(() => {
     pending += 1;
     emit();
     return importWithRetry(factory).finally(() => {
@@ -64,3 +105,63 @@ export const lazyPage = (factory) =>
       emit();
     });
   });
+  // Plain import for idle prefetching: it does not touch the pending counter (no
+  // spinner / progress bar) and has no retries, a failure just stops the prefetch.
+  Component.preload = () => factory();
+  allPages.push(Component);
+  return Component;
+};
+
+const whenIdle = (callback) =>
+  typeof window.requestIdleCallback === "function"
+    ? window.requestIdleCallback(callback, { timeout: 5000 })
+    : setTimeout(callback, 2000);
+
+// Not on data-saver mode or a 2G connection, where a background download would cost
+// the user more than it saves.
+const connectionAllowsPrefetch = () => {
+  const connection = navigator.connection;
+  return !(
+    connection &&
+    (connection.saveData || /(^|-)2g$/.test(connection.effectiveType || ""))
+  );
+};
+
+let prefetchStarted = false;
+
+/**
+ * Downloads every lazyPage component in the background, one at a time, each only
+ * when the browser is idle. Runs once, and only for a signed-in user.
+ *  - waits while a page the user opened is still loading, so it never competes
+ *    with a real navigation;
+ *  - stops at the first failure: if the server is struggling, extra background
+ *    requests would only make it worse, and the page still loads on demand.
+ */
+export const startIdlePrefetch = () => {
+  if (
+    prefetchStarted ||
+    !localStorage.getItem("token") ||
+    !connectionAllowsPrefetch()
+  ) {
+    return;
+  }
+  prefetchStarted = true;
+
+  const queue = [...allPages];
+  const step = () =>
+    whenIdle(async () => {
+      if (pending > 0) {
+        step();
+        return;
+      }
+      const page = queue.shift();
+      if (!page) return;
+      try {
+        await page.preload();
+        step();
+      } catch (error) {
+        // stop prefetching; the page will load on demand
+      }
+    });
+  step();
+};

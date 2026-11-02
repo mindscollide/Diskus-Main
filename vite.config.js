@@ -227,6 +227,23 @@ export default defineConfig(({ mode }) => {
        * temporarily if you need to debug a production bundle.
        */
       sourcemap: false,
+
+      /**
+       * (4b) FEWER, BIGGER CHUNKS.
+       *
+       * Opening a page makes the browser fetch every chunk (JS + CSS) it depends
+       * on at the same time. With many tiny chunks (icons, helpers, one per small
+       * component) that is 30-40 parallel requests over one HTTP/2 connection, and
+       * on the production proxy part of them stall for 20-30 s or die with
+       * ERR_HTTP2_PROTOCOL_ERROR, leaving pages unstyled or broken. Rollup merges
+       * chunks smaller than this size into a neighbour that is always loaded with
+       * them, which cuts the request count without changing what loads when.
+       */
+      rollupOptions: {
+        output: {
+          experimentalMinChunkSize: 50 * 1024,
+        },
+      },
     },
 
     /**
