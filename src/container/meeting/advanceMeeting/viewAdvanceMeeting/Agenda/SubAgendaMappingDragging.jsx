@@ -224,7 +224,7 @@ const SubAgendaMappingDragging = ({
                                   className={styles["Padding_SubAgenda"]}>
                                   <Row
                                     key={subAgendaData.subAgendaID}
-                                    className='mt-3'>
+                                   >
                                     <Col lg={1} md={1} sm={1}></Col>
                                     <Col
                                       lg={11}

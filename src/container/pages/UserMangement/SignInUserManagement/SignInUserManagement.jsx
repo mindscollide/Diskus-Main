@@ -188,7 +188,30 @@ const SignInUserManagement = () => {
       });
     };
 
-    // 🚀 Main logic wrapped in async IIFE
+    // The storage reset below wipes localStorage (localStorageManage clears it and
+    // writes back only a few keys). It must run right on mount, NOT after the
+    // browser detection awaits: when detection finished late it ran after the user
+    // had already submitted the email and erased the freshly saved userID, so the
+    // password step sent UserID null.
+    if (code) {
+      localStorage.setItem("Ms", code);
+      window.close();
+    } else if (getpayemntString !== "") {
+      const paymentStringValue = currentUrl.split("Payment_action=")[1];
+      const data = { EncryptedString: paymentStringValue };
+      dispatch(paymentStatusApi(navigate, t, data));
+    } else {
+      localStorageManage(
+        emailRef,
+        dispatch,
+        setErrorMessage,
+        setErrorBar,
+        setRemeberEmail,
+        setEmail,
+      );
+    }
+
+    // 🚀 Browser detection only decides whether to show the "switch to Chrome" box
     (async () => {
       const browser = await detectBrowser();
       console.log("Detected Browser:", browser);
@@ -201,24 +224,6 @@ const SignInUserManagement = () => {
 
       console.log("Incognito Mode:", isIncognito);
       console.log("onChangeAllowMicrosoftCalenderSync", code);
-
-      if (code) {
-        localStorage.setItem("Ms", code);
-        window.close();
-      } else if (getpayemntString !== "") {
-        const paymentStringValue = currentUrl.split("Payment_action=")[1];
-        const data = { EncryptedString: paymentStringValue };
-        dispatch(paymentStatusApi(navigate, t, data));
-      } else {
-        localStorageManage(
-          emailRef,
-          dispatch,
-          setErrorMessage,
-          setErrorBar,
-          setRemeberEmail,
-          setEmail,
-        );
-      }
     })();
   }, [code, getpayemntString, currentUrl, emailRef]);
 

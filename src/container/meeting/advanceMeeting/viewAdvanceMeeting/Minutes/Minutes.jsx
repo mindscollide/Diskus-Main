@@ -1314,13 +1314,9 @@ const Minutes = () => {
                               <Row className='mx-50'>
                                 <Col lg={12} md={12} sm={12}>
                                   <p className={styles["Parent-title-heading"]}>
-                                    {index +
-                                      1 +
-                                      "." +
-                                      subMinuteIndex +
-                                      1 +
-                                      " " +
-                                      childAgendaData.agendaTitle}
+                                    {`${index + 1}.${subMinuteIndex + 1} ${
+                                      childAgendaData.agendaTitle
+                                    }`}
                                   </p>
                                 </Col>
                               </Row>

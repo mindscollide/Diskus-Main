@@ -103,6 +103,47 @@ const PasswordVerification = () => {
     return password;
   };
 
+  // Remembered passwords are kept per user: "rememberPasswordValue" holds a JSON
+  // map { [userID]: encryptedPassword }, so signing in as another user never shows
+  // (or overwrites) someone else's saved password. The string stays a single
+  // localStorage value, which is what the sign-out code copies across logouts.
+  // A value saved by the old single-password format is not a map and is ignored.
+  const readRememberedPasswords = () => {
+    try {
+      const parsed = JSON.parse(
+        localStorage.getItem("rememberPasswordValue") || "",
+      );
+      return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+        ? parsed
+        : {};
+    } catch (error) {
+      return {};
+    }
+  };
+
+  const writeRememberedPasswords = (map) => {
+    localStorage.setItem("rememberPasswordValue", JSON.stringify(map));
+    localStorage.setItem(
+      "remeberPassword",
+      Object.keys(map).length > 0 ? true : false,
+    );
+  };
+
+  const saveRememberedPassword = (plainPassword) => {
+    const userKey = localStorage.getItem("userID");
+    if (userKey === null) return;
+    writeRememberedPasswords({
+      ...readRememberedPasswords(),
+      [userKey]: encryptPassword(plainPassword),
+    });
+  };
+
+  const removeRememberedPassword = () => {
+    const { [localStorage.getItem("userID")]: removed, ...rest } =
+      readRememberedPasswords();
+    writeRememberedPasswords(rest);
+  };
+
   //onChange Password Text Field
   const passwordChangeHandler = (e) => {
     setErrorBar(false);
@@ -114,8 +155,7 @@ const PasswordVerification = () => {
     } else if (valueCheck !== "") {
       if (remeberPassword === true) {
         setPassword(value);
-        let newPassword = encryptPassword(value);
-        localStorage.setItem("rememberPasswordValue", newPassword);
+        saveRememberedPassword(value);
       } else {
         setPassword(value);
         setErrorBar(false);
@@ -129,12 +169,9 @@ const PasswordVerification = () => {
   const rememberPasswordCheck = () => {
     SetRememberPassword(!remeberPassword);
     if (!remeberPassword === true) {
-      localStorage.setItem("remeberPassword", true);
-      let newPassword = encryptPassword(password);
-      localStorage.setItem("rememberPasswordValue", newPassword);
+      saveRememberedPassword(password);
     } else {
-      localStorage.setItem("remeberPassword", false);
-      localStorage.setItem("rememberPasswordValue", "");
+      removeRememberedPassword();
     }
   };
 
@@ -143,6 +180,11 @@ const PasswordVerification = () => {
     e.preventDefault();
     if (password === "") {
       show(t("Enter-password"), "error");
+    } else if (localStorage.getItem("userID") === null) {
+      // The email step's userID is gone (storage cleared, e.g. by a logout in
+      // another tab): the request would go out with UserID null. Start over.
+      show(t("Something-went-wrong"), "error");
+      handleGoback();
     } else {
       setErrorBar(false);
       passwordRef.current = null;
@@ -169,21 +211,14 @@ const PasswordVerification = () => {
 
   //Password Remeber
   useEffect(() => {
-    let RememberPasswordLocal = JSON.parse(
-      localStorage.getItem("remeberPassword"),
-    );
-    let RememberPasswordLocalValue = localStorage.getItem(
-      "rememberPasswordValue",
-    );
-    // The flag can be saved without the value (getItem → null). Decrypting null
-    // crashed this screen into the error boundary, so treat it as not remembered.
-    if (RememberPasswordLocal === true && RememberPasswordLocalValue !== null) {
-      SetRememberPassword(RememberPasswordLocal);
-      let newPasswordDecript = decryptPassword(RememberPasswordLocalValue);
-      setPassword(newPasswordDecript);
-    } else {
-      localStorage.setItem("remeberPassword", false);
-      localStorage.setItem("rememberPasswordValue", "");
+    // Only the password saved for THIS user (userID) is shown; other users'
+    // entries stay untouched in the map.
+    const savedPassword = readRememberedPasswords()[
+      localStorage.getItem("userID")
+    ];
+    if (typeof savedPassword === "string") {
+      SetRememberPassword(true);
+      setPassword(decryptPassword(savedPassword));
     }
     passwordRef.current.focus();
   }, []);

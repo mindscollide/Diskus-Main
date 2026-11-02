@@ -203,6 +203,9 @@ export const useMeetingListActions = ({
     dispatch(emailRouteID(5));
     dispatch(setViewTab("minutes"));
     localStorage.setItem("isMinutePublished", record.isMinutePublished);
+    // Without these the view modal never opens (and has no meeting to load).
+    dispatch(setCurrentMeetingInfo({ meetingID: record.pK_MDID }));
+    dispatch(toggleViewMeetingModal(true));
   };
 
   const handleEditMeeting = async (record) => {

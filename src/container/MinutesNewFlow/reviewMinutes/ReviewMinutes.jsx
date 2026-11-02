@@ -1705,20 +1705,16 @@ const ReviewMinutes = () => {
                           );
                         })}
 
-                        {data?.subMinutes?.map((subMinuteData, index) => {
+                        {data?.subMinutes?.map((subMinuteData, subIndex) => {
                           return (
                             <>
                               {subMinuteData.minuteData.length === 0 ? null : (
                                 <Row className='mx-50'>
                                   <Col lg={12} md={12} sm={12}>
                                     <p className={styles["SUB-title-heading"]}>
-                                      {index +
-                                        1 +
-                                        "." +
-                                        index +
-                                        1 +
-                                        " " +
-                                        subMinuteData.agendaTitle}
+                                      {`${index + 1}.${subIndex + 1} ${
+                                        subMinuteData.agendaTitle
+                                      }`}
                                     </p>
                                   </Col>
                                 </Row>

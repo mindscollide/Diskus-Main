@@ -10,7 +10,7 @@ import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { GetAgendaAndVotingInfo, GetCurrentAgendaDetails, meetingAgendaStartedMQTT } from "../../../../../../store/actions/MeetingAgenda_action";
+import { GetAgendaAndVotingInfo, GetCurrentAgendaDetails, meetingAgendaEndedMQTT, meetingAgendaStartedMQTT } from "../../../../../../store/actions/MeetingAgenda_action";
 const VotingPollAgendaIntiminationModal = ({
   AgendaVotingModalStartedData,
 }) => {
@@ -21,7 +21,7 @@ const VotingPollAgendaIntiminationModal = ({
   const votingStartedAgendaIntiminationModalState = useSelector(
     (state) => state.NewMeetingreducer.agendavotingPollStartedData
   );
-
+  const agendaVotingEndedData = useSelector((state) => state.MeetingAgendaReducer.MeetingAgendaEndedData);
 
   //Handle Discard Button
   const handleCastYourAgendaVoteBtn = () => {
@@ -40,10 +40,22 @@ const VotingPollAgendaIntiminationModal = ({
   };
 
   useEffect(() => {
-    return ( ) => {
+    return () => {
       dispatch(meetingAgendaStartedMQTT(null))
     }
   }, [])
+
+  useEffect(() => {
+    if (agendaVotingEndedData?.agendaID === AgendaVotingModalStartedData?.agendaID && agendaVotingEndedData?.meetingID === AgendaVotingModalStartedData?.meetingID) {
+
+      console.log("Agenda Voting Ended Data", { agendaVotingEndedData, AgendaVotingModalStartedData }, "Agenda Voting Ended Data");
+      dispatch(AgendaPollVotingStartedAction(false));
+      dispatch(meetingAgendaEndedMQTT(null));
+      // dispatch(meetingAgendaStartedMQTT(null));
+
+
+    }
+  }, [agendaVotingEndedData]);
 
   return (
     <section>
@@ -73,7 +85,7 @@ const VotingPollAgendaIntiminationModal = ({
                 <span className={styles["MeetingTitleSubheading"]}>
                   {t("Meeting-title")}&nbsp;:&nbsp;
                   <span className={styles["meetingTitleInnerSpan"]}>
-                    {AgendaVotingModalStartedData.meetingTitle}
+                    {AgendaVotingModalStartedData?.meetingTitle}
                   </span>
                 </span>
               </Col>
