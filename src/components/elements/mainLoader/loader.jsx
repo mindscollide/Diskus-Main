@@ -1,8 +1,16 @@
 import { Spin } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useSyncExternalStore } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useAuthContext } from "../../../context/AuthContext";
+import {
+  getPendingPages,
+  subscribePendingPages,
+} from "../../../routes/lazyPage";
+
+// A lazily loaded page chunk that is already cached resolves in a few ms; only show
+// the spinner for chunks that are still downloading after this long.
+const CHUNK_SPINNER_DELAY_MS = 150;
 
 const SpinComponent = () => {
   const auth = useSelector((state) => state.auth);
@@ -79,6 +87,18 @@ const SpinComponent = () => {
     (state) => state.ComplainceSettingReducerReducer
   );
   const [showLoader, setShowLoader] = useState(false);
+
+  // True while a lazily loaded route chunk (routes/lazyPage.js) is still downloading.
+  const pendingPages = useSyncExternalStore(subscribePendingPages, getPendingPages);
+  const [chunkLoading, setChunkLoading] = useState(false);
+  useEffect(() => {
+    if (pendingPages === 0) {
+      setChunkLoading(false);
+      return undefined;
+    }
+    const timer = setTimeout(() => setChunkLoading(true), CHUNK_SPINNER_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [pendingPages]);
   const DashboardRoute =
     window.location.pathname === "/Diskus" ||
     window.location.pathname === "/Diskus/";
@@ -138,6 +158,7 @@ const SpinComponent = () => {
       toDoListReducer.taskFromDashboard !== 0 ||
       NotesReducer.notesFromDashboard !== 0 ||
       meetingIdReducer?.moreEventsLoader ||
+      chunkLoading ||
       (isLoading && !DashboardRoute)
     ) {
       setShowLoader(true); // Show loader
@@ -151,6 +172,7 @@ const SpinComponent = () => {
     return () => clearTimeout(timeout);
   }, [
     isLoading,
+    chunkLoading,
     DashboardRoute,
     toDoListReducer?.taskFromDashboard,
     NotesReducer?.notesFromDashboard,

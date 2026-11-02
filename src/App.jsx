@@ -324,19 +324,19 @@ const App = () => {
     <>
       {/* Define your routes here */}
       {/*
-        v7_startTransition: true makes React Router run every navigation as a React
-        transition. With lazy routes that means: while the next page's chunk is still
-        downloading/compiling, the OLD page stays on screen and no Suspense fallback is
-        shown (measured on login -> /Signup in dev: old page stayed 1,050 ms after the
-        URL changed). That is the smooth behaviour we want, but ONLY together with a
-        visible "loading" signal, otherwise the app looks frozen. NavigationProgress
-        (top bar, driven by lazyPage in routes/) is that signal. If you ever remove the
-        bar, set this to false so the route's Suspense fallback shows instead.
+        v7_startTransition is OFF on purpose. With it on, React Router runs every
+        navigation as a React transition: while the next page's chunk is still
+        downloading the OLD page stays on screen and no Suspense fallback is shown, so
+        the app looks frozen even though the URL changed (measured on login -> /Signup
+        in dev: old page stayed 1,050 ms). Off, the route changes at once: the sidebar
+        highlight and URL update immediately and the page area is empty (RouteBoundary's
+        Suspense fallback is null) until the new page's code arrives. NavigationProgress
+        (top bar) is the loading signal during that gap.
       */}
       <NavigationProgress router={router} />
       <RouterProvider
         router={router}
-        future={{ v7_startTransition: true, v7_fetcherPersist: true }}
+        future={{ v7_startTransition: false, v7_fetcherPersist: true }}
       />
       {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
       {paymentProcessModal && <OpenPaymentForm />}

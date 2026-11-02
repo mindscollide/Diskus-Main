@@ -177,29 +177,37 @@ const Actions = ({ dataroomMapFolderId }) => {
     try {
       if (toDoListReducer.socketTodoStatusData !== null) {
         let payloadData = toDoListReducer.socketTodoStatusData;
-        if (payloadData.todoStatusID === 6) {
-          setActionsRows((rowsData) => {
-            return rowsData.filter((newData, index) => {
-              return newData.pK_TID !== payloadData.todoid;
-            });
+        setActionsRows((rowsData) => {
+          // Remove task when status is completed
+          if (Number(payloadData.todoStatusID) === 6) {
+            return rowsData.filter(
+              (item) => item.pK_TID !== payloadData.todoid
+            );
+          }
+
+          // Find updated status
+          const findStatusValue = statusOptions.find(
+            (item) => Number(item.id) === Number(payloadData.todoStatusID)
+          );
+
+          // Update only the matching task
+          return rowsData.map((item) => {
+            if (item.pK_TID !== payloadData.todoid) {
+              return item;
+            }
+
+            return {
+              ...item,
+              status: {
+                ...item.status,
+                pK_TSID: payloadData.todoStatusID,
+                status: findStatusValue
+                  ? t(findStatusValue.status)
+                  : item.status?.status,
+              },
+            };
           });
-        } else {
-          setActionsRows((rowsData) => {
-            return rowsData.map((newData, index) => {
-              if (newData.pK_TID === payloadData.todoid) {
-                const newObj = {
-                  ...newData,
-                  status: {
-                    pK_TSID: payloadData.todoStatusID,
-                    status: statusValues[payloadData.todoStatusID],
-                  },
-                };
-                return newObj;
-              }
-              return newData;
-            });
-          });
-        }
+        });
       }
     } catch (error) {
       console.error("src/container/meeting/advanceMeeting/createEditAdvanceMeeting/Actions/Actions.js:", error);
@@ -812,11 +820,11 @@ const Actions = ({ dataroomMapFolderId }) => {
                   Number(editorRole.status) === 12) &&
                   editorRole.role === "Organizer" &&
                   isAdvanceMeetingRoute === true) ||
-                ((Number(editorRole.status) === 9 ||
-                  Number(editorRole.status) === 10) &&
-                  (editorRole.role === "Participant" ||
-                    editorRole.role === "Agenda Contributor") &&
-                  isAdvanceMeetingRoute === true) ? (
+                  ((Number(editorRole.status) === 9 ||
+                    Number(editorRole.status) === 10) &&
+                    (editorRole.role === "Participant" ||
+                      editorRole.role === "Agenda Contributor") &&
+                    isAdvanceMeetingRoute === true) ? (
                   <></>
                 ) : null}
               </Col>

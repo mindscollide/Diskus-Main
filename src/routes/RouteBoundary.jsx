@@ -4,14 +4,15 @@ import {
   ErrorFallback,
   logErrors,
 } from "../components/elements/ErrorFallBack/index.jsx";
-import PageFallback from "./PageFallback.jsx";
 
 // What browsers report when a lazily loaded chunk can't be fetched. After a
 // new deploy the hashed filenames of the old build disappear, so a tab that
 // was open across the deploy fails to load the chunk of a page it had not
-// visited yet.
+// visited yet. "Unable to preload CSS" is Vite's message when the stylesheet that
+// belongs to a lazy chunk can't be fetched (404 after a deploy, or a network /
+// HTTP2 error while it downloads).
 const CHUNK_ERROR =
-  /dynamically imported module|Importing a module script failed|Loading chunk|Loading CSS chunk/i;
+  /dynamically imported module|Importing a module script failed|Loading chunk|Loading CSS chunk|Unable to preload CSS/i;
 const RELOAD_FLAG = "chunkReloadAttemptedAt";
 
 const onRouteError = (error, info) => {
