@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import styles from "./Reports.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import {
@@ -50,6 +50,19 @@ const DeviceIdType = (t) => [
   },
 ];
 
+// Filters of the advanced search box as last applied with its Search button;
+// the pills read from this, not from the live (still being typed) box fields.
+const EMPTY_APPLIED_SEARCH = {
+  userName: "",
+  userEmail: "",
+  IpAddress: "",
+  InterFaceType: { value: 0, label: "" },
+  DateFrom: "",
+  DateForView: "",
+  DateTo: "",
+  DateToView: "",
+};
+
 const Reports = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -73,6 +86,7 @@ const Reports = () => {
   // typing — kept separate from userLoginHistorySearch.Title, which tracks
   // the input's live value.
   const [committedTitleSearch, setCommittedTitleSearch] = useState("");
+  const [appliedSearch, setAppliedSearch] = useState(EMPTY_APPLIED_SEARCH);
   const [show, SnackBar] = useSnackbar();
   const [isIpAddressValid, setIsIpAddressValid] = useState(false);
   const [userLoginHistorySearch, setUserLoginHistorySearch] = useState({
@@ -90,6 +104,15 @@ const Reports = () => {
     Title: "",
   });
 
+  // Request of the most recent search (sRow 0). Scrolling loads the next page
+  // by replaying this exact request with a bigger sRow, so the extra rows always
+  // match the filters the list was searched with.
+  const lastSearchRef = useRef(null);
+  const runSearch = (Data) => {
+    lastSearchRef.current = Data;
+    dispatch(userLoginHistory_Api(navigate, t, Data, true));
+  };
+
   useEffect(() => {
     let Data = {
       OrganizationID: Number(OrganizationID),
@@ -102,7 +125,7 @@ const Reports = () => {
       sRow: 0,
       Length: 10,
     };
-    dispatch(userLoginHistory_Api(navigate, t, Data, true));
+    runSearch(Data);
     return () => {
       setShowSearchText(false);
       setIsScroll(false);
@@ -286,20 +309,8 @@ const Reports = () => {
   const handleScroll = async (e) => {
     if (isRowsData <= totalRecords) {
       setIsScroll(true);
-      let Data = {
-        OrganizationID: Number(OrganizationID),
-        Username: userLoginHistorySearch.userName,
-        UserEmail: userLoginHistorySearch.userEmail,
-        IpAddress: userLoginHistorySearch.IpAddress,
-        DeviceID:
-          userLoginHistorySearch.InterFaceType.value === 0
-            ? ""
-            : String(userLoginHistorySearch.InterFaceType.value),
-        DateLogin: userLoginHistorySearch.DateTo,
-        DateLogOut: userLoginHistorySearch.DateFrom,
-        sRow: Number(isRowsData),
-        Length: 10,
-      };
+      if (!lastSearchRef.current) return;
+      let Data = { ...lastSearchRef.current, sRow: Number(isRowsData) };
       dispatch(userLoginHistory_Api(navigate, t, Data, false));
     } else {
       setIsScroll(false);
@@ -508,10 +519,35 @@ const Reports = () => {
           sRow: 0,
           Length: 10,
         };
-        dispatch(userLoginHistory_Api(navigate, t, Data, true));
-        setShowSearchText(true);
         setSearchBoxExpand(false);
+        setAppliedSearch({
+          userName: userLoginHistorySearch.userName.trim(),
+          userEmail: userLoginHistorySearch.userEmail,
+          IpAddress: userLoginHistorySearch.IpAddress,
+          InterFaceType: userLoginHistorySearch.InterFaceType,
+          DateFrom: userLoginHistorySearch.DateFrom,
+          DateForView: userLoginHistorySearch.DateForView,
+          DateTo: userLoginHistorySearch.DateTo,
+          DateToView: userLoginHistorySearch.DateToView,
+        });
+        setShowSearchText(true);
+        runSearch(Data);
       } else {
+        // Searching with an empty box means "no filter": full list, no pills.
+        setSearchBoxExpand(false);
+        setShowSearchText(false);
+        setAppliedSearch(EMPTY_APPLIED_SEARCH);
+        runSearch({
+          OrganizationID: Number(OrganizationID),
+          Username: "",
+          UserEmail: "",
+          IpAddress: "",
+          DeviceID: "",
+          DateLogin: "",
+          DateLogOut: "",
+          sRow: 0,
+          Length: 10,
+        });
       }
     } catch (error) {
       console.error("src/container/Admin/Reports/Reports.js:", error);
@@ -531,8 +567,9 @@ const Reports = () => {
         sRow: 0,
         Length: 10,
       };
-      dispatch(userLoginHistory_Api(navigate, t, Data, true));
+      runSearch(Data);
       setShowSearchText(false);
+      setAppliedSearch(EMPTY_APPLIED_SEARCH);
       setCommittedTitleSearch("");
       setUserLoginHistorySearch({
         ...userLoginHistorySearch,
@@ -560,18 +597,18 @@ const Reports = () => {
       let Data = {
         OrganizationID: Number(OrganizationID),
         Username: trimmedTitle,
-        UserEmail: userLoginHistorySearch.userEmail,
-        IpAddress: userLoginHistorySearch.IpAddress,
+        UserEmail: appliedSearch.userEmail,
+        IpAddress: appliedSearch.IpAddress,
         DeviceID:
-          userLoginHistorySearch.InterFaceType.value === 0
+          appliedSearch.InterFaceType.value === 0
             ? ""
-            : userLoginHistorySearch.InterFaceType.value,
-        DateLogin: userLoginHistorySearch.DateFrom,
-        DateLogOut: userLoginHistorySearch.DateTo,
+            : String(appliedSearch.InterFaceType.value),
+        DateLogin: appliedSearch.DateFrom,
+        DateLogOut: appliedSearch.DateTo,
         sRow: 0,
         Length: 10,
       };
-      dispatch(userLoginHistory_Api(navigate, t, Data, true));
+      runSearch(Data);
       setSearchText([...searchText, trimmedTitle]);
       setCommittedTitleSearch(trimmedTitle);
       setShowSearchText(true);
@@ -581,6 +618,7 @@ const Reports = () => {
   const handleCloseSearcbBox = () => {
     setSearchBoxExpand(false);
     setCommittedTitleSearch("");
+    setAppliedSearch(EMPTY_APPLIED_SEARCH);
     setUserLoginHistorySearch({
       userName: "",
       userEmail: "",
@@ -607,12 +645,18 @@ const Reports = () => {
       sRow: 0,
       Length: 10,
     };
-    dispatch(userLoginHistory_Api(navigate, t, Data, true));
+    runSearch(Data);
   };
 
   const handleIputSearchIcon = () => {
+    // Opening the box: the quick Title search (input + its pill) is cleared and
+    // the box fields show the filters currently applied (the pills), dropping
+    // anything that was typed but never searched.
+    if (!searchBoxExpand) {
+      setCommittedTitleSearch("");
+      setUserLoginHistorySearch({ ...appliedSearch, Title: "" });
+    }
     setSearchBoxExpand(!searchBoxExpand);
-    setShowSearchText(false);
   };
 
   const handleValidateEmail = () => {
@@ -624,34 +668,43 @@ const Reports = () => {
     }
   };
 
+  // Removes one pill. The request is built from the applied (searched) filters,
+  // not from whatever is currently typed in the box.
   const handleSearches = (data, fieldName) => {
-    setUserLoginHistorySearch({
-      ...userLoginHistorySearch,
-      [fieldName]: "",
-    });
+    const clearedValue =
+      fieldName === "InterFaceType" ? { value: 0, label: "" } : "";
+    const nextApplied = {
+      ...appliedSearch,
+      [fieldName]: clearedValue,
+      ...(fieldName === "DateFrom" && { DateForView: "" }),
+      ...(fieldName === "DateTo" && { DateToView: "" }),
+    };
+    setAppliedSearch(nextApplied);
+    setUserLoginHistorySearch((prevState) => ({
+      ...prevState,
+      [fieldName]: clearedValue,
+      ...(fieldName === "DateFrom" && { DateForView: "" }),
+      ...(fieldName === "DateTo" && { DateToView: "" }),
+    }));
     if (fieldName === "Title") {
       setCommittedTitleSearch("");
     }
 
-    let Data = {
+    const titleSearch = fieldName === "Title" ? "" : committedTitleSearch;
+    runSearch({
       OrganizationID: Number(OrganizationID),
-      Username:
-        fieldName === "userName" || fieldName === "Title"
+      Username: nextApplied.userName || titleSearch,
+      UserEmail: nextApplied.userEmail,
+      IpAddress: nextApplied.IpAddress,
+      DeviceID:
+        nextApplied.InterFaceType.value === 0
           ? ""
-          : userLoginHistorySearch.userName || userLoginHistorySearch.Title,
-      UserEmail:
-        fieldName === "userEmail" ? "" : userLoginHistorySearch.userEmail,
-      IpAddress:
-        fieldName === "IpAddress" ? "" : userLoginHistorySearch.IpAddress,
-      DeviceID: "",
-      DateLogin:
-        fieldName === "DateFrom" ? "" : userLoginHistorySearch.DateFrom,
-      DateLogOut: fieldName === "DateTo" ? "" : userLoginHistorySearch.DateTo,
+          : String(nextApplied.InterFaceType.value),
+      DateLogin: nextApplied.DateFrom,
+      DateLogOut: nextApplied.DateTo,
       sRow: 0,
       Length: 10,
-    };
-
-    dispatch(userLoginHistory_Api(navigate, t, Data, true));
+    });
   };
 
   const handleClickExportExcel = () => {
@@ -717,22 +770,23 @@ const Reports = () => {
                   />
 
                   {showsearchText &&
-                  (userLoginHistorySearch.userName !== "" ||
+                  (appliedSearch.userName !== "" ||
                     committedTitleSearch !== "" ||
-                    userLoginHistorySearch.userEmail !== "" ||
-                    userLoginHistorySearch.IpAddress !== "" ||
-                    userLoginHistorySearch.DateFrom !== "" ||
-                    userLoginHistorySearch.DateTo !== "") ? (
+                    appliedSearch.userEmail !== "" ||
+                    appliedSearch.IpAddress !== "" ||
+                    appliedSearch.InterFaceType.value !== 0 ||
+                    appliedSearch.DateFrom !== "" ||
+                    appliedSearch.DateTo !== "") ? (
                     <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
                         className='d-flex gap-2 flex-wrap'>
-                        {userLoginHistorySearch.userName !== "" && (
+                        {appliedSearch.userName !== "" && (
                           <div className={styles["SearchablesItems"]}>
                             <span className={styles["Searches"]}>
-                              {userLoginHistorySearch.userName}
+                              {appliedSearch.userName}
                             </span>
                             <img
                               src={Crossicon}
@@ -741,7 +795,7 @@ const Reports = () => {
                               width={13}
                               onClick={() =>
                                 handleSearches(
-                                  userLoginHistorySearch.userName,
+                                  appliedSearch.userName,
                                   "userName",
                                 )
                               }
@@ -766,10 +820,10 @@ const Reports = () => {
                           </div>
                         )}
 
-                        {userLoginHistorySearch.userEmail !== "" && (
+                        {appliedSearch.userEmail !== "" && (
                           <div className={styles["SearchablesItems"]}>
                             <span className={styles["Searches"]}>
-                              {userLoginHistorySearch.userEmail}
+                              {appliedSearch.userEmail}
                             </span>
                             <img
                               src={Crossicon}
@@ -778,7 +832,7 @@ const Reports = () => {
                               width={13}
                               onClick={() =>
                                 handleSearches(
-                                  userLoginHistorySearch.userEmail,
+                                  appliedSearch.userEmail,
                                   "userEmail",
                                 )
                               }
@@ -786,10 +840,10 @@ const Reports = () => {
                           </div>
                         )}
 
-                        {userLoginHistorySearch.IpAddress !== "" && (
+                        {appliedSearch.IpAddress !== "" && (
                           <div className={styles["SearchablesItems"]}>
                             <span className={styles["Searches"]}>
-                              {userLoginHistorySearch.IpAddress}
+                              {appliedSearch.IpAddress}
                             </span>
                             <img
                               src={Crossicon}
@@ -798,7 +852,7 @@ const Reports = () => {
                               width={13}
                               onClick={() =>
                                 handleSearches(
-                                  userLoginHistorySearch.IpAddress,
+                                  appliedSearch.IpAddress,
                                   "IpAddress",
                                 )
                               }
@@ -806,12 +860,32 @@ const Reports = () => {
                           </div>
                         )}
 
-                        {userLoginHistorySearch.DateFrom !== "" && (
+                        {appliedSearch.InterFaceType.value !== 0 && (
+                          <div className={styles["SearchablesItems"]}>
+                            <span className={styles["Searches"]}>
+                              {appliedSearch.InterFaceType.label}
+                            </span>
+                            <img
+                              src={Crossicon}
+                              alt=''
+                              className='cursor-pointer'
+                              width={13}
+                              onClick={() =>
+                                handleSearches(
+                                  appliedSearch.InterFaceType,
+                                  "InterFaceType",
+                                )
+                              }
+                            />
+                          </div>
+                        )}
+
+                        {appliedSearch.DateFrom !== "" && (
                           <div className={styles["SearchablesItems"]}>
                             <span className={styles["Searches"]}>
                               {moment
                                 .utc(
-                                  userLoginHistorySearch.DateFrom,
+                                  appliedSearch.DateFrom,
                                   "YYYYMMDD",
                                 )
                                 .format("DD-MMM-YYYY")}
@@ -823,7 +897,7 @@ const Reports = () => {
                               width={13}
                               onClick={() =>
                                 handleSearches(
-                                  userLoginHistorySearch.DateFrom,
+                                  appliedSearch.DateFrom,
                                   "DateFrom",
                                 )
                               }
@@ -831,11 +905,11 @@ const Reports = () => {
                           </div>
                         )}
 
-                        {userLoginHistorySearch.DateTo !== "" && (
+                        {appliedSearch.DateTo !== "" && (
                           <div className={styles["SearchablesItems"]}>
                             <span className={styles["Searches"]}>
                               {moment
-                                .utc(userLoginHistorySearch.DateTo, "YYYYMMDD")
+                                .utc(appliedSearch.DateTo, "YYYYMMDD")
                                 .format("DD-MMM-YYYY")}
                             </span>
                             <img
@@ -845,7 +919,7 @@ const Reports = () => {
                               width={13}
                               onClick={() =>
                                 handleSearches(
-                                  userLoginHistorySearch.DateTo,
+                                  appliedSearch.DateTo,
                                   "DateTo",
                                 )
                               }
@@ -977,6 +1051,11 @@ const Reports = () => {
                           <Select
                             placeholder={t("Inteface-type")}
                             options={DeviceIdType(t)}
+                            value={
+                              userLoginHistorySearch.InterFaceType.value === 0
+                                ? null
+                                : userLoginHistorySearch.InterFaceType
+                            }
                             onChange={handleChangeInterfaceType}
                           />
                         </Col>
