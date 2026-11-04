@@ -39,6 +39,8 @@ const initialState = {
 
   // CR(0012249) — Presentation waiting-room / admit-reject / remove flow
   joinPresentationRequestData: null,
+  // true while JoinPresentationRequest is in flight (locks the end-call icon)
+  joinPresentationRequestPending: false,
   admitRejectPresentationData: null,
   removeParticipantPresentationData: null,
 };
@@ -258,6 +260,7 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        joinPresentationRequestPending: true,
       };
     }
 
@@ -265,6 +268,7 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        joinPresentationRequestPending: false,
         joinPresentationRequestData: action.response,
         ResponseMessage: action.message,
         errorSeverity: "success",
@@ -275,6 +279,7 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        joinPresentationRequestPending: false,
         joinPresentationRequestData: null,
         ResponseMessage: action.message,
         errorSeverity: "error",

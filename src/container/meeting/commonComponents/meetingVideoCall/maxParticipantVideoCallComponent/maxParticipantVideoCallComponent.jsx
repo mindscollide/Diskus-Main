@@ -109,6 +109,9 @@ const ParticipantVideoCallComponent = () => {
   const joinPresentationRequestData = useSelector(
     (state) => state.GuestVideoReducer.joinPresentationRequestData,
   );
+  const joinPresentationRequestPending = useSelector(
+    (state) => state.GuestVideoReducer.joinPresentationRequestPending,
+  );
   const presentationJoinApprovedData = useSelector(
     (state) => state.videoFeatureReducer.presentationJoinApprovedData,
   );
@@ -769,7 +772,10 @@ const ParticipantVideoCallComponent = () => {
     }
   }, [leaveMeetingVideoOnEndStatusMqttFlag]);
 
-  const isEndCallEnabled = !joinButton || isWaiting || getReady;
+  // End call stays locked while JoinPresentationRequest is in flight.
+  const isEndCallEnabled =
+    (!joinButton || isWaiting || getReady) &&
+    !(isPresentationJoinFlow && joinPresentationRequestPending);
 
   // Mic / camera icons are usable only before the join request is sent: not
   // for a presentation request, and not while waiting for the host to admit.
