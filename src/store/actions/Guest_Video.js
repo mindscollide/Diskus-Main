@@ -1054,6 +1054,11 @@ const joinPresentationRequestMainApi = (navigate, t, data) => {
               await dispatch(
                 joinPresentationRequestFail(t("Something-went-wrong")),
               );
+            } else {
+              // Unknown message: release the pending flag.
+              await dispatch(
+                joinPresentationRequestFail(t("Something-went-wrong")),
+              );
             }
           } else {
             await dispatch(

@@ -283,6 +283,26 @@ import { useComplianceContext } from "../../context/ComplianceContext";
 import { HIDE_VIDEO } from "../../commen/featureFlags";
 import VIdeoCallNotStarted from "../../components/layout/talk/GuestVideo/VIdeoCallNotStarted";
 
+// UIDs this client sends in IsSharedScreen, used to tell our own
+// VIDEO_SHARING_ENABLED/DISABLED echo from someone else's share. Meeting video
+// uses its guid; 1-to-1 / group calls use userID or the call guid (group calls
+// send the guid, e.g. "682_1575_1") — comparing only userID made the sharer treat
+// their own share as someone else's, which then skipped IsSharedScreen(false).
+const getOwnShareUIDs = () => {
+  const get = (key) => localStorage.getItem(key);
+  const parse = (key) => {
+    try {
+      return JSON.parse(get(key));
+    } catch {
+      return null;
+    }
+  };
+  const ids = parse("isMeetingVideo")
+    ? [parse("isMeetingVideoHostCheck") ? get("isGuid") : get("participantUID")]
+    : [get("userID"), parse("isCaller") ? get("callerGuid") : get("receipentGuid")];
+  return ids.filter(Boolean).map(String);
+};
+
 const Dashboard = () => {
   const location = useLocation();
 
@@ -2442,22 +2462,10 @@ const Dashboard = () => {
               let isZoomEnabled = JSON.parse(
                 localStorage.getItem("isZoomEnabled"),
               );
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo"),
-              );
-              let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck"),
-              );
-              let participantUID = localStorage.getItem("participantUID");
-              let isGuid = localStorage.getItem("isGuid");
-              let userID = String(localStorage.getItem("userID"));
-              let UID = isMeetingVideo
-                ? isMeetingVideoHostCheck
-                  ? isGuid
-                  : participantUID
-                : userID;
               if (isZoomEnabled) {
-                if (String(data.payload.shareScreenUID) !== String(UID)) {
+                if (
+                  !getOwnShareUIDs().includes(String(data.payload.shareScreenUID))
+                ) {
                   console.log("check Data Triggered");
                   dispatch(screenShareTriggeredGlobally(true));
                 }
@@ -2469,22 +2477,10 @@ const Dashboard = () => {
               let isZoomEnabled = JSON.parse(
                 localStorage.getItem("isZoomEnabled"),
               );
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo"),
-              );
-              let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck"),
-              );
-              let participantUID = localStorage.getItem("participantUID");
-              let isGuid = localStorage.getItem("isGuid");
-              let userID = String(localStorage.getItem("userID"));
-              let UID = isMeetingVideo
-                ? isMeetingVideoHostCheck
-                  ? isGuid
-                  : participantUID
-                : userID;
               if (isZoomEnabled) {
-                if (String(data.payload.shareScreenUID) !== String(UID)) {
+                if (
+                  !getOwnShareUIDs().includes(String(data.payload.shareScreenUID))
+                ) {
                   console.log("check Data Triggered");
                   dispatch(screenShareTriggeredGlobally(false));
                 }
