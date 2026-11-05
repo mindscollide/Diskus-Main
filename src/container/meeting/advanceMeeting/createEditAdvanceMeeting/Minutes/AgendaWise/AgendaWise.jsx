@@ -691,11 +691,13 @@ const AgendaWise = ({
     setisEdit(false);
   };
 
-  const handleRemovingTheMinutesAgendaWise = (AgendaWiseData) => {
-    let minutesID = 0;
-    AgendaWiseData.items.forEach((id, index) => {
-      minutesID = Number(id.minuteID);
-    });
+  // Removes ONE minute: the one whose cross was clicked. This used to take the whole
+  // agenda group and delete the id of its LAST item, so the cross on any minute
+  // removed the last minute of that agenda (even one being edited).
+  const handleRemovingTheMinutesAgendaWise = (minuteItem) => {
+    const minutesID = Number(minuteItem.minuteID);
+    // A minute that is open for editing must not be removed underneath the editor.
+    if (isEdit === true && Number(updateData?.MinutesID) === minutesID) return;
 
     let Data = {
       MDID: meetingID,
@@ -1107,7 +1109,12 @@ const AgendaWise = ({
                                               </section>
                                             </Col>
                                           </Row>
-                                          {Number(editorRole.status) === 1 ||
+                                          {/* the minute being edited cannot be removed */}
+                                          {isEdit === true &&
+                                          Number(updateData?.MinutesID) ===
+                                            Number(Itemsdata.minuteID)
+                                            ? null
+                                            : Number(editorRole.status) === 1 ||
                                           Number(editorRole.status) === 11 ||
                                           Number(editorRole.status) ===
                                             12 ? null : (editorRole.role ===
@@ -1136,7 +1143,7 @@ const AgendaWise = ({
                                               }
                                               onClick={() =>
                                                 handleRemovingTheMinutesAgendaWise(
-                                                  data,
+                                                  Itemsdata,
                                                 )
                                               }
                                             />

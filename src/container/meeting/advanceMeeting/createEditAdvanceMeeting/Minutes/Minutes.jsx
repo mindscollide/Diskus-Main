@@ -474,6 +474,8 @@ const Minutes = () => {
   }, [addMinuteID]);
 
   const handleRemovingTheMinutes = (MinuteData) => {
+    // A minute that is open for editing must not be removed underneath the editor.
+    if (isEdit === true && updateData?.minuteID === MinuteData.minuteID) return;
 
     console.log(MinuteData, "MinuteDataMinuteDataMinuteData")
     let Data = {
@@ -1146,7 +1148,11 @@ const Minutes = () => {
                                   </Row>
                                 </>
                               ) : null}
-                              {Number(editorRole.status) === 1 ||
+                              {/* the minute being edited cannot be removed */}
+                              {isEdit === true &&
+                              updateData?.minuteID === data.minuteID
+                                ? null
+                                : Number(editorRole.status) === 1 ||
                               Number(editorRole.status) === 11 ||
                               Number(editorRole.status) ===
                                 12 ? null : (editorRole.role === "Organizer" &&

@@ -1427,7 +1427,13 @@ const AgendaWise = ({
                                           }}
                                         />
                                       ) : null} */}
-                                      {(
+                                      {/* the minute being edited cannot be removed */}
+                                      {!(
+                                        isEdit === true &&
+                                        updateData?.minuteID ===
+                                          parentMinutedata.minuteID
+                                      ) &&
+                                      (
                                         Number(localStorage.getItem("userID")) ===
                                         Number(parentMinutedata.userID) &&
                                         (
@@ -2174,7 +2180,13 @@ const AgendaWise = ({
                                           />
                                         ) : null} */}
 
-                                        {(
+                                        {/* the minute being edited cannot be removed */}
+                                        {!(
+                                          isEdit === true &&
+                                          updateData?.minuteID ===
+                                            minuteDataSubminute.minuteID
+                                        ) &&
+                                        (
                                           Number(localStorage.getItem("userID")) ===
                                           Number(minuteDataSubminute.userID) &&
                                           (

@@ -125,7 +125,11 @@ const Minutes = () => {
   const [agenda, setAgenda] = useState(false);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [isEdit, setisEdit] = useState(false);
+  const [isEditMinutes, setIsEditMinutes] = useState(0);
+  const [isEditAgendaWise, setIsEditAgendaWise] = useState(0);
   const [updateData, setupdateData] = useState(null);
+
+  console.log(updateData, "updateDataupdateDataupdateDataupdateData");
   const [show, SnackBar] = useSnackbar();
   const [addNoteFields, setAddNoteFields] = useState({
     Description: {
@@ -134,7 +138,6 @@ const Minutes = () => {
       errorStatus: false,
     },
   });
-  console.log(fileAttachments, "fileAttachmentsfileAttachments");
   const [addAgendaWiseFields, setAgendaWiseFields] = useState({
     Description: {
       value: "",
@@ -1314,9 +1317,8 @@ const Minutes = () => {
                               <Row className='mx-50'>
                                 <Col lg={12} md={12} sm={12}>
                                   <p className={styles["Parent-title-heading"]}>
-                                    {`${index + 1}.${subMinuteIndex + 1} ${
-                                      childAgendaData.agendaTitle
-                                    }`}
+                                    {`${index + 1}.${subMinuteIndex + 1} ${childAgendaData.agendaTitle
+                                      }`}
                                   </p>
                                 </Col>
                               </Row>
@@ -2203,13 +2205,18 @@ const Minutes = () => {
                                     />
                                   ) : null} */}
 
-                                  {(
+                                  {/* the minute being edited cannot be removed */}
+                                  {!(
+                                    isEdit === true &&
+                                    updateData?.minuteID === data.minuteID
+                                  ) &&
+                                  ((
                                     Number(localStorage.getItem("userID")) === Number(data.userID) &&
                                     (
                                       editorRole.role === "Organizer" &&
                                       [9, 10].includes(Number(editorRole.status))
                                     )
-                                  ) ? (
+                                  ) || updateData?.minuteID !== data.minuteID) ? (
                                     <img
                                       draggable={false}
                                       src={RedCroseeIcon}
