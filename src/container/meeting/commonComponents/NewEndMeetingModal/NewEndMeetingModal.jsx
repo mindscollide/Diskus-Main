@@ -11,6 +11,10 @@ import {
 } from "../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
+import {
+  clearPendingNotificationClick,
+  takePendingNotificationClick,
+} from "../../../../commen/functions/pendingNotificationClick";
 import { useNavigate } from "react-router-dom";
 import {
   MeetingContext,
@@ -236,6 +240,13 @@ const NewEndMeetingModal = () => {
         {
           setEditorRole,
           setCancelConfirmationModal,
+          // A notification click (e.g. another meeting's poll) that asked the user to
+          // leave first runs once the leave has really finished, not before: running
+          // it earlier lets the leave response wipe the meeting it just joined.
+          onLeft: () => {
+            const pendingNotificationClick = takePendingNotificationClick();
+            if (pendingNotificationClick) pendingNotificationClick();
+          },
         },
       ),
     );
@@ -250,6 +261,7 @@ const NewEndMeetingModal = () => {
     sessionStorage.removeItem("isMeeting");
   };
   const handleClickDiscard = () => {
+    clearPendingNotificationClick();
     localStorage.setItem("navigateLocation", "Meeting");
     dispatch(showEndMeetingModal(false));
   };
@@ -264,6 +276,7 @@ const NewEndMeetingModal = () => {
         keyboard={false}
         className={styles["classOfMeetingModal"]}
         onHide={() => {
+          clearPendingNotificationClick();
           dispatch(showEndMeetingModal(false));
         }}
         ModalBody={

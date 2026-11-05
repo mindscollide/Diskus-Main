@@ -58,6 +58,7 @@ import {
   ViewMeetingDetails,
 } from "../../../store/actions/NotificationRouting_actions.js";
 import { useCommitteeContext } from "../../../context/CommitteeContext.jsx";
+import { setPendingNotificationClick } from "../../../commen/functions/pendingNotificationClick.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -281,21 +282,57 @@ const WebNotfication = ({
   };
 
   //Handle Click Notification
-  const HandleClickNotfication = async (NotificationData) => {
+  // `afterLeavingMeeting` is true when this click was held back by the "leave the
+  // meeting?" question and is now replayed because the user confirmed leaving.
+  const HandleClickNotfication = async (
+    NotificationData,
+    afterLeavingMeeting = false,
+  ) => {
+    // This can run after the notification list has closed (replay after leaving a
+    // meeting), when the `currentURL` / `location` captured at render are stale.
+    const currentURL = window.location.href;
+    const location = window.location;
+
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
 
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
     try {
-      if (editorRole.status !== null && Number(editorRole?.status) === 10) {
-        if (advanceMeetingModalID !== PayLoadData?.MeetingID) {
-          dispatch(showEndMeetingModal(true));
-        }
+      // A notification of the meeting the user is already in must still open it
+      // (e.g. its poll after they moved to another screen); only another meeting's
+      // notification has to ask to leave first.
+      const inActiveMeeting =
+        !afterLeavingMeeting &&
+        editorRole.status !== null &&
+        Number(editorRole?.status) === 10;
+      // The "isMeeting" flag is written to localStorage on join and only cleared by a
+      // proper leave, so it can outlive the meeting (refresh, host ended it, ...).
+      // For an advanced meeting the live in-app role state must agree (status 10);
+      // otherwise the flag is stale and must not block this click. A quick meeting
+      // never sets that role state, so there the flag stays the only evidence.
+      const isQuickMeetingJoined =
+        localStorage.getItem("typeOfMeeting") === "isQuickMeeting";
+      const isInMeeting =
+        !!isMeeting && (isQuickMeetingJoined || inActiveMeeting);
+      // "currentMeetingID" is written when the user joins and removed when they
+      // leave, so it names the meeting they are in right now.
+      const isSameMeeting =
+        !afterLeavingMeeting &&
+        isInMeeting &&
+        (Number(localStorage.getItem("currentMeetingID")) ===
+          Number(PayLoadData?.MeetingID) ||
+          Number(advanceMeetingModalID) === Number(PayLoadData?.MeetingID));
+
+      if (inActiveMeeting && !isSameMeeting) {
+        // Remember the click so it runs once the user has left the meeting.
+        setPendingNotificationClick(() =>
+          HandleClickNotfication(NotificationData, true),
+        );
+        dispatch(showEndMeetingModal(true));
         return;
       }
-      if (isMeeting) {
-    
+      if (isInMeeting && !isSameMeeting && !afterLeavingMeeting) {
         return;
       } else {
         if (NotificationData.notificationActionID === 1) {

@@ -66,9 +66,11 @@ import {
   toggleViewMeetingModal,
 } from "../../../../store/actions/ModalStates_actions";
 import {
+  getMeetingDetailsByMeetingIdApi,
   LeaveMeetingApi,
   listOfMeetingsApi,
   resetCurrentMeetingInfo,
+  setCurrentMeetingInfo,
 } from "../../../../store/actions/NewMeeting2.actions";
 import NewEndMeetingModal from "../../commonComponents/NewEndMeetingModal/NewEndMeetingModal";
 import { resetViewGroupDetails } from "../../../../store/actions/Groups_actions";
@@ -249,10 +251,15 @@ const ViewMeetingModal = () => {
         dispatch(setViewTab("agendaViewer"));
       } else {
         if (Number(editorRole.status) === 10) {
+          // An active meeting opens on the Agenda viewer by default, but only when
+          // no tab was asked for: "meetingDetails" is the untouched default, while
+          // e.g. a poll notification has already set "polls" before opening this
+          // view and must not be overwritten here.
           if (
-            editorRole.role === "Organizer" ||
-            editorRole.role === "Agenda Contributor" ||
-            editorRole.role === "Participant"
+            activeTab === "meetingDetails" &&
+            (editorRole.role === "Organizer" ||
+              editorRole.role === "Agenda Contributor" ||
+              editorRole.role === "Participant")
           ) {
             dispatch(setViewTab("agendaViewer"));
           }
@@ -267,6 +274,51 @@ const ViewMeetingModal = () => {
       dispatch(emailRouteID(0));
     };
   }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
+
+  // The header title comes from localStorage "meetingTitle". Opening straight on
+  // another tab (e.g. a poll notification) never mounts the Meeting Details tab,
+  // which is what normally writes it, and the record used to join may carry no
+  // title, so the header showed "undefined". Fetch the meeting's own details when
+  // the title is missing and store its title.
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails,
+  );
+  const hasMeetingTitle = () => {
+    const storedTitle = localStorage.getItem("meetingTitle");
+    return (
+      !!storedTitle && storedTitle !== "undefined" && storedTitle !== "null"
+    );
+  };
+  useEffect(() => {
+    if (Number(meetingID) > 0 && !hasMeetingTitle()) {
+      dispatch(
+        getMeetingDetailsByMeetingIdApi(
+          navigate,
+          t,
+          { MeetingID: Number(meetingID) },
+          "",
+          {},
+        ),
+      );
+    }
+  }, [meetingID]);
+  useEffect(() => {
+    const details = getAllMeetingDetails?.advanceMeetingDetails;
+    if (
+      details?.meetingTitle &&
+      Number(details.meetingID) === Number(meetingID) &&
+      !hasMeetingTitle()
+    ) {
+      localStorage.setItem("meetingTitle", details.meetingTitle);
+      // re-render the header, and keep the title in the shared meeting info
+      dispatch(
+        setCurrentMeetingInfo({
+          meetingID: Number(meetingID),
+          meetingTitle: details.meetingTitle,
+        }),
+      );
+    }
+  }, [getAllMeetingDetails, meetingID]);
 
   // The flag is written when a meeting is opened (listings, ViewMeetingDetails) and
   // only means something while this view is open. The view unmounts on every way of

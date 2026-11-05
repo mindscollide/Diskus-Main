@@ -7582,6 +7582,13 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
 
               // Clean up session storage
               sessionStorage.removeItem("isMeeting");
+
+              // The leave is only really finished here (the thunk itself does not
+              // wait for this response), so whatever has to happen after leaving,
+              // such as joining another meeting, is run from this callback.
+              if (typeof object?.onLeft === "function") {
+                object.onLeft();
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

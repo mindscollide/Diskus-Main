@@ -202,6 +202,11 @@ const MainMeeting = () => {
     }
   }, []);
 
+  // False during the first effect pass (a notification that brought the user here
+  // from another page), true afterwards (one clicked while already on this page).
+  // Declared before the state effect so that effect sees false on mount, and set by
+  // the effect right below it.
+  const hasMountedRef = useRef(false);
   useEffect(() => {
     if (state !== null) {
       console.log("state?.key", state?.key, state?.value, state);
@@ -225,6 +230,8 @@ const MainMeeting = () => {
           isChat: response.isChat,
           isVideoCall: response.isVideoCall,
           talkGroupID: response.talkGroupID,
+          // joining stores record.title as the meeting title shown in the view
+          title: response.meetingTitle,
         };
 
         console.log("messagemessage", message, response);
@@ -238,31 +245,37 @@ const MainMeeting = () => {
 
           // setCurrentCommitteeMeetingTabActive(2);
         }
+        // A notification clicked while this page is already showing the Published
+        // list must just open its meeting: reloading would blank the list (and reset
+        // the user's search) for nothing. Coming from another page, or from the
+        // Draft / Proposed tab, still loads the Published list as before.
+        const loadPublishedUnlessShown = () => {
+          const publishedAlreadyShown =
+            hasMountedRef.current &&
+            Number(localStorage.getItem("MeetingCurrentView")) ===
+              MEETING_VIEWS.PUBLISHED;
+          if (!publishedAlreadyShown) {
+            loadMeetings({
+              PublishedMeetings: true,
+              ProposedMeetings: false,
+              view: MEETING_VIEWS.PUBLISHED,
+            });
+          }
+        };
+
         if (message === "ViewMeeting") {
-          loadMeetings({
-            PublishedMeetings: true,
-            ProposedMeetings: false,
-            view: MEETING_VIEWS.PUBLISHED,
-          });
+          loadPublishedUnlessShown();
 
           handleViewMeeting(obj);
         }
         if (message === "JoinMeeting") {
-          loadMeetings({
-            PublishedMeetings: true,
-            ProposedMeetings: false,
-            view: MEETING_VIEWS.PUBLISHED,
-          });
+          loadPublishedUnlessShown();
 
           handleJoinMeeting(obj);
         }
 
         if (message === "Poll_Created_In_Meeting") {
-          loadMeetings({
-            PublishedMeetings: true,
-            ProposedMeetings: false,
-            view: MEETING_VIEWS.PUBLISHED,
-          });
+          loadPublishedUnlessShown();
           handleViewMeeting(obj, "polls");
         }
 
@@ -296,6 +309,12 @@ const MainMeeting = () => {
       });
     }
   }, [state]);
+
+  // After the state effects above have run once for the arrival (they run in
+  // declaration order), later runs mean a notification clicked on this page.
+  useEffect(() => {
+    hasMountedRef.current = true;
+  }, []);
 
   useEffect(() => {
     if (!CalendarDashboardEventData) {

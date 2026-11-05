@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -458,24 +458,43 @@ const GroupPublishedMeetingList = () => {
     }
   }, [validatencryptedstringState]);
 
+  // `hasMountedRef`: false only during the first effect pass. `arrivalPendingRef`:
+  // true when that pass already had a notification, i.e. the user came from another
+  // page; kept until it has been processed (the details it needs may arrive a
+  // render later, which is a second pass of this effect).
+  const hasMountedRef = useRef(false);
+  const arrivalPendingRef = useRef(false);
   useEffect(() => {
+    if (!hasMountedRef.current && state !== null) {
+      arrivalPendingRef.current = true;
+    }
     if (state !== null && DetailsWebNotificationViewMeeting !== null) {
       try {
         const meetingNotificationRouting = async () => {
           const { message = "" } = state;
 
+          // routeMeetingTypeNotification stores { responseCode, responseResult,
+          // meetingID, isQuickMeeting }: the meeting's own fields (status, video
+          // URL, title ...) are inside responseResult, not at the top level.
+          const details =
+            DetailsWebNotificationViewMeeting.responseResult ??
+            DetailsWebNotificationViewMeeting;
+
           let obj = {
             isQuickMeeting: DetailsWebNotificationViewMeeting.isQuickMeeting,
-            pK_MDID: DetailsWebNotificationViewMeeting.MeetingID,
-            isParticipant: DetailsWebNotificationViewMeeting.attendeeRole === "Participant",
-            isAgendaContributor: DetailsWebNotificationViewMeeting.attendeeRole === "AgendaContributor",
-            isOrganizer: DetailsWebNotificationViewMeeting.attendeeRole === "Organizer",
+            pK_MDID:
+              DetailsWebNotificationViewMeeting.meetingID ??
+              DetailsWebNotificationViewMeeting.MeetingID,
+            isParticipant: details.attendeeRole === "Participant",
+            isAgendaContributor: details.attendeeRole === "AgendaContributor",
+            isOrganizer: details.attendeeRole === "Organizer",
             isPrimaryOrganizer: false,
-            status: DetailsWebNotificationViewMeeting.meetingStatusID,
-            videoCallURL: DetailsWebNotificationViewMeeting.videoCallUrl,
-            isChat: DetailsWebNotificationViewMeeting.isChat,
-            isVideoCall: DetailsWebNotificationViewMeeting.isVideoCall,
-            talkGroupID: DetailsWebNotificationViewMeeting.talkGroupID,
+            status: details.meetingStatusID,
+            videoCallURL: details.videoCallUrl,
+            isChat: details.isChat,
+            isVideoCall: details.isVideoCall,
+            talkGroupID: details.talkGroupID,
+            title: details.meetingTitle,
           };
 
           if (message === "proposedmeeting") {
@@ -484,25 +503,34 @@ const GroupPublishedMeetingList = () => {
               ProposedMeetings: true,
             });
           }
-          if (message === "ViewMeeting") {
+          // This component is the Published tab. A notification clicked while it is
+          // already showing must just open its meeting (reloading would blank the
+          // list for nothing); one that brought the user here from another page still
+          // loads it as before.
+          const loadPublishedUnlessShown = () => {
+            if (hasMountedRef.current && !arrivalPendingRef.current) return;
             loadGroupMeetings({
               PublishedMeetings: true,
               ProposedMeetings: false,
             });
+          };
+
+          if (message === "ViewMeeting") {
+            loadPublishedUnlessShown();
             handleViewMeeting(obj);
           }
           if (message === "JoinMeeting") {
-            loadGroupMeetings({
-              PublishedMeetings: true,
-              ProposedMeetings: false,
-            });
+            loadPublishedUnlessShown();
             handleJoinMeeting(obj);
           }
-          if (message === "MeetingPollCreated") {
-            loadGroupMeetings({
-              PublishedMeetings: true,
-              ProposedMeetings: false,
-            });
+          // "Poll_Created_In_Meeting" is what the server sends as the notification's
+          // action name (the Meeting page already matches it); "MeetingPollCreated"
+          // is the older literal, kept so both reach the join-then-polls flow.
+          if (
+            message === "Poll_Created_In_Meeting" ||
+            message === "MeetingPollCreated"
+          ) {
+            loadPublishedUnlessShown();
             handleViewMeeting(obj, "polls");
           }
           if (message === "MeetingListing") {
@@ -511,6 +539,7 @@ const GroupPublishedMeetingList = () => {
               ProposedMeetings: false,
             });
           }
+          arrivalPendingRef.current = false;
           navigate(pathname, {
             replace: true,
             state: null,
@@ -522,6 +551,12 @@ const GroupPublishedMeetingList = () => {
       }
     }
   }, [state, DetailsWebNotificationViewMeeting]);
+
+  // Declared right after the notification effect so that effect sees `false` on the
+  // arrival pass.
+  useEffect(() => {
+    hasMountedRef.current = true;
+  }, []);
 
   // ─── Edit Meeting ─────────────────────────────────────────────────────────
 

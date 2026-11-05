@@ -51,8 +51,12 @@ export const useMeetingListActions = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { setEditorRole, setVideoTalk, setDownloadVideoRecordingModal } =
-    useMeetingContext();
+  const {
+    editorRole,
+    setEditorRole,
+    setVideoTalk,
+    setDownloadVideoRecordingModal,
+  } = useMeetingContext();
   const { setIsQuickMeetingView, setIsQuickMeetingUpdate } =
     useNewMeetingContext();
 
@@ -107,6 +111,30 @@ export const useMeetingListActions = ({
     try {
       let tabActive = viewer === "polls" ? "polls" : "agendaViewer";
       if (Number(record.status) === STATUS_ACTIVE) {
+        // Already inside this meeting (joined, then moved to another screen): just
+        // open its view again on the requested tab. Joining a second time would
+        // repeat the join flow for a meeting the user never left.
+        // localStorage alone is not proof: its flags outlive a refresh or a meeting
+        // the host ended, and trusting them skips the real join. The in-app role
+        // state (status 10 = in an active meeting) is reset in those cases, so it
+        // must agree too.
+        const alreadyJoined =
+          !record.isQuickMeeting &&
+          Number(editorRole?.status) === STATUS_ACTIVE &&
+          localStorage.getItem("isMeeting") === "true" &&
+          Number(localStorage.getItem("currentMeetingID")) ===
+            Number(record.pK_MDID);
+        if (alreadyJoined) {
+          dispatch(
+            setCurrentMeetingInfo({
+              meetingID: record.pK_MDID,
+              meetingTitle: localStorage.getItem("meetingTitle"),
+            }),
+          );
+          dispatch(setViewTab(tabActive));
+          dispatch(toggleViewMeetingModal(true));
+          return;
+        }
         handleJoinMeeting(record, tabActive);
         return;
       }

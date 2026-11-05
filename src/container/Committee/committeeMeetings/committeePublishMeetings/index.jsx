@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -430,6 +430,8 @@ const CommitteePublishedMeetingList = () => {
     }
   }, [validatencryptedstringState]);
 
+  // False during the first effect pass (arrival from another page), true after it.
+  const hasMountedRef = useRef(false);
   useEffect(() => {
     if (state !== null) {
       try {
@@ -448,6 +450,8 @@ const CommitteePublishedMeetingList = () => {
             isChat: response.isChat,
             isVideoCall: response.isVideoCall,
             talkGroupID: response.talkGroupID,
+            // joining stores record.title as the meeting title shown in the view
+            title: response.meetingTitle,
           };
 
           if (message === "proposedmeeting") {
@@ -458,28 +462,37 @@ const CommitteePublishedMeetingList = () => {
 
             // setCurrentCommitteeMeetingTabActive(2);
           }
-          if (message === "ViewMeeting") {
+          // This component is the Published tab. A notification clicked while it is
+          // already showing (it was mounted before this state arrived) must just open
+          // its meeting: reloading would blank the list for nothing. Arriving from
+          // another page still loads it as before.
+          const loadPublishedUnlessShown = async () => {
+            if (hasMountedRef.current) return;
             await loadCommitteeMeetings({
               PublishedMeetings: true,
               ProposedMeetings: false,
             });
+          };
+
+          if (message === "ViewMeeting") {
+            await loadPublishedUnlessShown();
 
             handleViewMeeting(obj);
           }
           if (message === "JoinMeeting") {
-            await loadCommitteeMeetings({
-              PublishedMeetings: true,
-              ProposedMeetings: false,
-            });
+            await loadPublishedUnlessShown();
 
             handleJoinMeeting(obj);
           }
 
-          if (message === "MeetingPollCreated") {
-            await loadCommitteeMeetings({
-              PublishedMeetings: true,
-              ProposedMeetings: false,
-            });
+          // "Poll_Created_In_Meeting" is what the server sends as the notification's
+          // action name (the Meeting page already matches it); "MeetingPollCreated"
+          // is the older literal, kept so both reach the join-then-polls flow.
+          if (
+            message === "Poll_Created_In_Meeting" ||
+            message === "MeetingPollCreated"
+          ) {
+            await loadPublishedUnlessShown();
             handleViewMeeting(obj, "polls");
           }
 
@@ -500,6 +513,12 @@ const CommitteePublishedMeetingList = () => {
       }
     }
   }, [state]);
+
+  // Declared right after the notification effect, so that effect still sees `false`
+  // on the arrival pass and `true` for every later notification.
+  useEffect(() => {
+    hasMountedRef.current = true;
+  }, []);
 
   // ─── Group Chat ───────────────────────────────────────────────────────────
 

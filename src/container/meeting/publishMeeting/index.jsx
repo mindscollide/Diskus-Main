@@ -367,7 +367,6 @@ const PublishedMeetingList = () => {
         record.isMinutePublished &&
         (isParticipant || isAgendaContributor),
     };
-    console.log("canShow", canShow, record);
     if (!Object.values(canShow).some(Boolean)) return null;
 
     return (
@@ -821,12 +820,7 @@ const PublishedMeetingList = () => {
                 minutesDifference < minutesAgo
               )
             );
-          // const canStartMeeting =
-          //   (meetingCurrentStatus === STATUS.UPCOMING &&
-          //     isOrganizer &&
-          //     minutesDifference < minutesAgo) ||
-          //   (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
-          console.log(canStartMeeting, minutesDifference, minutesAgo, "")
+
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);
 

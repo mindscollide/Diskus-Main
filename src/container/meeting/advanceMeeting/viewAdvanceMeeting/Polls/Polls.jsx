@@ -85,6 +85,15 @@ const Polls = () => {
 
   const { viewVotes, setviewVotes } = usePollsContext();
 
+  // The meeting this view belongs to. Read straight from Redux: the context's
+  // advanceMeetingModalID is only copied from it by an effect AFTER the first
+  // render, so a view that opens directly on this tab (poll notification) would
+  // still see the old value (0) when its mount effect asks for the polls.
+  const currentMeetingInfoID = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo?.meetingID,
+  );
+  const pollsMeetingID = Number(currentMeetingInfoID) || Number(advanceMeetingModalID);
+
   const getPollsMeetingID = useSelector(
     (state) => state.NewMeetingreducer.getPollsMeetingID,
   );
@@ -327,7 +336,7 @@ const Polls = () => {
     } else {
       // After Consulting mamdani getting the current meet ID from LocalStorage
       let Data = {
-        MeetingID: Number(advanceMeetingModalID),
+        MeetingID: pollsMeetingID,
         OrganizationID: Number(OrganizationID),
         CreatorName: "",
         PollTitle: "",
@@ -348,7 +357,7 @@ const Polls = () => {
     setPageNumber(current);
     setPageSize(pageSize);
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: pollsMeetingID,
       OrganizationID: Number(OrganizationID),
       CreatorName: "",
       PollTitle: "",
@@ -388,7 +397,7 @@ const Polls = () => {
     try {
       if (newPollMeeting !== null) {
         let PollData = newPollMeeting;
-        if (Number(PollData.meetingID) === Number(advanceMeetingModalID)) {
+        if (Number(PollData.meetingID) === pollsMeetingID) {
           setPollsRows([PollData.polls, ...pollsRows]);
         }
         dispatch(createPollMeetingMQTT(null));
