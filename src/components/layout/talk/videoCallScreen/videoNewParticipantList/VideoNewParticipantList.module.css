@@ -236,9 +236,68 @@
   text-overflow: ellipsis;
 }
 
+/* Participant row: one flex line, everything centred on the same axis.
+   (Bootstrap Row/Col stacked below 768px and the p margin / negative icon
+   margins pushed name, icons and mic to different heights.) */
+.participantRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+}
+
+/* Name takes the free space (ellipsis); icons keep their size */
+.participantInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.participantName {
+  margin: 0;
+  min-width: 0;
+  font-size: var(--vp-font-small);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--vp-text-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statusIcon {
+  display: block;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+/* Mic + three-dot menu, fixed to the end of the row */
+.participantActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.participantActions :global(.dropdown) {
+  display: flex;
+  align-items: center;
+}
+
+.participantActions :global(.participant-toggle) {
+  display: flex;
+  align-items: center;
+  padding: 2px 6px;
+  line-height: 1;
+}
+
 /* "(Host)" / "(Presenter)" inline label next to a participant name */
 .Host-name {
   margin: 0;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .Host-title-name {

@@ -92,6 +92,7 @@ import {
   isSharedScreenTriggeredApi,
   participantAcceptandReject,
   notifyParticipantsWhenHostIsTransferred,
+  setMeetingVideoHostByGuid,
   participantPopup,
 } from "../../store/actions/VideoFeature_actions";
 import {
@@ -1996,6 +1997,14 @@ const Dashboard = () => {
 
                 const newHostGuid = data.payload.newHost?.guid;
                 console.log("HostTransferEvent");
+
+                // Update every client's participant list with the new host
+                // (isHost flags) and re-fetch it; manual transfer does the
+                // same via HOST_TRANSFERRED_NOTIFICATION.
+                if (newHostGuid) {
+                  dispatch(setMeetingVideoHostByGuid(newHostGuid));
+                  dispatch(notifyParticipantsWhenHostIsTransferred(true));
+                }
 
                 const isHost = JSON.parse(
                   localStorage.getItem("isMeetingVideoHostCheck"),
