@@ -2210,13 +2210,13 @@ const Minutes = () => {
                                     isEdit === true &&
                                     updateData?.minuteID === data.minuteID
                                   ) &&
-                                  ((
-                                    Number(localStorage.getItem("userID")) === Number(data.userID) &&
                                     (
-                                      editorRole.role === "Organizer" &&
-                                      [9, 10].includes(Number(editorRole.status))
-                                    )
-                                  ) || updateData?.minuteID !== data.minuteID) ? (
+                                      Number(localStorage.getItem("userID")) === Number(data.userID) &&
+                                      (
+                                        editorRole.role === "Organizer" &&
+                                        [9, 10].includes(Number(editorRole.status))
+                                      )
+                                    ) ? (
                                     <img
                                       draggable={false}
                                       src={RedCroseeIcon}
