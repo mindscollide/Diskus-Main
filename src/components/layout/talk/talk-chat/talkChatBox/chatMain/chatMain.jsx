@@ -689,8 +689,14 @@ const ChatMainBody = ({ chatMessageClass }) => {
     }
   };
 
+  // A chat is blocked only when isBlock is 1 (that is also what disables the
+  // message input). Some chat records carry no isBlock at all (undefined), e.g.
+  // group chats; comparing with `=== 0` made the attach (+) and emoji buttons
+  // do nothing there while typing still worked.
+  const isChatBlocked = Number(talkStateData.ActiveChatData?.isBlock) === 1;
+
   const showUploadOptions = () => {
-    if (uploadOptions === false && talkStateData.ActiveChatData.isBlock === 0) {
+    if (uploadOptions === false && !isChatBlocked) {
       setUploadOptions(true);
     } else {
       setUploadOptions(false);
@@ -711,7 +717,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
     let codesArray = [];
     sym.forEach((el) => codesArray.push("0x" + el));
     let emoji = String.fromCodePoint(...codesArray);
-    if (talkStateData.ActiveChatData.isBlock === 0) {
+    if (!isChatBlocked) {
       setMessageSendData({
         ...messageSendData,
         Body: messageSendData.Body + emoji,
@@ -3828,7 +3834,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                   draggable='false'
                                   onClick={removeFileFunction}
                                   src={CrossIcon}
-                                  className='cursor-pointer'
+                                  className='cursor-pointer mb-2'
                                   alt=''
                                 />
                               </div>

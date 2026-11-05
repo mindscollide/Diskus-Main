@@ -1889,7 +1889,7 @@ button.UploadFileButton {
 
 img.thumbnailImage {
   max-height: 190px;
-  width: auto;
+  width: 100%;
 }
 
 /* .removeImage-thumbnail {
@@ -1933,6 +1933,8 @@ label.image-upload {
   background: #e1e1e1;
   padding: 10px;
   border-radius: 4px;
+  display: flex;
+  
 }
 
 .file-uploaded-chat.received {
