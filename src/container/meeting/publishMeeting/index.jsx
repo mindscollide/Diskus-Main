@@ -367,7 +367,7 @@ const PublishedMeetingList = () => {
         record.isMinutePublished &&
         (isParticipant || isAgendaContributor),
     };
-
+    console.log("canShow", canShow, record);
     if (!Object.values(canShow).some(Boolean)) return null;
 
     return (

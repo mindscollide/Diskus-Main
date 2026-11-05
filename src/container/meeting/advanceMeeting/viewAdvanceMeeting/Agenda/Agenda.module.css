@@ -180,6 +180,7 @@
 .Scroller_Agenda {
   max-height: 62vh !important;
   overflow-x: hidden !important;
+  margin-top: 10px;
 }
 
 .Scroller_Agenda::-webkit-scrollbar {
