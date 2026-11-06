@@ -853,7 +853,7 @@ const VideoNewParticipantList = () => {
           width="18px"
           height="18px"
           alt="Video Disabled"
-          className="handraised-participant"
+          className={styles["statusIcon"]}
         />
       ) : (
         <img
@@ -862,7 +862,7 @@ const VideoNewParticipantList = () => {
           width="18px"
           height="18px"
           alt="Video On"
-          className="handraised-participant"
+          className={styles["statusIcon"]}
         />
       );
     },
@@ -1006,18 +1006,21 @@ const VideoNewParticipantList = () => {
                 ? isTargetUser
                 : !usersData.isHost;
 
+              // The host's own row has no name / icons / menu: skip it instead
+              // of rendering an empty (but min-height) row at the top.
+              if (isSelfHost && !(presenterViewFlag && isTargetUser)) {
+                return null;
+              }
+
               return (
-                <Row className="hostBorder m-0" key={usersData.guid}>
-                  {/* Left column: name + raise-hand + camera icon */}
-                  <Col
-                    className="p-0 d-flex align-items-center mt-1"
-                    lg={8}
-                    md={8}
-                    sm={12}
-                  >
+                <div className={styles["participantRow"]} key={usersData.guid}>
+                  {/* Left: name + raise-hand + camera icon */}
+                  <div className={styles["participantInfo"]}>
                     {!isSelfHost && (
                       <>
-                        <p className="participant-name">{usersData.name}</p>
+                        <p className={styles["participantName"]} dir="auto">
+                          {usersData.name}
+                        </p>
 
                         {/* "(Presenter)" or "(Host)" label */}
                         {presenterViewFlag &&
@@ -1050,7 +1053,7 @@ const VideoNewParticipantList = () => {
                             alt="Hand raised"
                             width="22px"
                             height="22px"
-                            className="handraised-participant"
+                            className={styles["statusIcon"]}
                           />
                         ) : (
                           /* MenuRaiseHand placeholder — shown unless the row is
@@ -1064,7 +1067,7 @@ const VideoNewParticipantList = () => {
                               draggable="false"
                               src={MenuRaiseHand}
                               alt=""
-                              className="handraised-participant"
+                              className={styles["statusIcon"]}
                             />
                           )
                         )}
@@ -1073,15 +1076,10 @@ const VideoNewParticipantList = () => {
                         {renderCameraIcon(usersData)}
                       </>
                     )}
-                  </Col>
+                  </div>
 
-                  {/* Right column: mic icon + action dropdown */}
-                  <Col
-                    className="d-flex justify-content-end align-items-baseline gap-2 p-0 right-col-icons"
-                    lg={4}
-                    md={4}
-                    sm={12}
-                  >
+                  {/* Right: mic icon + action dropdown */}
+                  <div className={styles["participantActions"]}>
                     {!isSelfHost && renderMicIcon(usersData)}
 
                     {/* Action dropdown — presenter view */}
@@ -1175,8 +1173,8 @@ const VideoNewParticipantList = () => {
                         </Dropdown.Menu>
                       </Dropdown>
                     )}
-                  </Col>
-                </Row>
+                  </div>
+                </div>
               );
             })
           ) : (

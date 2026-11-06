@@ -3250,6 +3250,15 @@ const notifyParticipantsWhenHostIsTransferred = (response) => {
   };
 };
 
+// AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY: mark the new host in the stored
+// participant lists straight from the MQTT payload (no API round trip).
+const setMeetingVideoHostByGuid = (guid) => {
+  return {
+    type: actions.SET_MEETING_VIDEO_HOST_BY_GUID,
+    payload: guid,
+  };
+};
+
 const getVideoPresentationParticipantInit = () => {
   return {
     type: actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_INIT,
@@ -3533,6 +3542,7 @@ export {
   isSharedScreenTriggeredApi,
   screenShareTriggeredGlobally,
   notifyParticipantsWhenHostIsTransferred,
+  setMeetingVideoHostByGuid,
   getVideoPresentationParticipantsMainApi,
   presentationParticipantJoinedMqtt,
   presentationParticipantLeftMqtt,

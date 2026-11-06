@@ -1537,6 +1537,26 @@ const videoFeatureReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.SET_MEETING_VIDEO_HOST_BY_GUID: {
+      const markHost = (list) =>
+        list.map((p) => ({ ...p, isHost: p.guid === action.payload }));
+      const presentationList = state.presentationParticipantsList;
+      return {
+        ...state,
+        getAllParticipantMain: Array.isArray(state.getAllParticipantMain)
+          ? markHost(state.getAllParticipantMain)
+          : state.getAllParticipantMain,
+        presentationParticipantsList: Array.isArray(
+          presentationList?.participantList,
+        )
+          ? {
+              ...presentationList,
+              participantList: markHost(presentationList.participantList),
+            }
+          : presentationList,
+      };
+    }
+
     case actions.GET_VIDEOCALL_PRESENTATION_PARTICIPANTS_INIT: {
       return {
         ...state,
