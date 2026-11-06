@@ -4421,18 +4421,24 @@ body[dir="rtl"] .ql-snow.ql-toolbar button,
   margin-right: 0px !important;
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
-  content: "Normal";
+/* Font size picker: every item and the label show their real size. The label of an
+   editor position with no explicit size shows the default (16px). */
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before {
+  content: "14px";
   font-size: 14px !important;
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
-  content: "Large";
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label:not([data-value])::before {
+  content: "16px";
   font-size: 16px !important;
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
-  content: "18px" !important;
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before {
+  content: "18px";
   font-size: 18px !important;
 }
 
@@ -4466,23 +4472,20 @@ body[dir="rtl"] .ql-snow.ql-toolbar button,
   font-family: "Comic Sans MS";
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-label::before,
-.ql-snow .ql-picker.ql-size .ql-picker-item::before {
-  content: "16px" !important;
+.ql-snow .ql-picker.ql-font {
+  width: auto !important;
+  min-width: 117px;
 }
 
-.ql-snow .ql-picker.ql-font {
-  width: 117px !important;
+/* keep the font name clear of the dropdown arrow ("Comic Sans MS" was cut) */
+.ql-snow .ql-picker.ql-font .ql-picker-label {
+  padding-right: 22px;
+  white-space: nowrap;
 }
 
 .TestAccordian .MuiAccordionSummary-content {
   display: block !important;
   cursor: default !important;
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
-  content: "Huge";
-  font-size: 18px !important;
 }
 
 .ql-font span[data-value="impact"]::before,

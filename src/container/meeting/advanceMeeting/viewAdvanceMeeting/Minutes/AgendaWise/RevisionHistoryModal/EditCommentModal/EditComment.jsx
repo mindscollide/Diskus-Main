@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"; // Importing translation hook
 import { useSelector } from "react-redux"; // Importing Redux hooks
 import { Col, Row } from "react-bootstrap"; // Importing Bootstrap components
 import ReactQuill from "react-quill";
+import { useDefaultEditorFormats } from "../../../../../../../../commen/functions/quillDefaults";
 import { removeHTMLTagsAndTruncate } from "../../../../../../../../commen/functions/utils";
 
 // Functional component for editing a comment
@@ -20,6 +21,8 @@ const EditCommentModal = ({
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const editorRef = useRef(null);
+  // Word-like default font for typed text (see quillDefaults.js)
+  const setEditorRef = useDefaultEditorFormats(editorRef, { size: null });
 
   const { currentMeetingMinutesToReviewData } = useSelector(
     (state) => state.MinutesReducer
@@ -108,7 +111,7 @@ const EditCommentModal = ({
       />
 
       <ReactQuill
-        ref={editorRef}
+        ref={setEditorRef}
         theme="snow"
         value={updateMinuteData.MinuteText || ""}
         placeholder={t("Minutes-details")}

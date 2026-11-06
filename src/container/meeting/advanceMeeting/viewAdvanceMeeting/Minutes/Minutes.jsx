@@ -11,6 +11,7 @@ import {
 import DeleteCommentGeneral from "./deleteCommentModal/DeleteCommentGeneral";
 import { Col, Row } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
+import { useDefaultEditorFormats } from "../../../../../commen/functions/quillDefaults";
 import { useRef } from "react";
 import { Tooltip, Upload } from "antd";
 import featherupload from "../../../../../assets/images/featherupload.svg";
@@ -91,6 +92,8 @@ const Minutes = () => {
   let currentDate = getCurrentDateTimeUTC();
   let currentDateOnly = currentDate.slice(0, 8);
   const editorRef = useRef(null);
+  // Word-like default font for typed text (see quillDefaults.js)
+  const setEditorRef = useDefaultEditorFormats(editorRef, { size: null });
   const { Dragger } = Upload;
 
   let isAgenda = false;
@@ -157,7 +160,7 @@ const Minutes = () => {
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
   var FontAttributor = Quill.import("formats/font");
-  var fonts = ["impact", "courier", "comic"];
+  var fonts = ["impact", "courier", "comic", "Montserrat"];
   FontAttributor.whitelist = fonts;
   Quill.register(FontAttributor, true);
 
@@ -1787,7 +1790,7 @@ const Minutes = () => {
                         xs={12}
                         className={styles["Arabic_font_Applied"]}>
                         <ReactQuill
-                          ref={editorRef}
+                          ref={setEditorRef}
                           theme='snow'
                           value={addNoteFields.Description.value || ""}
                           placeholder={t("Minutes-details")}

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Button,
   Modal,
@@ -9,6 +9,7 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.snow.css";
 import styles from "./ModalAddNote.module.css";
+import { attachDefaultEditorFormats } from "../../../commen/functions/quillDefaults";
 import { useDispatch } from "react-redux";
 import CustomUpload from "../../../components/elements/upload/Upload";
 import {
@@ -50,6 +51,22 @@ const ModalAddNote = ({ ModalTitle }) => {
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [currentFont, setCurrentFont] = useState("impact");
+
+  // Word-like default: text typed into an empty editor gets the font and size the
+  // toolbar shows as selected (see quillDefaults.js). Attached from a callback ref
+  // because the editor is created inside the Modal, a render after this component
+  // mounts, so a mount-time effect would find editorRef still empty.
+  const detachDefaultFormats = useRef(null);
+  const setEditorRef = useCallback((instance) => {
+    detachDefaultFormats.current?.();
+    detachDefaultFormats.current = null;
+    editorRef.current = instance;
+    if (instance) {
+      detachDefaultFormats.current = attachDefaultEditorFormats(
+        instance.getEditor(),
+      );
+    }
+  }, []);
 
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
@@ -486,17 +503,22 @@ const ModalAddNote = ({ ModalTitle }) => {
                     className={styles["Arabic_font_Applied"]}
                   >
                     <ReactQuill
-                      ref={editorRef}
+                      ref={setEditorRef}
                       theme="snow"
                       value={addNoteFields.Description.value}
                       placeholder={t("Note-details")}
                       onChange={onTextChange}
                       modules={modules}
                       formats={formats}
-                      onChangeSelection={(range, source, editor) => {
+                      onChangeSelection={(range) => {
                         if (range && range.length === 0) {
-                          const format = editor.getFormat(range);
-                          setCurrentFont(format.font || "impact");
+                          // the `editor` argument react-quill passes here has no
+                          // getFormat (calling it threw a TypeError inside Quill's
+                          // selection handling on every cursor move); use Quill's own
+                          const format = editorRef.current
+                            ?.getEditor()
+                            .getFormat(range);
+                          setCurrentFont(format?.font || "impact");
                         }
                       }}
                       className={styles["quill-height-addNote"]}
