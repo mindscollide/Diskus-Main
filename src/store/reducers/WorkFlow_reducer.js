@@ -630,7 +630,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.COUNT_FOR_ADDED_AS_MINUTE_REVIWER: {
+    case actions.ADDED_AS_MINUTE_REVIWER: {
       return {
         ...state,
         addedAsMinuteReviwerMqttPayload: action.response,

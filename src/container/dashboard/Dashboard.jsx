@@ -240,7 +240,7 @@ import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateU
 import CancelConfirmationModal from "@/container/meeting/commonComponents/cancelConfimationModal/CancelConfirmationModal";
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
-  MinuteReviwerCount,
+  added_MinuteReviwerCount,
   SignatureDocumentActionByMe,
   SignatureDocumentReceived,
   SignatureDocumentReceivedMyMe,
@@ -5507,7 +5507,7 @@ const Dashboard = () => {
             .toLowerCase()
             .includes("MINUTE_REVIEWER_ADDED".toLowerCase())
         ) {
-          dispatch(MinuteReviwerCount(data.payload));
+          dispatch(added_MinuteReviwerCount(data.payload));
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingMinutes: (prev.pendingMinutes ?? 0) + 1,

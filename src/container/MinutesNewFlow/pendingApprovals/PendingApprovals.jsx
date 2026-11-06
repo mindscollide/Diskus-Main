@@ -25,6 +25,7 @@ import ArrowUpIcon from "./../Images/Arrow-up.png";
 import NoApprovals from "./../Images/No-Approvals.png";
 import ReviewSignature from "../../DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature";
 import {
+  clearMinuteReviewerMqtt,
   validateEncryptedMinutesReviewerApi,
   validateEncryptedMinutesReviewer_clear,
 } from "../../../store/actions/workflow_actions";
@@ -60,6 +61,12 @@ const PendingApproval = () => {
   const getMinutesReviewerData = useSelector(
     (state) =>
       state.SignatureWorkFlowReducer.validateEncryptedStringMinuteReviewData,
+  );
+
+  // Set by the MINUTE_REVIEWER_ADDED MQTT message (Dashboard.jsx) when this user is
+  // added as a minute reviewer; null at start and [] once cleared.
+  const addedAsMinuteReviewer = useSelector(
+    (state) => state.SignatureWorkFlowReducer.addedAsMinuteReviwerMqttPayload,
   );
 
   //Getting current Language
@@ -435,7 +442,18 @@ const PendingApproval = () => {
         GetMinuteReviewPendingApprovalsByReviewerIdData.pendingReviews;
       if (isScrollingMinutes) {
         setIsScrollingMinutes(false);
-        setOriginalData((prev) => [...prev, ...(reducerDataRow || [])]);
+        // skip a record that was already added live (MINUTE_REVIEWER_ADDED) and is
+        // now also part of the page the server returns
+        setOriginalData((prev) => [
+          ...prev,
+          ...(reducerDataRow || []).filter(
+            (row) =>
+              !prev.some(
+                (existing) =>
+                  Number(existing.workFlowID) === Number(row.workFlowID),
+              ),
+          ),
+        ]);
       } else {
         setOriginalData(reducerDataRow || []);
       }
@@ -451,6 +469,27 @@ const PendingApproval = () => {
       ),
     );
   }, [originalData, appliedStatusFilter]);
+
+  // Real time: the MINUTE_REVIEWER_ADDED MQTT message (handled in Dashboard.jsx,
+  // which also raises the tab badge) carries the new review request itself in
+  // payload.data, with the same fields as a list row (title, workFlowID, meetingID,
+  // status, statusID, requestedBy, deadline, isMinutePublished). It is put straight
+  // into the list, no API call; the status filter still applies to it because the
+  // table is derived from originalData. The payload is cleared once used. The
+  // progress bar / stats are not touched here (they have their own MQTT message).
+  useEffect(() => {
+    const newRecord = addedAsMinuteReviewer?.data;
+    if (!newRecord || Array.isArray(addedAsMinuteReviewer)) return;
+
+    // already in the list (e.g. the page was loaded after the message arrived)
+    const alreadyListed = originalData.some(
+      (row) => Number(row.workFlowID) === Number(newRecord.workFlowID),
+    );
+    if (!alreadyListed) {
+      setOriginalData((prev) => [newRecord, ...prev]);
+    }
+    dispatch(clearMinuteReviewerMqtt());
+  }, [addedAsMinuteReviewer]);
 
   // The stats endpoint's three counts already sum to the true total record
   // count, so it's used here instead of requiring a totalCount field from

@@ -2648,9 +2648,9 @@ const clearSignatureViewerData = () => {
 };
 
 //Added as Minute Reviwer
-const MinuteReviwerCount = (response) => {
+const added_MinuteReviwerCount = (response) => {
   return {
-    type: actions.COUNT_FOR_ADDED_AS_MINUTE_REVIWER,
+    type: actions.ADDED_AS_MINUTE_REVIWER,
     response: response,
   };
 };
@@ -2702,7 +2702,7 @@ export {
   addAnnoationSignatrueFlow,
   declineReasonApi,
   validateEncryptedStringSignatureDataApi,
-  MinuteReviwerCount,
+  added_MinuteReviwerCount,
   clearMinuteReviewerMqtt,
   signeeCreatorCount,
 };
