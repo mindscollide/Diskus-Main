@@ -33,7 +33,7 @@ const AttachmentViewer = ({
       <div
         className={`${id !== 0 ? "document-card" : "document-card-none"
           } d-flex align-items-center'`}>
-        <div className='d-flex align-items-center flex-grow-1 overflow-hidden mx-2'>
+        <div className='d-flex align-items-center  overflow-hidden mx-2'>
           <div className='icon-container me-2'>
             <img
               draggable={false}

@@ -493,8 +493,8 @@ const AgendaWise = ({
     let Data = {
       taskId: 4,
       commingFrom: 4,
-      fileName: record[0].displayFileName,
-      attachmentID: record[0].pK_FileID,
+      fileName: record.displayFileName,
+      attachmentID: record.pK_FileID,
     };
     let pdfDataJson = JSON.stringify(Data);
     if (
@@ -1431,16 +1431,16 @@ const AgendaWise = ({
                                       {!(
                                         isEdit === true &&
                                         updateData?.minuteID ===
-                                          parentMinutedata.minuteID
+                                        parentMinutedata.minuteID
                                       ) &&
-                                      (
-                                        Number(localStorage.getItem("userID")) ===
-                                        Number(parentMinutedata.userID) &&
                                         (
-                                          editorRole.role === "Organizer" &&
-                                          [9, 10].includes(Number(editorRole.status))
-                                        )
-                                      ) ? (
+                                          Number(localStorage.getItem("userID")) ===
+                                          Number(parentMinutedata.userID) &&
+                                          (
+                                            editorRole.role === "Organizer" &&
+                                            [9, 10].includes(Number(editorRole.status))
+                                          )
+                                        ) ? (
                                         <img
                                           className={styles["delete-icon"]}
                                           src={DeleteIcon}
@@ -1489,7 +1489,7 @@ const AgendaWise = ({
                                                       }
                                                       handleEyeIcon={() =>
                                                         pdfData(
-                                                          parentMinutedata.attachments,
+                                                          fileData,
                                                           getFileExtension(
                                                             fileData?.displayFileName,
                                                           ),
@@ -1691,14 +1691,13 @@ const AgendaWise = ({
                                 <Col lg={12} md={12} sm={12}>
                                   <p className={styles["Parent-title-heading"]}>
                                     {/* numbered among the sub-agendas that are shown (have minutes) */}
-                                    {`${data.agendaNumber}.${
-                                      data.subMinutes
+                                    {`${data.agendaNumber}.${data.subMinutes
                                         .filter(
                                           (subItem) =>
                                             subItem.minuteData.length > 0,
                                         )
                                         .indexOf(subMinuteData) + 1
-                                    } ${subMinuteData.agendaTitle}`}
+                                      } ${subMinuteData.agendaTitle}`}
                                   </p>
                                 </Col>
                               </Row>
@@ -1958,7 +1957,7 @@ const AgendaWise = ({
                                                           }
                                                           handleEyeIcon={() =>
                                                             pdfData(
-                                                              minuteDataSubminute.attachments,
+                                                              subFileData,
                                                               getFileExtension(
                                                                 subFileData?.displayFileName,
                                                               ),
@@ -2184,17 +2183,17 @@ const AgendaWise = ({
                                         {!(
                                           isEdit === true &&
                                           updateData?.minuteID ===
-                                            minuteDataSubminute.minuteID
+                                          minuteDataSubminute.minuteID
                                         ) &&
-                                        (
-                                          Number(localStorage.getItem("userID")) ===
-                                          Number(minuteDataSubminute.userID) &&
                                           (
+                                            Number(localStorage.getItem("userID")) ===
+                                            Number(minuteDataSubminute.userID) &&
+                                            (
 
-                                            editorRole.role === "Organizer" &&
-                                            [9, 10].includes(Number(editorRole.status))
-                                          )
-                                        ) ? (
+                                              editorRole.role === "Organizer" &&
+                                              [9, 10].includes(Number(editorRole.status))
+                                            )
+                                          ) ? (
                                           <img
                                             className={styles["delete-icon"]}
                                             src={DeleteIcon}

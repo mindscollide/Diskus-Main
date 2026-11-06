@@ -539,8 +539,8 @@ const Minutes = () => {
     let Data = {
       taskId: 1,
       commingFrom: 4,
-      fileName: record[0].displayFileName,
-      attachmentID: record[0].pK_FileID,
+      fileName: record.displayFileName,
+      attachmentID: record.pK_FileID,
     };
     let pdfDataJson = JSON.stringify(Data);
     if (fileFormatforSignatureFlow.includes(ext)) {
@@ -558,13 +558,7 @@ const Minutes = () => {
         );
       }
     }
-    // if (fileFormatforSignatureFlow.includes(ext)) {
-    //   window.open(
-    //     `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-    //     "_blank",
-    //     "noopener noreferrer"
-    //   );
-    // }
+
   };
 
   //UPloading the Documents
@@ -850,11 +844,16 @@ const Minutes = () => {
     });
   };
 
-  const transformAgendaData = (documentsData, agendaData) => {
-    if (!documentsData || !agendaData) return [];
+  // The documents are only used to refresh each minute's attachment details, so a
+  // meeting without any documents ("no data" from that API leaves [] / undefined
+  // here) must still show its minutes: without documents every minute simply keeps
+  // the attachments it already came with.
+  const transformAgendaData = (documentsInput, agendaData) => {
+    if (!agendaData) return [];
+    const documentsData = Array.isArray(documentsInput) ? documentsInput : [];
 
     const updateMinutesAttachments = (agendaMinutes, documentsData) => {
-      return agendaMinutes.map((minute) => {
+      return (agendaMinutes || []).map((minute) => {
         const matchedDocument = documentsData.find(
           (doc) => doc.pK_MeetingAgendaMinutesID === minute.minuteID,
         );
@@ -876,7 +875,7 @@ const Minutes = () => {
     };
 
     const transformChildAgendas = (childAgendas, documentsData) => {
-      return childAgendas.map((child) => ({
+      return (childAgendas || []).map((child) => ({
         ...child,
         agendaMinutes: updateMinutesAttachments(
           child.agendaMinutes,
@@ -896,8 +895,9 @@ const Minutes = () => {
     }));
   };
 
-  const transformDataPublishGeneral = (documentsData, dataToTransform) => {
-    if (!documentsData || !dataToTransform) return [];
+  const transformDataPublishGeneral = (documentsInput, dataToTransform) => {
+    if (!dataToTransform) return [];
+    const documentsData = Array.isArray(documentsInput) ? documentsInput : [];
 
     return dataToTransform.map((item) => {
       const matchedMinute = documentsData.find(
@@ -1064,11 +1064,12 @@ const Minutes = () => {
   };
 
   useEffect(() => {
+    // The published minutes alone are enough to render: their documents are fetched
+    // separately, are optional (none exist for many meetings) and, when they do
+    // arrive, are in the dependencies below and refresh the attachments.
     if (
       MinutesReducer.GetPublishedMinutes !== null &&
-      MinutesReducer.GetPublishedMinutes !== undefined &&
-      NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes &&
-      generalminutesDocumentForMeeting
+      MinutesReducer.GetPublishedMinutes !== undefined
     ) {
       let dataToTransform =
         MinutesReducer?.GetPublishedMinutes?.generalPublishedMinutes;
@@ -1218,7 +1219,7 @@ const Minutes = () => {
                                                     }
                                                     handleEyeIcon={() =>
                                                       pdfData(
-                                                        parentMinuteData.minutesAttachmets,
+                                                        subFileData,
                                                         getFileExtension(
                                                           subFileData?.displayFileName,
                                                         ),
@@ -1408,7 +1409,7 @@ const Minutes = () => {
                                                           }
                                                           handleEyeIcon={() =>
                                                             pdfData(
-                                                              childAgendaMinuteData.minutesAttachmets,
+                                                              subFileData,
                                                               getFileExtension(
                                                                 subFileData?.displayFileName,
                                                               ),
@@ -1604,7 +1605,7 @@ const Minutes = () => {
                                               name={subFileData.displayFileName}
                                               handleEyeIcon={() =>
                                                 pdfData(
-                                                  data.minutesAttachmets,
+                                                  subFileData,
                                                   getFileExtension(
                                                     subFileData?.displayFileName,
                                                   ),
@@ -2258,7 +2259,7 @@ const Minutes = () => {
                                                   }
                                                   handleEyeIcon={() =>
                                                     pdfData(
-                                                      data.attachments,
+                                                      fileData,
                                                       getFileExtension(
                                                         fileData?.displayFileName,
                                                       ),

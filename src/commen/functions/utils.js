@@ -506,7 +506,6 @@ export const fileFormatforSignatureFlow = [
   "pdf",
   "fdf",
   "xfdf",
-  "txt",
 
   // Microsoft Office Formats
   "doc",
