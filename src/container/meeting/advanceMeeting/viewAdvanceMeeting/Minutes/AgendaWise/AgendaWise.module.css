@@ -441,13 +441,14 @@ p.Parent-title-heading {
 }
 
 p.minutes-text {
-  color: #5a5a5a;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  margin: 0 !important;
+  /* color: #5a5a5a; */
+  /* font-size: 12px; */
+  /* font-style: normal; */
+  /* font-weight: 600; */
+  /* margin: 0 !important; */
   overflow: hidden;
-  word-break: break-all;
+  /* word-break: break-all; */
+  white-space: pre-wrap;
 }
 
 span.bar-line {
