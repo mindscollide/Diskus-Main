@@ -447,10 +447,6 @@ const GroupViewPolls = ({ groupStatus }) => {
   );
 
   //Scroll for Polls table
-  const scroll = {
-    x: false,
-    y: "51vh",
-  };
 
   const PollsColoumn = [
     {
@@ -472,7 +468,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "pollTitle",
       key: "pollTitle",
-      width: "20%",
+      width: 300,
       align: "start",
       onHeaderCell: () => ({
         onClick: () => {
@@ -516,7 +512,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: "10%",
+      width: 100,
       align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
@@ -573,7 +569,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "dueDate",
       key: "dueDate",
-      width: "15%",
+      width: 100,
       align: "center",
       sorter: (a, b) =>
         new Date(
@@ -621,7 +617,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "pollCreator",
       key: "pollCreator",
-      width: "10%",
+      width: 100,
       align: "center",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       onHeaderCell: () => ({
@@ -640,7 +636,7 @@ const GroupViewPolls = ({ groupStatus }) => {
     {
       title: t("Vote"),
       dataIndex: "Vote",
-      width: "15%",
+      width: 100,
       align: "center",
       render: (text, record) => {
         const currentDate = new Date();
@@ -701,12 +697,12 @@ const GroupViewPolls = ({ groupStatus }) => {
     },
     {
       dataIndex: "Edit",
-      width: "10%",
+      width: 100,
       render: (text, record) => {
         return (
           <>
             {Number(record.pollCreatorID) === Number(userID) &&
-            groupStatus === 3 ? (
+              groupStatus === 3 ? (
               <>
                 <Row>
                   {record.pollStatus.pollStatusId === 3 ? (
@@ -849,7 +845,7 @@ const GroupViewPolls = ({ groupStatus }) => {
                       <Table
                         column={PollsColoumn}
                         rows={pollsRows}
-                        scroll={{ y: "45vh", x: "hidden" }}
+                        scroll={{ y: "45vh", x: "800px" }}
                         pagination={false}
                         className='newMeetingTable'
                         locale={{

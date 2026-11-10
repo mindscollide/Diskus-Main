@@ -426,7 +426,7 @@ const Polls = ({ committeeStatus }) => {
       title: t("Poll-title"),
       dataIndex: "pollTitle",
       key: "pollTitle",
-      width: "300px",
+      width: 300,
       render: (text, record) => {
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
