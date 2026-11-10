@@ -4,6 +4,11 @@ import { Row, Col } from "react-bootstrap";
 import { Button, Table, TextField } from "../../components/elements";
 import { Dropdown, Menu, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
+import PollStatusBadge from "../../components/elements/pollStatus/PollStatusBadge";
+import {
+  POLL_STATUS_VALUES,
+  getPollStatusFilters,
+} from "../../components/elements/pollStatus/pollStatusFilters";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
@@ -388,26 +393,9 @@ const Polling = () => {
 
   //Filteration Work polls
   const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([
-    "Published",
-    "UnPublished",
-    "Expired",
-  ]);
+  const [selectedValues, setSelectedValues] = useState(POLL_STATUS_VALUES);
 
-  const filters = [
-    {
-      text: t("Published"),
-      value: "Published", // Use the actual status value
-    },
-    {
-      text: t("UnPublished"),
-      value: "UnPublished", // Use the actual status value
-    },
-    {
-      text: t("Expired"),
-      value: "Expired", // Use the actual status value
-    },
-  ];
+  const filters = getPollStatusFilters(t);
 
   // Menu click handler for selecting filters
   const handleMenuClick = (filterValue) => {
@@ -426,7 +414,7 @@ const Polling = () => {
   };
 
   const resetFilter = () => {
-    setSelectedValues(["Published", "UnPublished", "Expired"]);
+    setSelectedValues(POLL_STATUS_VALUES);
     setRows(dublicatedrows);
     setVisible(false);
   };
@@ -572,32 +560,11 @@ const Polling = () => {
           <div />
         </Dropdown>
       ),
-      render: (text, record) => {
-        if (record.pollStatus?.pollStatusId === 2) {
-          return (
-            <div className='d-flex'>
-              <span className='userstatus-signal-PublishedPolls'></span>
-              <p className='m-0 userName FontArabicRegular'>{t("Published")}</p>
-            </div>
-          );
-        } else if (record.pollStatus?.pollStatusId === 1) {
-          return (
-            <div className='d-flex'>
-              <span className='userstatus-signal-Unpublished'></span>
-              <p className='m-0 userName FontArabicRegular'>
-                {t("Unpublished")}
-              </p>
-            </div>
-          );
-        } else if (record.pollStatus?.pollStatusId === 3) {
-          return (
-            <div className='d-flex'>
-              <span className='userstatus-signal-disabled'></span>
-              <p className='m-0 userName FontArabicRegular'>{t("Expired")}</p>
-            </div>
-          );
-        }
-      },
+      render: (text, record) => (
+        <PollStatusBadge
+          pollStatusId={record.pollStatus?.pollStatusId}
+        />
+      ),
     },
     {
       title: (

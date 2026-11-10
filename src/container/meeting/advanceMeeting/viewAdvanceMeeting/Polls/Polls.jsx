@@ -1,6 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./Polls.module.css";
 import { useTranslation } from "react-i18next";
+import PollStatusBadge from "../../../../../components/elements/pollStatus/PollStatusBadge";
+import {
+  POLL_STATUS_VALUES,
+  getPollStatusFilters,
+} from "../../../../../components/elements/pollStatus/pollStatusFilters";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinIcon from "../../../../../assets/images/bin.svg";
@@ -579,35 +584,16 @@ const Polls = () => {
       dataIndex: "Status",
       key: "Status",
       width: "15%",
-      filters: [
-        {
-          text: t("Published"),
-          value: "Published", // Use the actual status value
-        },
-        {
-          text: t("UnPublished"),
-          value: "UnPublished", // Use the actual status value
-        },
-        {
-          text: t("Expired"),
-          value: "Expired", // Use the actual status value
-        },
-      ],
-      defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
+      filters: getPollStatusFilters(t),
+      defaultFilteredValue: POLL_STATUS_VALUES,
       filterIcon: (filtered) => (
         <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       onFilter: (value, record) =>
         record.pollStatus.status.indexOf(value) === 0,
-      render: (text, record) => {
-        if (record.pollStatus?.pollStatusId === 2) {
-          return <span className='text-success'>{t("Published")}</span>;
-        } else if (record.pollStatus?.pollStatusId === 1) {
-          return <span className='text-success'>{t("Unpublished")}</span>;
-        } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className='text-success'>{t("Expired")}</span>;
-        }
-      },
+      render: (text, record) => (
+        <PollStatusBadge pollStatusId={record.pollStatus?.pollStatusId} />
+      ),
     },
     {
       title: t("Due-date"),
