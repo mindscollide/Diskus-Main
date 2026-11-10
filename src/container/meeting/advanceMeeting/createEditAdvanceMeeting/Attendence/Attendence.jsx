@@ -26,7 +26,6 @@ import {
   searchNewUserMeeting,
   showAttendanceConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
-import CancelModal from "./ModalCancelAttendence/ModalCancelAttendance";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { resetCreateEditTabs, toggleCreateEditMeetingModal } from "../../../../../store/actions/ModalStates_actions";

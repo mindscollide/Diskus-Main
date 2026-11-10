@@ -2,22 +2,17 @@ import React, { useEffect, useState } from "react";
 import styles from "./GroupViewPolls.module.css";
 import { useTranslation } from "react-i18next";
 import PollStatusBadge from "../../../components/elements/pollStatus/PollStatusBadge";
-import {
-  POLL_STATUS_VALUES,
-  getPollStatusFilters,
-} from "../../../components/elements/pollStatus/pollStatusFilters";
+import PollActionsCell from "../../Polling/commonPolls/PollActionsCell";
+import PollVoteCell from "../../Polling/commonPolls/PollVoteCell";
+import usePollStatusFilter from "../../Polling/commonPolls/usePollStatusFilter";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BinIcon from "../../../assets/images/bin.svg";
 import { truncateString } from "../../../commen/functions/regex";
-import { Dropdown, Menu, Tooltip } from "antd";
-import Tick from "../../../assets/images/Tick-Icon.png";
+import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
 import { Button, Table } from "../../../components/elements";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
-import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "../GroupPolls/CreatePolls/CreateGrouppolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
@@ -358,81 +353,13 @@ const GroupViewPolls = ({ groupStatus }) => {
     );
   };
 
-  //Filteration Work polls
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState(POLL_STATUS_VALUES);
-
-  const filters = getPollStatusFilters(t);
-
-  // Menu click handler for selecting filters
-  const handleMenuClick = (filterValue) => {
-    setSelectedValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
-    );
-  };
-  const handleApplyFilter = () => {
-    const filteredData = dublicatedrows.filter((item) =>
-      selectedValues.includes(item.pollStatus.status.toString()),
-    );
-    setPollsRows(filteredData);
-    setVisible(false);
-  };
-
-  const resetFilter = () => {
-    setSelectedValues(POLL_STATUS_VALUES);
-    setPollsRows(dublicatedrows);
-    setVisible(false);
-  };
-
-  const handleClickChevron = () => {
-    setVisible((prevVisible) => !prevVisible);
-  };
-
-  const menu = (
-    <Menu>
-      {filters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => {
-            handleMenuClick(filter.value);
-          }}
-          className='d-flex align-items-center justify-content-between'>
-          <div className='Polls_Menu_items'>
-            <span
-              className={
-                filter.value === "Published"
-                  ? "userstatus-signal-PublishedPolls_Menu"
-                  : filter.value === "UnPublished"
-                    ? "userstatus-signal-Unpublished_Menu"
-                    : "userstatus-signal-disabled_Menu"
-              }></span>
-            <span className='menu-text'>{filter.text}</span>
-            {selectedValues.includes(filter.value) && (
-              <span className='checkmark'>
-                <img src={Tick} alt='' />
-              </span>
-            )}
-          </div>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className='d-flex align-items-center justify-content-between p-2'>
-        <Button
-          text={"Reset"}
-          className={styles["FilterResetBtn"]}
-          onClick={resetFilter}
-        />
-        <Button
-          text='Ok'
-          disableBtn={selectedValues.length === 0}
-          className={styles["ResetOkBtn"]}
-          onClick={handleApplyFilter}
-        />
-      </div>
-    </Menu>
-  );
+  //Status filter of the table (shared with the other polls tables)
+  const statusFilterProps = usePollStatusFilter({
+    allRows: dublicatedrows,
+    setRows: setPollsRows,
+    resetClassName: styles["FilterResetBtn"],
+    okClassName: styles["ResetOkBtn"],
+  });
 
   //Scroll for Polls table
 
@@ -502,19 +429,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       key: "Status",
       width: 100,
       align: "center",
-      filterResetToDefaultFilteredValue: true,
-      filterIcon: (filtered) => (
-        <ChevronDown className='ChevronPolls' onClick={handleClickChevron} />
-      ),
-      filterDropdown: () => (
-        <Dropdown
-          overlay={menu}
-          open={visible}
-          onOpenChange={(open) => setVisible(open)}
-        >
-          <div />
-        </Dropdown>
-      ),
+      ...statusFilterProps,
       render: (text, record) => (
         <PollStatusBadge
           pollStatusId={record.pollStatus?.pollStatusId}
@@ -606,147 +521,29 @@ const GroupViewPolls = ({ groupStatus }) => {
       dataIndex: "Vote",
       width: 100,
       align: "center",
-      render: (text, record) => {
-        const currentDate = new Date();
-        const convertIntoGmt = resolutionResultTable(record.dueDate);
-
-        if (record.pollStatus.pollStatusId === 2) {
-          if (record.isVoter) {
-            if (currentDate < convertIntoGmt && groupStatus === 3) {
-              return (
-                <Button
-                  className={styles["Not_Vote_Button_Polls"]}
-                  buttonValue={
-                    record.voteStatus === "Not Voted" ? t("Vote") : t("Voted")
-                  }
-                  onClick={() => handleClickVoteCast(record)}
-                />
-              );
-            } else {
-              return (
-                <Button
-                  className={styles["ViewVotesButtonStyles"]}
-                  text={t("View-votes")}
-                  onClick={() => handleViewVotes(record)}
-                />
-              );
-            }
-          } else {
-            return "";
-          }
-        } else if (record.pollStatus.pollStatusId === 3) {
-          if (record.isVoter) {
-            if (record.wasPollPublished) {
-              if (record.voteStatus === "Not Voted") {
-                return (
-                  <Button
-                    className={styles["ViewVotesButtonStyles"]}
-                    text={t("View-votes")}
-                    onClick={() => handleViewVotes(record)}
-                  />
-                );
-              } else {
-                <Button
-                  className={styles["ViewVotesButtonStyles"]}
-                  text={t("View-votes")}
-                  onClick={() => handleViewVotes(record)}
-                />;
-              }
-            } else {
-              return "";
-            }
-          } else {
-            return "";
-          }
-        } else {
-          return "";
-        }
-      },
+      render: (text, record) => (
+        <PollVoteCell
+          record={record}
+          canVote={groupStatus === 3}
+          voteClassName={styles["Not_Vote_Button_Polls"]}
+          viewVotesClassName={styles["ViewVotesButtonStyles"]}
+          onVote={handleClickVoteCast}
+          onViewVotes={handleViewVotes}
+        />
+      ),
     },
     {
       dataIndex: "Edit",
       width: 100,
-      render: (text, record) => {
-        return (
-          <>
-            {Number(record.pollCreatorID) === Number(userID) &&
-              groupStatus === 3 ? (
-              <>
-                <Row>
-                  {record.pollStatus.pollStatusId === 3 ? (
-                    <>
-                      {!record.wasPollPublished ? (
-                        <>
-                          <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topRight' title={t("Edit")}>
-                              <img
-                                src={EditIcon}
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                alt=''
-                                draggable='false'
-                                onClick={() => handleEditBtn(record)}
-                              />
-                            </Tooltip>
-                          </Col>
-                          <Col sm={12} md={5} lg={5}></Col>
-                        </>
-                      ) : (
-                        <>
-                          <Col sm={12} md={5} lg={5}></Col>
-                          <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topLeft' title={t("Delete")}>
-                              <img
-                                src={BinIcon}
-                                alt=''
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                draggable='false'
-                                onClick={() => handleDeletePoll(record)}
-                              />
-                            </Tooltip>
-                          </Col>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topRight' title={t("Edit")}>
-                          <img
-                            src={EditIcon}
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            alt=''
-                            draggable='false'
-                            onClick={() => handleEditBtn(record)}
-                          />
-                        </Tooltip>
-                      </Col>
-                      <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topLeft' title={t("Delete")}>
-                          <img
-                            src={BinIcon}
-                            alt=''
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            draggable='false'
-                            onClick={() => handleDeletePoll(record)}
-                          />
-                        </Tooltip>
-                      </Col>
-                    </>
-                  )}
-                </Row>
-              </>
-            ) : null}
-          </>
-        );
-      },
+      render: (text, record) => (
+        <PollActionsCell
+          record={record}
+          userID={userID}
+          enabled={groupStatus === 3}
+          onEdit={handleEditBtn}
+          onDelete={handleDeletePoll}
+        />
+      ),
     },
   ];
 

@@ -36,7 +36,6 @@ import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
 import AgendaView from "./AgendaView/AgendaView";
 import ParentAgenda from "./ParentAgenda";
-import CancelAgenda from "./CancelAgenda/CancelAgenda";
 import NextAgenda from "./NextAgenda/NextAgenda";
 import PreviousAgenda from "./PreviousAgenda/PreviousAgenda";
 
@@ -1089,7 +1088,6 @@ const Agenda = () => {
       )}
       {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
       {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}
-      {NewMeetingreducer.cancelAgenda && <CancelAgenda />}
       {MeetingAgendaReducer.PreviousTabAgenda && (
         <PreviousAgenda
         // setAgenda={setAgenda}

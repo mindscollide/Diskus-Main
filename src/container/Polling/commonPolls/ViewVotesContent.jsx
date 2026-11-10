@@ -1,0 +1,221 @@
+import React, { useEffect, useState } from "react";
+import styles from "./ViewVotesContent.module.css";
+import { useSelector } from "react-redux";
+import { Col, Row } from "react-bootstrap";
+import { Progress } from "antd";
+import { Button } from "../../../components/elements";
+import { formatNumber } from "../../../commen/functions/utils";
+import { useTranslation } from "react-i18next";
+
+// Vote results of a poll, shared by Group, Committee and Meeting.
+// onClose is called by the Close button (the caller decides what closing does).
+const ViewVotesContent = ({ onClose }) => {
+  const { t } = useTranslation();
+  const viewVotes = useSelector((state) => state.PollsReducer.viewVotes);
+  const [pollTitle, setPollTitle] = useState("");
+  const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
+    [],
+  );
+  const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
+
+  useEffect(() => {
+    if (viewVotes !== null && viewVotes !== undefined) {
+      let vieVotePollDetails = viewVotes;
+      let pollOptions = vieVotePollDetails.pollOptions;
+      let pollAttendies = vieVotePollDetails.pollParticipants;
+      let Options = [];
+
+      if (vieVotePollDetails !== undefined && vieVotePollDetails !== null) {
+        if (Object.keys(vieVotePollDetails).length > 0) {
+          // for poll ID
+
+          // for poll Title
+          setPollTitle(vieVotePollDetails.pollDetails.pollTitle);
+
+          // for options
+          if (Object.keys(pollOptions).length > 0) {
+            pollOptions.forEach((data, index) => {
+              Options.push(data);
+            });
+            setVotePollDetailsOptions(Options);
+          }
+
+          if (Object.keys(pollAttendies).length > 0) {
+            setPollAttendiesOpptionsVise(pollAttendies);
+          }
+        }
+      }
+    }
+  }, [viewVotes]);
+
+  const handleViewVotesScreen = () => {
+    onClose();
+  };
+
+  return (
+    <section>
+      <Row>
+        <Col lg={7} md={7} sm={12}>
+          <Row className='mt-3'>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["Heading_vewPolls_Published"]}>
+                {pollTitle}
+              </span>
+            </Col>
+          </Row>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className={styles["Scroller_View_Published_Polls"]}>
+              <Row>
+                {votePollDetailsOptions.length > 0
+                  ? votePollDetailsOptions.map((data, index) => {
+                      return (
+                        <>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className='mt-2'
+                            key={index}>
+                            <section>
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <span
+                                    className={styles["Messege_span_Class"]}>
+                                    {data.answer}
+                                    {""}{" "}
+                                    <span>
+                                      ({formatNumber(data.totalVotes)})
+                                    </span>
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className='d-flex gap-3'>
+                                      <Progress
+                                        percent={formatNumber(
+                                          data.votePercentage,
+                                        )}
+                                        status='active'
+                                        className='pollsDetailsProgress'
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </Row>
+                            </section>
+                          </Col>
+                        </>
+                      );
+                    })
+                  : null}
+              </Row>
+            </Col>
+          </Row>
+        </Col>
+        <Col lg={5} md={5} sm={12}>
+          <Row>
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className={styles["viewVotes_container"]}>
+              {pollAttendiesOpptionsVise.length > 0 &&
+                pollAttendiesOpptionsVise.map((pollParticipantData, index) => {
+                  return (
+                    <>
+                      <Row className='mt-3' key={index}>
+                        <Col lg={12} md={12} sm={12}>
+                          <Row className='mt-1'>
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["Participant_Count"]}>
+                                {pollParticipantData.answer}{" "}
+                                <span>({pollParticipantData.totalVotes})</span>
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row>
+                            {pollParticipantData.pollParticipants.length > 0
+                              ? pollParticipantData.pollParticipants.map(
+                                  (data, index) => {
+                                    return (
+                                      <>
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={6}
+                                          key={index}
+                                          className={
+                                            styles[
+                                              "Scroller_View_Published_Polls"
+                                            ]
+                                          }>
+                                          <section
+                                            className={
+                                              styles["Partipants_box"]
+                                            }>
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className='d-flex align-items-center gap-2'>
+                                                <img
+                                                  draggable={false}
+                                                  src={`data:image/jpeg;base64,${data?.profilePicture?.displayProfilePictureName}`}
+                                                  height='33px'
+                                                  alt=''
+                                                  width='33px'
+                                                  className={
+                                                    styles["Profile_Style"]
+                                                  }
+                                                />
+                                                <span
+                                                  className={
+                                                    styles["Participants_name"]
+                                                  }>
+                                                  {data?.userName}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                          </section>
+                                        </Col>
+                                      </>
+                                    );
+                                  },
+                                )
+                              : null}
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  );
+                })}
+            </Col>
+          </Row>
+
+          <Row className='mt-4'>
+            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+              <Button
+                text={t("Cancel")}
+                className={styles["Cacnel_styles_button_view_Votes_screen"]}
+                onClick={handleViewVotesScreen}
+              />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </section>
+  );
+};
+
+export default ViewVotesContent;

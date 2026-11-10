@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "./Polls.module.css";
 import { useTranslation } from "react-i18next";
 import PollStatusBadge from "../../../../../components/elements/pollStatus/PollStatusBadge";
+import PollActionsCell from "../../../../Polling/commonPolls/PollActionsCell";
 import {
   POLL_STATUS_VALUES,
   getPollStatusFilters,
 } from "../../../../../components/elements/pollStatus/pollStatusFilters";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BinIcon from "../../../../../assets/images/bin.svg";
 import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../../assets/images/addmore.png";
@@ -18,7 +18,6 @@ import {
   Table,
   Notification,
 } from "../../../../../components/elements";
-import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
@@ -398,7 +397,7 @@ const Polls = ({
           (editorRole.role === "Organizer" ||
             editorRole.role === "Agenda Contributor" ||
             editorRole?.role === "Participant") &&
-            isAdvanceMeetingRoute === 2
+          isAdvanceMeetingRoute === 2
         ) {
           if (record.pollStatus.pollStatusId === 2) {
             if (record.isVoter) {
@@ -451,96 +450,22 @@ const Polls = ({
     {
       dataIndex: "Edit",
       width: "50px",
-      render: (text, record) => {
-        if (
-          Number(editorRole.status) === 10 &&
-          (editorRole.role === "Organizer" ||
-            editorRole.role === "Agenda Contributor" ||
-            editorRole?.role === "Participant") &&
+      render: (text, record) => (
+        <PollActionsCell
+          record={record}
+          userID={userID}
+          enabled={
+            Number(editorRole.status) === 10 &&
+            (editorRole.role === "Organizer" ||
+              editorRole.role === "Agenda Contributor" ||
+              editorRole?.role === "Participant") &&
             isAdvanceMeetingRoute === 2 &&
-          Number(editorRole.status) !== 9
-        ) {
-          return (
-            <>
-              {Number(record.pollCreatorID) === Number(userID) ? (
-                <>
-                  <Row>
-                    {record.pollStatus.pollStatusId === 3 ? (
-                      <>
-                        {!record.wasPollPublished ? (
-                          <>
-                            <Col sm={12} md={5} lg={5}>
-                              <Tooltip placement="topRight" title={t("Edit")}>
-                                <img
-                                  src={EditIcon}
-                                  className="cursor-pointer"
-                                  width="21.59px"
-                                  height="21.59px"
-                                  alt=""
-                                  draggable="false"
-                                  onClick={() => handleEditMeetingPoll(record)}
-                                />
-                              </Tooltip>
-                            </Col>
-                            <Col sm={12} md={5} lg={5}></Col>
-                          </>
-                        ) : (
-                          <>
-                            <Col sm={12} md={5} lg={5}></Col>
-                            <Col sm={12} md={5} lg={5}>
-                              <Tooltip placement="topLeft" title={t("Delete")}>
-                                <img
-                                  src={BinIcon}
-                                  alt=""
-                                  className="cursor-pointer"
-                                  width="21.59px"
-                                  height="21.59px"
-                                  draggable="false"
-                                  onClick={() => handleDeletePoll(record)}
-                                />
-                              </Tooltip>
-                            </Col>
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <Col sm={12} md={5} lg={5}>
-                          <Tooltip placement="topRight" title={t("Edit")}>
-                            <img
-                              src={EditIcon}
-                              className="cursor-pointer"
-                              width="21.59px"
-                              height="21.59px"
-                              alt=""
-                              draggable="false"
-                              onClick={() => handleEditMeetingPoll(record)}
-                            />
-                          </Tooltip>
-                        </Col>
-                        <Col sm={12} md={5} lg={5}>
-                          <Tooltip placement="topLeft" title={t("Delete")}>
-                            <img
-                              src={BinIcon}
-                              alt=""
-                              className="cursor-pointer"
-                              width="21.59px"
-                              height="21.59px"
-                              draggable="false"
-                              onClick={() => handleDeletePoll(record)}
-                            />
-                          </Tooltip>
-                        </Col>
-                      </>
-                    )}
-                  </Row>
-                </>
-              ) : null}
-            </>
-          );
-        } else {
-        }
-      },
+            Number(editorRole.status) !== 9
+          }
+          onEdit={handleEditMeetingPoll}
+          onDelete={handleDeletePoll}
+        />
+      ),
     },
   ];
 
@@ -573,34 +498,34 @@ const Polls = ({
         {createpoll ? (
           <Createpolls
             setCreatepoll={setCreatepoll}
-            // currentMeeting={currentMeeting}
+          // currentMeeting={currentMeeting}
           />
         ) : votePolls ? (
           <CastVotePollsMeeting
             setvotePolls={setvotePolls}
-            // currentMeeting={currentMeeting}
+          // currentMeeting={currentMeeting}
           />
         ) : editPolls ? (
           <EditPollsMeeting
             setEditPolls={setEditPolls}
-            // currentMeeting={currentMeeting}
+          // currentMeeting={currentMeeting}
           />
         ) : viewPublishedPoll ? (
           <ViewPollsPublishedScreen
             setViewPublishedPoll={setViewPublishedPoll}
-            // currentMeeting={currentMeeting}
+          // currentMeeting={currentMeeting}
           />
         ) : unPublished ? (
           <ViewPollsUnPublished
             setUnPublished={setUnPublished}
-            // currentMeeting={currentMeeting}
+          // currentMeeting={currentMeeting}
           />
         ) : (
           <>
             {Number(editorRole.status) === 10 &&
-            (editorRole.role === "Organizer" ||
-              editorRole.role === "Agenda Contributor" ||
-              editorRole?.role === "Participant") &&
+              (editorRole.role === "Organizer" ||
+                editorRole.role === "Agenda Contributor" ||
+                editorRole?.role === "Participant") &&
               isAdvanceMeetingRoute === 2 ? (
               <Row className="mt-4">
                 <Col
@@ -698,7 +623,6 @@ const Polls = ({
                     pageSize={pageSize}
                     total={totalRecords}
                     showSizer={totalRecords >= 9 ? true : false}
-                    className={styles["PaginationStyle-Resolution"]}
                     onChange={handleChangePagination}
                   />
                 </Col>
@@ -718,7 +642,7 @@ const Polls = ({
                 />
 
                 {Number(editorRole.status) === 10 &&
-                editorRole.role === "Agenda Contributor" ? null : (
+                  editorRole.role === "Agenda Contributor" ? null : (
                   <Button
                     text={t("Next")}
                     className={styles["Save_Button_Polls_meeting"]}
@@ -727,7 +651,7 @@ const Polls = ({
                 )}
 
                 {Number(editorRole.status) === 11 ||
-                Number(editorRole.status) === 12 ? (
+                  Number(editorRole.status) === 12 ? (
                   <Button
                     text={t("Publish")}
                     className={styles["Save_Button_Polls_meeting"]}
@@ -738,16 +662,16 @@ const Polls = ({
           </>
         )}
 
-        {cancelPolls && <CancelPolls  />}
+        {cancelPolls && <CancelPolls />}
         {editFlowDeletePollsMeeting && (
           <EditDeletePollConfirm
             pollID={pollID}
-            // currentMeeting={currentMeeting}
+          // currentMeeting={currentMeeting}
           />
         )}
-        
+
       </section>
-    {SnackBar}
+      {SnackBar}
     </>
   );
 };
