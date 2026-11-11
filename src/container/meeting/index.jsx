@@ -18,6 +18,8 @@ import DatePicker from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
+import { getInputIconStyle } from "@/commen/functions/arabicDateRender";
 import { useLocation, useNavigate } from "react-router-dom";
 import { clearMeetingState } from "@/store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -106,8 +108,6 @@ const MainMeeting = () => {
     useMeetingLinkActions();
 
   const [searchText, setSearchText] = useState("");
-  const [localValue, setLocalValue] = useState(gregorian_en);
-  const [calendarValue, setCalendarValue] = useState(gregorian);
   const [entereventIcon, setentereventIcon] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
 
@@ -800,15 +800,20 @@ const MainMeeting = () => {
                         placeholder="DD/MM/YYYY"
                         render={
                           <InputIcon
+                            iconStyle={getInputIconStyle()}
                             placeholder="DD/MM/YYYY"
                             className="datepicker_input"
                           />
                         }
                         editable={false}
-                        className="datePickerTodoCreate2"
+                        className="datePickerTodoCreate2 meetingSearchDatePicker"
                         onOpenPickNewDate={false}
-                        calendar={calendarValue}
-                        locale={localValue}
+                        calendar={gregorian}
+                        locale={
+                          localStorage.getItem("i18nextLng") === "ar"
+                            ? gregorian_ar
+                            : gregorian_en
+                        }
                         ref={calendRef}
                         onFocusedDateChange={meetingDateChangeHandler}
                       />

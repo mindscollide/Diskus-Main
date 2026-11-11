@@ -113,13 +113,13 @@ body[dir="rtl"] .rmdp-day.rmdp-today span {
   position: fixed;
 }
 
+/* The arrows are no longer rotated by hand: antd flips them itself now that the
+   app-level ConfigProvider gets direction="rtl" (see Dashboard.jsx). */
 body[dir="rtl"] li.ant-pagination-prev {
-  transform: rotate(180deg);
   position: relative;
 }
 
 body[dir="rtl"] li.ant-pagination-next {
-  transform: rotate(180deg);
   margin-left: 10px;
   position: relative;
 }

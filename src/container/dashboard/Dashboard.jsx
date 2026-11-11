@@ -5970,7 +5970,7 @@ const Dashboard = () => {
   return (
     <>
       <ConfigProvider
-        direction={currentLanguage === "ar" ? ar_EG : en_US}
+        direction={currentLanguage === "ar" ? "rtl" : "ltr"}
         locale={currentLanguage === "ar" ? ar_EG : en_US}
       >
         {IncomingVideoCallFlagReducer === true && (

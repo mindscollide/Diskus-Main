@@ -9,6 +9,7 @@ import DatePicker, { DateObject } from "react-multi-date-picker";
 import "./ModalToDoListChecklist.css";
 import deleteButtonCreateMeeting from "../../../../assets/images/cancel_meeting_icon.svg";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import { getInputIconStyle } from "../../../../commen/functions/arabicDateRender";
 import {
   TextField,
   Button,
@@ -72,30 +73,12 @@ const ModalToDoListChecklist = ({
   //Notification State
   const [notify, SnackBar] = useSnackbar();
   const [createTaskID, setCreateTaskID] = useState(0);
-  //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
   const calendRef = useRef();
   //Get Current User ID
   let createrID = Number(localStorage.getItem("userID"));
   let createrName = localStorage.getItem("name");
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  useEffect(() => {
-    try {
-      if (currentLanguage !== undefined && currentLanguage !== null) {
-        if (currentLanguage === "en") {
-          setCalendarValue(gregorian);
-          setLocalValue(gregorian_en);
-        } else if (currentLanguage === "ar") {
-          setCalendarValue(gregorian);
-          setLocalValue(gregorian_ar);
-        }
-      }
-    } catch (error) {
-      console.error("src/container/ComplianceUser/CommonComponents/CreateTodoChecklist/ModalToDoListChecklist.js:", error);
-    }
-  }, [currentLanguage]);
   //task Object
   const [task, setTask] = useState({
     PK_TID: 1,
@@ -637,6 +620,7 @@ const ModalToDoListChecklist = ({
                       placeholder="DD/MM/YYYY"
                       render={
                         <InputIcon
+                          iconStyle={getInputIconStyle()}
                           placeholder="DD/MM/YYYY"
                           className="datepicker_input"
                         />
@@ -645,8 +629,8 @@ const ModalToDoListChecklist = ({
                       editable={false}
                       onOpenPickNewDate={true}
                       inputMode=""
-                      calendar={calendarValue}
-                      locale={localValue}
+                      calendar={gregorian}
+                      locale={currentLanguage === "ar" ? gregorian_ar : gregorian_en}
                       ref={calendRef}
                     />
                   </Col>

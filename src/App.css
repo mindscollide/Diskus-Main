@@ -8403,3 +8403,31 @@ td.ant-table-column-sort {
   justify-content: center;
   align-items: center !important;
 }
+
+/* Date pickers: month arrows.
+   react-multi-date-picker draws the arrows as an L-shaped border rotated into a
+   chevron (and mirrors the rotation itself for RTL). Dashboard css files (and ar.css)
+   have unscoped rules that turn them into triangles / drop the rotation, which leaks
+   into every picker and leaves odd corner shapes. The library look is restored for all
+   pickers except the Dashboard calendar, whose triangle arrows are intentional. */
+body .rmdp-wrapper:not(.Dashboard-Calendar .rmdp-wrapper) .rmdp-arrow {
+  border: solid #6172d6 !important;
+  border-width: 0 2px 2px 0 !important;
+  width: 3px !important;
+  height: 3px !important;
+  padding: 2px !important;
+  margin-top: 5px !important;
+  z-index: auto;
+}
+body .rmdp-wrapper:not(.Dashboard-Calendar .rmdp-wrapper) .rmdp-right i {
+  transform: rotate(-45deg) !important;
+}
+body .rmdp-wrapper:not(.Dashboard-Calendar .rmdp-wrapper) .rmdp-left i {
+  transform: rotate(135deg) !important;
+}
+body[dir="rtl"] .rmdp-wrapper:not(.Dashboard-Calendar .rmdp-wrapper) .rmdp-left i {
+  transform: rotate(-45deg) !important;
+}
+body[dir="rtl"] .rmdp-wrapper:not(.Dashboard-Calendar .rmdp-wrapper) .rmdp-right i {
+  transform: rotate(135deg) !important;
+}

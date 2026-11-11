@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import searchicon from "../../../../assets/images/searchicon.svg";
 import styles from "./SearchComplianceReportModal.module.css";
+import { getDateRender, getPickerLocale } from "../../../../commen/functions/arabicDateRender";
 import { DatePicker } from "antd";
 import Select from "react-select";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
@@ -294,6 +295,8 @@ const SearchComplianceReportModal = () => {
                       </Col>
                       <Col lg={6} md={6} sm={6} xs={6}>
                         <DatePicker.RangePicker
+                          dateRender={getDateRender()}
+                  locale={getPickerLocale()}
                           format="DD/MM/YYYY"
                           placeholder={[t("Start-date"), t("End-date")]}
                           allowEmpty={[true, true]}

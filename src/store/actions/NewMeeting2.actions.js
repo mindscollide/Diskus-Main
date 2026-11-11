@@ -2271,17 +2271,17 @@ export const AddUpdateAdvanceMeetingAgendaApi = (
 
                   switch (routePath) {
                     case "saveMeetingAgenda":
-                      await dispatch(
-                        GetAdvanceMeetingAgendabyMeetingIdApi(
-                          navigate,
-                          t,
-                          {
-                            MeetingID: meetingId,
-                          },
-                          "saveMeetingAgenda",
-                          {},
-                        ),
-                      );
+                      // await dispatch(
+                      //   GetAdvanceMeetingAgendabyMeetingIdApi(
+                      //     navigate,
+                      //     t,
+                      //     {
+                      //       MeetingID: meetingId,
+                      //     },
+                      //     "saveMeetingAgenda",
+                      //     {},
+                      //   ),
+                      // );
                       dispatch(setCreateEditTab("meetingMaterial"));
                       break;
                     case "saveAgendaAndPublishMeeting": {
