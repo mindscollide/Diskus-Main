@@ -26,6 +26,7 @@ import {
   resolutionResultTable,
 } from "../../../commen/functions/date_formater";
 import {
+  clearPollsLists,
   createPollGroupsMQTT,
   deleteGroupPollApi,
   deletePollsMQTT,
@@ -110,6 +111,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       dispatch(getPollsByGroupMainApi(navigate, t, Data));
     }
     return () => {
+      dispatch(clearPollsLists());
       dispatch(showUnsavedPollsMeeting(false));
       setvotePolls(false);
       setCreatepoll(false);

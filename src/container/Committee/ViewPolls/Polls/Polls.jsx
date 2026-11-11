@@ -26,6 +26,7 @@ import {
   resolutionResultTable,
 } from "../../../../commen/functions/date_formater";
 import {
+  clearPollsLists,
   GetPollsByCommitteeIDapi,
   createPollCommitteesMQTT,
   deleteCommitteePollApi,
@@ -235,6 +236,7 @@ const Polls = ({ committeeStatus }) => {
     };
     dispatch(GetPollsByCommitteeIDapi(navigate, t, Data));
     return () => {
+      dispatch(clearPollsLists());
       setEditPolls(false);
       setvotePolls(false);
       setUnPublished(false);

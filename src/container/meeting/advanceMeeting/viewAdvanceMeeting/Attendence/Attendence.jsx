@@ -387,11 +387,14 @@ const Attendence = () => {
           md={12}
           sm={12}
           className='d-flex justify-content-end gap-2 mt-4'>
-          <Button
-            text={t("Cancel")}
-            className={styles["Cancel_Meeting_Details"]}
-            onClick={handleCancelBtn}
-          />
+          {/* Cancel closes the meeting view, so it is not offered while the meeting is live (status 10) */}
+          {Number(editorRole.status) !== 10 && (
+            <Button
+              text={t("Cancel")}
+              className={styles["Cancel_Meeting_Details"]}
+              onClick={handleCancelBtn}
+            />
+          )}
 
           <Button
             text={t("Revert")}

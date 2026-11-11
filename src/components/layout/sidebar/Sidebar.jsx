@@ -1115,18 +1115,15 @@ const Sidebar = () => {
                         : "m-0 p-0 iconItemSideBarMain"
                     }
                     onClick={(e) => {
-                      // Prevent default behavior
-                      const handled = handleSidebarNavigation({
+                      // Always stop the Link's own navigation; handleSidebarNavigation
+                      // navigates (or shows the leave-meeting modal) itself.
+                      e.preventDefault();
+                      handleSidebarNavigation({
                         targetPath: "/Diskus/compliance",
                         navigateLocationKey: "compliance",
                         handleWithCall: handleMeetingSidebarCompliance,
                         handleNoCall: handleMeetingSidebarComplianceNoCall,
                       });
-
-                      if (handled) {
-                        e.preventDefault();
-                        return;
-                      }
                     }}>
                     {/* Resolution Icon */}
                     <div

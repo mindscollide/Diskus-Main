@@ -52,6 +52,7 @@ const ExpandedMenu = ({
   );
   const {
     editorRole,
+    setEditorRole,
     minutes,
     polls,
     actionsPage,
@@ -147,6 +148,7 @@ const ExpandedMenu = ({
       t,
       "/Diskus/groups",
       editorRole,
+      setEditorRole,
       setCancelConfirmationModal,
       setGoBackCancelModal,
     );
@@ -192,6 +194,7 @@ const ExpandedMenu = ({
       t,
       "/Diskus/polling",
       editorRole,
+      setEditorRole,
       setCancelConfirmationModal,
       setGoBackCancelModal,
     );
@@ -239,6 +242,7 @@ const ExpandedMenu = ({
       t,
       "/Diskus/calendar",
       editorRole,
+      setEditorRole,
       setCancelConfirmationModal,
       setGoBackCancelModal,
     );
@@ -284,6 +288,7 @@ const ExpandedMenu = ({
       t,
       "/Diskus/todolist",
       editorRole,
+      setEditorRole,
       setCancelConfirmationModal,
       setGoBackCancelModal,
     );
@@ -328,6 +333,7 @@ const ExpandedMenu = ({
       t,
       "/Diskus/Notes",
       editorRole,
+      setEditorRole,
       setCancelConfirmationModal,
       setGoBackCancelModal,
     );
@@ -557,17 +563,15 @@ const ExpandedMenu = ({
           }
           onClick={(e) => {
             // Prevent default behavior
-            const handled = handleSidebarNavigation({
+            // Always stop the Link's own navigation; handleSidebarNavigation
+            // navigates (or shows the leave-meeting modal) itself.
+            e.preventDefault();
+            handleSidebarNavigation({
               targetPath: "/Diskus/resolution",
               navigateLocationKey: "resolution",
               handleWithCall: handleMeetingSidebarResolutions,
               handleNoCall: handleMeetingSidebarResolutionsNoCall,
             });
-
-            if (handled) {
-              e.preventDefault();
-              return;
-            }
           }}
         >
           {/* Resolution Icon */}

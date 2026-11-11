@@ -266,27 +266,28 @@ const Polling = () => {
         const { committeeID, groupID, meetingID, polls } =
           PollsReducerpollingSocket;
 
-        if (committeeID === -1 && groupID === -1 && meetingID === -1) {
-          setRows((prevRows) => {
-            const updatedRows = [...prevRows];
-            const findIndex = updatedRows.findIndex(
-              (rowData) => Number(rowData?.pollID) === Number(polls?.pollID),
-            );
-            if (findIndex !== -1) {
-              if (Number(polls.pollStatus.pollStatusId) === 4) {
-                updatedRows.splice(findIndex, 1); // Remove the poll
-              } else if (Number(polls.pollStatus.pollStatusId) === 3) {
-                updatedRows[findIndex] = polls; // Update the existing poll
-              } else if (Number(polls.pollStatus.pollStatusId) === 2) {
-                updatedRows[findIndex] = polls; // Update the existing poll
-              }
+        // An existing row is always updated / removed by its pollID (edit, expire,
+        // delete, ...). A poll that is not in the list yet is only added when it is
+        // a standalone poll (not a committee / group / meeting poll).
+        const isStandalonePoll =
+          committeeID === -1 && groupID === -1 && meetingID === -1;
+        setRows((prevRows) => {
+          const updatedRows = [...prevRows];
+          const findIndex = updatedRows.findIndex(
+            (rowData) => Number(rowData?.pollID) === Number(polls?.pollID),
+          );
+          if (findIndex !== -1) {
+            if (Number(polls.pollStatus.pollStatusId) === 4) {
+              updatedRows.splice(findIndex, 1); // Remove the poll
             } else {
-              updatedRows.unshift(polls);
+              updatedRows[findIndex] = polls; // Update the existing poll
             }
-            return updatedRows;
-          });
-          dispatch(notifyPollingSocket(null));
-        }
+          } else if (isStandalonePoll) {
+            updatedRows.unshift(polls);
+          }
+          return updatedRows;
+        });
+        dispatch(notifyPollingSocket(null));
       } catch (error) {
         console.error("src/container/Polling/Polling.js:", error);
       }
