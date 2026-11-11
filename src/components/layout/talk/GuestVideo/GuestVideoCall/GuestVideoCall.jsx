@@ -167,6 +167,8 @@ const GuestVideoCall = () => {
             dispatch(makeStreamStop(true, 2));
             // dispatch(guestVideoNavigationScreen(2));
           } else {
+            // Denied: guest never joined, so refresh must not call leave API
+            sessionStorage.removeItem("hasJoined");
             dispatch(makeStreamStop(true, 3));
             // dispatch(guestVideoNavigationScreen(3));
           }
@@ -204,6 +206,8 @@ const GuestVideoCall = () => {
           "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
         ) {
           sessionStorage.removeItem("isWaiting");
+          // Denied: guest never joined, so refresh must not call leave API
+          sessionStorage.removeItem("hasJoined");
           dispatch(guestVideoNavigationScreen(3));
         } else if (
           data.payload.message.toLowerCase() ===
@@ -360,7 +364,8 @@ const GuestVideoCall = () => {
       window.performance &&
       performance.getEntriesByType("navigation")[0]?.type === "reload";
 
-    const hasJoined = sessionStorage.getItem("hasJoined");
+    // Stored as a string: "false" is truthy, so compare explicitly
+    const hasJoined = sessionStorage.getItem("hasJoined") === "true";
 
     if (isPageRefresh && hasJoined && validateData) {
       const getGuestUid = sessionStorage.getItem("GuestUserID");

@@ -2212,6 +2212,8 @@ const VideoCallNormalHeader = ({
                       style={{
                         pointerEvents: "none",
                         opacity: pauseRecordingState ? 1 : 0.5,
+                        // Paused: red dot turns grey
+                        filter: pauseRecordingState ? "none" : "grayscale(1)",
                       }}
                       alt='Recording'
                     />

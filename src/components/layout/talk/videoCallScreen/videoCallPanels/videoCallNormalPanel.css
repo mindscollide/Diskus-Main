@@ -181,7 +181,9 @@ body[dir="rtl"] .videoCallScreen {
   height: auto;
   max-height: 190px;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
-  /* overflow: auto; */
+  /* vertical scroll only: the header Row's negative margins overflow sideways */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 body[dir="rtl"] .Participants-Lists {
   background: #fff !important;
@@ -193,7 +195,8 @@ body[dir="rtl"] .Participants-Lists {
   height: auto !important;
   max-height: 190px !important;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
-  /* overflow: auto !important; */
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
   right: auto !important;
   left: 158px;
 }

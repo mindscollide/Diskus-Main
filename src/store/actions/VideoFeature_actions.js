@@ -605,9 +605,10 @@ const getParticipantMeetingJoinMainApi = (
   navigate,
   t,
   data,
-  setIsWaiting,
-  setGetReady,
-  setJoinButton,
+  // Only the waiting-room component passes these; other callers don't.
+  setIsWaiting = () => {},
+  setGetReady = () => {},
+  setJoinButton = () => {},
 ) => {
   return (dispatch) => {
     dispatch(getParticipantMeetingJoinInit());
