@@ -489,6 +489,18 @@ const GuestVideoReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.SET_GUEST_VIDEO_HOST_BY_GUID: {
+      // Only the new host keeps isHost; everyone else loses it
+      if (!Array.isArray(state.getAllParticipantGuest)) return state;
+      return {
+        ...state,
+        getAllParticipantGuest: state.getAllParticipantGuest.map((p) => ({
+          ...p,
+          isHost: p.guid === action.payload,
+        })),
+      };
+    }
+
     case actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_FAIL: {
       return {
         ...state,

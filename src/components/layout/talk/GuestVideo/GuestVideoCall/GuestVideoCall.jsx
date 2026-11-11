@@ -22,10 +22,13 @@ import {
   setVideoCameraGuest,
   setVoiceControleGuest,
   setVoiceControleGuestForAllbyHost,
+  setGuestVideoHostByGuid,
   validateEncryptGuestVideoMainApi,
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
 import Helper from "../../../../../commen/functions/history_logout";
+import { meetingApi } from "../../../../../commen/apis/Api_ends_points";
+import { guestLeaveMeetingVideo } from "../../../../../commen/apis/Api_config";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 import GuestVideoReject from "../GuestVideoReject/GuestVideoReject";
 import {
@@ -178,6 +181,8 @@ const GuestVideoCall = () => {
         ) {
           sessionStorage.setItem("isLeftCheck", false);
           sessionStorage.removeItem("isZoomEnabled");
+          // Removed by host: guest is already out, so refresh must not call leave API
+          sessionStorage.removeItem("hasJoined");
           dispatch(setVideoCameraGuest(false));
           dispatch(setVoiceControleGuest(false));
           dispatch(guestVideoNavigationScreen(5));
@@ -289,6 +294,19 @@ const GuestVideoCall = () => {
           dispatch(
             getVideoCallParticipantGuestSuccess(data.payload.uid, "", 3),
           );
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
+        ) {
+          // Host left: show "(Host)" next to the new host in the guest's list
+          const newHost = data.payload.newHost;
+          if (newHost?.guid) {
+            dispatch(setGuestVideoHostByGuid(newHost.guid));
+            sessionStorage.setItem(
+              "currentmeetingHost",
+              JSON.stringify([{ guid: newHost.guid, userID: newHost.userID }]),
+            );
+          }
         }
       }
     } catch (error) {
@@ -385,6 +403,39 @@ const GuestVideoCall = () => {
       sessionStorage.removeItem("hasJoined");
     }
   }, [validateData]);
+
+  // Tab/window close (and refresh): the page is unloading, so a normal axios
+  // call would be cancelled. Send the leave request with fetch `keepalive`.
+  // `hasJoined` is cleared right after, so the post-reload leave above (and a
+  // second pagehide) doesn't hit the API twice.
+  useEffect(() => {
+    const onPageHide = () => {
+      if (sessionStorage.getItem("hasJoined") !== "true") return;
+      try {
+        const data = {
+          RoomID: String(
+            sessionStorage.getItem("roomId") ||
+              sessionStorage.getItem("roomID"),
+          ),
+          UID: String(sessionStorage.getItem("GuestUserID")),
+          Name: String(sessionStorage.getItem("guestName")),
+          MeetingID: Number(sessionStorage.getItem("MeetingId")),
+        };
+        const form = new FormData();
+        form.append("RequestMethod", guestLeaveMeetingVideo.RequestMethod);
+        form.append("RequestData", JSON.stringify(data));
+        fetch(meetingApi, { method: "POST", body: form, keepalive: true });
+        sessionStorage.removeItem("hasJoined");
+      } catch (error) {
+        console.error(
+          "src/components/layout/talk/GuestVideo/GuestVideoCall/GuestVideoCall.js:",
+          error,
+        );
+      }
+    };
+    window.addEventListener("pagehide", onPageHide);
+    return () => window.removeEventListener("pagehide", onPageHide);
+  }, []);
 
   useEffect(() => {
     if (validateData !== null && validateData !== undefined) {

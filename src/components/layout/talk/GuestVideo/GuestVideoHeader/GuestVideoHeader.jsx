@@ -14,6 +14,7 @@ import RaiseHand from "../../../../../assets/images/Recent Activity Icons/Video/
 import TileView from "../../../../../assets/images/Recent Activity Icons/Video/TileView.png";
 import Participant from "../../../../../assets/images/Recent Activity Icons/Video/Participant.png";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
+import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import "./GuestVideoHeader.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -376,6 +377,31 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     setIsParticipant(!isParticipant);
   };
 
+  // Participants popup: close on any outside click. The header icon is skipped
+  // (its own click toggles it); a click inside the call iframe doesn't bubble
+  // to this document, so it's caught via the window blur.
+  useEffect(() => {
+    if (!isParticipant) return undefined;
+    const onOutsideClick = (e) => {
+      if (
+        e.target?.closest?.(
+          '.New-List-Participants, img[alt="Participant"], img[alt="ParticipantSelected"]'
+        )
+      )
+        return;
+      setIsParticipant(false);
+    };
+    const onWindowBlur = () => {
+      if (document.activeElement?.tagName === "IFRAME") setIsParticipant(false);
+    };
+    document.addEventListener("mousedown", onOutsideClick);
+    window.addEventListener("blur", onWindowBlur);
+    return () => {
+      document.removeEventListener("mousedown", onOutsideClick);
+      window.removeEventListener("blur", onWindowBlur);
+    };
+  }, [isParticipant]);
+
   const onClickEndGuestVideo = () => {
     // The iframe is unmounted without sending a stop event, so release the
     // share lock for everyone else if this guest was sharing.
@@ -547,18 +573,26 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                   />
                 </Tooltip>
                 <div className="New-List-Participants">
+                  <Row>
+                    <Col lg={10} md={10} sm={10}>
+                      <p className="guest-Participant-name-title">
+                        {t("Participants")}
+                      </p>
+                    </Col>
+                    <Col lg={2} md={2} sm={2}>
+                      <img
+                        draggable={false}
+                        src={BlackCrossIcon}
+                        alt=""
+                        className="cursor-pointer"
+                        width="8px"
+                        height="8px"
+                        onClick={() => setIsParticipant(false)}
+                      />
+                    </Col>
+                  </Row>
                   {allParticipantGuest.length > 0 &&
-                    allParticipantGuest.map((participant, index) => {
-                      console.log(participant, "ChechkerDataNewestsss");
-                      console.log(
-                        hideUnHideParticpantorGuest?.uid,
-                        "ChechkerDataNewest"
-                      );
-                      console.log(
-                        muteUnMuteParticpantorGuest?.uid,
-                        "ChechkerDataNewest"
-                      );
-
+                    allParticipantGuest.map((participant) => {
                       // for raising hand show on specific participant
                       const participantStatus =
                         participantStatusMap[participant.guid] || {};
@@ -567,56 +601,60 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                         participantStatus.isHandRaised;
                       const isVideoOff = participantStatus.isVideoHidden;
                       const muteParticipants = participantStatus.isMuted;
-                      console.log(muteParticipants, "ChechkerDataNewest");
                       return (
-                        <>
-                          <Row key={participant.guid}>
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={12}
-                              className="d-flex justify-content-start"
-                            >
-                              <p className="guest-Video-Participants">
+                        <div
+                          key={participant.guid}
+                          className="guest-participant-row"
+                        >
+                          <div className="guest-participant-info">
+                            <p className="guest-participant-name">
+                              <span
+                                className="guest-participant-nameText"
+                                dir="auto"
+                              >
                                 {participant.name}
-                              </p>{" "}
-                              <span className="isHost-class">
-                                {participant.isHost && <>{t("(Host)")}</>}
                               </span>
-                            </Col>
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={12}
-                              className="d-flex justify-content-end gap-2"
-                            >
-                              {isVideoOff && (
-                                <img
-                                  src={VideoOff}
-                                  width="20px"
-                                  height="20px"
-                                  alt="Video Off"
-                                />
+                              {participant.isHost && (
+                                <span className="guest-hostName">
+                                  ({t("Host")})
+                                </span>
                               )}
-                              {muteParticipants && (
-                                <img
-                                  src={MicOff}
-                                  width="20px"
-                                  height="20px"
-                                  alt="Mic Mute"
-                                />
-                              )}
-                              {isHandRaisedForParticipant && (
-                                <img
-                                  src={Raisehandselected}
-                                  width="20px"
-                                  height="20px"
-                                  alt="raise hand"
-                                />
-                              )}
-                            </Col>
-                          </Row>
-                        </>
+                            </p>
+                          </div>
+                          <div className="guest-participant-icons">
+                            <img
+                              src={VideoOff}
+                              width="20px"
+                              height="20px"
+                              alt="Video Off"
+                              style={{
+                                visibility: isVideoOff ? "visible" : "hidden",
+                              }}
+                            />
+                            <img
+                              src={MicOff}
+                              width="20px"
+                              height="20px"
+                              alt="Mic Mute"
+                              style={{
+                                visibility: muteParticipants
+                                  ? "visible"
+                                  : "hidden",
+                              }}
+                            />
+                            <img
+                              src={Raisehandselected}
+                              width="20px"
+                              height="20px"
+                              alt="raise hand"
+                              style={{
+                                visibility: isHandRaisedForParticipant
+                                  ? "visible"
+                                  : "hidden",
+                              }}
+                            />
+                          </div>
+                        </div>
                       );
                     })}
                 </div>

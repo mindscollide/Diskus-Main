@@ -37,27 +37,58 @@
   border-radius: 4px;
   padding: 10px 10px;
   position: absolute;
-  width: 230px;
   top: 50px;
   right: 0;
-  height: 170px;
+  width: 270px;
+  height: auto;
+  max-height: 190px;
+  z-index: 10;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
-  overflow: hidden auto;
+  /* vertical scroll only (header Row's negative margins overflow sideways) */
+  overflow-x: hidden;
+  overflow-y: auto;
+  cursor: default;
 }
 
-.guest-Video-Participants {
+/* Same look as the meeting participants list */
+.guest-Participant-name-title {
+  font-weight: 700;
+  font-size: 17px;
+  color: #6172d6;
+}
+.guest-participant-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.guest-participant-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.guest-participant-icons {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.guest-participant-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  max-width: 100%;
+  white-space: nowrap;
   font-size: 12px;
   font-weight: 600;
   color: #5a5a5a;
+}
+.guest-participant-nameText {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
-
-.isHost-class {
-  color: #6127d6 !important;
-  font-weight: 600 !important;
-  margin-left: 3px !important;
-  margin-left: 8px !important;
-  margin: -2px;
+.guest-hostName {
+  flex-shrink: 0;
+  color: #6127d6;
+  font-weight: 600;
 }

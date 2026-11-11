@@ -1679,6 +1679,14 @@ const getVideoCallParticipantGuestSuccess = (response, message, flag) => {
   };
 };
 
+// AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY: mark the new host in the guest's list
+const setGuestVideoHostByGuid = (guid) => {
+  return {
+    type: actions.SET_GUEST_VIDEO_HOST_BY_GUID,
+    payload: guid,
+  };
+};
+
 const getVideoCallParticipantGuestFail = (message) => {
   return {
     type: actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_FAIL,
@@ -1864,4 +1872,5 @@ export {
   muteUnMuteParticipantsorGuestbyHost,
   setVoiceControleGuestForAllbyHost,
   transferMeetingHostSuccess,
+  setGuestVideoHostByGuid,
 };
