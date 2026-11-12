@@ -25,7 +25,7 @@
 }
 
 
-.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(
+.ant-select-dropdown:is(.ant-select-dropdown-placement-bottomLeft, .ant-select-dropdown-placement-bottomRight):has(
     .rc-virtual-list-holder-inner
       .ant-select-item.ant-select-item-option.talk-video-filter
   ) {

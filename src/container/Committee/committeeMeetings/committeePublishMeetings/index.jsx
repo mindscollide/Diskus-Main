@@ -433,10 +433,25 @@ const CommitteePublishedMeetingList = () => {
   // False during the first effect pass (arrival from another page), true after it.
   const hasMountedRef = useRef(false);
   useEffect(() => {
-    if (state !== null) {
+    // Committee.jsx clears location.state before this tab mounts on the first
+    // click, so it leaves the notification in sessionStorage as well. Always
+    // consume it so a stale copy can't replay later.
+    let notificationState = state;
+    try {
+      const stored = sessionStorage.getItem("committeeMeetingNotification");
+      if (stored !== null) {
+        sessionStorage.removeItem("committeeMeetingNotification");
+        if (notificationState === null || notificationState === undefined) {
+          notificationState = JSON.parse(stored);
+        }
+      }
+    } catch (e) {
+      // ignore: fall back to location.state
+    }
+    if (notificationState !== null && notificationState !== undefined) {
       try {
         const meetingNotificationRouting = async () => {
-          const { message = "", response = null } = state;
+          const { message = "", response = null } = notificationState;
 
           let obj = {
             isQuickMeeting: response.isQuickMeeting,

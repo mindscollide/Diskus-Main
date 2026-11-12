@@ -340,7 +340,7 @@ body[dir="rtl"]
   font-weight: bold;
 }
 
-.Status-Todo .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+.Status-Todo .ant-select-dropdown:is(.ant-select-dropdown-placement-bottomLeft, .ant-select-dropdown-placement-bottomRight) {
   width: 100px !important;
   min-width: 100px !important;
 }

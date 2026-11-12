@@ -465,13 +465,34 @@ const GroupPublishedMeetingList = () => {
   const hasMountedRef = useRef(false);
   const arrivalPendingRef = useRef(false);
   useEffect(() => {
-    if (!hasMountedRef.current && state !== null) {
+    // Groups.jsx clears location.state before this tab mounts on the first click,
+    // so it leaves the notification in sessionStorage as well. Peek here and
+    // remove it only once it is processed (the details may arrive a render later).
+    let notificationState = state;
+    let fromStorage = false;
+    if (notificationState === null || notificationState === undefined) {
+      try {
+        const stored = sessionStorage.getItem("groupMeetingNotification");
+        if (stored !== null) {
+          notificationState = JSON.parse(stored);
+          fromStorage = true;
+        }
+      } catch (e) {
+        // ignore: fall back to location.state
+      }
+    }
+    const hasNotification =
+      notificationState !== null && notificationState !== undefined;
+    if (!hasMountedRef.current && hasNotification) {
       arrivalPendingRef.current = true;
     }
-    if (state !== null && DetailsWebNotificationViewMeeting !== null) {
+    if (hasNotification && DetailsWebNotificationViewMeeting !== null) {
       try {
+        if (fromStorage || state !== null) {
+          sessionStorage.removeItem("groupMeetingNotification");
+        }
         const meetingNotificationRouting = async () => {
-          const { message = "" } = state;
+          const { message = "" } = notificationState;
 
           // routeMeetingTypeNotification stores { responseCode, responseResult,
           // meetingID, isQuickMeeting }: the meeting's own fields (status, video

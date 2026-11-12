@@ -401,6 +401,22 @@ const Groups = () => {
           setCurrentGroupMeetingTabActive(2);
         }
         if (groupID) {
+          // The Published tab that opens the meeting is only mounted by the
+          // setViewGroupPage(true) below, i.e. after this effect has already
+          // cleared location.state, so on the first click (arriving from another
+          // page) it never saw the notification. Hand it over through
+          // sessionStorage; the tab consumes it.
+          try {
+            // (the Proposed tab doesn't consume it, so it must not be left behind)
+            if (message !== "proposedmeeting") {
+              sessionStorage.setItem(
+                "groupMeetingNotification",
+                JSON.stringify({ message, response }),
+              );
+            }
+          } catch (e) {
+            // sessionStorage unavailable: the tab falls back to location.state
+          }
           dispatch(
             viewGroupDetails({
               groupID,

@@ -113,6 +113,7 @@ const CustomTableToDo = ({
         footer={footer}
         rowKey={rowKey}
         tableLayout="fixed"
+        showSorterTooltip={false}
       />
     </>
   );

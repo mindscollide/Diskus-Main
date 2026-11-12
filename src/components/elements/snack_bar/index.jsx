@@ -33,6 +33,12 @@ const Notification = React.memo(({ open, setOpen }) => {
       message !== isNaN
     ) {
       if (isOpen) {
+        // ConfigProvider (Dashboard) sets direction, and antd then calls
+        // notification.config({ rtl }), which mirrors the toast's own layout via an
+        // "-rtl" class on the (cached) notification container. This toast's RTL
+        // layout is handled by Snack_bar.css (body[dir="rtl"]), so keep antd's own
+        // mirroring off, otherwise the icon / close button swap sides.
+        notification.config({ rtl: false });
         notification.open({
           message,
           icon: icons[severity] || icons.info,
