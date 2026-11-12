@@ -24,11 +24,9 @@ import {
   GetAllParticipantsRoleNew,
   GetAllSavedparticipantsAPI,
   showAddParticipantsModal,
-  showCancelModalPartipants,
   ParticipantsData,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
-import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
 import { useEffect } from "react";
 import { Tooltip } from "antd";
 import useSnackbar from "../../../../../components/elements/snack_bar/useSnackbar";
@@ -917,9 +915,6 @@ const Participants = () => {
         {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
         {NewMeetingreducer.participantModal && (
           <AddParticipantModal setrspvRows={setrspvRows} rspvRows={rspvRows} />
-        )}
-        {NewMeetingreducer.cancelPartipants && (
-          <CancelParticipants setrspvRows={setrspvRows} />
         )}
 
         {NewMeetingreducer.ShowPreviousModal && (

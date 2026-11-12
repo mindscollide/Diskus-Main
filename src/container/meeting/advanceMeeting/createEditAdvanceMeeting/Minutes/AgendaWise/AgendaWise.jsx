@@ -13,6 +13,7 @@ import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../../assets/images/featherupload.svg";
 import ReactQuill, { Quill } from "react-quill";
+import { useDefaultEditorFormats } from "../../../../../../commen/functions/quillDefaults";
 import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
@@ -75,6 +76,8 @@ const AgendaWise = ({
     (state) => state.AgendaWiseAgendaListReducer.AllAgendas,
   );
   const editorRef = useRef(null);
+  // Word-like default font for typed text (see quillDefaults.js)
+  const setEditorRef = useDefaultEditorFormats(editorRef, { size: null });
   const { Dragger } = Upload;
   const [fileForSend, setFileForSend] = useState([]);
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
@@ -236,7 +239,7 @@ const AgendaWise = ({
   Quill.register(Size, true);
 
   var FontAttributor = Quill.import("formats/font");
-  var fonts = ["impact", "courier", "comic"];
+  var fonts = ["impact", "courier", "comic", "Montserrat"];
   FontAttributor.whitelist = fonts;
   Quill.register(FontAttributor, true);
 
@@ -780,7 +783,7 @@ const AgendaWise = ({
                   xs={12}
                   className={styles["Arabic_font_Applied"]}>
                   <ReactQuill
-                    ref={editorRef}
+                    ref={setEditorRef}
                     theme='snow'
                     value={addAgendaWiseFields.Description.value || ""}
                     placeholder={t("Minutes-details")}

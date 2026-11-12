@@ -1,9 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./Polls.module.css";
 import { useTranslation } from "react-i18next";
+import PollStatusBadge from "../../../../../components/elements/pollStatus/PollStatusBadge";
+import PollActionsCell from "../../../../Polling/commonPolls/PollActionsCell";
+import {
+  POLL_STATUS_VALUES,
+  getPollStatusFilters,
+} from "../../../../../components/elements/pollStatus/pollStatusFilters";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BinIcon from "../../../../../assets/images/bin.svg";
 import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../../../assets/images/addmore.png";
@@ -13,7 +18,6 @@ import {
   Table,
   Notification,
 } from "../../../../../components/elements";
-import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { ChevronDown, X } from "react-bootstrap-icons";
 import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
@@ -579,35 +583,16 @@ const Polls = () => {
       dataIndex: "Status",
       key: "Status",
       width: "15%",
-      filters: [
-        {
-          text: t("Published"),
-          value: "Published", // Use the actual status value
-        },
-        {
-          text: t("UnPublished"),
-          value: "UnPublished", // Use the actual status value
-        },
-        {
-          text: t("Expired"),
-          value: "Expired", // Use the actual status value
-        },
-      ],
-      defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
+      filters: getPollStatusFilters(t),
+      defaultFilteredValue: POLL_STATUS_VALUES,
       filterIcon: (filtered) => (
         <ChevronDown className='filter-chevron-icon-todolist' />
       ),
       onFilter: (value, record) =>
         record.pollStatus.status.indexOf(value) === 0,
-      render: (text, record) => {
-        if (record.pollStatus?.pollStatusId === 2) {
-          return <span className='text-success'>{t("Published")}</span>;
-        } else if (record.pollStatus?.pollStatusId === 1) {
-          return <span className='text-success'>{t("Unpublished")}</span>;
-        } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className='text-success'>{t("Expired")}</span>;
-        }
-      },
+      render: (text, record) => (
+        <PollStatusBadge pollStatusId={record.pollStatus?.pollStatusId} />
+      ),
     },
     {
       title: t("Due-date"),
@@ -703,86 +688,14 @@ const Polls = () => {
     {
       dataIndex: "Edit",
       width: "10%",
-      render: (text, record) => {
-        return (
-          <>
-            {Number(record.pollCreatorID) === Number(userID) ? (
-              <>
-                <Row>
-                  {record.pollStatus.pollStatusId === 3 ? (
-                    <>
-                      {!record.wasPollPublished ? (
-                        <>
-                          <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topRight' title={t("Edit")}>
-                              <img
-                                src={EditIcon}
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                alt=''
-                                draggable='false'
-                                onClick={() => handleEditMeetingPoll(record)}
-                              />
-                            </Tooltip>
-                          </Col>
-                          <Col sm={12} md={5} lg={5}></Col>
-                        </>
-                      ) : (
-                        <>
-                          <Col sm={12} md={5} lg={5}></Col>
-                          <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topLeft' title={t("Delete")}>
-                              <img
-                                src={BinIcon}
-                                alt=''
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                draggable='false'
-                                onClick={() => handleDeletePoll(record)}
-                              />
-                            </Tooltip>
-                          </Col>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topRight' title={t("Edit")}>
-                          <img
-                            src={EditIcon}
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            alt=''
-                            draggable='false'
-                            onClick={() => handleEditMeetingPoll(record)}
-                          />
-                        </Tooltip>
-                      </Col>
-                      <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topLeft' title={t("Delete")}>
-                          <img
-                            src={BinIcon}
-                            alt=''
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            draggable='false'
-                            onClick={() => handleDeletePoll(record)}
-                          />
-                        </Tooltip>
-                      </Col>
-                    </>
-                  )}
-                </Row>
-              </>
-            ) : null}
-          </>
-        );
-      },
+      render: (text, record) => (
+        <PollActionsCell
+          record={record}
+          userID={userID}
+          onEdit={handleEditMeetingPoll}
+          onDelete={handleDeletePoll}
+        />
+      ),
     },
   ];
 

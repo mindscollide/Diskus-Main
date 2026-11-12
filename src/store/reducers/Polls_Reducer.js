@@ -55,6 +55,15 @@ const PollsReducer = (state = initialState, action) => {
         errorSeverity: null,
       };
     }
+    // Committee / Group polls lists: cleared when their page closes so the next
+    // committee / group never shows the previous one's polls.
+    case actions.CLEAR_POLLS_LISTS: {
+      return {
+        ...state,
+        getPollByCommitteeID: null,
+        getPollByGroupID: null,
+      };
+    }
     case actions.SEARCH_POLLS_INIT: {
       return {
         ...state,

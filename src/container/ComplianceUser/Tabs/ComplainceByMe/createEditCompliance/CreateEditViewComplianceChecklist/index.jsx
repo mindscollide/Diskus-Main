@@ -8,6 +8,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useComplianceContext } from "../../../../../../context/ComplianceContext";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import { getInputIconStyle } from "../../../../../../commen/functions/arabicDateRender";
 import DatePicker from "react-multi-date-picker";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -553,6 +554,7 @@ const CreateEditViewComplianceChecklist = () => {
                 placeholder={t("Due-date")}
                 render={
                   <InputIcon
+                    iconStyle={getInputIconStyle()}
                     placeholder={t("Due-date")}
                     className={`${styles["datepicker_input"]} ${
                       (isLockedStatus && !isEditTrue) || isChecklistTitleExist

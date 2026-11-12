@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styles from "./GroupViewPolls.module.css";
 import { useTranslation } from "react-i18next";
+import PollStatusBadge from "../../../components/elements/pollStatus/PollStatusBadge";
+import PollActionsCell from "../../Polling/commonPolls/PollActionsCell";
+import PollVoteCell from "../../Polling/commonPolls/PollVoteCell";
+import usePollStatusFilter from "../../Polling/commonPolls/usePollStatusFilter";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BinIcon from "../../../assets/images/bin.svg";
 import { truncateString } from "../../../commen/functions/regex";
-import { Dropdown, Menu, Tooltip } from "antd";
-import Tick from "../../../assets/images/Tick-Icon.png";
+import { Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import addmore from "../../../assets/images/addmore.png";
 import { Col, Row } from "react-bootstrap";
 import { Button, Table } from "../../../components/elements";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
-import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "../GroupPolls/CreatePolls/CreateGrouppolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
@@ -26,6 +26,7 @@ import {
   resolutionResultTable,
 } from "../../../commen/functions/date_formater";
 import {
+  clearPollsLists,
   createPollGroupsMQTT,
   deleteGroupPollApi,
   deletePollsMQTT,
@@ -110,6 +111,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       dispatch(getPollsByGroupMainApi(navigate, t, Data));
     }
     return () => {
+      dispatch(clearPollsLists());
       dispatch(showUnsavedPollsMeeting(false));
       setvotePolls(false);
       setCreatepoll(false);
@@ -353,104 +355,15 @@ const GroupViewPolls = ({ groupStatus }) => {
     );
   };
 
-  //Filteration Work polls
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([
-    "Published",
-    "UnPublished",
-    "Expired",
-  ]);
-
-  const filters = [
-    {
-      text: t("Published"),
-      value: "Published", // Use the actual status value
-    },
-    {
-      text: t("UnPublished"),
-      value: "UnPublished", // Use the actual status value
-    },
-    {
-      text: t("Expired"),
-      value: "Expired", // Use the actual status value
-    },
-  ];
-
-  // Menu click handler for selecting filters
-  const handleMenuClick = (filterValue) => {
-    setSelectedValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
-    );
-  };
-  const handleApplyFilter = () => {
-    const filteredData = dublicatedrows.filter((item) =>
-      selectedValues.includes(item.pollStatus.status.toString()),
-    );
-    setPollsRows(filteredData);
-    setVisible(false);
-  };
-
-  const resetFilter = () => {
-    setSelectedValues(["Published", "UnPublished", "Expired"]);
-    setPollsRows(dublicatedrows);
-    setVisible(false);
-  };
-
-  const handleClickChevron = () => {
-    setVisible((prevVisible) => !prevVisible);
-  };
-
-  const menu = (
-    <Menu>
-      {filters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => {
-            handleMenuClick(filter.value);
-          }}
-          className='d-flex align-items-center justify-content-between'>
-          <div className='Polls_Menu_items'>
-            <span
-              className={
-                filter.value === "Published"
-                  ? "userstatus-signal-PublishedPolls_Menu"
-                  : filter.value === "UnPublished"
-                    ? "userstatus-signal-Unpublished_Menu"
-                    : "userstatus-signal-disabled_Menu"
-              }></span>
-            <span className='menu-text'>{filter.text}</span>
-            {selectedValues.includes(filter.value) && (
-              <span className='checkmark'>
-                <img src={Tick} alt='' />
-              </span>
-            )}
-          </div>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className='d-flex align-items-center justify-content-between p-2'>
-        <Button
-          text={"Reset"}
-          className={styles["FilterResetBtn"]}
-          onClick={resetFilter}
-        />
-        <Button
-          text='Ok'
-          disableBtn={selectedValues.length === 0}
-          className={styles["ResetOkBtn"]}
-          onClick={handleApplyFilter}
-        />
-      </div>
-    </Menu>
-  );
+  //Status filter of the table (shared with the other polls tables)
+  const statusFilterProps = usePollStatusFilter({
+    allRows: dublicatedrows,
+    setRows: setPollsRows,
+    resetClassName: styles["FilterResetBtn"],
+    okClassName: styles["ResetOkBtn"],
+  });
 
   //Scroll for Polls table
-  const scroll = {
-    x: false,
-    y: "51vh",
-  };
 
   const PollsColoumn = [
     {
@@ -472,7 +385,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "pollTitle",
       key: "pollTitle",
-      width: "20%",
+      width: 300,
       align: "start",
       onHeaderCell: () => ({
         onClick: () => {
@@ -516,47 +429,15 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: "10%",
+      width: 100,
       align: "center",
-      filterResetToDefaultFilteredValue: true,
-      filterIcon: (filtered) => (
-        <ChevronDown className='ChevronPolls' onClick={handleClickChevron} />
+      ...statusFilterProps,
+      render: (text, record) => (
+        <PollStatusBadge
+          pollStatusId={record.pollStatus?.pollStatusId}
+          center
+        />
       ),
-      filterDropdown: () => (
-        <Dropdown
-          overlay={menu}
-          open={visible}
-          onOpenChange={(open) => setVisible(open)}
-        >
-          <div />
-        </Dropdown>
-      ),
-      render: (text, record) => {
-        if (record.pollStatus?.pollStatusId === 2) {
-          return (
-            <div className='d-flex justify-content-center'>
-              <span className='userstatus-signal-PublishedPolls'></span>
-              <p className='m-0 userName FontArabicRegular'>{t("Published")}</p>
-            </div>
-          );
-        } else if (record.pollStatus?.pollStatusId === 1) {
-          return (
-            <div className='d-flex justify-content-center'>
-              <span className='userstatus-signal-Unpublished'></span>
-              <p className='m-0 userName FontArabicRegular'>
-                {t("Unpublished")}
-              </p>
-            </div>
-          );
-        } else if (record.pollStatus?.pollStatusId === 3) {
-          return (
-            <div className='d-flex justify-content-center'>
-              <span className='userstatus-signal-disabled'></span>
-              <p className='m-0 userName FontArabicRegular'>{t("Expired")}</p>
-            </div>
-          );
-        }
-      },
     },
     {
       title: (
@@ -573,7 +454,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "dueDate",
       key: "dueDate",
-      width: "15%",
+      width: 100,
       align: "center",
       sorter: (a, b) =>
         new Date(
@@ -621,7 +502,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "pollCreator",
       key: "pollCreator",
-      width: "10%",
+      width: 100,
       align: "center",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       onHeaderCell: () => ({
@@ -640,149 +521,31 @@ const GroupViewPolls = ({ groupStatus }) => {
     {
       title: t("Vote"),
       dataIndex: "Vote",
-      width: "15%",
+      width: 100,
       align: "center",
-      render: (text, record) => {
-        const currentDate = new Date();
-        const convertIntoGmt = resolutionResultTable(record.dueDate);
-
-        if (record.pollStatus.pollStatusId === 2) {
-          if (record.isVoter) {
-            if (currentDate < convertIntoGmt && groupStatus === 3) {
-              return (
-                <Button
-                  className={styles["Not_Vote_Button_Polls"]}
-                  buttonValue={
-                    record.voteStatus === "Not Voted" ? t("Vote") : t("Voted")
-                  }
-                  onClick={() => handleClickVoteCast(record)}
-                />
-              );
-            } else {
-              return (
-                <Button
-                  className={styles["ViewVotesButtonStyles"]}
-                  text={t("View-votes")}
-                  onClick={() => handleViewVotes(record)}
-                />
-              );
-            }
-          } else {
-            return "";
-          }
-        } else if (record.pollStatus.pollStatusId === 3) {
-          if (record.isVoter) {
-            if (record.wasPollPublished) {
-              if (record.voteStatus === "Not Voted") {
-                return (
-                  <Button
-                    className={styles["ViewVotesButtonStyles"]}
-                    text={t("View-votes")}
-                    onClick={() => handleViewVotes(record)}
-                  />
-                );
-              } else {
-                <Button
-                  className={styles["ViewVotesButtonStyles"]}
-                  text={t("View-votes")}
-                  onClick={() => handleViewVotes(record)}
-                />;
-              }
-            } else {
-              return "";
-            }
-          } else {
-            return "";
-          }
-        } else {
-          return "";
-        }
-      },
+      render: (text, record) => (
+        <PollVoteCell
+          record={record}
+          canVote={groupStatus === 3}
+          voteClassName={styles["Not_Vote_Button_Polls"]}
+          viewVotesClassName={styles["ViewVotesButtonStyles"]}
+          onVote={handleClickVoteCast}
+          onViewVotes={handleViewVotes}
+        />
+      ),
     },
     {
       dataIndex: "Edit",
-      width: "10%",
-      render: (text, record) => {
-        return (
-          <>
-            {Number(record.pollCreatorID) === Number(userID) &&
-            groupStatus === 3 ? (
-              <>
-                <Row>
-                  {record.pollStatus.pollStatusId === 3 ? (
-                    <>
-                      {!record.wasPollPublished ? (
-                        <>
-                          <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topRight' title={t("Edit")}>
-                              <img
-                                src={EditIcon}
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                alt=''
-                                draggable='false'
-                                onClick={() => handleEditBtn(record)}
-                              />
-                            </Tooltip>
-                          </Col>
-                          <Col sm={12} md={5} lg={5}></Col>
-                        </>
-                      ) : (
-                        <>
-                          <Col sm={12} md={5} lg={5}></Col>
-                          <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topLeft' title={t("Delete")}>
-                              <img
-                                src={BinIcon}
-                                alt=''
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                draggable='false'
-                                onClick={() => handleDeletePoll(record)}
-                              />
-                            </Tooltip>
-                          </Col>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topRight' title={t("Edit")}>
-                          <img
-                            src={EditIcon}
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            alt=''
-                            draggable='false'
-                            onClick={() => handleEditBtn(record)}
-                          />
-                        </Tooltip>
-                      </Col>
-                      <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topLeft' title={t("Delete")}>
-                          <img
-                            src={BinIcon}
-                            alt=''
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            draggable='false'
-                            onClick={() => handleDeletePoll(record)}
-                          />
-                        </Tooltip>
-                      </Col>
-                    </>
-                  )}
-                </Row>
-              </>
-            ) : null}
-          </>
-        );
-      },
+      width: 100,
+      render: (text, record) => (
+        <PollActionsCell
+          record={record}
+          userID={userID}
+          enabled={groupStatus === 3}
+          onEdit={handleEditBtn}
+          onDelete={handleDeletePoll}
+        />
+      ),
     },
   ];
 
@@ -849,7 +612,7 @@ const GroupViewPolls = ({ groupStatus }) => {
                       <Table
                         column={PollsColoumn}
                         rows={pollsRows}
-                        scroll={{ y: "45vh", x: "hidden" }}
+                        scroll={{ y: "45vh", x: "800px" }}
                         pagination={false}
                         className='newMeetingTable'
                         locale={{

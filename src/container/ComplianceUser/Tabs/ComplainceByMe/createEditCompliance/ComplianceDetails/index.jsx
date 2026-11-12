@@ -11,6 +11,7 @@ import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import { getInputIconStyle } from "../../../../../../commen/functions/arabicDateRender";
 import { Tag } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -1073,6 +1074,7 @@ const ComplainceDetails = () => {
             placeholder={t("Due-date")}
             render={
               <InputIcon
+                iconStyle={getInputIconStyle()}
                 placeholder={t("Due-date")}
                 className={`${styles["datepicker_input"]} ${
                   complianceDetailsState?.authority?.value === 0 ||

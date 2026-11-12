@@ -12,6 +12,7 @@ import { TextAreafieldwithCount } from "../../../../../components/elements/input
 import DatePicker from "react-multi-date-picker";
 import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import { getInputIconStyle } from "../../../../../commen/functions/arabicDateRender";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -275,6 +276,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
                 placeholder={t("Due-date")}
                 render={
                   <InputIcon
+                    iconStyle={getInputIconStyle()}
                     placeholder={t("Due-date")}
                     className={`${styles["datepicker_input"]} ${
                       complianceDetailsState?.authority?.value === 0

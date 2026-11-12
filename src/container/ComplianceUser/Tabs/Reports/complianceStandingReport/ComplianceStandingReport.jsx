@@ -20,6 +20,7 @@ import {
 import ArrowUpIcon from "../../../../../assets/images/sortingIcons/SorterIconDescend.png";
 import ArrowDownIcon from "../../../../../assets/images/sortingIcons/SorterIconAscend.png";
 import { ChevronDown } from "react-bootstrap-icons";
+import { getDateRender, getPickerLocale } from "../../../../../commen/functions/arabicDateRender";
 import CustomTable from "../../../../../components/elements/table/Table";
 import { getFiscalQuarterDetails } from "../../../../../commen/functions/validations";
 
@@ -770,6 +771,8 @@ const ComplianceStandingReport = () => {
                   allowClear
                   value={dateRange}
                   onChange={handleDateRangeChange}
+                  dateRender={getDateRender()}
+                  locale={getPickerLocale()}
                 />
               </Col>
               <Col lg={2} md={2} sm={2} xs={12}>

@@ -458,7 +458,11 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
   min-height: 39px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  padding-left: 10px;
+  /* same inner gap, size and colour as the editable option inputs
+     (PollingCreateModal), and symmetric so it reads the same in Arabic */
+  padding: 0 16px;
+  font-size: 12px;
+  color: #5a5a5a;
   margin: 0 0 10px 0;
 }
 
@@ -496,7 +500,7 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
 }
 
 body[dir="rtl"] .scrollable-title2 {
-  margin-right: 20px !important;
+  margin-right: 0 !important;
 }
 
 /* Common styles for all browsers except Firefox */

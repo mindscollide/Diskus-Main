@@ -166,7 +166,7 @@ body[dir="rtl"] .chat-block {
 }
 
 .chat-inner-content
-  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+  .ant-select-dropdown:is(.ant-select-dropdown-placement-bottomLeft, .ant-select-dropdown-placement-bottomRight) {
   width: 300px !important;
   min-width: 300px !important;
 }
@@ -961,7 +961,7 @@ body[dir="rtl"] span.securityicon-box {
   left: 15px;
 }
 
-.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(
+.ant-select-dropdown:is(.ant-select-dropdown-placement-bottomLeft, .ant-select-dropdown-placement-bottomRight):has(
     .rc-virtual-list-holder-inner
       .ant-select-item.ant-select-item-option.talk-chat-filter
   ) {
@@ -969,7 +969,7 @@ body[dir="rtl"] span.securityicon-box {
   width: 300px !important;
 }
 body[dir="rtl"]
-  .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(
+  .ant-select-dropdown:is(.ant-select-dropdown-placement-bottomLeft, .ant-select-dropdown-placement-bottomRight):has(
     .rc-virtual-list-holder-inner
       .ant-select-item.ant-select-item-option.talk-chat-filter
   ) {

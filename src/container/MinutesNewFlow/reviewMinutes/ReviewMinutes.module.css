@@ -104,19 +104,19 @@ body[dir="rtl"] p.SUB-title-heading {
 }
 
 p.minutes-text {
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  color: #5a5a5a;
+  /* font-family: "Montserrat"; */
+  /* font-style: normal; */
+  /* font-weight: 600; */
+  /* font-size: 12px; */
+  /* color: #5a5a5a; */
   margin: 0 !important;
-  word-break: break-all;
+  word-break: keep-all;
 }
 
-p.minutes-text p {
+/* p.minutes-text p {
   margin: 0 !important;
   word-break: break-all;
-}
+} */
 
 span.bar-line {
   border: 1px solid #e1e1e1;

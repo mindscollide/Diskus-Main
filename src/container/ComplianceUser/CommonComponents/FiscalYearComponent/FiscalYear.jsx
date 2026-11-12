@@ -42,7 +42,11 @@ export function useFiscalYearRange(mqttData) {
 
     const formatDay = (day) => {
       return isArabic
-        ? new Intl.NumberFormat("ar").format(day).padStart(2, "٠")
+        ? // "ar-u-nu-arab" forces Arabic-Indic digits: plain "ar" gives Latin digits
+          // in newer browsers.
+          new Intl.NumberFormat("ar-u-nu-arab", { useGrouping: false })
+            .format(day)
+            .padStart(2, "٠")
         : day.toString().padStart(2, "0");
     };
 

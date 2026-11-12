@@ -10,6 +10,7 @@ import {
 } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
+import { useDefaultEditorFormats } from "../../../../../commen/functions/quillDefaults";
 import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../assets/images/featherupload.svg";
@@ -68,6 +69,8 @@ const Minutes = () => {
   let userID = localStorage.getItem("userID");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const editorRef = useRef(null);
+  // Word-like default font for typed text (see quillDefaults.js)
+  const setEditorRef = useDefaultEditorFormats(editorRef, { size: null });
   const { Dragger } = Upload;
   const generalMinutes = useSelector(
     (state) => state.NewMeetingreducer.generalMinutes,
@@ -133,7 +136,7 @@ const Minutes = () => {
   Quill.register(Size, true);
 
   var FontAttributor = Quill.import("formats/font");
-  var fonts = ["impact", "courier", "comic"];
+  var fonts = ["impact", "courier", "comic", "Montserrat"];
   FontAttributor.whitelist = fonts;
   Quill.register(FontAttributor, true);
 
@@ -800,7 +803,7 @@ const Minutes = () => {
                     xs={12}
                     className={styles["Arabic_font_Applied"]}>
                     <ReactQuill
-                      ref={editorRef}
+                      ref={setEditorRef}
                       theme='snow'
                       value={addNoteFields.Description.value || ""}
                       placeholder={t("Minutes-details")}

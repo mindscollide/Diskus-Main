@@ -291,6 +291,22 @@ const Committee = () => {
           setCurrentCommitteeMeetingTabActive(2);
         }
         if (committeeID) {
+          // The Published tab that opens the meeting is only mounted by the
+          // setViewCommitteePage(true) below, i.e. after this effect has already
+          // cleared location.state, so on the first click (arriving from another
+          // page) it never saw the notification. Hand it over through
+          // sessionStorage; the tab consumes it on mount.
+          try {
+            // (the Proposed tab doesn't consume it, so it must not be left behind)
+            if (message !== "proposedmeeting") {
+              sessionStorage.setItem(
+                "committeeMeetingNotification",
+                JSON.stringify({ message, response }),
+              );
+            }
+          } catch (e) {
+            // sessionStorage unavailable: the tab falls back to location.state
+          }
           dispatch(
             viewCommitteeDetails({
               committeeID,

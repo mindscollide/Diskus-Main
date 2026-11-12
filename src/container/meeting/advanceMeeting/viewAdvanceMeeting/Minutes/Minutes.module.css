@@ -669,13 +669,14 @@ p.Parent-title-heading {
 }
 
 p.minutes-text {
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  color: #5a5a5a;
-  margin: 0 !important;
-  word-break: break-all;
+  /* font-family: "Montserrat"; */
+  /* font-style: normal; */
+  /* font-weight: 600; */
+  /* font-size: 12px; */
+  /* color: #5a5a5a; */
+  /* margin: 0 !important; */
+  /* word-break: break-all; */
+  white-space: pre-wrap;
   max-width: 100% !important;
 }
 

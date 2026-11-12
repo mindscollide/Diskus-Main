@@ -3381,7 +3381,7 @@ span.userstatus-signal-disabled {
   height: 10px;
   background: #f16b6b;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 7px;
   margin-top: 5px;
 }
 
@@ -3391,7 +3391,7 @@ body[dir="rtl"] span.userstatus-signal-disabled {
   background: #f16b6b;
   border-radius: 50%;
   margin-right: 0px;
-  margin-left: 10px;
+  margin-left: 7px;
   margin-top: 5px;
 }
 
@@ -4421,18 +4421,24 @@ body[dir="rtl"] .ql-snow.ql-toolbar button,
   margin-right: 0px !important;
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
-  content: "Normal";
+/* Font size picker: every item and the label show their real size. The label of an
+   editor position with no explicit size shows the default (16px). */
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before {
+  content: "14px";
   font-size: 14px !important;
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
-  content: "Large";
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label:not([data-value])::before {
+  content: "16px";
   font-size: 16px !important;
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
-  content: "18px" !important;
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before {
+  content: "18px";
   font-size: 18px !important;
 }
 
@@ -4466,23 +4472,20 @@ body[dir="rtl"] .ql-snow.ql-toolbar button,
   font-family: "Comic Sans MS";
 }
 
-.ql-snow .ql-picker.ql-size .ql-picker-label::before,
-.ql-snow .ql-picker.ql-size .ql-picker-item::before {
-  content: "16px" !important;
+.ql-snow .ql-picker.ql-font {
+  width: auto !important;
+  min-width: 117px;
 }
 
-.ql-snow .ql-picker.ql-font {
-  width: 117px !important;
+/* keep the font name clear of the dropdown arrow ("Comic Sans MS" was cut) */
+.ql-snow .ql-picker.ql-font .ql-picker-label {
+  padding-right: 22px;
+  white-space: nowrap;
 }
 
 .TestAccordian .MuiAccordionSummary-content {
   display: block !important;
   cursor: default !important;
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
-  content: "Huge";
-  font-size: 18px !important;
 }
 
 .ql-font span[data-value="impact"]::before,
@@ -8399,4 +8402,45 @@ td.ant-table-column-sort {
   display: flex;
   justify-content: center;
   align-items: center !important;
+}
+
+/* Date pickers: month arrows are solid triangles (◀ ▶).
+   The triangle look used to come from unscoped Dashboard css files, so it only showed
+   up once one of them was loaded, and elsewhere the library's own rotation turned the
+   triangle into odd corner shapes. It is defined here once for every
+   react-multi-date-picker. The triangle always points right (border-left) and is
+   rotated for the "previous" arrow; in RTL the previous arrow sits on the right, so the
+   rotations swap. */
+body .rmdp-wrapper .rmdp-arrow {
+  border: none !important;
+  border-top: 6px solid transparent !important;
+  border-bottom: 6px solid transparent !important;
+  border-left: 10px solid #6172d6 !important;
+  border-right: 0 !important;
+  border-radius: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin-top: 0 !important;
+  z-index: auto;
+}
+body .rmdp-wrapper .rmdp-right i {
+  transform: rotate(0deg) !important;
+}
+body .rmdp-wrapper .rmdp-left i {
+  transform: rotate(180deg) !important;
+}
+body[dir="rtl"] .rmdp-wrapper .rmdp-left i {
+  transform: rotate(0deg) !important;
+}
+body[dir="rtl"] .rmdp-wrapper .rmdp-right i {
+  transform: rotate(180deg) !important;
+}
+
+/* Poll status cell (PollStatusBadge): the three dots must have the same size and gap and
+   must not be squeezed by a long label, so the labels line up from row to row. */
+span.userstatus-signal-PublishedPolls,
+span.userstatus-signal-Unpublished,
+span.userstatus-signal-disabled {
+  flex: 0 0 10px;
 }

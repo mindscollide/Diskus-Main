@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   AttachmentViewer,
   Button,
@@ -10,6 +10,7 @@ import "react-quill/dist/quill.snow.css";
 import { Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ModalUpdateNote.module.css";
+import { attachDefaultEditorFormats } from "../../../commen/functions/quillDefaults";
 import Form from "react-bootstrap/Form";
 import {
   DeleteNotesDocumentsAPI,
@@ -65,6 +66,23 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
   //Extrating Files Data of Particular Notes
   const [previousIDs, setPreviousIDs] = useState([]);
+
+  // Word-like default: text typed into an empty editor gets the font the toolbar
+  // shows as selected (this toolbar has no size picker, so only the font); see
+  // quillDefaults.js. Attached from a callback ref because the editor is created
+  // inside the Modal, a render after this component mounts.
+  const detachDefaultFormats = useRef(null);
+  const setEditorRef = useCallback((instance) => {
+    detachDefaultFormats.current?.();
+    detachDefaultFormats.current = null;
+    editorRef.current = instance;
+    if (instance) {
+      detachDefaultFormats.current = attachDefaultEditorFormats(
+        instance.getEditor(),
+        { size: null },
+      );
+    }
+  }, []);
 
   useEffect(() => {
     try {
@@ -640,7 +658,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                   <Row className={styles["QuillRow"]}>
                     <Col lg={12} md={12} sm={12} xs={12} className="mt-1">
                       <ReactQuill
-                        ref={editorRef}
+                        ref={setEditorRef}
                         theme="snow"
                         value={addNoteFields.Description.value}
                         // defaultValue={addNoteFields.Description.value}

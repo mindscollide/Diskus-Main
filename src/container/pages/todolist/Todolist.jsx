@@ -950,7 +950,6 @@ const TodoList = () => {
             <Button
               className='todolist-create-btn '
               icon={<Plus width={20} height={20} fontWeight={800} />}
-              variant='Primary'
               text={t("Create-a-task")}
               onClick={() => setShow(true)}
             />

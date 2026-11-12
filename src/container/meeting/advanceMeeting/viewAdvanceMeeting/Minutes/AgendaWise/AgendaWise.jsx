@@ -16,6 +16,7 @@ import { useRef } from "react";
 import { Upload } from "antd";
 import featherupload from "../../../../../../assets/images/featherupload.svg";
 import ReactQuill, { Quill } from "react-quill";
+import { useDefaultEditorFormats } from "../../../../../../commen/functions/quillDefaults";
 // import EditIcon from "../../../../../../assets/images/Edit-Icon.png";
 import { useSelector } from "react-redux";
 import {
@@ -135,6 +136,8 @@ const AgendaWise = ({
   );
 
   const editorRef = useRef(null);
+  // Word-like default font for typed text (see quillDefaults.js)
+  const setEditorRef = useDefaultEditorFormats(editorRef, { size: null });
 
   const { Dragger } = Upload;
 
@@ -158,7 +161,7 @@ const AgendaWise = ({
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
   var FontAttributor = Quill.import("formats/font");
-  var fonts = ["impact", "courier", "comic"];
+  var fonts = ["impact", "courier", "comic", "Montserrat"];
   FontAttributor.whitelist = fonts;
   Quill.register(FontAttributor, true);
 
@@ -1048,7 +1051,7 @@ const AgendaWise = ({
                     isSearchable={false}
                   />
                   <ReactQuill
-                    ref={editorRef}
+                    ref={setEditorRef}
                     theme='snow'
                     value={addNoteFields.Description.value || ""}
                     placeholder={t("Minutes-details")}

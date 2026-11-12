@@ -41,6 +41,12 @@ const clearPollsMesseges = () => {
   };
 };
 
+const clearPollsLists = () => {
+  return {
+    type: actions.CLEAR_POLLS_LISTS,
+  };
+};
+
 // search Poll Init
 const searchPolls_init = () => {
   return {
@@ -1234,7 +1240,7 @@ const GetPollsByCommitteeIDapi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(searchPollsApi(navigate, t, data));
+          dispatch(GetPollsByCommitteeIDapi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1490,7 +1496,7 @@ const setCommitteePollsApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(searchPollsApi(navigate, t, data));
+          dispatch(setCommitteePollsApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2834,6 +2840,7 @@ export {
   setTasksByCommitteeApi,
   getPollsByPollIdforCommitteeApi,
   clearPollsMesseges,
+  clearPollsLists,
   getPollByPollIdforGroups,
   getPollByPollIdforMeeting,
   UpdatedCastVoteAPI,

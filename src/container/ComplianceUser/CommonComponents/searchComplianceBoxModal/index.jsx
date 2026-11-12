@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import searchicon from "../../../../assets/images/searchicon.svg";
 import styles from "./searchComplianceBoxModal.module.css";
+import { getDateRender, getPickerLocale } from "../../../../commen/functions/arabicDateRender";
 import { DatePicker, Select } from "antd";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 import dayjs from "dayjs";
@@ -381,6 +382,8 @@ const SearchComplianceBoxModal = () => {
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <DatePicker.RangePicker
+                          dateRender={getDateRender()}
+                  locale={getPickerLocale()}
                           format="DD/MM/YYYY"
                           placeholder={[t("Start-date"), t("End-date")]}
                           allowEmpty={[true, true]}
