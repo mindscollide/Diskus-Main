@@ -929,6 +929,12 @@ const videoFeatureReducer = (state = initialState, action) => {
 
         maximizeParticipantVideoFlag: action.response,
         normalParticipantVideoFlag: false,
+        // Opening from closed: drop a stale approve/reject signal that nobody
+        // consumed (panel was unmounted), else the panel's own effect would
+        // see it on mount and close the panel immediately.
+        ...(action.response && !state.maximizeParticipantVideoFlag
+          ? { allNavigatorVideoStream: 0 }
+          : {}),
       };
     }
 

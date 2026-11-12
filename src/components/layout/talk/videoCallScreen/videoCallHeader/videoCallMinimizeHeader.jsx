@@ -1057,6 +1057,17 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     dispatch(removeParticipantMeetingMainApi(navigate, t, data));
   };
 
+  // Host/presenter only: stop / pause / resume controls (same rule as the normal header).
+  const showRecordingControls = Boolean(
+    isZoomEnabled &&
+      isMeeting &&
+      ((isMeetingVideo &&
+        isMeetingVideoHostCheck &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag) ||
+        (presenterViewFlag && presenterViewHostFlag)),
+  );
+
   const onHandleClickForStartRecording = () => {
     console.log("onHandleClickForStartRecording");
     setStartRecordingState(false);
@@ -1065,11 +1076,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setStopRecordingState(false);
     if (isZoomEnabled) {
       if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostCheck &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
+        showRecordingControls
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -1088,11 +1095,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setStopRecordingState(false);
     if (isZoomEnabled) {
       if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostCheck &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
+        showRecordingControls
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -1111,11 +1114,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setStopRecordingState(false);
     if (isZoomEnabled) {
       if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostCheck &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
+        showRecordingControls
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -1177,107 +1176,96 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
           <Col lg={7} md={7} sm={12}>
             <div className="d-flex gap-10 justify-content-end">
-              {isMeeting &&
-              isMeetingVideo &&
-              isMeetingVideoHostCheck &&
-              !presenterViewJoinFlag &&
-              !presenterViewHostFlag ? (
-                <>
-                  {/* if Recording is start */}
-                  {/* {startRecordingState && (
-                    <div
-                      className="start-Recording-div"
-                      onClick={onHandleClickForStartRecording}
-                    >
-                      <Tooltip
-                        placement={presenterViewFlag ? "bottom" : "topRight"}
-                        title={t("Start-recording")}
-                        overlayClassName={
-                          presenterViewFlag
-                            ? "zindexing-for-presenter-tooltip"
-                            : ""
-                        }
-                      >
-                        <img
-                          src={StartRecordLarge}
-                          className="Start-Record-Button-Minimize"
-                          alt="Record"
-                        />
-                      </Tooltip>
-                    </div>
-                  )} */}
+              {/* Host/presenter: recording pill (stop / pause / resume) while minimized */}
+              {showRecordingControls && pauseRecordingState && (
+                <div className="record-minimize-background">
+                  <Tooltip
+                    placement="topRight"
+                    title={t("Stop-recording")}
+                    overlayClassName={
+                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                    }
+                  >
+                    <img
+                      src={StartRecordSmall}
+                      onClick={onHandleClickForStopRecording}
+                      className="Bunch-Start-Record-Button-2-MinimizePanel"
+                      alt="Record"
+                    />
+                  </Tooltip>
+                  <p className="Recording-text-MinimizePanel">
+                    {t("Recording...")}
+                  </p>
+                  <Tooltip
+                    placement="topRight"
+                    title={t("Pause-recording")}
+                    overlayClassName={
+                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                    }
+                  >
+                    <img
+                      src={RecordStart}
+                      onClick={onHandleClickForPauseRecording}
+                      className="Bunch-Start-Record-Button-MinimizePanel"
+                      alt="Record"
+                    />
+                  </Tooltip>
+                </div>
+              )}
 
-                  {/* if Recording is Pause and Stop */}
-                  {/* {pauseRecordingState && (
-                    <div
-                      className="record-minimize-background"
-                      // onClick={onResumeRecording}
-                    >
-                      <Tooltip
-                        placement={presenterViewFlag ? "bottom" : "topRight"}
-                        title={t("Stop-recording")}
-                        overlayClassName={
-                          presenterViewFlag
-                            ? "zindexing-for-presenter-tooltip"
-                            : ""
-                        }
-                      >
-                        <img
-                          src={StartRecordSmall}
-                          onClick={onHandleClickForStopRecording}
-                          className="Bunch-Start-Record-Button-2-MinimizePanel"
-                          alt="Record"
-                        />
-                      </Tooltip>
-                      <p className="Recording-text-MinimizePanel">
-                        {t("Recording...")}
-                      </p>
+              {showRecordingControls && resumeRecordingState && (
+                <div className="Record-Start-BackgroundRed-Minimize">
+                  <p className="RecordingPaused-text-Minimize">
+                    {t("Recording-paused")}
+                  </p>
+                  <Tooltip
+                    placement="topRight"
+                    title={t("Resume-recording")}
+                    overlayClassName={
+                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                    }
+                  >
+                    <img
+                      src={RecordPlay}
+                      className="Bunch-Start-RecordingPaused-Button-MinimizePanel"
+                      alt="Record"
+                      onClick={onHandleClickForResumeRecording}
+                    />
+                  </Tooltip>
+                </div>
+              )}
 
-                      <Tooltip
-                        placement={presenterViewFlag ? "bottom" : "topRight"}
-                        title={t("Pause-recording")}
-                        overlayClassName={
-                          presenterViewFlag
-                            ? "zindexing-for-presenter-tooltip"
-                            : ""
-                        }
-                      >
-                        <img
-                          src={RecordStart}
-                          onClick={onHandleClickForPauseRecording}
-                          className="Bunch-Start-Record-Button-MinimizePanel"
-                          alt="Record"
-                        />
-                      </Tooltip>
-                    </div>
-                  )} */}
-
-                  {/* if Recording is Pause and Resume */}
-                  {/* {resumeRecordingState && (
-                    <div className="Record-Start-BackgroundRed-Minimize">
-                      <p className="RecordingPaused-text-Minimize">
-                        {t("Recording-paused")}
-                      </p>
-                      <Tooltip
-                        placement={presenterViewFlag ? "bottom" : "topRight"}
-                        title={t("Resume-recording")}
-                        overlayClassName={
-                          presenterViewFlag
-                            ? "zindexing-for-presenter-tooltip"
-                            : ""
-                        }
-                      >
-                        <img
-                          src={RecordPlay}
-                          className="Bunch-Start-RecordingPaused-Button-MinimizePanel"
-                          alt="Record"
-                          onClick={onHandleClickForResumeRecording}
-                        />
-                      </Tooltip>
-                    </div>
-                  )} */}
-                </>
-              ) : null}
+              {/* Read-only recording dot (live / paused) for everyone else while minimized */}
+              {isZoomEnabled &&
+                isMeeting &&
+                (isMeetingVideo || presenterViewFlag) &&
+                !showRecordingControls &&
+                (pauseRecordingState || resumeRecordingState) && (
+                  <Tooltip
+                    placement="topRight"
+                    title={
+                      pauseRecordingState
+                        ? t("Recording...")
+                        : t("Recording-paused")
+                    }
+                  >
+                    <img
+                      src={StartRecordLarge}
+                      className={
+                        pauseRecordingState
+                          ? "Start-Record-Button recording-indicator-live"
+                          : "Start-Record-Button"
+                      }
+                      style={{
+                        alignSelf: "center",
+                        pointerEvents: "none",
+                        opacity: pauseRecordingState ? 1 : 0.5,
+                        filter: pauseRecordingState ? "none" : "grayscale(1)",
+                      }}
+                      alt="Recording"
+                    />
+                  </Tooltip>
+                )}
 
               {presenterViewFlag && presenterViewHostFlag && (
                 <div onClick={minimizeStopPresenter} className="cursor-pointer">
