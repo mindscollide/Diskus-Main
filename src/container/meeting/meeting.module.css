@@ -70,9 +70,6 @@
   top: 39px !important;
 }
 
-.Cross_Icon_Styling {
-  cursor: pointer;
-}
 
 body[dir="rtl"] .polling_searchinput {
   position: absolute !important;
@@ -711,4 +708,8 @@ body[dir="rtl"] .polling_searchinput {
 .MainMeetingTablePublished {
   min-height: 63vh !important;
   margin-bottom: 70px;
+}
+
+.Cross_Icon_Styling {
+  cursor: pointer;
 }

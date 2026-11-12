@@ -797,16 +797,16 @@ const MainMeeting = () => {
                       <DatePicker
                         value={searchFields.DateView}
                         format={"DD/MM/YYYY"}
-                        placeholder="DD/MM/YYYY"
                         render={
                           <InputIcon
                             iconStyle={getInputIconStyle()}
                             placeholder="DD/MM/YYYY"
-                            className="datepicker_input"
+                            className="datepicker_input "
                           />
                         }
                         editable={false}
-                        className="datePickerTodoCreate2 meetingSearchDatePicker"
+                        containerClassName="w-100"
+                        className="datePickerTodoCreate2  "
                         onOpenPickNewDate={false}
                         calendar={gregorian}
                         locale={
