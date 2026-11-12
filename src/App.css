@@ -3381,7 +3381,7 @@ span.userstatus-signal-disabled {
   height: 10px;
   background: #f16b6b;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 7px;
   margin-top: 5px;
 }
 
@@ -3391,7 +3391,7 @@ body[dir="rtl"] span.userstatus-signal-disabled {
   background: #f16b6b;
   border-radius: 50%;
   margin-right: 0px;
-  margin-left: 10px;
+  margin-left: 7px;
   margin-top: 5px;
 }
 
@@ -8435,4 +8435,12 @@ body[dir="rtl"] .rmdp-wrapper .rmdp-left i {
 }
 body[dir="rtl"] .rmdp-wrapper .rmdp-right i {
   transform: rotate(180deg) !important;
+}
+
+/* Poll status cell (PollStatusBadge): the three dots must have the same size and gap and
+   must not be squeezed by a long label, so the labels line up from row to row. */
+span.userstatus-signal-PublishedPolls,
+span.userstatus-signal-Unpublished,
+span.userstatus-signal-disabled {
+  flex: 0 0 10px;
 }

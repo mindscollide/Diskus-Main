@@ -475,7 +475,7 @@ const Polling = () => {
       title: t("Status"),
       dataIndex: "pollStatus",
       key: "pollStatus",
-      width: "90px",
+      width: "120px",
       align: currentLanguage === "en" ? "left" : "right",
       ...statusFilterProps,
       render: (text, record) => (

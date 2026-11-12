@@ -14,9 +14,14 @@ const PollStatusBadge = ({ pollStatusId, center = false }) => {
   const status = STATUS[Number(pollStatusId)];
   if (!status) return null;
   return (
-    <div className={center ? "d-flex justify-content-center" : "d-flex"}>
+    <div
+      className={
+        center
+          ? "d-flex justify-content-center align-items-start"
+          : "d-flex align-items-start"
+      }>
       <span className={status.dot}></span>
-      <p className='m-0 userName FontArabicRegular'>{t(status.label)}</p>
+      <p className='m-0 userName FontArabicRegular text-nowrap'>{t(status.label)}</p>
     </div>
   );
 };
