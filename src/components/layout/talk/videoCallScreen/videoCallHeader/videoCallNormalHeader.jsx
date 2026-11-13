@@ -458,7 +458,10 @@ const VideoCallNormalHeader = ({
     if (waitingParticipantsList?.length) {
       const uniqueParticipants = Object.values(
         waitingParticipantsList.reduce((acc, item) => {
-          const key = `${item.meetingID}_${item.userID}`;
+          // Guests all have userID 0, so key them by guid
+          const key = item.userID
+            ? `${item.meetingID}_${item.userID}`
+            : `${item.meetingID}_${item.guid}`;
 
           if (!acc[key]) {
             acc[key] = item; // keep first occurrence

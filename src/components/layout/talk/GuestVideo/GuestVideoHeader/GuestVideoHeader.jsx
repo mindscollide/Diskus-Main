@@ -166,6 +166,15 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       getAllParticipantGuest?.length > 0
     ) {
       setAllParticipantGuest(getAllParticipantGuest);
+      // Drop live status of participants who left, so a rejoin shows fresh API status
+      const guids = new Set(getAllParticipantGuest.map((p) => p.guid));
+      setParticipantStatusMap((prev) => {
+        const staleKeys = Object.keys(prev).filter((k) => !guids.has(k));
+        if (staleKeys.length === 0) return prev;
+        const next = { ...prev };
+        staleKeys.forEach((k) => delete next[k]);
+        return next;
+      });
     } else {
       setAllParticipantGuest([]);
     }
@@ -597,10 +606,13 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                       const participantStatus =
                         participantStatusMap[participant.guid] || {};
 
+                      // Live MQTT status wins; else the GetVideoCallParticipants snapshot
                       const isHandRaisedForParticipant =
-                        participantStatus.isHandRaised;
-                      const isVideoOff = participantStatus.isVideoHidden;
-                      const muteParticipants = participantStatus.isMuted;
+                        participantStatus.isHandRaised ?? participant.raiseHand;
+                      const isVideoOff =
+                        participantStatus.isVideoHidden ?? participant.hideCamera;
+                      const muteParticipants =
+                        participantStatus.isMuted ?? participant.mute;
                       return (
                         <div
                           key={participant.guid}

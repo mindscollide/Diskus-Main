@@ -255,7 +255,9 @@ const videoFeatureReducer = (state = initialState, action) => {
       const exists = state.waitingParticipantsList.some(
         (p) =>
           String(p.guid) === String(action.response.guid) ||
-          (Number(p.userID) === Number(action.response.userID) &&
+          // Guests all have userID 0, so the userID match only applies to real users
+          (Number(action.response.userID) > 0 &&
+            Number(p.userID) === Number(action.response.userID) &&
             Number(p.meetingID) === Number(action.response.meetingID)),
       );
 

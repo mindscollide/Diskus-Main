@@ -684,6 +684,12 @@ const Header2 = ({ isVideo }) => {
       if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
         // Check if user is in advance meeting modal and meeting is ongoing
         dispatch(showEndMeetingModal(true));
+        // Meeting video on: minimize it like the sidebar items do
+        if (JSON.parse(localStorage.getItem("isMeetingVideo"))) {
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(true));
+          dispatch(normalizeVideoPanelFlag(false));
+        }
         localStorage.setItem("navigateLocation", "MainDashBoard");
       } else {
         try {
