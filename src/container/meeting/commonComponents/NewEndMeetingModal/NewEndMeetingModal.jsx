@@ -31,9 +31,25 @@ import {
 } from "../../../../store/actions/VideoFeature_actions";
 
 const NewEndMeetingModal = () => {
-  const { meetingID } = useSelector(
+  const { meetingID: reduxMeetingID } = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
+  // "currentMeetingID" is written with the joined meeting's id at the moment of the
+  // join, so it is the safest source for the meeting being left. If Redux's
+  // currentMeetingInfo disagrees (it was left holding a previously opened meeting),
+  // trust the join-time id and say so, instead of leaving / loading the wrong meeting.
+  const joinedMeetingID = Number(localStorage.getItem("currentMeetingID"));
+  const meetingID =
+    joinedMeetingID > 0 ? joinedMeetingID : reduxMeetingID;
+  if (joinedMeetingID > 0 && Number(reduxMeetingID) !== joinedMeetingID) {
+    console.warn(
+      "[NewEndMeetingModal] currentMeetingInfo.meetingID (" +
+        reduxMeetingID +
+        ") differs from the joined meeting (" +
+        joinedMeetingID +
+        "); using the joined one.",
+    );
+  }
   const { setCancelConfirmationModal, setEditorRole } = useMeetingContext();
 
   const {
