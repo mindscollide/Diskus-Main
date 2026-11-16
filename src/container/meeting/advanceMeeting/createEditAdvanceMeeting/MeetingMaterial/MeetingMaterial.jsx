@@ -331,6 +331,7 @@ const MeetingMaterial = ({
       align: "center",
       render: (text, record) => {
         const ext = getFileExtension(record.displayFileName);
+        const isValidForApryse = fileFormatforSignatureFlow.includes(ext)
         return (
           <>
             <Row>
@@ -339,18 +340,22 @@ const MeetingMaterial = ({
                 md={12}
                 lg={12}
                 className='d-flex gap-3 align-items-center justify-content-center'>
-                <Eye
-                  fontSize={22}
-                  cursor={
-                    fileFormatforSignatureFlow.includes(ext)
-                      ? "pointer"
-                      : "default"
-                  }
-                  pointerEvents={
-                    fileFormatforSignatureFlow.includes(ext) ? "auto" : "none"
-                  }
-                  onClick={() => handleClickOpenFile(record)}
-                />
+                {isValidForApryse ? (
+                  <Eye
+                    fontSize={22}
+                    cursor={
+                      fileFormatforSignatureFlow.includes(ext)
+                        ? "pointer"
+                        : "default"
+                    }
+                    pointerEvents={
+                      fileFormatforSignatureFlow.includes(ext) ? "auto" : "none"
+                    }
+                    onClick={() => handleClickOpenFile(record)}
+                  />
+                ) : (
+                  <span className={styles["not-supported"]}></span>
+                )}
                 <Button
                   // disableBtn={ext !== "pdf" ? false : true}
                   text={t("Download")}

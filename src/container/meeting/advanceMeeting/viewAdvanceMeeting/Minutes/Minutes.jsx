@@ -179,6 +179,10 @@ const Minutes = () => {
   };
 
   useEffect(() => {
+    // advanceMeetingModalID is copied from Redux into the context by an effect, so when
+    // the view opens straight on Minutes (email link) this tab mounts while it is still
+    // 0 and the requests went out with MeetingID 0. Wait for the real id.
+    if (!Number(advanceMeetingModalID)) return;
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
     };
@@ -220,7 +224,7 @@ const Minutes = () => {
       setPreviousFileIDs([]);
       dispatch(cleareAllState());
     };
-  }, []);
+  }, [advanceMeetingModalID]);
 
   const onTextChange = (content, delta, source) => {
     if (source === "user") {

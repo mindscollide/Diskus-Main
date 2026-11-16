@@ -4828,6 +4828,10 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                   ) {
                     navigate("/Diskus/Minutes");
                   } else if (
+                    localStorage.getItem("navigateLocation") === "faq's"
+                  ) {
+                    navigate("/Diskus/faq's");
+                  } else if (
                     localStorage.getItem("navigateLocation") === "Meeting"
                   ) {
                     // Left via the "Meeting" sidebar item — go to the meetings

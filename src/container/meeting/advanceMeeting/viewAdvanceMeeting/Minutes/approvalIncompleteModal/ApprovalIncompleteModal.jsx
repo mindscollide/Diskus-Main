@@ -70,19 +70,10 @@ const ApprovalIncompleteModal = ({
       show={true}
       size='md'
       onHide={() => setApprovalModal(false)}
-      modalHeaderClassName='justify-content-end no-padding-top'
-      ModalTitle={
+      closeButton={true}
+      modalBodyClassName={styles["modalBodyClass"]}
+      ModalBody={
         <>
-          <Row className='text-end'>
-            <Col
-              onClick={() => setApprovalModal(false)}
-              lg={12}
-              md={12}
-              sm={12}
-              className='cursor-pointer'>
-              <img src={Close} alt='' />
-            </Col>
-          </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
               <p className={styles["approval-confirmation"]}>
@@ -92,11 +83,6 @@ const ApprovalIncompleteModal = ({
               </p>
             </Col>
           </Row>
-        </>
-      }
-      modalBodyClassName={styles["modalBodyClass"]}
-      ModalBody={
-        <>
           <div className={styles["list-section"]}>
             <p className={styles["rejected-heading"]}>
               {t("Total-reviewed")} ({totalRejectedMinutes})
@@ -161,7 +147,7 @@ const ApprovalIncompleteModal = ({
               sm={12}
               md={12}
               lg={12}
-              className='d-flex align-items-center justify-content-end'>
+              className='d-flex align-items-center justify-content-end gap-2'>
               <Button
                 text={t("Cancel")}
                 onClick={() => setApprovalModal(false)}

@@ -123,8 +123,20 @@ const ViewMeetingModal = () => {
     iframeRef,
   } = useContext(MeetingContext);
 
-  const { editorRole, setEditorRole, setVideoTalk, setAdvanceMeetingModalID, handleCloseMeeting } =
-    useMeetingContext();
+  const {
+    editorRole,
+    setEditorRole,
+    setVideoTalk,
+    setAdvanceMeetingModalID,
+    advanceMeetingModalID,
+    handleCloseMeeting,
+  } = useMeetingContext();
+  // The tabs read the meeting id from the context's advanceMeetingModalID, which is
+  // copied from Redux's currentMeetingInfo by an effect and so is 0 for the first
+  // render. A tab mounted in that render (the view opened straight on Minutes / Polls
+  // / Agenda from an email link or notification) fetched with MeetingID 0, so tabs
+  // are only rendered once the id is there.
+  const meetingIdReady = Number(advanceMeetingModalID) > 0;
   console.log(editorRole, "editorRoleeditorRoleeditorRole");
   const advanceMeetingOperations =
     JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
@@ -269,11 +281,17 @@ const ViewMeetingModal = () => {
       }
     }
     // Fix: removed the empty else block with all commented-out setters
+  }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
 
+  // The route id (e.g. 5 = Minutes from an email link) must be cleared only when this
+  // view closes. It used to be cleared by this effect's cleanup, i.e. on every re-run
+  // (editorRole changes after the view opens), and the re-run with routeID 0 then fell
+  // into the default branch and put the view back on "Meeting Details".
+  useEffect(() => {
     return () => {
       dispatch(emailRouteID(0));
     };
-  }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
+  }, []);
 
   // The header title comes from localStorage "meetingTitle". Opening straight on
   // another tab (e.g. a poll notification) never mounts the Meeting Details tab,
@@ -1086,22 +1104,22 @@ const ViewMeetingModal = () => {
                 </Col>
               </Row>
 
-              {meetingDetails && <ViewMeetingDetails />}
-              {attendees && <Attendees />}
-              {organizers && <Organizers />}
-              {agendaContributors && <AgendaContributers />}
-              {participants && <Participants />}
-              {agenda && <Agenda />}
-              {agendaViewer && <AgendaViewer />}
+              {meetingIdReady && meetingDetails && <ViewMeetingDetails />}
+              {meetingIdReady && attendees && <Attendees />}
+              {meetingIdReady && organizers && <Organizers />}
+              {meetingIdReady && agendaContributors && <AgendaContributers />}
+              {meetingIdReady && participants && <Participants />}
+              {meetingIdReady && agenda && <Agenda />}
+              {meetingIdReady && agendaViewer && <AgendaViewer />}
 
               {/* {Number(editorRole.status) === 10 ||
                 (Number(editorRole.status) === 9 && ( */}
               {/* <> */}
-              {minutes && <Minutes />}
-              {actionsPage && <Actions />}
-              {polls && <Polls />}
-              {attendance && <Attendence />}
-              {isRecording && <Recording />}
+              {meetingIdReady && minutes && <Minutes />}
+              {meetingIdReady && actionsPage && <Actions />}
+              {meetingIdReady && polls && <Polls />}
+              {meetingIdReady && attendance && <Attendence />}
+              {meetingIdReady && isRecording && <Recording />}
 
               {/* {Number(editorRole.status) !== 10 && (
                   <Button

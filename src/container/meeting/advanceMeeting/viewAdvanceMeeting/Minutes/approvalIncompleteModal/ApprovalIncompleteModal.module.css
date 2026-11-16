@@ -22,7 +22,7 @@
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-weight: 700 !important;
-  width: 161px !important;
+  max-width: 100% !important;
   height: 38px !important;
   display: flex;
   align-items: center;
@@ -33,7 +33,6 @@ p.approval-confirmation {
   font-weight: 600 !important;
   font-size: 16px !important;
   color: #5a5a5a !important;
-  margin: 0 !important;
   padding: 0px 20px !important;
 }
 
