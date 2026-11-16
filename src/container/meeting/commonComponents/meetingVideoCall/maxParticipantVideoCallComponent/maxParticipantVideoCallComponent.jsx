@@ -16,6 +16,9 @@ import MinimizeIcon from "./../../../../../components/layout/talk/talk-Video/vid
 import MinimizeIcon2 from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize White.svg";
 import MicOn from "./../../../../../components/layout/talk/talk-Video/video-images/Minimize Mic Enabled.svg";
 import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
+import PresentationJoinIcon from "../../../../../assets/images/VideoCall/PresentationJoinIcon.png";
+import PresentationWaitingRoomIcon from "../../../../../assets/images/VideoCall/PresentationWaitingRoomIcon.png";
+import PresentationRemovedIcon from "../../../../../assets/images/VideoCall/PresentationLeftAndRemovedIcon.png";
 import NormalizeIcon from "../../../../../assets/images/Recent Activity Icons/Video/MinimizeIcon.png";
 import MicOffHost from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,6 +52,7 @@ import {
   presentationJoinRequestApprovedMqtt,
   presentationJoinRequestRejectedMqtt,
   presentationStoppedMqtt,
+  removedFromPresentationToWaitingRoomMqtt,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { WebNotificationExportRoutFunc } from "../../../../../commen/functions/utils";
 import { useGroupsContext } from "../../../../../context/GroupsContext";
@@ -121,6 +125,10 @@ const ParticipantVideoCallComponent = () => {
   const presentationStoppedData = useSelector(
     (state) => state.videoFeatureReducer.presentationStoppedData,
   );
+  // Set when the presenter removed this user (REMOVED_FROM_PRESENTATION_TO_WAITING_ROOM)
+  const removedFromPresentationData = useSelector(
+    (state) => state.videoFeatureReducer.removedFromPresentationToWaitingRoomData,
+  );
 
   const leaveMeetingVideoOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse,
@@ -143,6 +151,9 @@ const ParticipantVideoCallComponent = () => {
   const videoRef = useRef(null);
   const [getReady, setGetReady] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
+  // Presentation only: shows the "Removed from the Presentation" screen
+  const [wasRemovedFromPresentation, setWasRemovedFromPresentation] =
+    useState(false);
   const [stream, setStream] = useState(null);
   const [streamAudio, setStreamAudio] = useState(null);
   const [isWebCamEnabled, setIsWebCamEnabled] = useState(false);
@@ -476,6 +487,7 @@ const ParticipantVideoCallComponent = () => {
     setJoinButton(true);
 
     if (isPresentationJoinFlow) {
+      setWasRemovedFromPresentation(false);
       let presentationData = {
         RoomID: localStorage.getItem("presentationRoomID"),
         MeetingID: Number(meetingId),
@@ -512,6 +524,15 @@ const ParticipantVideoCallComponent = () => {
       ),
     );
   };
+
+  // Presenter removed this user: show the removed screen once and consume the signal
+  useEffect(() => {
+    if (!isPresentationJoinFlow || !removedFromPresentationData) return;
+    setWasRemovedFromPresentation(true);
+    setIsWaiting(false);
+    setJoinButton(false);
+    dispatch(removedFromPresentationToWaitingRoomMqtt(null));
+  }, [removedFromPresentationData, isPresentationJoinFlow]);
 
   // Moved here from the meeting-video waiting room: send JoinPresentationRequest without the Join button
   useEffect(() => {
@@ -751,6 +772,11 @@ const ParticipantVideoCallComponent = () => {
   // for a presentation request, and not while waiting for the host to admit.
   const iconsUnlocked = canVideoPlay && !isPresentationJoinFlow && !isWaiting;
 
+  // Presentation box lines up with the video box (same top and height)
+  const presentationBoxClass = isPresentationJoinFlow
+    ? "max-videoParticipant-component max-videoParticipant-component-presentation"
+    : "max-videoParticipant-component";
+
   return (
     <Container fluid>
       <div
@@ -954,26 +980,82 @@ const ParticipantVideoCallComponent = () => {
               <Col lg={4} md={4} sm={12}>
                 {isWaiting ? (
                   <>
-                    <div className="max-videoParticipant-component">
-                      <p className="max-videoParticipant-waiting-room-class">
-                        {t("You-are-in-the-waiting-room")}
-                      </p>
-                      <p className="max-Hostvideo-organizer-allow-class">
-                        {t("The-organizer-will-allow-you-to-join-shortly")}
-                      </p>
+                    <div className={presentationBoxClass}>
+                      {isPresentationJoinFlow ? (
+                        <>
+                          <img
+                            src={PresentationWaitingRoomIcon}
+                            className="max-videoParticipant-presentation-icon"
+                            draggable="false"
+                            alt=""
+                          />
+                          <p className="max-videoParticipant-presentation-ready">
+                            {t("Presentation-waiting-room-title")}
+                          </p>
+                          <p className="max-videoParticipant-presentation-waiting-message">
+                            {t("Presentation-waiting-room-message")}
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="max-videoParticipant-waiting-room-class">
+                            {t("You-are-in-the-waiting-room")}
+                          </p>
+                          <p className="max-Hostvideo-organizer-allow-class">
+                            {t("The-organizer-will-allow-you-to-join-shortly")}
+                          </p>
+                        </>
+                      )}
                     </div>
                   </>
                 ) : !getReady ? (
                   <>
-                    <div className="max-videoParticipant-component">
+                    <div className={presentationBoxClass}>
                       <>
-                        <p className="max-videoParticipant-ready-to-join">
-                          {t("Ready-to-join")}
-                        </p>
+                        {isPresentationJoinFlow && wasRemovedFromPresentation ? (
+                          <>
+                            <img
+                              src={PresentationRemovedIcon}
+                              className="max-videoParticipant-presentation-icon"
+                              draggable="false"
+                              alt=""
+                            />
+                            <p className="max-videoParticipant-presentation-ready">
+                              {t("Presentation-removed-title")}
+                            </p>
+                            <p className="max-videoParticipant-presentation-removed-message">
+                              {t("Presentation-removed-message")}
+                            </p>
+                          </>
+                        ) : isPresentationJoinFlow ? (
+                          <>
+                            <img
+                              src={PresentationJoinIcon}
+                              className="max-videoParticipant-presentation-icon"
+                              draggable="false"
+                              alt=""
+                            />
+                            <p className="max-videoParticipant-presentation-ready">
+                              {t("Presentation-join-ready")}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="max-videoParticipant-ready-to-join">
+                            {t("Ready-to-join")}
+                          </p>
+                        )}
                         <Button
                           disableBtn={joinButton}
-                          text={t("Join-now")}
-                          className="max-videoParticipant-Join-Now-Btn"
+                          text={
+                            isPresentationJoinFlow && wasRemovedFromPresentation
+                              ? t("Request-to-rejoin")
+                              : t("Join-now")
+                          }
+                          className={
+                            isPresentationJoinFlow && wasRemovedFromPresentation
+                              ? "max-videoParticipant-Join-Now-Btn max-videoParticipant-rejoin-btn"
+                              : "max-videoParticipant-Join-Now-Btn"
+                          }
                           onClick={joinNewApiVideoCallOnClick}
                         />
                       </>

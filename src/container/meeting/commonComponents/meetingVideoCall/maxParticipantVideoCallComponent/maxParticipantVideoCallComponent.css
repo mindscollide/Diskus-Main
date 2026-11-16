@@ -35,6 +35,11 @@
   margin-top: 20px;
 }
 
+.max-videoParticipant-component-presentation {
+  margin-top: 0;
+  height: 100%;
+}
+
 .max-videoParticipant-Join-Now-Btn {
   width: 118px;
   height: 39px;
@@ -55,6 +60,47 @@
   font-size: 30px;
   font-weight: 600;
   color: #5a5a5a;
+}
+
+/* Presentation join screen: icon + text, shown only for a presentation join */
+.max-videoParticipant-presentation-icon {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+.max-videoParticipant-presentation-ready {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6172d6;
+  text-align: center;
+  padding: 0px 40px;
+  margin-bottom: 16px;
+}
+
+.max-videoParticipant-presentation-waiting-message {
+  font-size: 16px;
+  font-weight: 400;
+  color: #5a5a5a;
+  text-align: center;
+  padding: 0px 40px;
+}
+
+.max-videoParticipant-presentation-removed-message {
+  font-size: 15px;
+  font-weight: 600;
+  color: #5a5a5a;
+  text-align: center;
+  padding: 0px 40px;
+  margin-bottom: 16px;
+}
+
+/* "Request to Rejoin" is longer than "Join Now" */
+.max-videoParticipant-rejoin-btn {
+  width: auto;
+  min-width: 118px;
+  padding: 0px 24px;
 }
 
 .max-videoParticipant-Icons-state {
