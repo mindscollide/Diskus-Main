@@ -64,7 +64,7 @@ const VotingPollAgendaIntiminationModal = ({
         setShow={dispatch(AgendaPollVotingStartedAction)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
-        centered={false}
+        centered={true}
         className={styles["MainVotingPollStartedParentClass"]}
         onHide={() => {
           dispatch(AgendaPollVotingStartedAction(false));
