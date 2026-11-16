@@ -39,7 +39,11 @@ import {
 } from "./VideoFeature_actions";
 import { isArray } from "lodash";
 import axiosInstance from "../../commen/functions/axiosInstance";
-import { findMissingVideoIds } from "../../commen/functions/videoCallIds";
+import {
+  findMissingVideoIds,
+  isUsableVideoId,
+} from "../../commen/functions/videoCallIds";
+import { setWaitingRoomState } from "../../commen/functions/waitingRoom";
 
 import { logVideoError } from "../../components/layout/talk/videoLog";
 const guestVideoNavigationScreen = (response) => {
@@ -1008,6 +1012,17 @@ const joinPresentationRequestMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_JoinPresentationRequest_01".toLowerCase(),
                 )
             ) {
+              // Remember the waiting room so every leave path can pick the waiting-room API
+              setWaitingRoomState({
+                type: "presentation",
+                meetingID: Number(data?.MeetingID),
+                roomID: [data?.RoomID, response.data.responseResult.roomID].find(
+                  isUsableVideoId,
+                ),
+                guid:
+                  response.data.responseResult.guid ??
+                  response.data.responseResult.uid,
+              });
               await dispatch(
                 joinPresentationRequestSuccess(
                   response.data.responseResult,

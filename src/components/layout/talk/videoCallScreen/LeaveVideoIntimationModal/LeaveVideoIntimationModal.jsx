@@ -15,6 +15,7 @@ import {
 } from "../../../../../store/actions/NewMeetingActions";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
+import { getWaitingRoomState } from "../../../../../commen/functions/waitingRoom";
 import {
   endMeetingStatusForQuickMeetingModal,
   endMeetingStatusForQuickMeetingVideo,
@@ -22,6 +23,7 @@ import {
   leaveMeetingOnEndStatusMqtt,
   leaveMeetingVideoOnEndStatusMqtt,
   leavePresenterViewMainApiTest,
+  leavePresentationWaitingRoomMainApi,
   participantWaitingListBox,
   screenShareTriggeredGlobally,
   setRaisedUnRaisedParticiant,
@@ -130,7 +132,7 @@ const { t } = useTranslation();
       localStorage.getItem("isMeetingVideoHostCheck")
     );
     if (isMeeting) {
-      if (isMeetingVideo) {
+      if (isMeetingVideo || getWaitingRoomState("meetingVideo")) {
         if (!isMeetingVideoHostCheck) {
           // For Stop Screen Share If Host Stop in Meeting Video
 
@@ -220,6 +222,8 @@ const { t } = useTranslation();
       let webNotifactionDataRoutecheckFlag = JSON.parse(
         localStorage.getItem("webNotifactionDataRoutecheckFlag")
       );
+      // Leaving while still in the presentation waiting room
+      await dispatch(leavePresentationWaitingRoomMainApi(navigate, t));
       if (presenterViewHostFlag || presenterViewJoinFlag) {
         let participantRoomId = localStorage.getItem("participantRoomId");
         let newRoomID = localStorage.getItem("newRoomId");

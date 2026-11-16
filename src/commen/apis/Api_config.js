@@ -1779,6 +1779,14 @@ export const leaveMeetingVideo = {
   RequestMethod: "ServiceManager.LeaveMeetingVideo",
 };
 
+export const leaveMeetingVideoWaitingRoom = {
+  RequestMethod: "ServiceManager.LeaveMeetingVideoWaitingRoom",
+};
+
+export const leavePresentationWaitingRoom = {
+  RequestMethod: "ServiceManager.LeavePresentationWaitingRoom",
+};
+
 export const getMeetingGuestVideoURL = {
   RequestMethod: "ServiceManager.GetMeetingGuestVideoURL",
 };

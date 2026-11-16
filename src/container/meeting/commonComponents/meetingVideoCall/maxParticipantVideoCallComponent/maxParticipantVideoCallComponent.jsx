@@ -44,7 +44,7 @@ import {
   setAudioControlHost,
   setVideoControlHost,
   joinPresenterViewMainApi,
-  leavePresenterViewMainApi,
+  leavePresentationWaitingRoomMainApi,
   presentationJoinFlowFlag,
   presentationJoinRequestApprovedMqtt,
   presentationJoinRequestRejectedMqtt,
@@ -513,6 +513,14 @@ const ParticipantVideoCallComponent = () => {
     );
   };
 
+  // Moved here from the meeting-video waiting room: send JoinPresentationRequest without the Join button
+  useEffect(() => {
+    if (!isPresentationJoinFlow) return;
+    if (sessionStorage.getItem("presentationAutoJoin") !== "true") return;
+    sessionStorage.removeItem("presentationAutoJoin");
+    joinNewApiVideoCallOnClick();
+  }, [isPresentationJoinFlow]);
+
   //it's Ensure that videoRef is stream or open when transitioning or state changes between minimizeState
   useEffect(() => {
     if (stream && videoRef.current) {
@@ -623,47 +631,9 @@ const ParticipantVideoCallComponent = () => {
 
     setIsMicEnabled(false); // Microphone is now disabled
     if (isWaiting && isPresentationJoinFlow) {
-      // Request sent but the presenter has not admitted this user yet: withdraw
-      // it with LeavePresenterView so the user leaves the presenter's waiting
-      // list. (No LeaveMeetingVideo — the user is not in the meeting video.)
-      // Only a real value is sent: missing / "null" / "0" ids fall back to the
-      // next source, and if one is still missing the call is skipped.
-      const isUsable = (v) =>
-        v !== null &&
-        v !== undefined &&
-        String(v).trim() !== "" &&
-        !["null", "undefined", "0"].includes(String(v).trim());
-      const pick = (...values) => values.find(isUsable);
-      const leaveRoomID = pick(
-        localStorage.getItem("presentationRoomID"),
-        joinPresentationRequestData?.roomID,
-        localStorage.getItem("acceptedRoomID"),
-      );
-      const leaveGuid = pick(
-        joinPresentationRequestData?.guid,
-        joinPresentationRequestData?.uid,
-      );
-      const leaveName = pick(newName, localStorage.getItem("userName"));
+      // Request sent but not admitted yet: leave the presenter's waiting list
       if (!presentationJoinApprovedData) {
-        if (leaveRoomID && leaveGuid && leaveName) {
-          dispatch(
-            leavePresenterViewMainApi(
-              navigate,
-              t,
-              {
-                RoomID: String(leaveRoomID),
-                UserGUID: String(leaveGuid),
-                Name: String(leaveName),
-              },
-              1,
-            ),
-          );
-        } else {
-          console.error(
-            "LeavePresenterView not sent — missing RoomID, UserGUID or Name",
-            { leaveRoomID, leaveGuid, leaveName },
-          );
-        }
+        dispatch(leavePresentationWaitingRoomMainApi(navigate, t));
       }
       dispatch(presentationJoinFlowFlag(false));
       dispatch(maxParticipantVideoCallPanel(false));

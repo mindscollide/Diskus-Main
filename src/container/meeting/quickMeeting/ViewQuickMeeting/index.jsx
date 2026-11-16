@@ -73,6 +73,7 @@ import {
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
 import { useSnackbar } from "../../../../components/elements";
 import { meetingApi } from "../../../../commen/apis/Api_ends_points";
+import { sendWaitingRoomLeaveOnUnload } from "../../../../commen/functions/waitingRoom";
 import { isSharedScreenCall } from "../../../../commen/apis/Api_config";
 import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions";
 import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
@@ -916,6 +917,8 @@ const ModalView = ({ ModalTitle }) => {
 
       // Leave meeting logic (only if not already handled)
       if (isMeeting) {
+        // Still in the meeting-video waiting room: leave it with a keepalive request
+        sendWaitingRoomLeaveOnUnload();
         dispatch(presenterViewGlobalState(0, false, false, false));
 
         setEndMeetingConfirmationModal(false);

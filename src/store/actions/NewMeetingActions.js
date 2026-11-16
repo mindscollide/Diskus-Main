@@ -113,6 +113,12 @@ import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
 import { getMeetingByCommitteeIdApi } from "./Committee_actions";
 import { getMeetingbyGroupIdApi } from "./Groups_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import {
+  buildWaitingRoomLeaveRequest,
+  clearWaitingRoomState,
+  getWaitingRoomState,
+} from "../../commen/functions/waitingRoom";
+import { isUsableVideoId } from "../../commen/functions/videoCallIds";
 import { logVideoError } from "../../components/layout/talk/videoLog";
 import store from "../store";
 import { rememberPresentationRoomID } from "../../commen/functions/presentationRoom";
@@ -7399,6 +7405,8 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase(),
                 )
             ) {
+              // Left the meeting: no waiting room is left to leave
+              clearWaitingRoomState();
               let searchData = {
                 Date: "",
                 Title: "",
@@ -8217,6 +8225,19 @@ const leaveMeetingVideoFail = (message) => {
   };
 };
 
+// Opens the presentation panel after leaving the call; a waiting user's panel sends JoinPresentationRequest itself
+const openPresentationRoomAfterLeave = (dispatch, wasWaiting) => {
+  const savedRoomID = localStorage.getItem("presentationRoomID");
+  const roomID =
+    wasWaiting && isUsableVideoId(savedRoomID)
+      ? savedRoomID
+      : localStorage.getItem("acceptedRoomID");
+  localStorage.setItem("presentationRoomID", String(roomID));
+  if (wasWaiting) sessionStorage.setItem("presentationAutoJoin", "true");
+  dispatch(presentationJoinFlowFlag(true));
+  dispatch(maxParticipantVideoCallPanel(true));
+};
+
 const LeaveMeetingVideo = (
   Data,
   navigate,
@@ -8227,9 +8248,21 @@ const LeaveMeetingVideo = (
   setLeaveMeetingVideoForOneToOneOrGroup,
 ) => {
   return async (dispatch) => {
+    // Still in the meeting-video waiting room: leave with LeaveMeetingVideoWaitingRoom instead
+    const waitingRequest = buildWaitingRoomLeaveRequest(
+      getWaitingRoomState("meetingVideo"),
+    );
     let form = new FormData();
-    form.append("RequestMethod", leaveMeetingVideo.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      waitingRequest
+        ? waitingRequest.requestMethod
+        : leaveMeetingVideo.RequestMethod,
+    );
+    form.append(
+      "RequestData",
+      JSON.stringify(waitingRequest ? waitingRequest.data : Data),
+    );
     axiosInstance
       .post(meetingApi, form)
       .then(async (response) => {
@@ -8247,6 +8280,18 @@ const LeaveMeetingVideo = (
             ),
           );
         } else if (response.data.responseCode === 200) {
+          if (waitingRequest && response.data.responseResult) {
+            // Map waiting-room codes onto LeaveMeetingVideo ones: _01/_04 success, _02 invalid, _03/_05 failure
+            const waitingCode = String(
+              response.data.responseResult.responseMessage,
+            ).match(/_0(\d)$/)?.[1];
+            const mappedCode = { 1: 1, 4: 1, 2: 2, 3: 3, 5: 3 }[waitingCode] ?? 3;
+            response.data.responseResult.responseMessage = `Meeting_MeetingServiceManager_LeaveMeetingVideo_0${mappedCode}`;
+            if (mappedCode === 1) {
+              response.data.responseResult.isExecuted = true;
+              clearWaitingRoomState();
+            }
+          }
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
@@ -8308,12 +8353,7 @@ const LeaveMeetingVideo = (
                   // waiting room instead (same as clicking "Join Presentation").
                   await dispatch(videoIconOrButtonState(false));
                   await dispatch(participantVideoButtonState(false));
-                  localStorage.setItem(
-                    "presentationRoomID",
-                    String(localStorage.getItem("acceptedRoomID")),
-                  );
-                  dispatch(presentationJoinFlowFlag(true));
-                  dispatch(maxParticipantVideoCallPanel(true));
+                  openPresentationRoomAfterLeave(dispatch, Boolean(waitingRequest));
                 } else if (flag === 3) {
                   await setLeaveMeetingVideoForOneToOneOrGroup(false);
                   setJoiningOneToOneAfterLeavingPresenterView(true);
@@ -8396,12 +8436,7 @@ const LeaveMeetingVideo = (
                 // instead of joining directly.
                 await dispatch(videoIconOrButtonState(false));
                 await dispatch(participantVideoButtonState(false));
-                localStorage.setItem(
-                  "presentationRoomID",
-                  String(localStorage.getItem("acceptedRoomID")),
-                );
-                dispatch(presentationJoinFlowFlag(true));
-                dispatch(maxParticipantVideoCallPanel(true));
+                openPresentationRoomAfterLeave(dispatch, Boolean(waitingRequest));
               } else if (flag === 3) {
                 await setLeaveMeetingVideoForOneToOneOrGroup(false);
                 setJoiningOneToOneAfterLeavingPresenterView(true);

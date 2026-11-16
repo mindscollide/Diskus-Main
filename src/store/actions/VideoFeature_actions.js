@@ -14,6 +14,12 @@ import {
   startPresenterView,
   stopPresenterView,
 } from "../../commen/apis/Api_config";
+import {
+  buildWaitingRoomLeaveRequest,
+  clearWaitingRoomState,
+  getWaitingRoomState,
+  setWaitingRoomState,
+} from "../../commen/functions/waitingRoom";
 import { meetingApi, videoApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
@@ -666,6 +672,14 @@ const getParticipantMeetingJoinMainApi = (
                   response.data.responseResult.guid,
                 );
                 sessionStorage.setItem("isWaiting", true);
+                // Remember the waiting room so every leave path can pick the waiting-room API
+                setWaitingRoomState({
+                  type: "meetingVideo",
+                  meetingID: Number(
+                    data?.MeetingId ?? localStorage.getItem("currentMeetingID"),
+                  ),
+                  guid: response.data.responseResult.guid,
+                });
               }
 
               // await dispatch(maxHostVideoCallPanel(false));
@@ -2643,6 +2657,53 @@ const leavePresenterViewMainApi = (
       });
   };
 };
+let presentationWaitingLeaveInFlight = false;
+
+// LeavePresentationWaitingRoom: only does something while this tab is in the presentation waiting room
+const leavePresentationWaitingRoomMainApi = (navigate, t) => {
+  return async (dispatch) => {
+    const request = buildWaitingRoomLeaveRequest(
+      getWaitingRoomState("presentation"),
+    );
+    if (!request || presentationWaitingLeaveInFlight) return;
+    presentationWaitingLeaveInFlight = true;
+    const send = () => {
+      const form = new FormData();
+      form.append("RequestMethod", request.requestMethod);
+      form.append("RequestData", JSON.stringify(request.data));
+      return axiosInstance.post(meetingApi, form);
+    };
+    try {
+      let response = await send();
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        response = await send();
+      }
+      const message = String(
+        response?.data?.responseResult?.responseMessage || "",
+      ).toLowerCase();
+      // _01 success and _04 already removed both mean the user is out of the waiting room
+      if (
+        response?.data?.responseCode === 200 &&
+        (message.includes("leavepresentationwaitingroom_01") ||
+          message.includes("leavepresentationwaitingroom_04"))
+      ) {
+        clearWaitingRoomState();
+        dispatch(presentationJoinFlowFlag(false));
+        dispatch(maxParticipantVideoCallPanel(false));
+      }
+    } catch (error) {
+      logVideoError(
+        "leavePresentationWaitingRoomMainApi",
+        "request or response handling failed",
+        error,
+      );
+    } finally {
+      presentationWaitingLeaveInFlight = false;
+    }
+  };
+};
+
 const leavePresenterViewMainApiTest = (
   navigate,
   t,
@@ -3525,6 +3586,7 @@ export {
   stopPresenterViewMainApiTest,
   joinPresenterViewMainApi,
   leavePresenterViewMainApi,
+  leavePresentationWaitingRoomMainApi,
   leavePresenterViewMainApiTest,
   stopMeetingVideoByPresenter,
   presenterStartedMainFlag,

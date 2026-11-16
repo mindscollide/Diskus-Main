@@ -39,6 +39,7 @@ import Attendence from "./Attendence/Attendence";
 import ViewMeetingDetails from "./meetingDetails/ViewMeetingDetails";
 import ParticipantVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
 import { cleareAllState } from "../../../../store/actions/NewMeetingActions";
+import { sendWaitingRoomLeaveOnUnload } from "../../../../commen/functions/waitingRoom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -547,25 +548,29 @@ const ViewMeetingModal = () => {
       if (isMeeting) {
         let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
         let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+        // Still in a waiting room (meeting video or presentation): leave it with a keepalive request
+        const leftWaitingRoom = sendWaitingRoomLeaveOnUnload();
 
         if (isWaiting || isMeetingVideo) {
-          await dispatch(
-            LeaveMeetingVideo(
-              {
-                RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
-                ),
-                UserGUID: String(
-                  isMeetingVideoHostCheck ? isGuid : participantUID,
-                ),
-                Name: String(newName),
-                IsHost: isMeetingVideoHostCheck ? true : false,
-                MeetingID: Number(meetingVideoID),
-              },
-              navigate,
-              t,
-            ),
-          );
+          if (!leftWaitingRoom) {
+            await dispatch(
+              LeaveMeetingVideo(
+                {
+                  RoomID: String(
+                    isMeetingVideoHostCheck ? newRoomId : participantRoomId,
+                  ),
+                  UserGUID: String(
+                    isMeetingVideoHostCheck ? isGuid : participantUID,
+                  ),
+                  Name: String(newName),
+                  IsHost: isMeetingVideoHostCheck ? true : false,
+                  MeetingID: Number(meetingVideoID),
+                },
+                navigate,
+                t,
+              ),
+            );
+          }
 
           localStorage.removeItem("currentHostUserID");
           localStorage.removeItem("isHost");

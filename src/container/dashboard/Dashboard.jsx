@@ -5,6 +5,10 @@ import {
   clearPresentationRoom,
   savePresentationRoom,
 } from "../../commen/functions/presentationRoom";
+import {
+  clearWaitingRoomState,
+  getWaitingRoomState,
+} from "../../commen/functions/waitingRoom";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "@/container/meeting/commonComponents/closeMeetingTab/CancelModal";
 import {
@@ -687,7 +691,7 @@ const Dashboard = () => {
           console.log("mqtt mqmqmqmqmqmq", payload);
           setPresenterForOneToOneOrGroup(true);
           await dispatch(nonMeetingVideoGlobalModal(true));
-        } else if (isMeetingVideo) {
+        } else if (isMeetingVideo || getWaitingRoomState("meetingVideo")) {
           console.log("mqtt mqmqmqmqmqmq");
           localStorage.setItem("isWebCamEnabled", true);
           localStorage.setItem("isMicEnabled", true);
@@ -1631,6 +1635,19 @@ const Dashboard = () => {
               }
             } else if (
               data.payload.message.toLowerCase() ===
+              "MEETING_VIDEO_PARTICIPANT_LEFT_WAITING_ROOM".toLowerCase()
+            ) {
+              // Someone left the meeting-video waiting room: drop them from the host's waiting list
+              dispatch(
+                participantAcceptandReject([
+                  {
+                    guid: data.payload.guid,
+                    meetingID: data.payload.meetingID,
+                  },
+                ]),
+              );
+            } else if (
+              data.payload.message.toLowerCase() ===
               "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
             ) {
               dispatch(
@@ -1890,6 +1907,7 @@ const Dashboard = () => {
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
                 sessionStorage.removeItem("isWaiting");
+                clearWaitingRoomState();
 
                 localStorage.setItem("isMeetingVideo", false);
                 dispatch(globalNavigatorVideoStream(1));
@@ -1904,6 +1922,8 @@ const Dashboard = () => {
             ) {
               // dispatch(maxParticipantVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
+              // Admitted: no longer in the waiting room
+              clearWaitingRoomState();
               dispatch(globalNavigatorVideoStream(2));
 
               dispatch(globalStateForAudioStream(true));
@@ -2269,6 +2289,8 @@ const Dashboard = () => {
             ) {
               // CR(0012249): clear the same unconditional signal set above.
               dispatch(activePresentationMeetingID(null));
+              // Presentation is over: nobody is waiting for it any more
+              if (getWaitingRoomState("presentation")) clearWaitingRoomState();
               // stopPresenterView does the real cleanup for anyone who was
               // ALREADY in presenter view (resets raised hands, presenter
               // participants list, audio/video controls, etc.) — this call
@@ -2316,6 +2338,7 @@ const Dashboard = () => {
               // host admits them. Per the API doc, JoinPresenterView should
               // be called ONLY after this arrives (the waiting-room modal's
               // own effect does that).
+              clearWaitingRoomState();
               dispatch(presentationJoinRequestApprovedMqtt(data.payload));
             } else if (
               data.payload.message.toLowerCase() ===
@@ -2333,6 +2356,7 @@ const Dashboard = () => {
               );
               if (declinedUserID === myUserID) {
                 show(t("Presenter-has-declined-your-request"), "info");
+                clearWaitingRoomState();
               }
               dispatch(presentationJoinRequestRejectedMqtt(data.payload));
             } else if (
@@ -2352,6 +2376,7 @@ const Dashboard = () => {
               // Exit the live presenter view the same way stop/leave does
               // elsewhere in this file, then reopen the waiting room so
               // they can request to join again.
+              clearWaitingRoomState();
               dispatch(removedFromPresentationToWaitingRoomMqtt(data.payload));
               dispatch(presenterViewGlobalState(0, false, false, false));
               localStorage.setItem(
@@ -2504,6 +2529,13 @@ const Dashboard = () => {
               // no API re-fetch.
               dispatch(presentationParticipantLeftMqtt(data.payload.uid));
               console.log("Participant Left:", data.payload.uid);
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "PRESENTATION_PARTICIPANT_LEFT_WAITING_ROOM".toLowerCase()
+            ) {
+              // Someone left the presentation waiting room: drop them from the presenter's waiting list and roster
+              dispatch(presentationParticipantLeftMqtt(data.payload.guid));
+              dispatch(presenterLeaveParticipant({ uid: data.payload.guid }));
             } else if (
               data.payload.message.toLowerCase() ===
               "UPCOMING_EVENTS_REMOVE".toLowerCase()

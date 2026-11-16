@@ -13,6 +13,7 @@ import {
 import {
   getParticipantMeetingJoinMainApi,
   incomingVideoCallFlag,
+  leavePresentationWaitingRoomMainApi,
   leavePresenterJoinOneToOneOrOtherCall,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -127,6 +128,8 @@ const initiateVideoCallFail = (message) => {
 
 const InitiateVideoCall = (Data, navigate, t) => {
   return async (dispatch) => {
+    // Starting a call while waiting for a presentation: leave that waiting room
+    dispatch(leavePresentationWaitingRoomMainApi(navigate, t));
     dispatch(initiateVideoCallInitial());
     let form = new FormData();
     form.append("RequestMethod", initiateVideoCall.RequestMethod);
@@ -274,6 +277,10 @@ const videoCallResponseFail = (message) => {
 
 const VideoCallResponse = (Data, navigate, t) => {
   return async (dispatch) => {
+    // Accepting a call while waiting for a presentation: leave that waiting room
+    if (Data?.CallStatusID === 1) {
+      dispatch(leavePresentationWaitingRoomMainApi(navigate, t));
+    }
     dispatch(videoCallResponseInitial());
     let form = new FormData();
     form.append("RequestMethod", videoCallResponse.RequestMethod);

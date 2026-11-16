@@ -16,6 +16,7 @@ import {
   takePendingNotificationClick,
 } from "../../../../commen/functions/pendingNotificationClick";
 import { useNavigate } from "react-router-dom";
+import { getWaitingRoomState } from "../../../../commen/functions/waitingRoom";
 import {
   MeetingContext,
   useMeetingContext,
@@ -23,6 +24,7 @@ import {
 import {
   isSharedScreenTriggeredApi,
   leavePresenterViewMainApi,
+  leavePresentationWaitingRoomMainApi,
   participantWaitingListBox,
   screenShareTriggeredGlobally,
   setRaisedUnRaisedParticiant,
@@ -131,6 +133,9 @@ const NewEndMeetingModal = () => {
       localStorage.getItem("isSharedSceenEnable"),
     );
 
+    // Leaving while still in the presentation waiting room
+    await dispatch(leavePresentationWaitingRoomMainApi(navigate, t));
+
     if (presenterViewHostFlag || presenterViewJoinFlag) {
       let isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck"),
@@ -201,7 +206,7 @@ const NewEndMeetingModal = () => {
           MeetingID: Number(meetingID),
         };
         await dispatch(LeaveMeetingVideo(Data, navigate, t, 4));
-      } else if (isMeetingVideo) {
+      } else if (isMeetingVideo || getWaitingRoomState("meetingVideo")) {
         // For Stop Screen Share If Non Host Stop in Meeting Video
         if (isZoomEnabled) {
           if (isSharedSceenEnable && !globallyScreenShare) {
