@@ -52,6 +52,7 @@ import { getCurrentDateTimeUTC } from "@/commen/functions/date_formater";
 import VotingPollAgendaIntiminationModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
 import CastVoteAgendaModal from "@/container/meeting/advanceMeeting/viewAdvanceMeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import PollsCastVoteInitimationModal from "@/container/meeting/commonComponents/pollsCastVoteInitimationModal/pollsCastVoteInitimationModal";
+import { meetingAgendaEndedMQTT } from "@/store/actions/MeetingAgenda_action";
 import { useGroupsContext } from "@/context/GroupsContext";
 import { webnotificationGlobalFlag } from "@/store/actions/UpdateUserNotificationSetting";
 import { useResolutionContext } from "@/context/ResolutionContext";
@@ -830,8 +831,12 @@ const ViewMeetingModal = () => {
       ) {
         if (
           Number(localStorage.getItem("currentMeetingID")) ===
-          AgendaVotingModalStartedData?.meetingID
+          Number(AgendaVotingModalStartedData?.meetingID)
         ) {
+          // A previous "voting ended" payload is only cleared by the intimation
+          // modal itself. If it ended while the modal was closed it stays in
+          // Redux, and the modal's ended-check would close the new one on mount.
+          dispatch(meetingAgendaEndedMQTT(null));
           dispatch(AgendaPollVotingStartedAction(true));
         }
       }

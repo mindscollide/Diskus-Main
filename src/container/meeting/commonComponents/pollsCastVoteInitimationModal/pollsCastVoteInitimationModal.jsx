@@ -46,7 +46,7 @@ const PollsCastVoteInitimationModal = () => {
           localStorage.getItem("meetingTitle") !== null
             ? localStorage.getItem("meetingTitle")
             : "";
-        if (newPollMeeting.meetingID === currentMeetingActive) {
+        if (Number(newPollMeeting.meetingID) === currentMeetingActive) {
           let pollData = {
             title: newPollMeeting.polls.pollTitle,
             pollId: newPollMeeting.polls.pollID,
