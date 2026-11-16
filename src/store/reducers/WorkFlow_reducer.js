@@ -33,6 +33,7 @@ const initialState = {
   validateEncryptedStringSignatureDataResponse: null,
   addedAsMinuteReviwerMqttPayload: null,
   signeeCounterData: null,
+  updateReviewMinutesByReviewer: null
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -634,6 +635,13 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       return {
         ...state,
         addedAsMinuteReviwerMqttPayload: action.response,
+      };
+    }
+
+    case actions.UPDATE_MINUTE_REVIEW_BY_REVIEWER: {
+      return {
+        ...state,
+        updateReviewMinutesByReviewer: action.response,
       };
     }
 

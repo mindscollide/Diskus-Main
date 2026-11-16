@@ -43,6 +43,8 @@ export const useMeetingLinkActions = () => {
         isAgendaContributor:
           Number(attendeeId) === PARTICIPANT_ROLE.AGENDA_CONTRIBUTOR,
         isPrimaryOrganizer: false,
+        // the "view published minutes" email link only exists for published minutes
+        isMinutePublished: viewTab === "minutes" ? true : data.isMinutePublished,
         isChat,
         isVideoCall: isVideo,
         talkGroupID: talkGroupId,

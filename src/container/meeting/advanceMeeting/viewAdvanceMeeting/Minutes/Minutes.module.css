@@ -335,7 +335,6 @@ body[dir="rtl"] .Leftpolygon {
   align-items: center;
   justify-content: center;
   padding: 0 !important;
-  margin-right: 10px;
 }
 
 .Button_Next {
@@ -1016,4 +1015,5 @@ span.reviewer-count {
 .button-block {
   display: flex;
   margin-bottom: 15px;
+  gap: 10px;
 }

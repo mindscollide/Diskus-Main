@@ -34,11 +34,12 @@ const CustomModal = ({
           size={size}
           centered={centered ?? true}
           className={className}
+
           dialogClassName={dialogClassName}
           animation={true}
           fullscreen={fullscreen}
           contentClassName={contentClassName}>
-          <Modal.Header className={`${modalHeaderClassName} ${"border-0"}`}>
+          <Modal.Header closeButton={closeButton} className={`${modalHeaderClassName} ${"border-0"}`}>
             <Modal.Title className={modalTitleClassName}>
               {ModalTitle}
             </Modal.Title>

@@ -137,3 +137,7 @@
 .downloadButton:disabled {
   background: #ccc !important;
 }
+
+.not-supported{
+  width: 22px; 
+}

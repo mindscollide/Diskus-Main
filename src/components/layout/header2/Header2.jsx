@@ -14,6 +14,7 @@ import "./Header.css";
 import "../../../i18n.js";
 import { useTranslation } from "react-i18next";
 import { userLogOutApiFunc } from "../../../store/actions/Auth_Sign_Out";
+import { toggleViewMeetingModal } from "../../../store/actions/ModalStates_actions";
 import {
   LeaveMeetingVideo,
   ProposedMeetingViewFlagAction,
@@ -517,6 +518,7 @@ const Header2 = ({ isVideo }) => {
   const RecentFilesTab = async () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
@@ -532,6 +534,7 @@ const Header2 = ({ isVideo }) => {
   const RecentFilesTabNoCall = async () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("setTableView", 4);
@@ -557,6 +560,17 @@ const Header2 = ({ isVideo }) => {
     // setCancelConfirmationModal/setGoBackCancelModal args left undefined.
     // Every Sidebar.js call site already passes all 8 args in the correct
     // order — this now matches that.
+    // A view-meeting screen that is not an ongoing meeting (e.g. the Minutes tab of
+    // an ended meeting): the Diskus logo goes straight to the dashboard. The shared
+    // sidebar function would instead pop the unsaved-changes confirmation for the
+    // Minutes / Actions / Polls tabs; only an ongoing meeting (status 10, handled in
+    // handleClickLogo) asks the leave-meeting question.
+    if (viewAdvanceMeetingModal && Number(editorRole?.status) !== 10) {
+      dispatch(toggleViewMeetingModal(false));
+      setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
+      navigate(getHomeRoute());
+      return;
+    }
     SideBarGlobalNavigationFunctionNew(
       dispatch,
       navigate,
@@ -572,6 +586,7 @@ const Header2 = ({ isVideo }) => {
   const handleMeetingSidebarSettings = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "setting");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("navigateLocation", "setting");
@@ -586,7 +601,9 @@ const Header2 = ({ isVideo }) => {
 
   const handleMeetingSidebarSettingsNoCall = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
-      // User is in advance meeting modal and meeting is ongoing
+      // User is in advance meeting modal and meeting is ongoing. The leave modal
+      // reads this key to know where to go after "Yes".
+      localStorage.setItem("navigateLocation", "setting");
       dispatch(showEndMeetingModal(true));
     } else {
       navigate("/Diskus/setting");
@@ -596,6 +613,7 @@ const Header2 = ({ isVideo }) => {
   const handleMeetingPendingApprovals = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "Minutes");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("navigateLocation", "Minutes");
@@ -610,7 +628,9 @@ const Header2 = ({ isVideo }) => {
 
   const handleMeetingPendingApprovalsNoCall = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
-      // User is in advance meeting modal and meeting is ongoing
+      // User is in advance meeting modal and meeting is ongoing. The leave modal
+      // reads this key to know where to go after "Yes".
+      localStorage.setItem("navigateLocation", "Minutes");
       dispatch(showEndMeetingModal(true));
     } else {
       navigate("/Diskus/Minutes");
@@ -620,6 +640,7 @@ const Header2 = ({ isVideo }) => {
   const handleMeetingSidebarFAQ = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "faq's");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("navigateLocation", "faq's");
@@ -636,7 +657,9 @@ const Header2 = ({ isVideo }) => {
     if (location.pathname.includes("/Admin")) {
       navigate("/Admin/faq's");
     } else if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
-      // Check if user is in advance meeting modal and meeting is ongoing
+      // Check if user is in advance meeting modal and meeting is ongoing.
+      // Without this the leave modal had no destination to go to after "Yes".
+      localStorage.setItem("navigateLocation", "faq's");
       dispatch(showEndMeetingModal(true));
     } else {
       navigate("/Diskus/faq's");

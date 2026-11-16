@@ -8411,7 +8411,7 @@ td.ant-table-column-sort {
    react-multi-date-picker. The triangle always points right (border-left) and is
    rotated for the "previous" arrow; in RTL the previous arrow sits on the right, so the
    rotations swap. */
-body .rmdp-wrapper .rmdp-arrow {
+body .rmdp-wrapper :is(.rmdp-left, .rmdp-right) .rmdp-arrow {
   border: none !important;
   border-top: 6px solid transparent !important;
   border-bottom: 6px solid transparent !important;
@@ -8443,4 +8443,23 @@ span.userstatus-signal-PublishedPolls,
 span.userstatus-signal-Unpublished,
 span.userstatus-signal-disabled {
   flex: 0 0 10px;
+}
+
+/* Time picker plugin (hour / minute / AM-PM spinners): its up/down arrows are the
+   library's own small chevrons (.rmdp-up / .rmdp-down), not the triangles of the month
+   header above, and the Dashboard css files' unscoped ".rmdp-arrow" rules must not
+   turn them into triangles. */
+.rmdp-time-picker .rmdp-arrow {
+  border: solid #6172d6 !important;
+  border-width: 0 2px 2px 0 !important;
+  width: 3px !important;
+  height: 3px !important;
+  padding: 2px !important;
+  z-index: auto;
+}
+.rmdp-time-picker .rmdp-up i {
+  transform: rotate(-135deg) !important;
+}
+.rmdp-time-picker .rmdp-down i {
+  transform: rotate(45deg) !important;
 }

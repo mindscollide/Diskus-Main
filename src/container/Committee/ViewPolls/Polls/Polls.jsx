@@ -377,14 +377,12 @@ const Polls = ({ committeeStatus }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      align: "center",
+      align: CurrentLanguage === "ar" ? "right" : "left",
       width: "120px",
       ...statusFilterProps,
       render: (text, record) => (
         <PollStatusBadge
-          pollStatusId={record.pollStatus?.pollStatusId}
-          center
-        />
+          pollStatusId={record.pollStatus?.pollStatusId} />
       ),
     },
     {
@@ -594,7 +592,6 @@ const Polls = ({ committeeStatus }) => {
                     pageSize={pageSize}
                     total={totalRecords}
                     showSizer={totalRecords >= 9 ? true : false}
-                    className={styles["PaginationStyle-Resolution"]}
                     onChange={handleChangePagination}
                   />
                 </Col>

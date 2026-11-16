@@ -7577,6 +7577,13 @@ const LeaveCurrentMeeting = (navigate, t, Data, routePath, object) => {
                     );
                   } else if (navigateLocation === "Minutes") {
                     navigate("/Diskus/Minutes");
+                  } else if (navigateLocation === "setting") {
+                    navigate("/Diskus/setting");
+                  } else if (navigateLocation === "faq's") {
+                    navigate("/Diskus/faq's");
+                  } else if (navigateLocation === "dataroomRecentAddedFiles") {
+                    localStorage.setItem("setTableView", 4);
+                    navigate("/Diskus/dataroom");
                   } else {
                     await dispatch(
                       listOfMeetingsApi(navigate, t, searchData, "", {}),

@@ -35,7 +35,6 @@ const createWorkflow_init = () => {
 };
 
 const createWorkflow_success = (response, message) => {
-  
   return {
     type: actions.CREATESIGNATUREFLOW_SUCCESS,
     response: response,
@@ -51,7 +50,6 @@ const createWorkflow_fail = (message) => {
 };
 // Create WorkFlow APi
 const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
-
   return (dispatch) => {
     dispatch(createWorkflow_init());
     let form = new FormData();
@@ -73,7 +71,6 @@ const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
                   "WorkFlow_WorkFlowServiceManager_CreateSignatureFlow_01".toLowerCase(),
                 )
             ) {
-              
               let reponseData = JSON.stringify(
                 response.data.responseResult.signatureDocument.documentID,
               );
@@ -209,8 +206,6 @@ const saveWorkflowApi = (
   status,
   sendDocumentData,
 ) => {
-  
-
   return (dispatch) => {
     dispatch(saveWorkflow_init());
     let form = new FormData();
@@ -366,7 +361,6 @@ const getWorkFlowByFlodID_fail = (message) => {
 };
 
 const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t, route) => {
-
   return (dispatch) => {
     dispatch(getWorkFlowByFlodID_init());
     let form = new FormData();
@@ -479,7 +473,6 @@ const addUpdateFieldValueApi = (
   sendDocumentData,
   UpdateActorBundle,
 ) => {
-
   return (dispatch) => {
     dispatch(addUpdateFieldValue_init());
     let form = new FormData();
@@ -618,7 +611,6 @@ const saveSignatureDocumentApi = (
   status,
   sendDocumentData,
 ) => {
-
   return (dispatch) => {
     dispatch(saveSignatureDocument_init());
     let form = new FormData();
@@ -643,8 +635,6 @@ const saveSignatureDocumentApi = (
                 )
             ) {
               if (Number(status) === 2) {
-                
-
                 dispatch(sendDocumentIdApi(sendDocumentData, navigate, t));
               } else {
                 dispatch(
@@ -654,7 +644,6 @@ const saveSignatureDocumentApi = (
                   ),
                 );
               }
-              
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -742,7 +731,6 @@ const getAnnotationDataRoom_fail = (message) => {
   };
 };
 const getAnnoationSignatrueFlow = (navigate, t, data) => {
-
   return async (dispatch) => {
     dispatch(getAnnotationDataRoom_init());
     let form = new FormData();
@@ -834,8 +822,6 @@ const addAnnoationSignatrueFlow = (
   sendDocumentData,
   UpdateActorBundle,
 ) => {
-  
-
   return async (dispatch) => {
     dispatch(addAnnotationDataRoom_init());
     let form = new FormData();
@@ -904,7 +890,6 @@ const addAnnoationSignatrueFlow = (
                   UpdateActorBundleStatusApi(navigate, t, UpdateActorBundle),
                 );
               } else {
-                
                 dispatch(
                   saveSignatureDocumentApi(
                     saveSignatureDocument,
@@ -992,8 +977,6 @@ const getAllFieldsByWorkflowIdApi = (
   creatorID,
   route,
 ) => {
-
-
   return (dispatch) => {
     dispatch(getAllFieldsByWorkflowId_init());
     let form = new FormData();
@@ -1115,7 +1098,6 @@ const sendDocument_fail = (message) => {
 };
 
 const sendDocumentIdApi = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(sendDocument_init());
     let form = new FormData();
@@ -1195,7 +1177,6 @@ const getAllSignaturesDocumentsforCreator_fail = (message) => {
   };
 };
 const getAllSignaturesDocumentsforCreatorApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(getAllSignaturesDocumentsforCreator_init());
     let form = new FormData();
@@ -1296,7 +1277,6 @@ const getAllPendingApprovalsStats_fail = (message) => {
 };
 
 const getAllPendingApprovalsStatsApi = (navigate, t) => {
-
   return (dispatch) => {
     dispatch(getAllPendingApprovalsStats_init());
     let form = new FormData();
@@ -1383,7 +1363,6 @@ const getAllPendingApprovalsSignatures_fail = (message) => {
 };
 
 const getAllPendingApprovalsSignaturesApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(getAllPendingApprovalsSignatures_init());
     let form = new FormData();
@@ -1483,7 +1462,6 @@ const getAllPendingApprovalStatus_fail = (message) => {
 };
 
 const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
-
   return (dispatch) => {
     dispatch(getAllPendingApprovalStatus_init());
     let form = new FormData();
@@ -1517,7 +1495,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                   loaderFlag,
                 ),
               );
-              
+
               if (Data.IsCreator) {
                 let Data = {
                   sRow: 0,
@@ -1531,7 +1509,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                 );
               } else {
                 let Data2 = { sRow: 0, Length: 10 };
-                
+
                 await dispatch(
                   getAllPendingApprovalsSignaturesApi(navigate, t, Data2),
                 );
@@ -1599,7 +1577,6 @@ const declineReasonApi = (
   setReasonModal,
   setDeclineConfirmationModal,
 ) => {
-
   return (dispatch) => {
     dispatch(declineReason_init());
     let form = new FormData();
@@ -1683,7 +1660,6 @@ const deleteSignatureFlowDocument_fail = (message) => {
   };
 };
 const deleteSignatureFlowDocumentApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(deleteSignatureFlowDocument_init());
     let form = new FormData();
@@ -1810,7 +1786,6 @@ const getAllSignatoriesStatusWise_Api = (
   Data,
   setSignatoriesList,
 ) => {
-
   return (dispatch) => {
     dispatch(getAllSignatoriesStatusWise_init());
     let form = new FormData();
@@ -1905,7 +1880,6 @@ const UpdateActorBundleStatus_fail = (message) => {
 };
 
 const UpdateActorBundleStatusApi = (navigate, t, Data) => {
-
   return (dispatch) => {
     dispatch(UpdateActorBundleStatus_init());
     let form = new FormData();
@@ -2000,7 +1974,6 @@ const getDashbardPendingApprovalData_fail = (message = "") => {
   };
 };
 const getDashbardPendingApprovalDataApi = (navigate, t) => {
-
   return async (dispatch) => {
     await dispatch(getDashbardPendingApprovalData_init());
     let form = new FormData();
@@ -2099,7 +2072,6 @@ const getSignatureFileAnnotation_fail = (message) => {
 };
 
 const getSignatureFileAnnotationApi = (navigate, t, Data) => {
-
   return async (dispatch) => {
     dispatch(getSignatureFileAnnotation_init());
     let form = new FormData();
@@ -2197,7 +2169,6 @@ const addUpdateSignatureFileAnnotationApi = (
   // persistSignedPdfThenFinish below for why this matters.
   saveSignatureDocument,
 ) => {
-
   return async (dispatch) => {
     dispatch(addUpdateSignatureFileAnnotation_init());
 
@@ -2387,7 +2358,6 @@ const validateEncryptedMinutesReviewer_clear = () => {
 };
 
 const validateEncryptedMinutesReviewerApi = (Data, navigate, t) => {
-
   return (dispatch) => {
     dispatch(validateEncryptedMinutesReviewer_init());
     let form = new FormData();
@@ -2519,7 +2489,6 @@ const validateEncryptedStringSignatureData_clear = () => {
 };
 
 const validateEncryptedStringSignatureDataApi = (Data, navigate, t, value) => {
-
   return (dispatch) => {
     dispatch(validateEncryptedStringSignatureData_init());
     let form = new FormData();
@@ -2671,7 +2640,14 @@ const clearMinuteReviewerMqtt = (response) => {
   };
 };
 
+const updateMinuteReviewByReviewer = (response) => {
+  return {
+    type: actions.UPDATE_MINUTE_REVIEW_BY_REVIEWER,
+    response,
+  };
+};
 export {
+  updateMinuteReviewByReviewer,
   SignatureDocumentStatusChangeSignees,
   SignatureDocumentStatusChange,
   SignatureDocumentActionByMe,

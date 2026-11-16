@@ -152,6 +152,16 @@ export const useMeetingListActions = ({
         return;
       }
 
+      // Minutes opened from an email link: the view's tab effect resets an ended
+      // meeting to "meetingDetails" unless the route id says Minutes (5), exactly
+      // like handleClickViewMinutes does, and the Minutes tab needs the flag to load
+      // the published minutes.
+      if (viewer === "minutes") {
+        dispatch(emailRouteID(5));
+        if (record.isMinutePublished !== undefined) {
+          localStorage.setItem("isMinutePublished", record.isMinutePublished);
+        }
+      }
       dispatch(setCurrentMeetingInfo({ meetingID: record.pK_MDID }));
       dispatch(toggleViewMeetingModal(true));
       dispatch(setViewTab(viewer));
