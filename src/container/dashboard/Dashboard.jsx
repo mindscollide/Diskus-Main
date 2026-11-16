@@ -248,6 +248,7 @@ import {
   SignatureDocumentStatusChange,
   SignatureDocumentStatusChangeSignees,
   signeeCreatorCount,
+  updateMinuteReviewByReviewer,
 } from "../../store/actions/workflow_actions";
 import useSnackbar from "../../components/elements/snack_bar/useSnackbar";
 import {
@@ -2329,7 +2330,7 @@ const Dashboard = () => {
               const myUserID = String(localStorage.getItem("userID"));
               const declinedUserID = String(
                 data.payload?.userID ||
-                  String(data.payload?.uid || "").split("_").pop(),
+                String(data.payload?.uid || "").split("_").pop(),
               );
               if (declinedUserID === myUserID) {
                 show(t("Presenter-has-declined-your-request"), "info");
@@ -5539,607 +5540,619 @@ const Dashboard = () => {
             return prev;
           });
         }
+        if (data.payload.message.toLowerCase().includes("MINUTE_REVIEW_ADDED".toLowerCase())) {
+          dispatch(updateMinuteReviewByReviewer(data.payload));
 
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("SIGNATURE_DOCUMENT_ACTION_COUNT_UPDATE".toLowerCase())
-        ) {
-          // Destructure the nested count data
-          const {
-            payload: {
-              data: { data: counts },
-            },
-          } = data;
-          // counts = { signed, pending, declined, signedPercentage, pendingPercentage, declinedPercentage }
-          dispatch(signeeCreatorCount(counts));
+          if (data.viewable) {
+            // setNotification({
+            //   notificationShow: true,
+            //   message: changeMQTTJSONOne(
+            //     data.payload
+            //   )
+            // });
+            setNotificationID(id);
+          }
         }
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes(
-              "SIGNATURE_DOCUMENT_ACTION_COUNT_UPDATE_CREATOR".toLowerCase(),
-            )
-        ) {
-          const {
-            payload: {
-              data: { data: counts },
-            },
-          } = data;
-          // counts = { signed, pending, declined, signedPercentage, pendingPercentage, declinedPercentage }
-          dispatch(signeeCreatorCount(counts));
-        }
+      if (
+        data.payload.message
+          .toLowerCase()
+          .includes("SIGNATURE_DOCUMENT_ACTION_COUNT_UPDATE".toLowerCase())
+      ) {
+        // Destructure the nested count data
+        const {
+          payload: {
+            data: { data: counts },
+          },
+        } = data;
+        // counts = { signed, pending, declined, signedPercentage, pendingPercentage, declinedPercentage }
+        dispatch(signeeCreatorCount(counts));
       }
+      if (
+        data.payload.message
+          .toLowerCase()
+          .includes(
+            "SIGNATURE_DOCUMENT_ACTION_COUNT_UPDATE_CREATOR".toLowerCase(),
+          )
+      ) {
+        const {
+          payload: {
+            data: { data: counts },
+          },
+        } = data;
+        // counts = { signed, pending, declined, signedPercentage, pendingPercentage, declinedPercentage }
+        dispatch(signeeCreatorCount(counts));
+      }
+    }
       if (data.action?.toLowerCase() === "Settings".toLowerCase()) {
-        //ORGANIZATION SETTINGS UPDATED MQTT
-        if (data?.message?.toLowerCase() === "organization_settings_updated") {
-          console.log("ORGANIZATION_SETTINGS_UPDATED", data);
-          // Save organization settings to redux
-          if (data.payload?.organizationSettings) {
-            dispatch(
-              setOrganizationSettingUpdateData(
-                data.payload.organizationSettings,
-              ),
-            );
+      //ORGANIZATION SETTINGS UPDATED MQTT
+      if (data?.message?.toLowerCase() === "organization_settings_updated") {
+        console.log("ORGANIZATION_SETTINGS_UPDATED", data);
+        // Save organization settings to redux
+        if (data.payload?.organizationSettings) {
+          dispatch(
+            setOrganizationSettingUpdateData(
+              data.payload.organizationSettings,
+            ),
+          );
 
-            // Example: store fiscal info in localStorage
-            const fiscalStartMonth =
-              data.payload.organizationSettings.fiscalStartMonth;
-            const fiscalYearStartDay =
-              data.payload.organizationSettings.fiscalYearStartDay;
+          // Example: store fiscal info in localStorage
+          const fiscalStartMonth =
+            data.payload.organizationSettings.fiscalStartMonth;
+          const fiscalYearStartDay =
+            data.payload.organizationSettings.fiscalYearStartDay;
 
-            localStorage.setItem("fiscalStartMonth", fiscalStartMonth);
-            localStorage.setItem("fiscalYearStartDay", fiscalYearStartDay);
+          localStorage.setItem("fiscalStartMonth", fiscalStartMonth);
+          localStorage.setItem("fiscalYearStartDay", fiscalYearStartDay);
 
-            console.log(
-              "Fiscal Info Saved:",
-              fiscalStartMonth,
-              fiscalYearStartDay,
-            );
-          }
-        }
-
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("Notification_Marked_As_Read".toLowerCase())
-        ) {
-          setUnReadCountNotification(0);
+          console.log(
+            "Fiscal Info Saved:",
+            fiscalStartMonth,
+            fiscalYearStartDay,
+          );
         }
       }
+
+      if (
+        data.payload.message
+          .toLowerCase()
+          .includes("Notification_Marked_As_Read".toLowerCase())
+      ) {
+        setUnReadCountNotification(0);
+      }
+    }
+    console.log("AUTHORITY_INACTIVE", data);
+
+    // Authority
+    if (data.action.toLowerCase() === "Authority".toLowerCase()) {
       console.log("AUTHORITY_INACTIVE", data);
+    }
 
-      // Authority
-      if (data.action.toLowerCase() === "Authority".toLowerCase()) {
-        console.log("AUTHORITY_INACTIVE", data);
+    // For  Compliance MQTT
+    if (data.action.toLowerCase() === "Compliance".toLowerCase()) {
+      //COMPLIANCE CREATED MQTT
+      if (
+        data.message?.toLowerCase() === "COMPLIANCE_CREATED".toLowerCase()
+      ) {
+        dispatch(complianceCreatedFromMQTT(data.payload));
+      }
+      //COMPLIANCE CHECKLIST ADDED MQTT
+      if (
+        data.message?.toLowerCase() ===
+        "COMPLIANCE_CHECKLIST_ADDED".toLocaleLowerCase()
+      ) {
+        dispatch(complianceChecklistAddedMQTT(data.payload));
+      }
+      //COMPLIANCE CHECKLIST UPDATED MQTT
+      if (
+        data.message?.toLowerCase() ===
+        "COMPLIANCE_CHECKLIST_UPDATED".toLocaleLowerCase()
+      ) {
+        dispatch(complianceChecklistUpdateMQTT(data.payload));
+      }
+      //COMPLIANCE CHECKLIST UPDATED MQTT
+      if (
+        data.message?.toLowerCase() ===
+        "CHECKLIST_DELETED".toLocaleLowerCase()
+      ) {
+        dispatch(complianceChecklistDeletedMQTT(data.payload));
+      }
+      //COMPLIANCE COMPLIANCE UPDATED MQTT
+      if (
+        data.message?.toLowerCase() ===
+        "COMPLIANCE_UPDATED".toLocaleLowerCase()
+      ) {
+        dispatch(complianceUpdateMQTT(data.payload));
       }
 
-      // For  Compliance MQTT
-      if (data.action.toLowerCase() === "Compliance".toLowerCase()) {
-        //COMPLIANCE CREATED MQTT
-        if (
-          data.message?.toLowerCase() === "COMPLIANCE_CREATED".toLowerCase()
-        ) {
-          dispatch(complianceCreatedFromMQTT(data.payload));
-        }
-        //COMPLIANCE CHECKLIST ADDED MQTT
-        if (
-          data.message?.toLowerCase() ===
-          "COMPLIANCE_CHECKLIST_ADDED".toLocaleLowerCase()
-        ) {
-          dispatch(complianceChecklistAddedMQTT(data.payload));
-        }
-        //COMPLIANCE CHECKLIST UPDATED MQTT
-        if (
-          data.message?.toLowerCase() ===
-          "COMPLIANCE_CHECKLIST_UPDATED".toLocaleLowerCase()
-        ) {
-          dispatch(complianceChecklistUpdateMQTT(data.payload));
-        }
-        //COMPLIANCE CHECKLIST UPDATED MQTT
-        if (
-          data.message?.toLowerCase() ===
-          "CHECKLIST_DELETED".toLocaleLowerCase()
-        ) {
-          dispatch(complianceChecklistDeletedMQTT(data.payload));
-        }
-        //COMPLIANCE COMPLIANCE UPDATED MQTT
-        if (
-          data.message?.toLowerCase() ===
-          "COMPLIANCE_UPDATED".toLocaleLowerCase()
-        ) {
-          dispatch(complianceUpdateMQTT(data.payload));
-        }
+      //COMPLIANCE REOPENED MQTT
+      if (
+        data.message?.toLowerCase() ===
+        "REOPEN_COMPLIANCE".toLocaleLowerCase()
+      ) {
+        console.log(data.payload, "REOPENCOMPLIANCE");
+        dispatch(complianceReopenMQTT(data.payload));
+      }
 
-        //COMPLIANCE REOPENED MQTT
-        if (
-          data.message?.toLowerCase() ===
-          "REOPEN_COMPLIANCE".toLocaleLowerCase()
-        ) {
-          console.log(data.payload, "REOPENCOMPLIANCE");
-          dispatch(complianceReopenMQTT(data.payload));
-        }
+      //Compliance OnHold MQTT
+      if (
+        data.message?.toLowerCase() ===
+        "ONHOLD_COMPLIANCE".toLocaleLowerCase()
+      ) {
+        console.log(data.payload, "REOPENCOMPLIANCE");
+        dispatch(complianceReopenMQTT(data.payload));
+      }
 
-        //Compliance OnHold MQTT
-        if (
-          data.message?.toLowerCase() ===
-          "ONHOLD_COMPLIANCE".toLocaleLowerCase()
-        ) {
-          console.log(data.payload, "REOPENCOMPLIANCE");
-          dispatch(complianceReopenMQTT(data.payload));
-        }
+      //TASK MAPPED WITH CHECKLIST MQTT
+      if (
+        data.message?.toLowerCase() ===
+        "TASK_MAPPED_WITH_CHECKLIST".toLocaleLowerCase()
+      ) {
+        console.log(data.payload, "REOPENCOMPLIANCE");
+        dispatch(taskMappedChecklistMQTT(data.payload));
+      }
 
-        //TASK MAPPED WITH CHECKLIST MQTT
-        if (
-          data.message?.toLowerCase() ===
-          "TASK_MAPPED_WITH_CHECKLIST".toLocaleLowerCase()
-        ) {
-          console.log(data.payload, "REOPENCOMPLIANCE");
-          dispatch(taskMappedChecklistMQTT(data.payload));
-        }
+      const viewType = Number(localStorage.getItem("viewType"));
+      const mqttMap = {
+        1: "task_status_changed_for_manager",
+        2: "task_status_changed_for_user",
+      };
+      console.log(mqttMap, "mqttMapmqttMapmqttMapmqttMap");
+      if (data.message?.toLowerCase() === mqttMap[viewType]) {
+        console.log("mqttMapmqttMapmqttMapmqttMap");
 
-        const viewType = Number(localStorage.getItem("viewType"));
-        const mqttMap = {
-          1: "task_status_changed_for_manager",
-          2: "task_status_changed_for_user",
-        };
-        console.log(mqttMap, "mqttMapmqttMapmqttMapmqttMap");
-        if (data.message?.toLowerCase() === mqttMap[viewType]) {
-          console.log("mqttMapmqttMapmqttMapmqttMap");
+        dispatch(taskStatusChangedUserMqtt(data.payload));
+      }
+    }
 
-          dispatch(taskStatusChangedUserMqtt(data.payload));
+    // For Dashboard MQTT
+    if (data.action.toLowerCase() === "Dashboard".toLowerCase()) {
+      // UPCOMING DEADLINE MQTT FOR MANAGER
+      if (
+        data.message?.toLowerCase() ===
+        "UPCOMING_COMPLIANCE_DEADLINE_FOR_MANAGER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 1) {
+          dispatch(UpcomingDeadlineManagerDashboardMqtt(data.payload));
         }
       }
 
-      // For Dashboard MQTT
-      if (data.action.toLowerCase() === "Dashboard".toLowerCase()) {
-        // UPCOMING DEADLINE MQTT FOR MANAGER
-        if (
-          data.message?.toLowerCase() ===
-          "UPCOMING_COMPLIANCE_DEADLINE_FOR_MANAGER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 1) {
-            dispatch(UpcomingDeadlineManagerDashboardMqtt(data.payload));
-          }
-        }
-
-        // UPCOMING DEADLINE MQTT FOR USERS
-        if (
-          data.message?.toLowerCase() ===
-          "UPCOMING_COMPLIANCE_DEADLINE_FOR_USER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 2) {
-            dispatch(UpcomingDeadlineUserDashboardMqtt(data.payload));
-          }
-        }
-
-        // QUARTERLY TASK DASHBOARD MQTT USER
-        if (
-          data.message?.toLowerCase() ===
-          "QUARTERLY_TASK_DASHBOARD_FOR_USER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 2) {
-            dispatch(QuarterlyTaskDashboardUserMqtt(data.payload));
-          }
-        }
-
-        // QUARTERLY TASK DASHBOARD MQTT MANAGER
-        if (
-          data.message?.toLowerCase() ===
-          "QUARTERLY_TASK_DASHBOARD_FOR_MANAGER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 1) {
-            dispatch(QuarterlyTaskDashboardManagerMqtt(data.payload));
-          }
-        }
-
-        // TASK DASHBOARD MQTT USER
-        if (
-          data.message?.toLowerCase() ===
-          "TASK_DASHBOARD_FOR_USER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 2) {
-            dispatch(TasksDashboardForUserMqtt(data.payload));
-          }
-        }
-
-        // TASK DASHBOARD MQTT MANAGER
-        if (
-          data.message?.toLowerCase() ===
-          "TASK_DASHBOARD_FOR_MANAGER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 1) {
-            dispatch(TasksDashboardFormManagerMqtt(data.payload));
-          }
-        }
-
-        // Compliance By MQTT FOR USER
-        if (
-          data.message?.toLowerCase() === "COMPLIANCE_BY_FOR_USER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 2) {
-            dispatch(ComplianceByUserMqtt(data.payload));
-          }
-        }
-
-        // Compliance By MQTT FOR MANAGER
-        if (
-          data.message?.toLowerCase() ===
-          "COMPLIANCE_BY_FOR_MANAGER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 1) {
-            dispatch(ComplianceByManagerMqtt(data.payload));
-          }
-        }
-
-        // QUATERLY SUBMITTED COMPLIANCE MQTT FOR USER
-        if (
-          data.message?.toLowerCase() ===
-          "QUARTERLY_SUBMITTED_COMPLIANCE_FOR_USER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 2) {
-            dispatch(QuarterlySubmittedByUserMqtt(data.payload));
-          }
-        }
-
-        // QUATERLY SUBMITTED COMPLIANCE MQTT FOR MANAGER
-        if (
-          data.message?.toLowerCase() ===
-          "QUARTERLY_SUBMITTED_COMPLIANCE_FOR_MANAGER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 1) {
-            dispatch(QuarterlySubmittedByManagerMqtt(data.payload));
-          }
-        }
-
-        // REOPENED COMPLIANCES MQTT FOR USER
-        if (
-          data.message?.toLowerCase() ===
-          "REOPENED_COMPLIANCES_FOR_USER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 2) {
-            dispatch(ReopenedComplianceUserMqtt(data.payload));
-          }
-        }
-
-        // REOPENED COMPLIANCES MQTT FOR MANAGER
-        if (
-          data.message?.toLowerCase() ===
-          "REOPENED_COMPLIANCES_FOR_MANAGER".toLowerCase()
-        ) {
-          if (Number(localStorage.getItem("viewType")) === 1) {
-            dispatch(ReopenedComplianceManagerMqtt(data.payload));
-          }
+      // UPCOMING DEADLINE MQTT FOR USERS
+      if (
+        data.message?.toLowerCase() ===
+        "UPCOMING_COMPLIANCE_DEADLINE_FOR_USER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 2) {
+          dispatch(UpcomingDeadlineUserDashboardMqtt(data.payload));
         }
       }
-    } catch (error) {
-      console.log(error);
+
+      // QUARTERLY TASK DASHBOARD MQTT USER
+      if (
+        data.message?.toLowerCase() ===
+        "QUARTERLY_TASK_DASHBOARD_FOR_USER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 2) {
+          dispatch(QuarterlyTaskDashboardUserMqtt(data.payload));
+        }
+      }
+
+      // QUARTERLY TASK DASHBOARD MQTT MANAGER
+      if (
+        data.message?.toLowerCase() ===
+        "QUARTERLY_TASK_DASHBOARD_FOR_MANAGER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 1) {
+          dispatch(QuarterlyTaskDashboardManagerMqtt(data.payload));
+        }
+      }
+
+      // TASK DASHBOARD MQTT USER
+      if (
+        data.message?.toLowerCase() ===
+        "TASK_DASHBOARD_FOR_USER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 2) {
+          dispatch(TasksDashboardForUserMqtt(data.payload));
+        }
+      }
+
+      // TASK DASHBOARD MQTT MANAGER
+      if (
+        data.message?.toLowerCase() ===
+        "TASK_DASHBOARD_FOR_MANAGER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 1) {
+          dispatch(TasksDashboardFormManagerMqtt(data.payload));
+        }
+      }
+
+      // Compliance By MQTT FOR USER
+      if (
+        data.message?.toLowerCase() === "COMPLIANCE_BY_FOR_USER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 2) {
+          dispatch(ComplianceByUserMqtt(data.payload));
+        }
+      }
+
+      // Compliance By MQTT FOR MANAGER
+      if (
+        data.message?.toLowerCase() ===
+        "COMPLIANCE_BY_FOR_MANAGER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 1) {
+          dispatch(ComplianceByManagerMqtt(data.payload));
+        }
+      }
+
+      // QUATERLY SUBMITTED COMPLIANCE MQTT FOR USER
+      if (
+        data.message?.toLowerCase() ===
+        "QUARTERLY_SUBMITTED_COMPLIANCE_FOR_USER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 2) {
+          dispatch(QuarterlySubmittedByUserMqtt(data.payload));
+        }
+      }
+
+      // QUATERLY SUBMITTED COMPLIANCE MQTT FOR MANAGER
+      if (
+        data.message?.toLowerCase() ===
+        "QUARTERLY_SUBMITTED_COMPLIANCE_FOR_MANAGER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 1) {
+          dispatch(QuarterlySubmittedByManagerMqtt(data.payload));
+        }
+      }
+
+      // REOPENED COMPLIANCES MQTT FOR USER
+      if (
+        data.message?.toLowerCase() ===
+        "REOPENED_COMPLIANCES_FOR_USER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 2) {
+          dispatch(ReopenedComplianceUserMqtt(data.payload));
+        }
+      }
+
+      // REOPENED COMPLIANCES MQTT FOR MANAGER
+      if (
+        data.message?.toLowerCase() ===
+        "REOPENED_COMPLIANCES_FOR_MANAGER".toLowerCase()
+      ) {
+        if (Number(localStorage.getItem("viewType")) === 1) {
+          dispatch(ReopenedComplianceManagerMqtt(data.payload));
+        }
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const onConnectionLost = () => {
+  setTimeout(mqttConnection, 3000);
+};
+
+useEffect(() => {
+  if (Helper.socket === null) {
+    let userID = localStorage.getItem("userID");
+    if (userID !== null) {
+      mqttConnection(userID, dispatch);
+    }
+  }
+  if (newClient !== null) {
+    newClient.onConnectionLost = onConnectionLost;
+    newClient.onMessageArrived = onMessageArrived;
+  }
+}, [
+  newClient,
+  IncomingVideoCallFlagReducer,
+  NormalizeVideoFlag,
+  MaximizeVideoFlag,
+]);
+
+useEffect(() => {
+  if (Blur !== null) {
+    setActivateBlur(true);
+  } else {
+    setActivateBlur(false);
+  }
+}, [Blur]);
+
+useEffect(() => {
+  const handleOnline = () => {
+    setIsOnline(true);
+  };
+
+  const handleOffline = () => {
+    setIsOnline(false);
+  };
+
+  window.addEventListener("online", handleOnline);
+  window.addEventListener("offline", handleOffline);
+  dispatch(GetAllUserChats(navigate, createrID, currentOrganization, t));
+  dispatch(GetUserMissedCallCount(navigate, t));
+  //Owais Pending APproval Count
+  dispatch(GetPendingApprovalsCount(navigate, t));
+  localStorage.setItem("activeOtoChatID", 0);
+
+  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+
+  if (window.performance) {
+    const navigationEntries = performance.getEntriesByType("navigation");
+    if (navigationEntries.length > 0) {
+      const navigationType = navigationEntries[0].type;
+      if (navigationType === "reload" && activeCall === true) {
+        dispatch(normalizeVideoPanelFlag(true));
+      } else {
+      }
+    }
+  }
+  return () => {
+    window.removeEventListener("online", handleOnline);
+    window.removeEventListener("offline", handleOffline);
+  };
+}, []);
+
+useEffect(() => {
+  setCurrentLanguage(i18nextLng);
+}, [i18nextLng]);
+
+useEffect(() => {
+  if (
+    MeetingStatusEnded !== null &&
+    MeetingStatusEnded !== undefined &&
+    MeetingStatusEnded.length !== 0
+  ) {
+    let endMeetingData = MeetingStatusEnded?.meeting;
+    let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+    let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+    isMeetingVideo = isMeetingVideo ? JSON.parse(isMeetingVideo) : false;
+    if (endMeetingData) {
+      if (
+        currentMeetingID === endMeetingData?.pK_MDID &&
+        Number(endMeetingData?.statusID) === 9
+      ) {
+        if (isMeetingVideo === true) {
+          dispatch(normalizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(false));
+        }
+      }
+    }
+  }
+}, [MeetingStatusEnded]);
+
+const [isMeetingLocal, setIsMeetingLocal] = useState(false);
+const [isMeetingSession, setIsMeetingSession] = useState(false);
+const [activeCallOtoAndGroupCallLocal, setActiveCallOtoAndGroupCallLocal] =
+  useState(false);
+const [
+  activeCallOtoAndGroupCallSession,
+  setActiveCallOtoAndGroupCallSession,
+] = useState(false);
+// Function to read current values
+const getMeetingValues = () => {
+  const local = localStorage.getItem("isMeeting");
+  const session = sessionStorage.getItem("isMeeting");
+  const isActiveOtoAndGroupCall = localStorage.getItem("activeCall");
+  const isActiveOtoAndGroupCallTab = sessionStorage.getItem(
+    "activeCallSessionforOtoandGroup",
+  );
+
+  setIsMeetingLocal(local ? JSON.parse(local) : false);
+  setIsMeetingSession(session ? JSON.parse(session) : false);
+  // setActiveCallOtoAndGroupCallLocal(
+  //   isActiveOtoAndGroupCall ? JSON.parse(isActiveOtoAndGroupCall) : false
+  // );
+  // setActiveCallOtoAndGroupCallSession(
+  //   isActiveOtoAndGroupCallTab
+  //     ? JSON.parse(isActiveOtoAndGroupCallTab)
+  //     : false
+  // );
+};
+
+useEffect(() => {
+  // Run once initially
+  getMeetingValues();
+
+  // Listen for changes to storage (fires across tabs)
+  const handleStorageChange = (event) => {
+    if (event.key === "isMeeting") {
+      getMeetingValues();
     }
   };
 
-  const onConnectionLost = () => {
-    setTimeout(mqttConnection, 3000);
+  window.addEventListener("storage", handleStorageChange);
+
+  return () => {
+    window.removeEventListener("storage", handleStorageChange);
   };
+}, []);
 
-  useEffect(() => {
-    if (Helper.socket === null) {
-      let userID = localStorage.getItem("userID");
-      if (userID !== null) {
-        mqttConnection(userID, dispatch);
-      }
-    }
-    if (newClient !== null) {
-      newClient.onConnectionLost = onConnectionLost;
-      newClient.onMessageArrived = onMessageArrived;
-    }
-  }, [
-    newClient,
-    IncomingVideoCallFlagReducer,
-    NormalizeVideoFlag,
-    MaximizeVideoFlag,
-  ]);
+const handleClickClose = useCallback(() => {
+  window.close();
+}, []);
 
-  useEffect(() => {
-    if (Blur !== null) {
-      setActivateBlur(true);
-    } else {
-      setActivateBlur(false);
-    }
-  }, [Blur]);
+useEffect(() => {
+  if (activeCallLocalStorage && !activeCallsessionStorage) {
+    navigate("/AlreadyInGroupAndOtoCall");
+  }
+}, [activeCallLocalStorage, activeCallsessionStorage]);
 
-  useEffect(() => {
-    const handleOnline = () => {
-      setIsOnline(true);
-    };
-
-    const handleOffline = () => {
-      setIsOnline(false);
-    };
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-    dispatch(GetAllUserChats(navigate, createrID, currentOrganization, t));
-    dispatch(GetUserMissedCallCount(navigate, t));
-    //Owais Pending APproval Count
-    dispatch(GetPendingApprovalsCount(navigate, t));
-    localStorage.setItem("activeOtoChatID", 0);
-
-    let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-
-    if (window.performance) {
-      const navigationEntries = performance.getEntriesByType("navigation");
-      if (navigationEntries.length > 0) {
-        const navigationType = navigationEntries[0].type;
-        if (navigationType === "reload" && activeCall === true) {
-          dispatch(normalizeVideoPanelFlag(true));
-        } else {
-        }
-      }
-    }
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, []);
-
-  useEffect(() => {
-    setCurrentLanguage(i18nextLng);
-  }, [i18nextLng]);
-
-  useEffect(() => {
-    if (
-      MeetingStatusEnded !== null &&
-      MeetingStatusEnded !== undefined &&
-      MeetingStatusEnded.length !== 0
-    ) {
-      let endMeetingData = MeetingStatusEnded?.meeting;
-      let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
-      let isMeetingVideo = localStorage.getItem("isMeetingVideo");
-      isMeetingVideo = isMeetingVideo ? JSON.parse(isMeetingVideo) : false;
-      if (endMeetingData) {
-        if (
-          currentMeetingID === endMeetingData?.pK_MDID &&
-          Number(endMeetingData?.statusID) === 9
-        ) {
-          if (isMeetingVideo === true) {
-            dispatch(normalizeVideoPanelFlag(false));
-            dispatch(minimizeVideoPanelFlag(false));
-          }
-        }
-      }
-    }
-  }, [MeetingStatusEnded]);
-
-  const [isMeetingLocal, setIsMeetingLocal] = useState(false);
-  const [isMeetingSession, setIsMeetingSession] = useState(false);
-  const [activeCallOtoAndGroupCallLocal, setActiveCallOtoAndGroupCallLocal] =
-    useState(false);
-  const [
-    activeCallOtoAndGroupCallSession,
-    setActiveCallOtoAndGroupCallSession,
-  ] = useState(false);
-  // Function to read current values
-  const getMeetingValues = () => {
-    const local = localStorage.getItem("isMeeting");
-    const session = sessionStorage.getItem("isMeeting");
-    const isActiveOtoAndGroupCall = localStorage.getItem("activeCall");
-    const isActiveOtoAndGroupCallTab = sessionStorage.getItem(
-      "activeCallSessionforOtoandGroup",
-    );
-
-    setIsMeetingLocal(local ? JSON.parse(local) : false);
-    setIsMeetingSession(session ? JSON.parse(session) : false);
-    // setActiveCallOtoAndGroupCallLocal(
-    //   isActiveOtoAndGroupCall ? JSON.parse(isActiveOtoAndGroupCall) : false
-    // );
-    // setActiveCallOtoAndGroupCallSession(
-    //   isActiveOtoAndGroupCallTab
-    //     ? JSON.parse(isActiveOtoAndGroupCallTab)
-    //     : false
-    // );
-  };
-
-  useEffect(() => {
-    // Run once initially
-    getMeetingValues();
-
-    // Listen for changes to storage (fires across tabs)
-    const handleStorageChange = (event) => {
-      if (event.key === "isMeeting") {
-        getMeetingValues();
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
-
-  const handleClickClose = useCallback(() => {
-    window.close();
-  }, []);
-
-  useEffect(() => {
-    if (activeCallLocalStorage && !activeCallsessionStorage) {
-      navigate("/AlreadyInGroupAndOtoCall");
-    }
-  }, [activeCallLocalStorage, activeCallsessionStorage]);
-
-  return (
-    <>
-      <ConfigProvider
-        direction={currentLanguage === "ar" ? "rtl" : "ltr"}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
-        {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+return (
+  <>
+    <ConfigProvider
+      direction={currentLanguage === "ar" ? "rtl" : "ltr"}
+      locale={currentLanguage === "ar" ? ar_EG : en_US}
+    >
+      {IncomingVideoCallFlagReducer === true && (
+        <div className="overlay-incoming-videocall" />
+      )}
+      <Layout className="mainDashboardLayout">
+        {location.pathname === "/Diskus/videochat" ||
+          location.pathname.includes("meetingDocumentViewer") ? null : (
+          <Header2 />
         )}
-        <Layout className="mainDashboardLayout">
-          {location.pathname === "/Diskus/videochat" ||
-            location.pathname.includes("meetingDocumentViewer") ? null : (
-            <Header2 />
+        <Layout>
+          {location.pathname.includes("meetingDocumentViewer") ? null : (
+            <>
+              <Sider className="sidebar_layout" width={60}>
+                <Sidebar />
+              </Sider>
+            </>
           )}
-          <Layout>
-            {location.pathname.includes("meetingDocumentViewer") ? null : (
+
+          <Content>
+            <div
+              className={
+                !location.pathname.includes("meetingDocumentViewer") &&
+                "dashbaord_data"
+              }
+            >
               <>
-                <Sider className="sidebar_layout" width={60}>
-                  <Sidebar />
-                </Sider>
+                <Outlet />
               </>
-            )}
-
-            <Content>
-              <div
-                className={
-                  !location.pathname.includes("meetingDocumentViewer") &&
-                  "dashbaord_data"
-                }
-              >
-                <>
-                  <Outlet />
-                </>
-              </div>
-              {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className="talk_features_home">
-                  {activateBlur ? null : roleRoute ? null : <Talk />}
-                </div>
-              )}
-            </Content>
-          </Layout>
-          {notificationID !== 0 && (
-            <NotificationBar
-              iconName={
-                <img src={IconMetroAttachment} alt="" draggable="false" />
-              }
-              notificationMessage={notification.message}
-              notificationState={notification.notificationShow}
-              setNotification={setNotification}
-              handleClose={closeNotification}
-              id={notificationID}
-            />
-          )}
-
-          {ShowGuestPopup &&
-            // CR(0012249): a presentation host isn't necessarily flagged
-            // isMeetingVideo (e.g. presenting without being in the
-            // meeting-video call at all), so this popup never mounted for
-            // them. presenterViewFlag is already used as the parallel
-            // condition to isMeetingVideo elsewhere in this file (see the
-            // chat-panel condition below) — same pattern here.
-            (JSON.parse(localStorage.getItem("isMeetingVideo")) === true ||
-              presenterViewFlag) &&
-            (location.pathname.includes("/Diskus/Meeting") ||
-              location.pathname.includes("/Diskus/committee") ||
-              location.pathname.includes("/Diskus/groups")) &&
-            !location.pathname.includes("meetingDocumentViewer") && (
-              <div>
-                <GuestJoinRequest />
+            </div>
+            {!location.pathname.includes("meetingDocumentViewer") && (
+              <div className="talk_features_home">
+                {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             )}
-          {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
-          {VideoChatMessagesFlagReducer === true &&
-            !(
-              JSON.parse(localStorage.getItem("isMeetingVideo")) ||
-              presenterViewFlag
-            ) ? (
-            // Meeting/Presentation chat is opened via a different mechanism
-            // (onClickCloseChatHandler → openMeetingGroupChat →
-            // ActiveChatBoxGS → <TalkNew/> → ChatBoxActiveFlag-gated
-            // <TalkChat2/>) which renders its own TalkChat2 already. That
-            // same click also sets VideoChatMessagesFlag true, so without
-            // this guard this second, separate TalkChat2 instance rendered
-            // on top of it — the "double chat panel" seen during
-            // presentations/meetings. 1:1 video calls don't go through
-            // openMeetingGroupChat, so they still render this instance as
-            // before.
-            <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
-            />
-          ) : null}
-          {/* <Modal show={true} size="md" setShow={true} /> */}
-          {!HIDE_VIDEO &&
-            (NormalizeVideoFlag === true ||
-              MinimizeVideoFlag === true ||
-              MaximizeVideoFlag === true) ? (
-            <VideoCallScreen />
-          ) : null}
-          {/* Disconnectivity Modal  */}
-          {isInternetDisconnectModalVisible && (
-            <InternetConnectivityModal
-              open={isInternetDisconnectModalVisible}
-            />
-          )}
+          </Content>
+        </Layout>
+        {notificationID !== 0 && (
+          <NotificationBar
+            iconName={
+              <img src={IconMetroAttachment} alt="" draggable="false" />
+            }
+            notificationMessage={notification.message}
+            notificationState={notification.notificationShow}
+            setNotification={setNotification}
+            handleClose={closeNotification}
+            id={notificationID}
+          />
+        )}
 
-          {cancelModalMeetingDetails && <CancelButtonModal />}
-          {roleRoute && (
-            <Modal
-              show={roleRoute}
-              setShow={() => {
-                setActivateBlur();
-              }}
-              ButtonTitle={"Block"}
-              centered
-              size={"md"}
-              modalHeaderClassName="d-none"
-              ModalBody={
-                <>
-                  <Row className="mb-1">
-                    <Col lg={12} md={12} xs={12} sm={12}>
-                      <Row>
-                        <Col className="d-flex justify-content-center">
-                          <img
-                            src={VerificationFailedIcon}
-                            width={60}
-                            className={"allowModalIcon"}
-                            alt=""
-                            draggable="false"
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col className="text-center mt-4">
-                          <label className={"allow-limit-modal-p"}>
-                            {t(
-                              "The-organization-subscription-is-not-active-please-contact-your-admin",
-                            )}
-                          </label>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </>
-              }
-              ModalFooter={
-                <Row className="mb-3">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <Button
-                      className={"Ok-Successfull-btn"}
-                      text={t("Ok")}
-                      onClick={closeModal}
-                    />
+        {ShowGuestPopup &&
+          // CR(0012249): a presentation host isn't necessarily flagged
+          // isMeetingVideo (e.g. presenting without being in the
+          // meeting-video call at all), so this popup never mounted for
+          // them. presenterViewFlag is already used as the parallel
+          // condition to isMeetingVideo elsewhere in this file (see the
+          // chat-panel condition below) — same pattern here.
+          (JSON.parse(localStorage.getItem("isMeetingVideo")) === true ||
+            presenterViewFlag) &&
+          (location.pathname.includes("/Diskus/Meeting") ||
+            location.pathname.includes("/Diskus/committee") ||
+            location.pathname.includes("/Diskus/groups")) &&
+          !location.pathname.includes("meetingDocumentViewer") && (
+            <div>
+              <GuestJoinRequest />
+            </div>
+          )}
+        {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
+        {VideoChatMessagesFlagReducer === true &&
+          !(
+            JSON.parse(localStorage.getItem("isMeetingVideo")) ||
+            presenterViewFlag
+          ) ? (
+          // Meeting/Presentation chat is opened via a different mechanism
+          // (onClickCloseChatHandler → openMeetingGroupChat →
+          // ActiveChatBoxGS → <TalkNew/> → ChatBoxActiveFlag-gated
+          // <TalkChat2/>) which renders its own TalkChat2 already. That
+          // same click also sets VideoChatMessagesFlag true, so without
+          // this guard this second, separate TalkChat2 instance rendered
+          // on top of it — the "double chat panel" seen during
+          // presentations/meetings. 1:1 video calls don't go through
+          // openMeetingGroupChat, so they still render this instance as
+          // before.
+          <TalkChat2
+            chatParentHead="chat-messenger-head-video"
+            chatMessageClass="chat-messenger-head-video"
+          />
+        ) : null}
+        {/* <Modal show={true} size="md" setShow={true} /> */}
+        {!HIDE_VIDEO &&
+          (NormalizeVideoFlag === true ||
+            MinimizeVideoFlag === true ||
+            MaximizeVideoFlag === true) ? (
+          <VideoCallScreen />
+        ) : null}
+        {/* Disconnectivity Modal  */}
+        {isInternetDisconnectModalVisible && (
+          <InternetConnectivityModal
+            open={isInternetDisconnectModalVisible}
+          />
+        )}
+
+        {cancelModalMeetingDetails && <CancelButtonModal />}
+        {roleRoute && (
+          <Modal
+            show={roleRoute}
+            setShow={() => {
+              setActivateBlur();
+            }}
+            ButtonTitle={"Block"}
+            centered
+            size={"md"}
+            modalHeaderClassName="d-none"
+            ModalBody={
+              <>
+                <Row className="mb-1">
+                  <Col lg={12} md={12} xs={12} sm={12}>
+                    <Row>
+                      <Col className="d-flex justify-content-center">
+                        <img
+                          src={VerificationFailedIcon}
+                          width={60}
+                          className={"allowModalIcon"}
+                          alt=""
+                          draggable="false"
+                        />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="text-center mt-4">
+                        <label className={"allow-limit-modal-p"}>
+                          {t(
+                            "The-organization-subscription-is-not-active-please-contact-your-admin",
+                          )}
+                        </label>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
-              }
-            />
-          )}
-          {unSaveChangesModalForMeeting && <CancelConfirmationModal />}
-          {mobileAppPopUp && <MobileAppPopUpModal />}
-          {showInitimationMessegeModalLeaveVideoMeeting && (
-            <LeaveVideoIntimationModal />
-          )}
-        </Layout>
-      </ConfigProvider>
-      {SnackBar}
-    </>
-  );
+              </>
+            }
+            ModalFooter={
+              <Row className="mb-3">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <Button
+                    className={"Ok-Successfull-btn"}
+                    text={t("Ok")}
+                    onClick={closeModal}
+                  />
+                </Col>
+              </Row>
+            }
+          />
+        )}
+        {unSaveChangesModalForMeeting && <CancelConfirmationModal />}
+        {mobileAppPopUp && <MobileAppPopUpModal />}
+        {showInitimationMessegeModalLeaveVideoMeeting && (
+          <LeaveVideoIntimationModal />
+        )}
+      </Layout>
+    </ConfigProvider>
+    {SnackBar}
+  </>
+);
 };
 
 export default Dashboard;

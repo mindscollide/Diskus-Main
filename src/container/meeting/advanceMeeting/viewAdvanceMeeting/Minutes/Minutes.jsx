@@ -100,7 +100,7 @@ const Minutes = () => {
 
   const MinutesReducer = useSelector((state) => state.MinutesReducer);
   const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
-
+  const updateReviewMinutesByReviewer = useSelector((state) => state.SignatureWorkFlowReducer.updateReviewMinutesByReviewer)
   //All REviewers List
   const [allReviewers, setAllReviewers] = useState([]);
 
@@ -128,8 +128,6 @@ const Minutes = () => {
   const [agenda, setAgenda] = useState(false);
   const [fileAttachments, setFileAttachments] = useState([]);
   const [isEdit, setisEdit] = useState(false);
-  const [isEditMinutes, setIsEditMinutes] = useState(0);
-  const [isEditAgendaWise, setIsEditAgendaWise] = useState(0);
   const [updateData, setupdateData] = useState(null);
 
   console.log(updateData, "updateDataupdateDataupdateDataupdateData");
@@ -1019,6 +1017,37 @@ const Minutes = () => {
     }
   }, [MinutesReducer.GetMinuteReviewFlowByMeetingIdData]);
 
+  useEffect(() => {
+    if (
+      updateReviewMinutesByReviewer !== null &&
+      updateReviewMinutesByReviewer !== undefined
+    ) {
+      try {
+        const { data } = updateReviewMinutesByReviewer;
+
+        if (data?.meetingID === Number(advanceMeetingModalID)) {
+          setMinutesData((prev) =>
+            prev.map((minute) => {
+              const updatedMinute = data.generalMinutesReviewsList?.find(
+                (item) => item.minuteID === minute.minuteID
+              );
+
+              if (!updatedMinute) return minute;
+
+              return {
+                ...minute,
+                MinuteStats: {
+                  ...updatedMinute,
+                },
+              };
+            })
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [updateReviewMinutesByReviewer, advanceMeetingModalID]);
   // When you click on Show Verison History Button then the api will hit and If minute has Version History then open a modal
   const handleClickShowVersionHistory = (data, MinuteID) => {
     let Data = {

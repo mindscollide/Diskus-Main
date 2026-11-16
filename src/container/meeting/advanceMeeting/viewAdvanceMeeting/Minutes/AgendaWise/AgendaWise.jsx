@@ -60,6 +60,32 @@ import { removeHTMLTagsAndTruncate } from "../../../../../../commen/functions/ut
 import useSnackbar from "../../../../../../components/elements/snack_bar/useSnackbar";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
+const updateMinutesRecursively = (agendas, reviews) => {
+  return agendas.map((agenda) => ({
+    ...agenda,
+
+    minuteData: agenda.minuteData?.map((minute) => {
+      const updatedMinute = reviews.find(
+        (item) => Number(item.minuteID) === Number(minute.minuteID)
+      );
+
+      if (!updatedMinute) return minute;
+
+      return {
+        ...minute,
+        MinuteStats: {
+          ...minute.MinuteStats,
+          ...updatedMinute,
+        },
+      };
+    }),
+
+    subMinutes: agenda.subMinutes
+      ? updateMinutesRecursively(agenda.subMinutes, reviews)
+      : agenda.subMinutes,
+  }));
+};
+
 const AgendaWise = ({
   advanceMeetingModalID,
   agendaOptionvalue,
@@ -85,6 +111,8 @@ const AgendaWise = ({
   const [showRevisionHistory, setShowRevisionHistory] = useState(false);
 
   const [minutesData, setMinutesData] = useState([]);
+
+  console.log(minutesData, "minutesDataminutesDataminutesData");
 
   const [openIndices, setOpenIndices] = useState([]);
 
@@ -112,6 +140,8 @@ const AgendaWise = ({
   const ResponseMessage = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage,
   );
+
+    const updateReviewMinutesByReviewer = useSelector((state) => state.SignatureWorkFlowReducer.updateReviewMinutesByReviewer)
   const agendaWiseMinuteID = useSelector(
     (state) => state.NewMeetingreducer.agendaWiseMinuteID,
   );
@@ -155,8 +185,8 @@ const AgendaWise = ({
       title: "",
     },
   });
-
   let userID = localStorage.getItem("userID");
+
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
@@ -987,6 +1017,31 @@ const AgendaWise = ({
       setMinuteReviewData(null);
     }
   }, [GetMinuteReviewStatsForOrganizerByMeetingIdData]);
+
+  
+
+useEffect(() => {
+  if (
+    updateReviewMinutesByReviewer !== null &&
+    updateReviewMinutesByReviewer !== undefined
+  ) {
+    try {
+      const { data } = updateReviewMinutesByReviewer;
+
+      if (data?.meetingID === Number(advanceMeetingModalID)) {
+        setMinutesData((prev) =>
+          updateMinutesRecursively(
+            prev,
+            data.agendaMinutesReviewsList || []
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}, [updateReviewMinutesByReviewer, advanceMeetingModalID]);
+
 
   // When you click on Revision History Button then the api will hit and If minute has revison then open a modal
   const handleClickShowRevision = (data, MinuteID) => {

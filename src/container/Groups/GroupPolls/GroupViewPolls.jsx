@@ -429,14 +429,12 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: 100,
-      align: "center",
+      width: 120,
+      align: CurrentLanguage === "ar" ? "right" : "left",
       ...statusFilterProps,
       render: (text, record) => (
         <PollStatusBadge
-          pollStatusId={record.pollStatus?.pollStatusId}
-          center
-        />
+          pollStatusId={record.pollStatus?.pollStatusId} />
       ),
     },
     {

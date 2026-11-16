@@ -257,14 +257,6 @@ const DataRoom = () => {
     (state) => state.DataRoomReducer.BreadCrumbsList,
   );
 
-  /** Severity level ("success" | "error" | "warning") for details reducer messages. */
-  const errorSeverityState2 = useSelector(
-    (state) => state.DataRoomFileAndFoldersDetailsReducer.errorSeverity,
-  );
-  /** Severity level for main DataRoom reducer messages. */
-  const errorSeverityState = useSelector(
-    (state) => state.DataRoomReducer.errorSeverity,
-  );
 
   // ─── localStorage session values ─────────────────────────────────────────
   /** Currently authenticated user's ID. */
@@ -722,6 +714,8 @@ const DataRoom = () => {
       localStorage.removeItem("folderID");
       localStorage.removeItem("setTableView");
       localStorage.removeItem("BoardDeckFolderID");
+      dispatch(BreadCrumbsList([]));
+
     };
     // Mount-only. docSignedCrAction is removed from localStorage once
     // ApprovalSend consumes it; with it as a dependency that re-ran this

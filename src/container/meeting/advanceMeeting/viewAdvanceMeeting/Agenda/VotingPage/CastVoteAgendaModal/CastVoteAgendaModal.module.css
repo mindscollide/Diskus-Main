@@ -8,6 +8,7 @@
   font-size: 30px !important;
   font-weight: 600 !important;
   color: #6172d6 !important;
+  word-break: break-word;
 }
 
 .outerboxForOptions {
