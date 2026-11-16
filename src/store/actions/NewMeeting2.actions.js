@@ -3454,6 +3454,22 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                 // }
 
                 localStorage.setItem("currentMeetingID", Data.FK_MDID);
+                // The meeting the user has just joined is the current meeting. Leave
+                // (NewEndMeetingModal) and the view tabs read the id from
+                // currentMeetingInfo, and only some join routes below used to set it,
+                // so the previously opened meeting's id was sent to LeaveMeeting /
+                // GetAdvanceMeetingAgendabyMeetingIDForView.
+                if (record && !record.isQuickMeeting) {
+                  dispatch(
+                    setCurrentMeetingInfo({
+                      meetingID: Data.FK_MDID,
+                      meetingTitle:
+                        record.title ??
+                        record.meetingTitle ??
+                        localStorage.getItem("meetingTitle"),
+                    }),
+                  );
+                }
 
                 const activeStatusOneToOne = JSON.parse(
                   localStorage.getItem("activeCall"),
@@ -3541,6 +3557,7 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                     );
                     break;
                   case "CommitteeJoinMeetingFromListing":
+                  case "GroupJoinMeetingFromListing":
                     dispatch(setViewTab("agendaViewer"));
                     dispatch(toggleViewMeetingModal(true));
                     localStorage.setItem("meetingTitle", record.title);
@@ -4831,6 +4848,16 @@ export const LeaveMeetingApi = (navigate, t, Data, routePath, object) => {
                     localStorage.getItem("navigateLocation") === "faq's"
                   ) {
                     navigate("/Diskus/faq's");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "setting"
+                  ) {
+                    navigate("/Diskus/setting");
+                  } else if (
+                    localStorage.getItem("navigateLocation") ===
+                    "dataroomRecentAddedFiles"
+                  ) {
+                    localStorage.setItem("setTableView", 4);
+                    navigate("/Diskus/dataroom");
                   } else if (
                     localStorage.getItem("navigateLocation") === "Meeting"
                   ) {

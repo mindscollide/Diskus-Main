@@ -518,6 +518,7 @@ const Header2 = ({ isVideo }) => {
   const RecentFilesTab = async () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
@@ -533,6 +534,7 @@ const Header2 = ({ isVideo }) => {
   const RecentFilesTabNoCall = async () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("setTableView", 4);
@@ -584,6 +586,7 @@ const Header2 = ({ isVideo }) => {
   const handleMeetingSidebarSettings = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "setting");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("navigateLocation", "setting");
@@ -598,7 +601,9 @@ const Header2 = ({ isVideo }) => {
 
   const handleMeetingSidebarSettingsNoCall = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
-      // User is in advance meeting modal and meeting is ongoing
+      // User is in advance meeting modal and meeting is ongoing. The leave modal
+      // reads this key to know where to go after "Yes".
+      localStorage.setItem("navigateLocation", "setting");
       dispatch(showEndMeetingModal(true));
     } else {
       navigate("/Diskus/setting");
@@ -608,6 +613,7 @@ const Header2 = ({ isVideo }) => {
   const handleMeetingPendingApprovals = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "Minutes");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("navigateLocation", "Minutes");
@@ -622,7 +628,9 @@ const Header2 = ({ isVideo }) => {
 
   const handleMeetingPendingApprovalsNoCall = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
-      // User is in advance meeting modal and meeting is ongoing
+      // User is in advance meeting modal and meeting is ongoing. The leave modal
+      // reads this key to know where to go after "Yes".
+      localStorage.setItem("navigateLocation", "Minutes");
       dispatch(showEndMeetingModal(true));
     } else {
       navigate("/Diskus/Minutes");
@@ -632,6 +640,7 @@ const Header2 = ({ isVideo }) => {
   const handleMeetingSidebarFAQ = () => {
     if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
       // User is in advance meeting modal and meeting is ongoing
+      localStorage.setItem("navigateLocation", "faq's");
       dispatch(showEndMeetingModal(true));
     } else {
       localStorage.setItem("navigateLocation", "faq's");
