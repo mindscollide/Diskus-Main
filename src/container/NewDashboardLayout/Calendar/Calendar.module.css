@@ -3,3 +3,58 @@
   place-items: center;
   height: 100%;
 }
+
+/* Calendar motion: the calendar fades in when it replaces the loading spinner,
+   and the day grid slides in again each time the month changes. The wrapper adds
+   no box of its own (display: contents). Two identical keyframes (A / B) are
+   alternated by Calendar.jsx so the animation restarts on every month change. */
+.calendarMotion {
+  display: contents;
+}
+
+@keyframes calendarIn {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes calendarMonthA {
+  from {
+    opacity: 0.25;
+    translate: 0 6px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes calendarMonthB {
+  from {
+    opacity: 0.25;
+    translate: 0 6px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .calendarMotion :global(.rmdp-wrapper) {
+    animation: calendarIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .monthTickA :global(.rmdp-day-picker) {
+    animation: calendarMonthA 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .monthTickB :global(.rmdp-day-picker) {
+    animation: calendarMonthB 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}

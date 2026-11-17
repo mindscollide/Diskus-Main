@@ -51,6 +51,45 @@
   z-index: 0;
 }
 
+/* Swirl motion on the auth screens:
+   - every screen turns it one step further than the screen before it
+     (--swirl-from / --swirl-to are set by AuthLayout), so moving to the next
+     screen reads as moving "forward";
+   - plus a small constant drift so it never looks frozen.
+   The individual `rotate` / `translate` properties are used (not `transform`)
+   so they stack on top of the existing rotate(0)/scaleX(-1) RTL flip. */
+@keyframes authSwirlStep {
+  from {
+    rotate: var(--swirl-from, 0deg);
+  }
+  to {
+    rotate: var(--swirl-to, 0deg);
+  }
+}
+
+@keyframes authSwirlDrift {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: -14px -12px;
+  }
+}
+
+.Auth_Icon {
+  rotate: var(--swirl-to, 0deg);
+  animation:
+    authSwirlStep 1.4s cubic-bezier(0.22, 1, 0.36, 1) both,
+    authSwirlDrift 9s ease-in-out infinite alternate;
+  will-change: rotate, translate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Auth_Icon {
+    animation: none;
+  }
+}
+
 body[dir="rtl"] .Auth_Icon {
   transform: rotate(0deg) scaleX(-1);
   right: auto !important;
@@ -97,6 +136,54 @@ body[dir="rtl"] .heading-1 {
 body[dir="rtl"] .heading-2 {
   font-weight: 600 !important;
   font-size: clamp(30px, 3.75vw, 96px) !important;
+}
+
+/* The three lines slide in one after another when an auth screen opens.
+   `backwards` fill keeps them hidden during their delay and leaves the final
+   state untouched, so nothing about the resting layout changes. The slide
+   comes from the reading-start side (left, or right in Arabic). */
+@keyframes authTextIn {
+  from {
+    opacity: 0;
+    translate: -36px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.Login_page_text h1 {
+  animation: authTextIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+body[dir="rtl"] .Login_page_text h1 {
+  animation-name: authTextInRtl;
+}
+
+@keyframes authTextInRtl {
+  from {
+    opacity: 0;
+    translate: 36px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.Login_page_text h1:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.Login_page_text h1:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Login_page_text h1 {
+    animation: none;
+  }
 }
 
 .languageSelector {

@@ -264,7 +264,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       localStorage.setItem("meetingTitle", "");
         localStorage.setItem(
             "userPackageID",
-            response.data.responseResult.userPackageID,
+            response.userPackageID,
           );
     }
 

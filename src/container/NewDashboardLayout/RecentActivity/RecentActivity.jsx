@@ -23,7 +23,13 @@ const RecentActivity = () => {
   );
   const Spinner = useSelector((state) => state.settingReducer.Spinner);
   let currentLanguage = localStorage.getItem("i18nextLng") || "en";
-  const [recentActivityData, setRecentActivityData] = useState([]);
+  // start from what Redux already holds (e.g. coming back to the dashboard);
+  // starting at [] showed the empty state for a frame and then popped the list in
+  const [recentActivityData, setRecentActivityData] = useState(() =>
+    RecentActivityData && Object.keys(RecentActivityData).length > 0
+      ? RecentActivityData
+      : [],
+  );
   let createrID = localStorage.getItem("userID");
   const navigate = useNavigate();
   const { t } = useTranslation();

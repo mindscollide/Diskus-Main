@@ -33,6 +33,26 @@ body[dir="rtl"] .noteheading {
   padding: 5px !important;
   cursor: pointer;
   border-radius: 4px !important;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    translate 0.2s ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .notesdescription:hover {
+    border-color: #6172d6;
+    box-shadow: 0 3px 8px rgba(97, 114, 214, 0.18);
+    translate: 0 -2px;
+  }
+
+  .addNoteButton {
+    transition: scale 0.2s ease;
+  }
+
+  .addNoteButton:hover {
+    scale: 1.12;
+  }
 }
 .DataTimeDay {
   font-size: 8px !important;

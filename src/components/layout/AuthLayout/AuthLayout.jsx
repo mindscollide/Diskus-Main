@@ -30,6 +30,13 @@ const DESIGN_WIDTH = 1600;
 const DESIGN_HEIGHT = 900;
 const MAX_SCALE = 1.6;
 
+// The decorative swirl turns a little further every time the user moves on to
+// the next auth screen. Each screen mounts its own AuthLayout, so the angle the
+// previous screen ended at is kept here (module scope survives screen changes,
+// a page reload starts again from 0).
+const SWIRL_STEP_DEG = 45;
+let lastSwirlAngle = 0;
+
 /**
  * How much to enlarge the card relative to the design size: it grows with the
  * viewport (limited by whichever of width/height is the tighter fit so it never
@@ -52,6 +59,15 @@ const AuthLayout = ({
 }) => {
   const { t } = useTranslation();
   const [cardScale, setCardScale] = useState(getCardScale);
+  // animate from where the previous screen left the swirl to one step further
+  const [swirl] = useState(() => ({
+    from: lastSwirlAngle,
+    to: lastSwirlAngle + SWIRL_STEP_DEG,
+  }));
+
+  useEffect(() => {
+    lastSwirlAngle = swirl.to;
+  }, [swirl]);
 
   useEffect(() => {
     const onResize = () => setCardScale(getCardScale());
@@ -102,6 +118,10 @@ const AuthLayout = ({
                     alt="auth_icon"
                     width="600px"
                     className={styles["Auth_Icon"]}
+                    style={{
+                      "--swirl-from": `${swirl.from}deg`,
+                      "--swirl-to": `${swirl.to}deg`,
+                    }}
                   />
                   {PSO_LOGO && (
                     <img

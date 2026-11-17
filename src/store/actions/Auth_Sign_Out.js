@@ -6,6 +6,7 @@ import { RefreshToken } from "./Auth_action";
 import { showUpgradeNowModal } from "./UserMangementModalActions";
 import { LoginFlowRoutes } from "./UserManagementActions";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { clearLocalStorage } from "@/commen/functions/clearLocalStorage";
 
 const logoutChannel = new BroadcastChannel("logout");
 
@@ -119,7 +120,7 @@ export const signOut = async (message, dispatch) => {
       "rememberPasswordValue",
     );
 
-    localStorage.clear();
+    clearLocalStorage();
     if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
@@ -131,7 +132,7 @@ export const signOut = async (message, dispatch) => {
   } else if (RememberEmailLocal === true) {
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 
-    localStorage.clear();
+    clearLocalStorage();
     if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
@@ -142,14 +143,14 @@ export const signOut = async (message, dispatch) => {
       "rememberPasswordValue",
     );
 
-    localStorage.clear();
+    clearLocalStorage();
     if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
     localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
   } else {
-    localStorage.clear();
+    clearLocalStorage();
     if (reLang !== undefined && reLang != null) {
       localStorage.setItem("i18nextLng", reLang);
     }

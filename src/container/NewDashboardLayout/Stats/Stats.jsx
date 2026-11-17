@@ -13,6 +13,7 @@ import { getDashbardMeetingDataApi } from "../../../store/actions/NewMeetingActi
 import { getDashbardPendingApprovalDataApi } from "../../../store/actions/workflow_actions";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
+import { useCountUp } from "../../../commen/functions/useCountUp";
 
 const Stats = () => {
   const dispatch = useDispatch();
@@ -106,27 +107,45 @@ const Stats = () => {
     }
   }, [getDashboardPendingApprovalData]);
 
+  // the numbers count up to their value when the data arrives (and tick over
+  // when a live update changes them); `counts` stays the real value and is
+  // what the colour / "empty" decisions below use
+  const shown = {
+    upcomingMeetingCount: useCountUp(counts.upcomingMeetingCount),
+    totalMeetingCount: useCountUp(counts.totalMeetingCount),
+    upComingTaskCount: useCountUp(counts.upComingTaskCount),
+    totalTaskCount: useCountUp(counts.totalTaskCount),
+    upComingApprovalCount: useCountUp(counts.upComingApprovalCount),
+    totalPendingApprovalCount: useCountUp(counts.totalPendingApprovalCount),
+  };
+
   const progressBarData = useMemo(
     () => [
       {
-        now: counts.upcomingMeetingCount,
-        max: counts.totalMeetingCount,
+        now: shown.upcomingMeetingCount,
+        max: shown.totalMeetingCount,
+        realNow: counts.upcomingMeetingCount,
+        realMax: counts.totalMeetingCount,
         className:
           counts.upcomingMeetingCount === 0 && counts.totalMeetingCount === 0
             ? styles["dashboard_progress_upcomingmeeting_R"]
             : styles["dashboard_progress_upcomingmeeting"],
       },
       {
-        now: counts.upComingTaskCount,
-        max: counts.totalTaskCount,
+        now: shown.upComingTaskCount,
+        max: shown.totalTaskCount,
+        realNow: counts.upComingTaskCount,
+        realMax: counts.totalTaskCount,
         className:
           counts.upComingTaskCount === 0 && counts.totalTaskCount === 0
             ? styles["dashboard_progress_upcomingTask_R"]
             : styles["dashboard_progress_upcomingTask"],
       },
       {
-        now: counts.upComingApprovalCount,
-        max: counts.totalPendingApprovalCount,
+        now: shown.upComingApprovalCount,
+        max: shown.totalPendingApprovalCount,
+        realNow: counts.upComingApprovalCount,
+        realMax: counts.totalPendingApprovalCount,
         className:
           counts.upComingApprovalCount === 0 &&
           counts.totalPendingApprovalCount === 0
@@ -134,7 +153,7 @@ const Stats = () => {
             : styles["dashboard_progress_upcomingApproval"],
       },
     ],
-    [counts]
+    [counts, shown.upcomingMeetingCount, shown.totalMeetingCount, shown.upComingTaskCount, shown.totalTaskCount, shown.upComingApprovalCount, shown.totalPendingApprovalCount]
   );
 
   let locale = localStorage.getItem("i18nextLng");
@@ -147,22 +166,22 @@ const Stats = () => {
             sm={12}
             md={4}
             lg={4}
-            className='d-flex justify-content-center align-items-center'>
-            <UpcomingMeeting meetingValue={counts.upcomingMeetingCount} />
+            className={`d-flex justify-content-center align-items-center ${styles["statItem"]}`}>
+            <UpcomingMeeting meetingValue={shown.upcomingMeetingCount} />
           </Col>
           <Col
             sm={12}
             md={4}
             lg={4}
-            className='d-flex justify-content-center align-items-center'>
-            <PendingTasks taskValue={counts.upComingTaskCount} />
+            className={`d-flex justify-content-center align-items-center ${styles["statItem"]}`}>
+            <PendingTasks taskValue={shown.upComingTaskCount} />
           </Col>
           <Col
             sm={12}
             md={4}
             lg={4}
-            className='d-flex justify-content-center align-items-center'>
-            <PendingApproval pendingAppr={counts.upComingApprovalCount} />
+            className={`d-flex justify-content-center align-items-center ${styles["statItem"]}`}>
+            <PendingApproval pendingAppr={shown.upComingApprovalCount} />
           </Col>
         </Row>
       </Col>
@@ -172,16 +191,19 @@ const Stats = () => {
         lg={6}
         className={`d-flex flex-column gap-3 ${styles["ProgressBarContains"]}`}>
         {progressBarData.map((bar, index) => {
-          let nowValue = Number(bar.max) - Number(bar.now);
-          let calculateValue = nowValue === 0 ? bar.max : nowValue;
-          let checkisbothValueisEqual = bar.max === bar.now;
-          
+          // the fill is sized from the REAL values and eased by the CSS width
+          // transition (smooth); only the label text counts up
+          let nowValue = Number(bar.realMax) - Number(bar.realNow);
+          let calculateValue = nowValue === 0 ? bar.realMax : nowValue;
+          // decided on the real values, so the bar doesn't flip to its grey
+          // "equal" look while the numbers are still counting
+          let checkisbothValueisEqual = bar.realMax === bar.realNow;
 
           return (
             <ProgressBar
               key={index}
               now={checkisbothValueisEqual ? 0 : calculateValue}
-              max={bar.max}
+              max={bar.realMax}
               label={`${convertToArabicNumerals(
                 bar.now,
                 locale

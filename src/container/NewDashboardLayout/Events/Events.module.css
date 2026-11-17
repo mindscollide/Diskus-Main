@@ -121,6 +121,34 @@ body[dir="rtl"] .event-details:hover {
   margin: 0;
 }
 
+/* The gradient on hover can't be transitioned, so the card also lifts a little
+   and gets a soft shadow (these do ease in), and the title / time shift slightly
+   towards the action button. Mouse devices only, not with "reduce motion". */
+.event-details {
+  transition:
+    translate 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.event-details .event-details-block {
+  transition: translate 0.2s ease;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .event-details:hover {
+    translate: 0 -2px;
+    box-shadow: 0 5px 14px rgba(97, 114, 214, 0.35);
+  }
+
+  .event-details:hover .event-details-block {
+    translate: 4px 0;
+  }
+
+  body[dir="rtl"] .event-details:hover .event-details-block {
+    translate: -4px 0;
+  }
+}
+
 .events-description {
   font-size: calc(22px - 20%) !important;
   text-overflow: ellipsis;

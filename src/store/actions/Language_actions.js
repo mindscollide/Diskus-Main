@@ -30,8 +30,38 @@ const getAllLanguagesFail = (message) => {
   };
 };
 
+// The supported-language list almost never changes, so it is fetched once and
+// kept in localStorage (re-fetched only when the cache is missing/corrupt or
+// older than the TTL below). Redux alone is lost on every refresh / new tab.
+const SUPPORTED_LANGUAGES_CACHE_KEY = "systemSupportedLanguages";
+const SUPPORTED_LANGUAGES_CACHE_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+const readSupportedLanguagesCache = () => {
+  try {
+    const cached = JSON.parse(
+      localStorage.getItem(SUPPORTED_LANGUAGES_CACHE_KEY),
+    );
+    if (
+      cached &&
+      Array.isArray(cached.languages) &&
+      cached.languages.length > 0 &&
+      Date.now() - Number(cached.savedAt) < SUPPORTED_LANGUAGES_CACHE_TTL
+    ) {
+      return cached.languages;
+    }
+  } catch (error) {
+    // unreadable cache: fall through to the API
+  }
+  return null;
+};
+
 const getAllLanguages = (navigate, t) => {
   return (dispatch) => {
+    const cachedLanguages = readSupportedLanguagesCache();
+    if (cachedLanguages) {
+      dispatch(getAllLanguagesSuccess(cachedLanguages, ""));
+      return;
+    }
     dispatch(getAllLanguagesInitial());
     let form = new FormData();
     form.append("RequestMethod", getSystemSupportedLanguage.RequestMethod);
@@ -50,12 +80,25 @@ const getAllLanguages = (navigate, t) => {
                   "Admin_AdminServiceManager_GetSystemSupportedLanguage_01".toLowerCase()
                 )
             ) {
-              await dispatch(
-                getAllLanguagesSuccess(
-                  response.data.responseResult.systemSupportedLanguages,
-                  ""
-                )
-              );
+              const supportedLanguages =
+                response.data.responseResult.systemSupportedLanguages;
+              try {
+                if (
+                  Array.isArray(supportedLanguages) &&
+                  supportedLanguages.length > 0
+                ) {
+                  localStorage.setItem(
+                    SUPPORTED_LANGUAGES_CACHE_KEY,
+                    JSON.stringify({
+                      languages: supportedLanguages,
+                      savedAt: Date.now(),
+                    }),
+                  );
+                }
+              } catch (error) {
+                // storage full / blocked: just skip caching
+              }
+              await dispatch(getAllLanguagesSuccess(supportedLanguages, ""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -1,4 +1,5 @@
 import { LoginFlowRoutes } from "../../store/actions/UserManagementActions";
+import { clearLocalStorage } from "@/commen/functions/clearLocalStorage";
 
 const setLocalStorage = (key, value) => {
   if (value) {
@@ -7,7 +8,7 @@ const setLocalStorage = (key, value) => {
 };
 
 const manageCommonLocalStorage = (loginFlowPageRoute, dispatch, dataMap) => {
-  localStorage.clear();
+  clearLocalStorage();
   localStorage.setItem(
     "LoginFlowPageRoute",
     JSON.stringify(loginFlowPageRoute),

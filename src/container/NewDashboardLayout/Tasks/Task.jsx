@@ -277,7 +277,7 @@ const Task = () => {
               tableLayout="fixed"
               pagination={false}
               size="small"
-              rowKey="id"
+              rowKey="pK_TID"
               bordered={false}
               rowClassName={(record, index) => {
                 if (Number(record?.taskCreator?.pK_UID) === creatorID) {
