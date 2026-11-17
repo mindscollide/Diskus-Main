@@ -222,13 +222,13 @@ body[dir="rtl"] .Send_for_approval_btn_active {
 
 .New_folder {
   font-size: 12px !important;
-  font-weight: 600;
+  font-weight:500;
   color: #5a5a5a;
 }
 
 .Folder_Upload {
   font-size: 12px !important;
-  font-weight: 600;
+  font-weight:500;
   color: #5a5a5a;
   margin-top: 2px !important;
   margin-left: 4px !important;
@@ -1307,8 +1307,18 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   border: none !important;
 }
 
-.dataroom_dropdown_item:hover {
-  background-color: #e1e1e1 !important;
+.dataroom_dropdown_item {
+  cursor: pointer;
+}
+
+/* the label sits in child elements that set their own colour, so the
+   transition and the hover colour have to target them directly */
+.dataroom_dropdown_item :is(span, p) {
+  transition: color 0.2s ease;
+}
+
+.dataroom_dropdown_item:hover :is(span, p) {
+  color: #000 !important;
 }
 .Recently_Added {
   color: #5a5a5a;

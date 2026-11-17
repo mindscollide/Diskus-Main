@@ -816,6 +816,12 @@ const GetMinuteReviewPendingApprovalsStatsByReviewerId = (navigate, t) => {
   };
 };
 
+const clearMinuteReviewPendingApprovals = () => {
+  return {
+    type: actions.CLEAR_MINUTE_REVIEW_PENDING_APPROVALS,
+  };
+};
+
 const getMinuteReviewPendingApprovalsByReviewerId_Init = () => {
   return {
     type: actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_INIT,
@@ -2633,6 +2639,7 @@ export {
   GetMinutesForReviewerByMeetingId,
   GetMinuteReviewPendingApprovalsStatsByReviewerId,
   GetMinuteReviewPendingApprovalsByReviewerId,
+  clearMinuteReviewPendingApprovals,
   currentMeetingMinutesToReview,
   SaveMinutesReviewFlow,
   EditSingleMinute,

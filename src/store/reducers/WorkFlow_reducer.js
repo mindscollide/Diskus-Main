@@ -323,6 +323,12 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         errorSeverity: "success",
       };
     }
+    case actions.CLEAR_PENDING_APPROVAL_SIGNATURES: {
+      return {
+        ...state,
+        listOfPendingForApprovalSignatures: null,
+      };
+    }
     case actions.GETALLPENDINGAPPROVALSIGNATURES_FAIL: {
       return {
         ...state,

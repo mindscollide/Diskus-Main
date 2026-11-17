@@ -11,7 +11,6 @@ import { ChevronDown } from "react-bootstrap-icons";
 import ReviewSignatureEmptyImage from "../../../../assets/images/Review&Sign_EmptyState.png";
 import {
   Button,
-  Notification,
   TableToDo,
 } from "../../../../components/elements";
 import {
@@ -20,10 +19,10 @@ import {
 } from "../../SearchFunctionality/option";
 import { useNavigate } from "react-router-dom";
 import {
-  clearWorkFlowResponseMessage,
   getAllPendingApprovalStatusApi,
   getAllPendingApprovalsSignaturesApi,
   getAllPendingApprovalsStatsApi,
+  clearPendingApprovalSignatures,
   getAllSignatoriesStatusWise_Api,
   validateEncryptedStringSignatureDataApi,
 } from "../../../../store/actions/workflow_actions";
@@ -32,7 +31,6 @@ import {
   SignatureandPendingApprovalDateTIme,
   utcConvertintoGMT,
 } from "../../../../commen/functions/date_formater";
-import InfiniteScroll from "react-infinite-scroll-component";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
@@ -46,9 +44,7 @@ const ReviewSignature = () => {
     getAllPendingForApprovalStats,
     listOfPendingForApprovalSignatures,
     getAllPendingApprovalStatuses,
-    ResponseMessage,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
-  const workflowResponseMessage = useSelector((state) => state.webViewer);
 
   const workflowsignaturedocument = useSelector(
     (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument,
@@ -87,10 +83,11 @@ const ReviewSignature = () => {
   const docSignAction = localStorage.getItem("docSignAction");
   const docSignedAction = localStorage.getItem("docSignedAction");
 
-  const [show, SnackBar] = useSnackbar();
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
+
+  console.log("reviewAndSignatureStatus", defaultreviewAndSignatureStatus, reviewAndSignatureStatus);
 
   const [totalRecords, setTotalRecords] = useState(null);
   const [totalDataLnegth, setTotalDataLength] = useState(0);
@@ -137,6 +134,14 @@ const ReviewSignature = () => {
     { text: t("Signed"), value: "Signed" },
     { text: t("Declined"), value: "Declined" },
   ];
+
+  // leaving the tab drops the list from Redux, so the next visit starts empty
+  // and shows exactly what the API returns (no stale / previously filtered rows)
+  useEffect(() => {
+    return () => {
+      dispatch(clearPendingApprovalSignatures());
+    };
+  }, []);
 
   useEffect(() => {
     if (signeeCounterData) {
@@ -211,13 +216,28 @@ const ReviewSignature = () => {
   // reviewSignature by hand, which was fine until the next scroll-triggered
   // page came in and overwrote it with unfiltered data (see the
   // listOfPendingForApprovalSignatures effect).
+  // Fetches the first page for the given statuses from the API (the filter is
+  // applied by the server; scroll pages then ask for the same statuses).
+  const fetchFilteredFirstPage = (statuses) => {
+    setIsScrolling(false);
+    dispatch(
+      getAllPendingApprovalsSignaturesApi(navigate, t, {
+        sRow: 0,
+        Length: 10,
+        Status: statuses,
+      }),
+    );
+  };
+
   const handleApplyFilter = () => {
+    fetchFilteredFirstPage(selectedValues);
     setAppliedStatusFilter(selectedValues);
     setVisible(false);
   };
 
   const resetFilter = () => {
     const defaultValues = ["Pending Signature", "Signed", "Declined"];
+    fetchFilteredFirstPage(defaultValues);
     setSelectedValues(defaultValues);
     setAppliedStatusFilter(defaultValues);
     setVisible(false);
@@ -493,7 +513,11 @@ const ReviewSignature = () => {
   useTableScrollBottom(async () => {
     if (originalData.length < totalRecords) {
       setIsScrolling(true);
-      let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+      let Data = {
+        sRow: Number(totalDataLnegth),
+        Length: 10,
+        Status: appliedStatusFilter,
+      };
       await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
     }
   });
@@ -562,10 +586,20 @@ const ReviewSignature = () => {
             setTotalDataLength(pendingApprovals.length);
             setOriginalData(pendingApprovals);
           }
+        } else if (!isScrollling) {
+          // the selected statuses have no records
+          setOriginalData([]);
+          setTotalRecords(0);
+          setTotalDataLength(0);
         }
       } catch (error) {
         console.error("src/container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature.js:", error);
       }
+    } else if (!isScrollling) {
+      // request failed / no records for the chosen statuses
+      setOriginalData([]);
+      setTotalRecords(0);
+      setTotalDataLength(0);
     }
   }, [listOfPendingForApprovalSignatures]);
 
@@ -604,10 +638,10 @@ const ReviewSignature = () => {
           originalDataCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
-                  ...data2,
-                  status: data.status,
-                  actorStatusID: data.actorStatusID,
-                }
+                ...data2,
+                status: data.status,
+                actorStatusID: data.actorStatusID,
+              }
               : data2,
           ),
         );
@@ -624,10 +658,10 @@ const ReviewSignature = () => {
           originalDataCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
-                  ...data2,
-                  status: data.status,
-                  workFlowStatusID: data.workFlowStatusID,
-                }
+                ...data2,
+                status: data.status,
+                workFlowStatusID: data.workFlowStatusID,
+              }
               : data2,
           ),
         );
@@ -723,16 +757,7 @@ const ReviewSignature = () => {
       </Row>
       <Row>
         <Col sm={12} md={12} lg={12}>
-          {/* {reviewAndSignatureStatus.length > 0 && ( */}
-          {/* <InfiniteScroll
-            dataLength={reviewSignature.length}
-            next={handleScroll}
-            hasMore={reviewSignature.length === totalRecords ? false : true}
-            style={{
-              overflowX: "hidden",
-            }}
-            height={"50vh"}
-          > */}
+        
           <TableToDo
             column={pendingApprovalColumns}
             className={"PendingApprovalsTable"}
@@ -762,8 +787,6 @@ const ReviewSignature = () => {
               index === reviewSignature.length - 1 ? "last-row-class" : ""
             }
           />
-          {/* </InfiniteScroll> */}
-          {/* )} */}
         </Col>
       </Row>{" "}
       {signatoriesList && (
@@ -772,7 +795,6 @@ const ReviewSignature = () => {
           setSignatoriesList={setSignatoriesList}
         />
       )}
-      {SnackBar}
     </>
   );
 };

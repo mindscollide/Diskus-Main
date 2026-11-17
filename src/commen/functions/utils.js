@@ -262,6 +262,10 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       const emptyArray = [];
       localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
       localStorage.setItem("meetingTitle", "");
+        localStorage.setItem(
+            "userPackageID",
+            response.data.responseResult.userPackageID,
+          );
     }
 
     localStorage.setItem("isTrial", response.isTrial);
