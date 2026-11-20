@@ -134,7 +134,7 @@ body[dir="rtl"] .event-details:hover {
   transition: translate 0.2s ease;
 }
 
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+/* @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .event-details:hover {
     translate: 0 -2px;
     box-shadow: 0 5px 14px rgba(97, 114, 214, 0.35);
@@ -147,7 +147,7 @@ body[dir="rtl"] .event-details:hover {
   body[dir="rtl"] .event-details:hover .event-details-block {
     translate: -4px 0;
   }
-}
+} */
 
 .events-description {
   font-size: calc(22px - 20%) !important;

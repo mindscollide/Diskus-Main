@@ -3237,7 +3237,9 @@ export const SideBarGlobalNavigationFunctionNew = async (
           localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
 
-          await dispatch(listOfMeetingsApi(navigate, searchData, t));
+          // (navigate, t, Data): t and the request data were swapped here, so the
+          // list request was sent without its data and the listing came back empty
+          await dispatch(listOfMeetingsApi(navigate, t, searchData, "", {}));
 
           dispatch(toggleViewMeetingModal(false));
 

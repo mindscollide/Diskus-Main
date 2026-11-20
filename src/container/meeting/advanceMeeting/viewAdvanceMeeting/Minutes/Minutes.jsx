@@ -1723,6 +1723,24 @@ const Minutes = () => {
           </Row>
         );
       })}
+
+      {/* The published-minutes view had no Close button at all (only the editing
+          view below did). Same rule as there: not inside an active meeting. */}
+      {Number(editorRole?.status) !== 10 && (
+        <Row className='mt-4'>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className='d-flex justify-content-end gap-2'>
+            <Button
+              text={t("Close")}
+              className={styles["CloseMeetingButton"]}
+              onClick={handleCloseMeeting}
+            />
+          </Col>
+        </Row>
+      )}
     </>
   ) : (
     <>
