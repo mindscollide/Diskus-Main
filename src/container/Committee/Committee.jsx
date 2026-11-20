@@ -425,6 +425,9 @@ const Committee = () => {
       ["committee_meetingStr_action", "meetingDetails"],
       ["committee_meetingUpd_action", "meetingDetails"],
       ["committee_mtAgUpdate", "agendaViewer"],
+      // minutes links (submitted for review / published): meeting + Minutes tab
+      ["committee_reviewSubmittedMinutesLink", "minutes"],
+      ["committee_viewPublishMinutesLink", "minutes"],
     ];
     const [linkKey, linkTab] =
       emailLinks.find(([key]) => localStorage.getItem(key)) || [];

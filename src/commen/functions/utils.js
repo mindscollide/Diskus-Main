@@ -3035,6 +3035,12 @@ export const handleNavigation = (
       "groups_meetingStr_action",
     );
     const groups_UserMeetPropoDatPoll = localStorage.getItem("groups_UserMeetPropoDatPoll")
+    const committee_minutesLink =
+      localStorage.getItem("committee_reviewSubmittedMinutesLink") ||
+      localStorage.getItem("committee_viewPublishMinutesLink");
+    const groups_minutesLink =
+      localStorage.getItem("groups_reviewSubmittedMinutesLink") ||
+      localStorage.getItem("groups_viewPublishMinutesLink");
     const committee_mtAgUpdate = localStorage.getItem("committee_mtAgUpdate");
     const groups_mtAgUpdate = localStorage.getItem("groups_mtAgUpdate");
     if (isFirstLogin) {
@@ -3097,7 +3103,8 @@ export const handleNavigation = (
         committee_meetingStr_action !== null ||
         committee_meetingUpd_action !== null ||
         committee_meetingprop_action !== null || committee_UserMeetPropoDatPoll !== null ||
-        committee_mtAgUpdate !== null
+        committee_mtAgUpdate !== null ||
+        committee_minutesLink !== null
       ) {
         // if(committee_meetingStr_action !== null || )
         navigate("/Diskus/committee");
@@ -3108,7 +3115,8 @@ export const handleNavigation = (
         groups_meetingUpd_action !== null ||
         groups_meetingprop_action !== null ||
         groups_viewMeeting_action !== null || groups_UserMeetPropoDatPoll !== null ||
-        groups_mtAgUpdate !== null
+        groups_mtAgUpdate !== null ||
+        groups_minutesLink !== null
       ) {
         navigate("/Diskus/groups");
       } else if (taskListView_Id !== null || taskListView !== null) {

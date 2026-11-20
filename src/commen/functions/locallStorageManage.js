@@ -89,7 +89,11 @@ export const localStorageManage = (
     committee_UserMeetPropoDatPoll: localStorage.getItem("committee_UserMeetPropoDatPoll"),
     groups_UserMeetPropoDatPoll: localStorage.getItem("groups_UserMeetPropoDatPoll"),
     committee_mtAgUpdate: localStorage.getItem("committee_mtAgUpdate"),
-    groups_mtAgUpdate: localStorage.getItem("groups_mtAgUpdate")
+    groups_mtAgUpdate: localStorage.getItem("groups_mtAgUpdate"),
+    committee_reviewSubmittedMinutesLink: localStorage.getItem("committee_reviewSubmittedMinutesLink"),
+    committee_viewPublishMinutesLink: localStorage.getItem("committee_viewPublishMinutesLink"),
+    groups_reviewSubmittedMinutesLink: localStorage.getItem("groups_reviewSubmittedMinutesLink"),
+    groups_viewPublishMinutesLink: localStorage.getItem("groups_viewPublishMinutesLink")
   };
 
   if (RememberEmailLocal || RememberPasswordLocal) {

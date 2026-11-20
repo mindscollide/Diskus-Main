@@ -43,8 +43,10 @@ export const useMeetingLinkActions = () => {
         isAgendaContributor:
           Number(attendeeId) === PARTICIPANT_ROLE.AGENDA_CONTRIBUTOR,
         isPrimaryOrganizer: false,
-        // the "view published minutes" email link only exists for published minutes
-        isMinutePublished: viewTab === "minutes" ? true : data.isMinutePublished,
+        // the server says whether the minutes are published (the "submitted for
+        // review" link opens unpublished ones); only when it doesn't say, a Minutes
+        // link is assumed to be the "view published minutes" one
+        isMinutePublished: data.isMinutePublished ?? viewTab === "minutes",
         isChat,
         isVideoCall: isVideo,
         talkGroupID: talkGroupId,
