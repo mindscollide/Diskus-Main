@@ -7,12 +7,14 @@ import VideoOn from "../../../../../assets/images/Recent Activity Icons/Video/Vi
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import MicOn from "../../../../../assets/images/Recent Activity Icons/Video/MicOn.png";
+import RemoveImage from "../../../../../assets/images/Recent Activity Icons/Video/RemoveImage.png";
 import PresentationJoinIcon from "../../../../../assets/images/VideoCall/PresentationJoinIcon.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 import {
+  getValidateString,
   guestVideoNavigationScreen,
   joinGuestVideoMainApi,
   makeStreamStop,
@@ -67,7 +69,20 @@ const GuestJoinVideo = ({
   console.log(getValidateStringData, "getValidateRoomIdgetValidateRoomId");
 
   // The invite link was opened while a presentation is running (from the validate API)
-  const isPresentationGuest = Boolean(getValidateStringData?.isPresenterViewStarted);
+  // guestInPresentation covers a guest admitted/removed in a presentation whose page-load validate flag was false
+  // presentationEnded: the presentation request answered that it is over, so the lobby is a normal meeting lobby again
+  const [presentationEnded, setPresentationEnded] = useState(false);
+  const isPresentationGuest =
+    !presentationEnded &&
+    (Boolean(getValidateStringData?.isPresenterViewStarted) ||
+      sessionStorage.getItem("guestInPresentation") === "true");
+  // This guest was inside the presentation (admitted or removed), so its rejoin goes through JoinPresentationGuestRequest
+  const leftPresentation =
+    isPresentationGuest &&
+    sessionStorage.getItem("guestInPresentation") === "true";
+  // Latest value for the one-time camera/mic effect below
+  const presentationGuestRef = useRef(isPresentationGuest);
+  presentationGuestRef.current = isPresentationGuest;
 
   const videoRef = useRef(null);
   const audioRef = useRef(null);
@@ -104,6 +119,8 @@ const GuestJoinVideo = ({
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {
+    // Presentation guests cannot turn the mic on from the lobby
+    if (isPresentationGuest) return;
     console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
     console.log(check, "updatedUrlupdatedUrlupdatedUrl");
     dispatch(setVoiceControleGuest(!enable));
@@ -137,6 +154,8 @@ const GuestJoinVideo = ({
 
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
+    // Presentation guests cannot turn the camera on from the lobby
+    if (isPresentationGuest) return;
     console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
     console.log("enableVideo", !enable);
     sessionStorage.setItem("enableVideo", !enable);
@@ -180,6 +199,37 @@ const GuestJoinVideo = ({
     }
   };
 
+  // Camera and mic back on once the presentation turned out to be over; resolves false if the browser refuses
+  const restoreMediaAfterPresentation = async () => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(() => {});
+      }
+      setStream(mediaStream);
+      const audioTrack = mediaStream.getAudioTracks()[0];
+      if (audioTrack) {
+        setStreamAudio(new MediaStream([audioTrack]));
+      }
+      setIsWebCamEnabled(true);
+      setIsMicEnabled(true);
+      sessionStorage.setItem("isMicEnabled", true);
+      sessionStorage.setItem("isWebCamEnabled", true);
+      sessionStorage.setItem("enableVideo", false);
+      dispatch(setVoiceControleGuest(false));
+      dispatch(setVideoCameraGuest(false));
+      return true;
+    } catch (error) {
+      console.error("src/components/layout/talk/GuestVideo/GuestJoinVideo:", error);
+      return false;
+    }
+  };
+
   const handleNameChange = (e) => {
     setJoinName(e.target.value);
     setErrorMessage(false);
@@ -209,16 +259,90 @@ const GuestJoinVideo = ({
       sessionStorage.setItem("guestName", joinName);
       sessionStorage.removeItem("isRejoining");
 
-      // Only the "Presentation is started" view sends the presentation request; a rejoin keeps JoinGuestVideo
-      const isPresentationJoin = isPresentationGuest && !rejoinState;
+      // The "Presentation is started" view sends the presentation request; a rejoin does too if the guest had been inside the presentation, otherwise it keeps JoinGuestVideo
+      const isPresentationJoin =
+        isPresentationGuest && (!rejoinState || leftPresentation);
       setJoinedAsPresentation(isPresentationJoin);
       let data = {
         MeetingId: extractMeetingId,
         RoomID: validateRoomId,
         GuestName: joinName,
-        IsMuted: !isMicEnabled,
-        HideVideo: !isWebCamEnabled,
+        IsMuted: isPresentationJoin || !isMicEnabled,
+        HideVideo: isPresentationJoin || !isWebCamEnabled,
         ...(isPresentationJoin ? {} : { HostEmail: validateHostEmail }),
+      };
+      const backToLobby = () => {
+        setIsWaiting(false);
+        setGetReady(false);
+        setJoinButton(false);
+      };
+      // Only one switch per click, so a backend that keeps answering _04 cannot ping-pong between the two joins
+      let switched = false;
+
+      // Presentation is running: send the presentation request with camera and mic off
+      const sendPresentationJoin = () => {
+        sessionStorage.setItem("guestInPresentation", "true");
+        setJoinedAsPresentation(true);
+        const { HostEmail, ...presentationData } = data;
+        dispatch(
+          joinGuestVideoMainApi(
+            navigate,
+            t,
+            { ...presentationData, IsMuted: true, HideVideo: true },
+            setJoinButton,
+            true,
+            onPresentationCheck,
+          ),
+        );
+      };
+
+      // Presentation is over: turn camera and mic back on, then fall back to the normal waiting-room join
+      const sendMeetingJoin = async () => {
+        sessionStorage.removeItem("guestInPresentation");
+        setPresentationEnded(true);
+        setJoinedAsPresentation(false);
+        // The page-load validate flag would otherwise bring the presentation view back on a later lobby
+        if (getValidateStringData) {
+          dispatch(
+            getValidateString({
+              ...getValidateStringData,
+              isPresenterViewStarted: false,
+            }),
+          );
+        }
+        const mediaOk = await restoreMediaAfterPresentation();
+        dispatch(
+          joinGuestVideoMainApi(
+            navigate,
+            t,
+            {
+              ...data,
+              IsMuted: !mediaOk,
+              HideVideo: !mediaOk,
+              HostEmail: validateHostEmail,
+            },
+            setJoinButton,
+            false,
+            onPresentationCheck,
+          ),
+        );
+      };
+
+      // Join answered _04 with isPresenterViewStarted: switch to the other join once, otherwise back to the lobby
+      const onPresentationCheck = (isPresenterViewStarted) => {
+        if (switched) {
+          backToLobby();
+          return;
+        }
+        if (isPresentationJoin && !isPresenterViewStarted) {
+          switched = true;
+          sendMeetingJoin();
+        } else if (!isPresentationJoin && isPresenterViewStarted) {
+          switched = true;
+          sendPresentationJoin();
+        } else {
+          backToLobby();
+        }
       };
       dispatch(
         joinGuestVideoMainApi(
@@ -227,6 +351,7 @@ const GuestJoinVideo = ({
           data,
           setJoinButton,
           isPresentationJoin,
+          onPresentationCheck,
         ),
       );
     }
@@ -268,13 +393,17 @@ const GuestJoinVideo = ({
     // later is handled by toggleVideo / toggleAudio.
     let cancelled = false;
     const mediaDevices = navigator.mediaDevices;
+    // Presentation guests join with camera and mic off, so no preview or permission prompt
+    if (presentationGuestRef.current) {
+      return undefined;
+    }
     mediaDevices
       ?.getUserMedia({
         video: true,
         audio: true,
       })
       .then((mediaStream) => {
-        if (cancelled) {
+        if (cancelled || presentationGuestRef.current) {
           // Lobby already left before permission resolved
           mediaStream.getTracks().forEach((track) => track.stop());
           return;
@@ -303,6 +432,25 @@ const GuestJoinVideo = ({
       streamAudioRef.current?.getTracks().forEach((track) => track.stop());
     };
   }, []);
+  // Presentation guests: camera and mic stay off (covers the validate flag arriving after the preview started)
+  useEffect(() => {
+    if (!isPresentationGuest) return;
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+    streamAudioRef.current?.getTracks().forEach((track) => track.stop());
+    setStream(null);
+    setStreamAudio(null);
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    setIsWebCamEnabled(false);
+    setIsMicEnabled(false);
+    sessionStorage.setItem("isMicEnabled", false);
+    sessionStorage.setItem("isWebCamEnabled", false);
+    sessionStorage.setItem("enableVideo", true);
+    dispatch(setVoiceControleGuest(true));
+    dispatch(setVideoCameraGuest(true));
+  }, [isPresentationGuest]);
+
   useEffect(() => {
     if (setStreamStop) {
       if (streamAudio) {
@@ -450,8 +598,17 @@ const GuestJoinVideo = ({
                           </div>
                         ) : rejoinState ? (
                           <>
+                            {leftPresentation ? (
+                              <img
+                                src={RemoveImage}
+                                alt=""
+                                className="guest-presentation-left-icon"
+                              />
+                            ) : null}
                             <p className="left-meeting-text">
-                              {t("You've-left-the-meeting")}
+                              {leftPresentation
+                                ? t("Guest-left-presentation")
+                                : t("You've-left-the-meeting")}
                             </p>
                             <p className="left-meeting-rejoin-text">
                               {t(

@@ -19,10 +19,15 @@ const GuestRemoveByHost = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  // Set by the GUEST_REMOVED_FROM_PRESENTATION handler so this screen uses the presentation text
+  const removedFromPresentation =
+    sessionStorage.getItem("removedFromPresentation") === "true";
+
   const navigateToJoinScreen = () => {
     // sessionStorage.setItem("isRejoining", "true");
     // sessionStorage.setItem("guestName", joinName || "");
 
+    sessionStorage.removeItem("removedFromPresentation");
     dispatch(guestVideoNavigationScreen(1));
   };
 
@@ -54,7 +59,9 @@ const GuestRemoveByHost = () => {
                       className="d-flex justify-content-center"
                     >
                       <p className="Removed-Main-Heading">
-                        {t("You’ve-been-removed")}
+                        {removedFromPresentation
+                          ? t("Guest-removed-from-presentation")
+                          : t("You’ve-been-removed")}
                       </p>
                     </Col>
                   </Row>
@@ -68,9 +75,11 @@ const GuestRemoveByHost = () => {
                       className="d-flex justify-content-center"
                     >
                       <p className="Sub-Removed-Main-Heading">
-                        {t(
-                          "The-organizer-has-removed-you-from-the-meeting-click-here-to-request-permission-to-rejoin"
-                        )}
+                        {removedFromPresentation
+                          ? t("Guest-removed-from-presentation-message")
+                          : t(
+                              "The-organizer-has-removed-you-from-the-meeting-click-here-to-request-permission-to-rejoin"
+                            )}
                       </p>
                     </Col>
                     <Col lg={1} md={1} sm={12} />

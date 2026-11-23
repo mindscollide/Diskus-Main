@@ -7,6 +7,8 @@ import {
   ValidateEncryptedStringGuestVideoLink,
   joinGuestVideo,
   joinPresentationGuestRequest,
+  joinPresenterView,
+  leavePresenterView,
   admitRejectAttendee,
   raiseUnRaisedHand,
   muteUnMuteParticipant,
@@ -203,6 +205,11 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                 "MeetingId",
                 response.data.responseResult.meetingId,
               );
+              // Validate runs on page load: no presentation running means a stale presentation flag must go
+              if (!response.data.responseResult.isPresenterViewStarted) {
+                sessionStorage.removeItem("guestInPresentation");
+                sessionStorage.removeItem("removedFromPresentation");
+              }
               dispatch(getValidateString(response.data.responseResult));
 
               // sessionStorage.setItem("viewState", 1);
@@ -351,6 +358,7 @@ const joinGuestVideoMainApi = (
   data,
   setJoinButton,
   isPresentation = false,
+  onPresentationCheck = null,
 ) => {
   return (dispatch) => {
     const joinMethod = isPresentation
@@ -376,7 +384,23 @@ const joinGuestVideoMainApi = (
               data,
               setJoinButton,
               isPresentation,
+              onPresentationCheck,
             ),
+          );
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult?.responseMessage
+            ?.toLowerCase()
+            .includes(`${joinCodePrefix}_04`.toLowerCase())
+        ) {
+          // _04 (JoinGuestVideo or JoinPresentationGuestRequest) comes with isExecuted false; the lobby decides next from isPresenterViewStarted
+          try {
+            setJoinButton(false);
+          } catch (error) {
+            console.error("src/store/actions/Guest_Video.js:", error);
+          }
+          onPresentationCheck?.(
+            Boolean(response.data.responseResult.isPresenterViewStarted),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -468,6 +492,42 @@ const joinGuestVideoMainApi = (
           console.error("src/store/actions/Guest_Video.js:", error);
         }
         dispatch(joinGuestVideoFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Guest side of JoinPresenterView, called once the presenter admits the guest (PRESENTATION_JOIN_REQUEST_APPROVED).
+// It cannot reuse joinPresenterViewMainApi, which drives the logged-in user's presenter-view state.
+const joinPresenterViewGuestMainApi = (data, onSuccess, onFail) => {
+  return () => {
+    let form = new FormData();
+    form.append("RequestMethod", joinPresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then((response) => {
+        const result = response.data?.responseResult;
+        if (
+          response.data?.responseCode === 200 &&
+          result?.isExecuted === true &&
+          String(result.responseMessage)
+            .toLowerCase()
+            .includes(
+              "Meeting_MeetingServiceManager_JoinPresenterView_01".toLowerCase(),
+            )
+        ) {
+          onSuccess?.(result);
+        } else {
+          onFail?.(result);
+        }
+      })
+      .catch((error) => {
+        logVideoError(
+          "joinPresenterViewGuestMainApi",
+          "request or response handling failed",
+          error,
+        );
+        onFail?.();
       });
   };
 };
@@ -1496,6 +1556,52 @@ const guestLeaveMeetingVideoApi = (navigate, t, data, showEndedScreen = false) =
   };
 };
 
+// Guest leaving a presentation: LeavePresenterView instead of GuestLeaveMeetingVideo, then back to the lobby's "left" view
+const leavePresenterViewGuestMainApi = (navigate, t, data) => {
+  return (dispatch) => {
+    let form = new FormData();
+    form.append("RequestMethod", leavePresenterView.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(leavePresenterViewGuestMainApi(navigate, t, data));
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult.isExecuted === true &&
+          response.data.responseResult.responseMessage
+            .toLowerCase()
+            .includes(
+              "Meeting_MeetingServiceManager_LeavePresenterView_01".toLowerCase(),
+            )
+        ) {
+          // guestInPresentation stays so the Rejoin button sends JoinPresentationGuestRequest
+          sessionStorage.setItem("isRejoining", "true");
+          sessionStorage.removeItem("isZoomEnabled");
+          sessionStorage.setItem("hasJoined", false);
+          dispatch(guestVideoNavigationScreen(1));
+          dispatch(setVideoCameraGuest(false));
+          dispatch(setVoiceControleGuest(false));
+        } else {
+          logVideoError(
+            "leavePresenterViewGuestMainApi",
+            "LeavePresenterView was not successful",
+            response.data,
+          );
+        }
+      })
+      .catch((response) => {
+        logVideoError(
+          "leavePresenterViewGuestMainApi",
+          "request or response handling failed",
+          response,
+        );
+      });
+  };
+};
+
 const removeParticipantFromVideo = (response) => {
   return {
     type: actions.REMOVE_PARTICIPANTS_FROM_VIDEO,
@@ -1913,6 +2019,7 @@ export {
   removeParticipantFromPresentationMainApi,
   setAdmittedParticipant,
   guestLeaveMeetingVideoApi,
+  leavePresenterViewGuestMainApi,
   removeParticipantFromVideo,
   muteUnMuteSelfMainApi,
   hideUnhideSelfMainApi,
@@ -1934,4 +2041,5 @@ export {
   setGuestVideoHostByGuid,
   guestEmptySession,
   guestHostEmailUpdated,
+  joinPresenterViewGuestMainApi,
 };

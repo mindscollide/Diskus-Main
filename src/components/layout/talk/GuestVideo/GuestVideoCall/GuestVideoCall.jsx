@@ -13,6 +13,8 @@ import {
   guestLeaveMeetingVideoApi,
   guestEmptySession,
   guestHostEmailUpdated,
+  joinPresenterViewGuestMainApi,
+  leavePresenterViewGuestMainApi,
   guestVideoNavigationScreen,
   hideUnHideVideoByHost,
   hideUnHideVideoParticipantsorGuest,
@@ -30,7 +32,10 @@ import {
 import { useSelector } from "react-redux";
 import Helper from "../../../../../commen/functions/history_logout";
 import { meetingApi } from "../../../../../commen/apis/Api_ends_points";
-import { guestLeaveMeetingVideo } from "../../../../../commen/apis/Api_config";
+import {
+  guestLeaveMeetingVideo,
+  leavePresenterView,
+} from "../../../../../commen/apis/Api_config";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 import GuestVideoReject from "../GuestVideoReject/GuestVideoReject";
 import {
@@ -40,6 +45,7 @@ import {
 import GuestRemoveByHost from "../GuestRemoveByHost/GuestRemoveByHost";
 import VideoCallNotStarteded from "../VIdeoCallNotStarted";
 import VideoCallNotPublishedYet from "../VIdeoCallNotPublishYet";
+import GuestPresentationEnded from "../GuestPresentationEnded/GuestPresentationEnded";
 
 /**
  * @component GuestVideoCall
@@ -182,8 +188,60 @@ const GuestVideoCall = () => {
           }
         } else if (
           data.payload.message.toLowerCase() ===
+          "PRESENTATION_JOIN_REQUEST_APPROVED".toLowerCase()
+        ) {
+          // Presenter admitted this guest: register with JoinPresenterView first, then open the call
+          if (data.payload.isAccepted === true) {
+            const approved = data.payload;
+            dispatch(
+              joinPresenterViewGuestMainApi(
+                {
+                  VideoCallURL: String(approved.videoCallUrl),
+                  WasInVideo: false,
+                  IsGuest: true,
+                  UID: String(approved.uid),
+                },
+                () => {
+                  // Remember this guest is in a presentation so a later rejoin lobby shows the presentation view
+                  sessionStorage.setItem("guestInPresentation", "true");
+                  setVideoUrl(approved.videoUrl);
+                  setRoomId(approved.roomID);
+                  sessionStorage.setItem("roomId", approved.roomID);
+                  dispatch(makeStreamStop(true, 2));
+                },
+                () => {
+                  // Could not join: hasJoined stays so a refresh still clears the waiting entry
+                  dispatch(makeStreamStop(true, 3));
+                },
+              ),
+            );
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "PRESENTATION_JOIN_REQUEST_REJECTED".toLowerCase()
+        ) {
+          // Presenter declined: guest never joined, so refresh must not call leave API
+          sessionStorage.removeItem("isWaiting");
+          sessionStorage.removeItem("hasJoined");
+          dispatch(guestVideoNavigationScreen(9));
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "GUEST_REMOVED_FROM_PRESENTATION".toLowerCase()
+        ) {
+          // Presenter removed this guest: same cleanup as a meeting removal, but the removed screen and rejoin lobby use the presentation view
+          sessionStorage.setItem("isLeftCheck", false);
+          sessionStorage.removeItem("isZoomEnabled");
+          sessionStorage.removeItem("hasJoined");
+          sessionStorage.setItem("guestInPresentation", "true");
+          sessionStorage.setItem("removedFromPresentation", "true");
+          dispatch(setVideoCameraGuest(false));
+          dispatch(setVoiceControleGuest(false));
+          dispatch(guestVideoNavigationScreen(5));
+        } else if (
+          data.payload.message.toLowerCase() ===
           "REMOVED_FROM_MEETING".toLowerCase()
         ) {
+          sessionStorage.removeItem("removedFromPresentation");
           sessionStorage.setItem("isLeftCheck", false);
           sessionStorage.removeItem("isZoomEnabled");
           // Removed by host: guest is already out, so refresh must not call leave API
@@ -414,7 +472,20 @@ const GuestVideoCall = () => {
         MeetingID: Number(getMeetingId),
       };
 
-      dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
+      if (sessionStorage.getItem("guestInPresentation") === "true") {
+        // Refreshed inside a presentation: leave it with LeavePresenterView (room is the presentation room saved at approval)
+        dispatch(
+          leavePresenterViewGuestMainApi(navigate, t, {
+            RoomID: String(sessionStorage.getItem("roomId") || getRoomId),
+            UserGUID: String(getGuestUid),
+            UID: String(getGuestUid),
+            Name: String(getGuestName),
+            IsGuest: true,
+          }),
+        );
+      } else {
+        dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
+      }
       sessionStorage.removeItem("hasJoined");
     }
   }, [validateData]);
@@ -427,6 +498,8 @@ const GuestVideoCall = () => {
     const onPageHide = () => {
       if (sessionStorage.getItem("hasJoined") !== "true") return;
       try {
+        const inPresentation =
+          sessionStorage.getItem("guestInPresentation") === "true";
         const data = {
           RoomID: String(
             sessionStorage.getItem("roomId") ||
@@ -435,9 +508,17 @@ const GuestVideoCall = () => {
           UID: String(sessionStorage.getItem("GuestUserID")),
           Name: String(sessionStorage.getItem("guestName")),
           MeetingID: Number(sessionStorage.getItem("MeetingId")),
+          ...(inPresentation
+            ? { UserGUID: String(sessionStorage.getItem("GuestUserID")), IsGuest: true }
+            : {}),
         };
         const form = new FormData();
-        form.append("RequestMethod", guestLeaveMeetingVideo.RequestMethod);
+        form.append(
+          "RequestMethod",
+          inPresentation
+            ? leavePresenterView.RequestMethod
+            : guestLeaveMeetingVideo.RequestMethod,
+        );
         form.append("RequestData", JSON.stringify(data));
         fetch(meetingApi, { method: "POST", body: form, keepalive: true });
         sessionStorage.removeItem("hasJoined");
@@ -513,6 +594,12 @@ const GuestVideoCall = () => {
           <VideoCallNotStarteded />
       ) : guestVideoNavigationData === 7 ? (
         <VideoCallNotPublishedYet />
+      ) : guestVideoNavigationData === 8 ? (
+        <GuestPresentationEnded />
+      ) : guestVideoNavigationData === 9 ? (
+        <div className='Main-Guest-Video'>
+          <GuestVideoReject isPresentation />
+        </div>
       ) : null}
     </>
   );

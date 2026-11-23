@@ -12,7 +12,7 @@ import "./GuestVideoReject.css";
  * explanatory sub-message. No interactive actions or navigation options are
  * provided on this screen.
  */
-const GuestVideoReject = () => {
+const GuestVideoReject = ({ isPresentation = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -42,7 +42,9 @@ const GuestVideoReject = () => {
                       sm={12}
                       className="d-flex justify-content-center"
                     >
-                      <p className="Denied-Main-Heading">{t("Entry-denied")}</p>
+                      <p className="Denied-Main-Heading">
+                        {isPresentation ? t("Access-denied") : t("Entry-denied")}
+                      </p>
                     </Col>
                   </Row>
 
@@ -55,9 +57,11 @@ const GuestVideoReject = () => {
                       className="d-flex justify-content-center"
                     >
                       <p className="Sub-Denied-Main-Heading">
-                        {t(
-                          "The-meeting-organizer-has-not-granted-you-permission-to-join-this-meeting-at-this-time"
-                        )}
+                        {isPresentation
+                          ? t("Guest-presentation-access-denied-message")
+                          : t(
+                              "The-meeting-organizer-has-not-granted-you-permission-to-join-this-meeting-at-this-time"
+                            )}
                       </p>
                     </Col>
                     <Col lg={1} md={1} sm={12} />

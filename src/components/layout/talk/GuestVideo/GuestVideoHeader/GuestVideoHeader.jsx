@@ -25,6 +25,7 @@ import {
   guestEmptySession,
   guestLeaveMeetingVideoApi,
   hideUnhideSelfMainApi,
+  leavePresenterViewGuestMainApi,
   muteUnMuteParticipantsorGuestbyHost,
   muteUnMuteSelfMainApi,
   raiseUnRaisedHandMainApi,
@@ -431,6 +432,19 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     }
     setIsVideoOn(false);
     setMicOn(false);
+    // A guest inside a presentation leaves with LeavePresenterView, not GuestLeaveMeetingVideo
+    if (sessionStorage.getItem("guestInPresentation") === "true") {
+      dispatch(
+        leavePresenterViewGuestMainApi(navigate, t, {
+          RoomID: String(roomId),
+          UserGUID: String(joinGuestData.guestGuid),
+          UID: String(joinGuestData.guestGuid),
+          Name: String(guestName),
+          IsGuest: true,
+        }),
+      );
+      return;
+    }
     let data = {
       RoomID: String(roomId),
       UID: String(joinGuestData.guestGuid),

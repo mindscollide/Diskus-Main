@@ -7,7 +7,8 @@
 
 .guest-video-inside-component {
   min-height: 309px;
-  padding: 60px;
+  /* Tall content (icon views) must not push the panel past min-height */
+  padding: 20px 60px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   flex-direction: column;
@@ -185,4 +186,11 @@ video.video-size {
   to {
     transform: rotate(360deg);
   }
+}
+
+.guest-presentation-left-icon {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  margin-bottom: 12px;
 }
