@@ -25,6 +25,9 @@ import { HideNotification } from "../../../../store/actions/Get_List_Of_Assignee
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 import CreateQuickMeeting from "../../../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../home/dashboard-module.css";
+import "../../../NewDashboardLayout/NewDashbaord.css";
 
 const OnboardDashboard = () => {
   const dCheck = useLoaderData();

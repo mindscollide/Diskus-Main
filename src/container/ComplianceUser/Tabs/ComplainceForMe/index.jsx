@@ -26,6 +26,8 @@ import { Col, Row } from "react-bootstrap";
 import { ChevronDown } from "react-bootstrap-icons";
 import { Checkbox, Tooltip } from "antd";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../Committee/ViewTodo/Todolist.css";
 
 const ComplianceForMe = () => {
   const dispatch = useDispatch();

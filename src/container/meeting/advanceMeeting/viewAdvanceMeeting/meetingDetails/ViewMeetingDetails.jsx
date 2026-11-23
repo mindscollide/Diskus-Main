@@ -82,6 +82,8 @@ import {
   UpdateMeetingStatusApi,
 } from "../../../../../store/actions/NewMeeting2.actions";
 import { HIDE_VIDEO } from "../../../../../commen/featureFlags";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../../../components/layout/talk/videoCallScreen/videoCallHeader/videoCallHeader.css";
 
 const ViewMeetingDetails = () => {
   const { t } = useTranslation();

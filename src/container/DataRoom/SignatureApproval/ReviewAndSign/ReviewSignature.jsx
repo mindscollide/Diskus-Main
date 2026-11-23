@@ -36,6 +36,8 @@ import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import SignatoriesListModal from "../ApprovalSend/SignatoriesList/SignatoriesListModal";
 import { useTableScrollBottom } from "../../../../commen/functions/useTableScrollBottom";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../Committee/ViewTodo/Todolist.css";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -49,6 +51,8 @@ const ReviewSignature = () => {
   const workflowsignaturedocument = useSelector(
     (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument,
   );
+
+  const declineRealtimeSignatureDocument = useSelector((state) => state.SignatureWorkFlowReducer.declineRealtimeSignatureDocument)
 
   const workflowsignaturedocumentActionByMe = useSelector(
     (state) =>
@@ -630,6 +634,36 @@ const ReviewSignature = () => {
   }, [workflowsignaturedocument]);
 
   useEffect(() => {
+    if (declineRealtimeSignatureDocument !== null) {
+      const { data } = declineRealtimeSignatureDocument;
+
+      const isExist = originalData.some(
+        (item) => item.workFlowID === data.workFlowID,
+      );
+
+      setOriginalData((prev) => {
+        if (isExist) {
+          return prev.map((item) =>
+            item.workFlowID === data.workFlowID
+              ? {
+                ...item,
+                status: data.status,
+                actorStatusID: data.actorStatusID,
+              }
+              : item,
+          );
+        }
+
+        return [data, ...prev];
+      });
+
+      if (!isExist) {
+        setTotalDataLength((prev) => prev + 1);
+      }
+    }
+  }, [declineRealtimeSignatureDocument]);
+
+  useEffect(() => {
     try {
       if (workflowsignaturedocumentActionByMe !== null) {
         const { data } = workflowsignaturedocumentActionByMe;
@@ -757,7 +791,7 @@ const ReviewSignature = () => {
       </Row>
       <Row>
         <Col sm={12} md={12} lg={12}>
-        
+
           <TableToDo
             column={pendingApprovalColumns}
             className={"PendingApprovalsTable"}

@@ -80,6 +80,8 @@ import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 
 import "./Todolist.css";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../meeting/commonComponents/Meeting.css";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONSTANTS

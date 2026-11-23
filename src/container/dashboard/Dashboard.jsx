@@ -242,6 +242,7 @@ import CancelConfirmationModal from "@/container/meeting/commonComponents/cancel
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
   added_MinuteReviwerCount,
+  declineRealtimeSignatureDocumentAction,
   SignatureDocumentActionByMe,
   SignatureDocumentReceived,
   SignatureDocumentReceivedMyMe,
@@ -284,6 +285,8 @@ import {
 import { useComplianceContext } from "../../context/ComplianceContext";
 import { HIDE_VIDEO } from "../../commen/featureFlags";
 import VIdeoCallNotStarted from "../../components/layout/talk/GuestVideo/VIdeoCallNotStarted";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../NewDashboardLayout/NewDashbaord.css";
 
 // UIDs this client sends in IsSharedScreen, used to tell our own
 // VIDEO_SHARING_ENABLED/DISABLED echo from someone else's share. Meeting video
@@ -5465,6 +5468,23 @@ const Dashboard = () => {
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingSignature: (prev.pendingSignature ?? 0) + 1,
+          }));
+        }
+          if (
+          data.payload.message
+            .toLowerCase()
+            .includes("SIGNATURE_DOCUMENT_DECLINE".toLowerCase())
+        ) {
+          dispatch(declineRealtimeSignatureDocumentAction(data.payload));
+          if (
+            data.payload?.workFlowStatusID === 3 ||
+            data.payload?.workFlowStatusID === 4
+          )
+            return;
+
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingSignature: (prev.pendingSignature ?? 0) - 1,
           }));
         }
         if (

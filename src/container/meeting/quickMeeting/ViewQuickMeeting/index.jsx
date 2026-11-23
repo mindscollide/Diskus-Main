@@ -78,6 +78,8 @@ import { getMeetingbyGroupIdApi } from "../../../../store/actions/Groups_actions
 import { getMeetingByCommitteeIdApi } from "../../../../store/actions/Committee_actions";
 import { HIDE_VIDEO } from "../../../../commen/featureFlags";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../../components/layout/talk/videoCallScreen/videoCallPanels/videoCallNormalPanel.css";
 
 const ModalView = ({ ModalTitle }) => {
   //For Localization

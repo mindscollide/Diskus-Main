@@ -32,6 +32,8 @@ import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 import { Checkbox, Dropdown, Menu } from "antd";
 import { Button } from "../../../../components/elements";
 import { useTableScrollBottom } from "../../../../commen/functions/useTableScrollBottom";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../Committee/ViewTodo/Todolist.css";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();

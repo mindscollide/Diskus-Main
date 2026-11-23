@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import { setLoader } from "../../store/actions/Auth2_actions";
 import { useNavigate } from "react-router-dom";
 import { GetAllMeetingTypesNewFunction } from "../../store/actions/NewMeetingActions";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../components/layout/header2/Header.css";
 
 const NewDashobard = () => {
   const getALlMeetingTypes = useSelector(

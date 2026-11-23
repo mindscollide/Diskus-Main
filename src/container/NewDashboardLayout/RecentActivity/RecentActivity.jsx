@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 import { getNotifications } from "../../../store/actions/GetUserNotification";
 import { useTranslation } from "react-i18next";
 import DemoIcon from "../../../assets/images/Recent Activity Icons/Task/Added In Task.png";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../pages/home/dashboard-module.css";
 
 const RecentActivity = () => {
   const RecentActivityData = useSelector(

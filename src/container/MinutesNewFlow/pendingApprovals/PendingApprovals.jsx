@@ -38,6 +38,8 @@ import { convertToArabicNumerals } from "../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import { MeetingContext } from "../../../context/MeetingContext";
 import { useTableScrollBottom } from "../../../commen/functions/useTableScrollBottom";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../Committee/ViewTodo/Todolist.css";
 
 const DEFAULT_PENDING_APPROVALS_PAGE = { sRow: 0, Length: 10, Status: ["Reviewed", "Pending", "Expired"] };
 const PENDING_APPROVALS_PAGE_LENGTH = 10;

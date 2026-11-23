@@ -2656,7 +2656,22 @@ const updateMinuteReviewByReviewer = (response) => {
     response,
   };
 };
+
+const declineRealtimeSignatureDocumentAction = (payload) => {
+  return {
+    type: actions.DECLINE_REALTIME_SIGNATURE_DOCUMENT,
+    payload,
+  };
+};
+const receivedRealtimeSignatureDocumentAction = (payload) => {
+  return {
+    type: actions.RECEIVED_REALTIME_SIGNATURE_DOCUMENT,
+    payload,
+  };
+};
 export {
+  declineRealtimeSignatureDocumentAction,
+  receivedRealtimeSignatureDocumentAction,
   updateMinuteReviewByReviewer,
   SignatureDocumentStatusChangeSignees,
   SignatureDocumentStatusChange,
