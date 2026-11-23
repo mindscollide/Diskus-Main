@@ -35,6 +35,8 @@ const initialState = {
   voiceControleForAllByHost: false,
   voiceControleForAllByHostFlag: false,
   hostTransferFlag: false,
+  // true when EMPTY_SESSION_FOR_GUEST arrives; the guest header consumes it and leaves
+  emptySessionForGuest: false,
   errorSeverity: null, // Added errorSeverity to initialState
 
   // CR(0012249) — Presentation waiting-room / admit-reject / remove flow
@@ -225,6 +227,24 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+      };
+    }
+    // A new host was assigned: later JoinGuestVideo requests must carry that host's email
+    case actions.GUEST_HOST_EMAIL_UPDATED: {
+      if (!state.validateStringData || !action.response) return state;
+      return {
+        ...state,
+        validateStringData: {
+          ...state.validateStringData,
+          hostEmail: action.response,
+        },
+      };
+    }
+
+    case actions.GUEST_EMPTY_SESSION: {
+      return {
+        ...state,
+        emptySessionForGuest: action.response,
       };
     }
     case actions.TRANSFER_MEETING_HOST_SUCCESS: {

@@ -966,11 +966,20 @@ const participantListAndWaitingListFail = (message) => {
 const WAITING_LIST_DEDUPE_MS = 1500;
 const recentWaitingListRequests = new Map();
 
+const presenterRosterSeeded = (participantList) => {
+  return {
+    type: actions.PRESENTER_ROSTER_SEEDED,
+    response: participantList,
+  };
+};
+
+// seedPresenterRoster: the presenter's own start call also fills the presentation roster from this response
 const participantListWaitingListMainApi = (
   Data,
   navigate,
   t,
   isRetry = false,
+  seedPresenterRoster = false,
 ) => {
   return (dispatch) => {
     const requestRoomID = Data?.RoomID;
@@ -985,7 +994,8 @@ const participantListWaitingListMainApi = (
       );
       return;
     }
-    if (!isRetry) {
+    // The presenter's one-shot start call must never be dropped by the dedupe window
+    if (!isRetry && !seedPresenterRoster) {
       const now = Date.now();
       const last = recentWaitingListRequests.get(String(requestRoomID));
       if (last && now - last < WAITING_LIST_DEDUPE_MS) {
@@ -1005,7 +1015,15 @@ const participantListWaitingListMainApi = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(participantListWaitingListMainApi(Data, navigate, t, true));
+          dispatch(
+            participantListWaitingListMainApi(
+              Data,
+              navigate,
+              t,
+              true,
+              seedPresenterRoster,
+            ),
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1021,6 +1039,13 @@ const participantListWaitingListMainApi = (
                   t("Record-found"),
                 ),
               );
+              if (seedPresenterRoster) {
+                dispatch(
+                  presenterRosterSeeded(
+                    response.data.responseResult.participantList,
+                  ),
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1691,6 +1716,38 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               await dispatch(
                 startPresenterSuccess(response.data.responseResult, ""),
               );
+              // Only the user who started the presentation loads the latest participant + waiting list
+              if (flag === 1) {
+                try {
+                  const inMeetingVideo = Boolean(data?.WasInVideo);
+                  const meetingVideoHost = JSON.parse(
+                    localStorage.getItem("isMeetingVideoHostCheck"),
+                  );
+                  // Host: video room; participant in video: own video room; otherwise the presentation room
+                  const presenterRoomID = !inMeetingVideo
+                    ? data?.RoomID
+                    : meetingVideoHost
+                      ? localStorage.getItem("newRoomId") || data?.RoomID
+                      : localStorage.getItem("participantRoomId") ||
+                        data?.RoomID;
+                  if (presenterRoomID) {
+                    dispatch(
+                      participantListWaitingListMainApi(
+                        { RoomID: String(presenterRoomID) },
+                        navigate,
+                        t,
+                        false,
+                        true,
+                      ),
+                    );
+                  }
+                } catch (error) {
+                  console.error(
+                    "src/store/actions/VideoFeature_actions.js:",
+                    error,
+                  );
+                }
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -7,6 +7,7 @@ import VideoOn from "../../../../../assets/images/Recent Activity Icons/Video/Vi
 import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import MicOn from "../../../../../assets/images/Recent Activity Icons/Video/MicOn.png";
+import PresentationJoinIcon from "../../../../../assets/images/VideoCall/PresentationJoinIcon.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -65,6 +66,9 @@ const GuestJoinVideo = ({
   );
   console.log(getValidateStringData, "getValidateRoomIdgetValidateRoomId");
 
+  // The invite link was opened while a presentation is running (from the validate API)
+  const isPresentationGuest = Boolean(getValidateStringData?.isPresenterViewStarted);
+
   const videoRef = useRef(null);
   const audioRef = useRef(null);
   const [stream, setStream] = useState(null);
@@ -83,6 +87,8 @@ const GuestJoinVideo = ({
   const [validateRoomId, setValidateRoomId] = useState("");
   const [validateHostEmail, setValidateHostEmail] = useState("");
   const [joinButton, setJoinButton] = useState(false);
+  // True when Join Now was pressed on the "Presentation is started" view (not on a rejoin)
+  const [joinedAsPresentation, setJoinedAsPresentation] = useState(false);
   console.log(joinButton, "joinButtonjoinButton");
 
   console.log(
@@ -203,15 +209,26 @@ const GuestJoinVideo = ({
       sessionStorage.setItem("guestName", joinName);
       sessionStorage.removeItem("isRejoining");
 
+      // Only the "Presentation is started" view sends the presentation request; a rejoin keeps JoinGuestVideo
+      const isPresentationJoin = isPresentationGuest && !rejoinState;
+      setJoinedAsPresentation(isPresentationJoin);
       let data = {
         MeetingId: extractMeetingId,
         RoomID: validateRoomId,
         GuestName: joinName,
         IsMuted: !isMicEnabled,
         HideVideo: !isWebCamEnabled,
-        HostEmail: validateHostEmail,
+        ...(isPresentationJoin ? {} : { HostEmail: validateHostEmail }),
       };
-      dispatch(joinGuestVideoMainApi(navigate, t, data, setJoinButton));
+      dispatch(
+        joinGuestVideoMainApi(
+          navigate,
+          t,
+          data,
+          setJoinButton,
+          isPresentationJoin,
+        ),
+      );
     }
   };
 
@@ -410,7 +427,17 @@ const GuestJoinVideo = ({
 
                     <Col lg={7} md={7} sm={12}>
                       <div className="guest-video-inside-component">
-                        {isWaiting ? (
+                        {isWaiting && joinedAsPresentation ? (
+                          <div className="guest-presentation-getting-ready">
+                            <p className="guest-presentation-getting-ready-title">
+                              {t("Guest-presentation-getting-ready")}
+                            </p>
+                            <div className="guest-presentation-spinner" />
+                            <p className="guest-presentation-getting-ready-message">
+                              {t("Guest-presentation-getting-ready-message")}
+                            </p>
+                          </div>
+                        ) : isWaiting ? (
                           <div className="waiting-text-animation">
                             <p className="waiting-room-class">
                               {t("You-are-in-the-waiting-room")}
@@ -439,9 +466,22 @@ const GuestJoinVideo = ({
                           </>
                         ) : !getReady ? (
                           <>
-                            <p className="ready-to-join">
-                              {t("Ready-to-join")}
-                            </p>
+                            {isPresentationGuest ? (
+                              <>
+                                <img
+                                  src={PresentationJoinIcon}
+                                  alt=""
+                                  className="guest-presentation-icon"
+                                />
+                                <p className="guest-presentation-ready">
+                                  {t("Presentation-join-ready")}
+                                </p>
+                              </>
+                            ) : (
+                              <p className="ready-to-join">
+                                {t("Ready-to-join")}
+                              </p>
+                            )}
                             <Button
                               disableBtn={joinButton}
                               text={t("Join-now")}

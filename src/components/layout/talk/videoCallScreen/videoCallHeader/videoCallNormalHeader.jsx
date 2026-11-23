@@ -93,6 +93,7 @@ import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 import { useTranslation } from "react-i18next";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
+import { isValidRoomID } from "../../../../../commen/functions/presentationRoom";
 import {
   getMeetingGuestVideoMainApi,
   hideUnhideSelfMainApi,
@@ -1597,8 +1598,12 @@ const VideoCallNormalHeader = ({
           // joinPresenterViewMainApi now fires later, from
           // maxParticipantVideoCallComponent.js, only once the host
           // approves.
+          // The presentation room saved earlier wins; acceptedRoomID is the call's room
           let presentationRoomID = String(
-            localStorage.getItem("acceptedRoomID"),
+            [
+              localStorage.getItem("presentationRoomID"),
+              localStorage.getItem("acceptedRoomID"),
+            ].find(isValidRoomID) ?? localStorage.getItem("acceptedRoomID"),
           );
           localStorage.setItem("presentationRoomID", presentationRoomID);
           dispatch(presentationJoinFlowFlag(true));

@@ -1,7 +1,6 @@
 // CR(0012249): the room an active presentation runs in, remembered per meeting.
-// The JoinMeeting response carries no room id, so it is captured from
-// MEETING_PRESENTATION_STARTED (received app-wide, even before the meeting
-// page is opened) and read back when the meeting is joined later.
+// MEETING_PRESENTATION_STARTED saves it app-wide; the JoinMeeting response also
+// carries the presentation roomID, which covers a user who was offline/logged out.
 const ROOMS_KEY = "presentationRooms";
 
 export const isValidRoomID = (id) =>
@@ -31,12 +30,12 @@ export const clearPresentationRoom = (meetingID) => {
   localStorage.setItem(ROOMS_KEY, JSON.stringify(rooms));
 };
 
-// Sets localStorage.presentationRoomID for the waiting-room modal. Prefers the
-// room saved for this meeting; falls back to any valid candidate. With no
-// valid room the key is removed so a stale room from an earlier presentation
-// can never be sent.
+// Sets localStorage.presentationRoomID for the waiting-room modal. Candidates
+// (the fresh server room) win over the room saved earlier for this meeting, which
+// can be stale after an offline gap. With no valid room the key is removed so a
+// stale room from an earlier presentation can never be sent.
 export const rememberPresentationRoomID = (meetingID, ...candidates) => {
-  const room = [readRooms()[String(meetingID)], ...candidates].find(
+  const room = [...candidates, readRooms()[String(meetingID)]].find(
     isValidRoomID,
   );
   if (room) {

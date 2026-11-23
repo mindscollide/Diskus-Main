@@ -2313,7 +2313,10 @@ const Dashboard = () => {
               setNotificationID(id);
             } else if (
               data.payload.message.toLowerCase() ===
-              "PRESENTATION_PARTICIPANT_JOIN_REQUEST".toLowerCase()
+                "PRESENTATION_PARTICIPANT_JOIN_REQUEST".toLowerCase() ||
+              // A guest who joined from the presentation link uses the same waiting list and popup
+              data.payload.message.toLowerCase() ===
+                "PRESENTATION_GUEST_PARTICIPANT_JOIN_REQUEST".toLowerCase()
             ) {
               // CR(0012249): presentation host is notified a participant
               // wants to join — mirrors MEETING_VIDEO_PARTICIPANT_JOIN_REQUEST's

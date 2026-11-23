@@ -75,6 +75,7 @@ import {
 } from "./Groups_actions";
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import {
+  activePresentationMeetingID,
   joinPresenterViewMainApi,
   maxParticipantVideoCallPanel,
   nonMeetingVideoGlobalModal,
@@ -3477,6 +3478,10 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                 const presenterViewStatus =
                   response.data.responseResult.isPresenterViewStarted;
 
+                if (presenterViewStatus) {
+                  // A user who was offline missed MEETING_PRESENTATION_STARTED, so mark it here
+                  dispatch(activePresentationMeetingID(Number(Data.FK_MDID)));
+                }
                 if (presenterViewStatus && !activeStatusOneToOne) {
                   // CR(0012249): opening this meeting revealed a
                   // presentation is already active — opens the waiting
@@ -3489,6 +3494,11 @@ export const joinMeetingApi = (navigate, t, Data, routePath, object) => {
                   dispatch(presentationJoinFlowFlag(true));
                   dispatch(maxParticipantVideoCallPanel(true));
                 } else if (presenterViewStatus && activeStatusOneToOne) {
+                  // Keep the presentation room so the later join does not fall back to the call's room
+                  rememberPresentationRoomID(
+                    Data.FK_MDID,
+                    response.data.responseResult.roomID,
+                  );
                   localStorage.setItem("JoinpresenterForonetoone", true);
                   dispatch(nonMeetingVideoGlobalModal(true));
                   dispatch(presenterViewGlobalState(0, true, false, false));

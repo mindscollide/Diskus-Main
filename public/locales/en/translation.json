@@ -2235,6 +2235,8 @@
   "The-meeting-has-ended-and-this-link-is-no-longer-active": " The meeting has ended, and this link is no longer active.",
   "Ready-to-join": "Ready To Join?",
   "Presentation-join-ready": "Presentation is started. Are you ready to join?",
+  "Guest-presentation-getting-ready": "Getting Ready!",
+  "Guest-presentation-getting-ready-message": "Please wait while we connect you to the presentation.",
   "Presentation-removed-title": "Removed from the Presentation",
   "Presentation-removed-message": "The presenter has removed you from the presentation.",
   "Presentation-waiting-room-title": "You are in the waiting room.",

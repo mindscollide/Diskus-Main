@@ -1652,6 +1652,25 @@ const videoFeatureReducer = (state = initialState, action) => {
       };
     }
 
+    // Presenter's starting roster from GetVideoCallParticipantsAndWaitingList; MQTT rows that arrived earlier are kept
+    case actions.PRESENTER_ROSTER_SEEDED: {
+      const apiList = Array.isArray(action.response) ? action.response : [];
+      const existingList = getPresentationRoster(state);
+      const merged = apiList.map((apiRow) => {
+        const mqttRow = existingList.find((p) =>
+          isSamePresentationUser(p, apiRow),
+        );
+        return mqttRow && rowIdOf(mqttRow) > rowIdOf(apiRow) ? mqttRow : apiRow;
+      });
+      existingList.forEach((p) => {
+        if (!merged.some((m) => isSamePresentationUser(m, p))) merged.push(p);
+      });
+      return {
+        ...state,
+        presentationParticipantsList: withPresentationRoster(state, merged),
+      };
+    }
+
     case actions.PRESENTATION_PARTICIPANT_LEFT_MQTT: {
       // Accepts a guid string (MQTT) or a {guid, userID} object (local removal).
       const leaving =

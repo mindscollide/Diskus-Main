@@ -2231,6 +2231,8 @@
   "The-meeting-has-ended-and-this-link-is-no-longer-active": "انتهى الاجتماع، وهذا الرابط لم يعد نشطاً.",
   "Ready-to-join": "جاهز للانضمام؟",
   "Presentation-join-ready": "بدأ العرض التقديمي. هل أنت مستعد للانضمام؟",
+  "Guest-presentation-getting-ready": "جارٍ التحضير!",
+  "Guest-presentation-getting-ready-message": "يرجى الانتظار بينما نقوم بتوصيلك بالعرض التقديمي.",
   "Presentation-removed-title": "تمت إزالتك من العرض التقديمي",
   "Presentation-removed-message": "قام المقدّم بإزالتك من العرض التقديمي.",
   "Presentation-waiting-room-title": "أنت في غرفة الانتظار.",

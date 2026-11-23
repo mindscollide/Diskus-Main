@@ -376,6 +376,8 @@ const VideoPanelNormal = () => {
   const [showTile, setShowTile] = useState(false);
 
   const [isScreenActive, setIsScreenActive] = useState(false);
+  // True once the presenter's share was started for this iframe (a reconnect must not re-open the picker)
+  const presenterShareStartedRef = useRef(false);
 
   let meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
   // for make host
@@ -1407,6 +1409,10 @@ const VideoPanelNormal = () => {
           console.log("handlePostMessage", nonPresenter);
 
           setIsScreenActive(true); // Show a modal or perform an action
+          // The presenter's share is running (also covers a user already in video)
+          if (presenterViewFlag && presenterViewHostFlag) {
+            presenterShareStartedRef.current = true;
+          }
           if (nonPresenter) {
             console.log("handlePostMessage", nonPresenter);
             console.log("busyCall");
@@ -1708,12 +1714,17 @@ const VideoPanelNormal = () => {
           }
 
           if (presenterViewFlag && presenterViewHostFlag) {
-            if (isZoomEnabled) {
+            // Only the first connection starts the share; a reconnect must not toggle it
+            if (presenterShareStartedRef.current) {
+              console.log("StreamConnected again — share not re-triggered");
+            } else if (isZoomEnabled) {
+              presenterShareStartedRef.current = true;
               setTimeout(() => {
                 console.log("stream");
                 handlePresenterView();
               }, 2000);
             } else {
+              presenterShareStartedRef.current = true;
               handlePresenterView();
             }
           } else if (presenterViewFlag && presenterViewJoinFlag) {
@@ -1788,6 +1799,16 @@ const VideoPanelNormal = () => {
     } else {
     }
   };
+
+  // A new iframe load or the end of the presentation allows the next share auto-start
+  useEffect(() => {
+    presenterShareStartedRef.current = false;
+  }, [iframeSrc]);
+  useEffect(() => {
+    if (!(presenterViewFlag && presenterViewHostFlag)) {
+      presenterShareStartedRef.current = false;
+    }
+  }, [presenterViewFlag, presenterViewHostFlag]);
 
   // Attach the iframe message listener once; it delegates to the latest handler
   useEffect(() => {

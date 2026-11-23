@@ -1799,6 +1799,10 @@ export const joinGuestVideo = {
   RequestMethod: "ServiceManager.JoinGuestVideo",
 };
 
+export const joinPresentationGuestRequest = {
+  RequestMethod: "ServiceManager.JoinPresentationGuestRequest",
+};
+
 export const admitRejectAttendee = {
   RequestMethod: "ServiceManager.AdmitRejectAttendee",
 };

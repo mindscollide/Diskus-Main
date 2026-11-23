@@ -74,6 +74,7 @@ import {
 import { RefreshToken } from "./Auth_action";
 import { callRequestReceivedMQTT, LeaveCall } from "./VideoMain_actions";
 import {
+  activePresentationMeetingID,
   joinPresenterViewMainApi,
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
@@ -7294,6 +7295,10 @@ const JoinCurrentMeeting = (
 
               let presenterViewStatus =
                 response.data.responseResult.isPresenterViewStarted;
+              if (presenterViewStatus) {
+                // A user who was offline missed MEETING_PRESENTATION_STARTED, so mark it here
+                dispatch(activePresentationMeetingID(Number(Data.FK_MDID)));
+              }
               if (presenterViewStatus && !activeStatusOneToOne) {
                 // CR(0012249): opening this meeting revealed a presentation
                 // is already active — no longer joins directly, opens the
@@ -7305,6 +7310,11 @@ const JoinCurrentMeeting = (
                 dispatch(presentationJoinFlowFlag(true));
                 dispatch(maxParticipantVideoCallPanel(true));
               } else if (presenterViewStatus && activeStatusOneToOne) {
+                // Keep the presentation room so the later join does not fall back to the call's room
+                rememberPresentationRoomID(
+                  Data.FK_MDID,
+                  response.data.responseResult.roomID,
+                );
                 localStorage.setItem("JoinpresenterForonetoone", true);
                 dispatch(nonMeetingVideoGlobalModal(true));
                 dispatch(presenterViewGlobalState(0, true, false, false));

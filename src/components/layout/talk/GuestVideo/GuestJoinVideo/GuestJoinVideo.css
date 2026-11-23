@@ -134,3 +134,55 @@ video.video-size {
   font-size: 20px;
   font-weight: 600;
 }
+
+/* Guest lobby while a presentation is running */
+.guest-presentation-icon {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+.guest-presentation-ready {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6172d6;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.guest-presentation-getting-ready {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.guest-presentation-getting-ready-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6172d6;
+  margin-bottom: 12px;
+}
+
+.guest-presentation-getting-ready-message {
+  font-size: 14px;
+  color: #5a5a5a;
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.guest-presentation-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #e1e5f7;
+  border-top-color: #6172d6;
+  border-radius: 50%;
+  animation: guest-presentation-spin 0.9s linear infinite;
+}
+
+@keyframes guest-presentation-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

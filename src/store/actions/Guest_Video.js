@@ -6,6 +6,7 @@ import {
   getMeetingGuestVideoURL,
   ValidateEncryptedStringGuestVideoLink,
   joinGuestVideo,
+  joinPresentationGuestRequest,
   admitRejectAttendee,
   raiseUnRaisedHand,
   muteUnMuteParticipant,
@@ -343,11 +344,24 @@ const joinGuestVideoFail = (message) => {
   };
 };
 
-const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
+// isPresentation: the guest joins from the "Presentation is started" lobby, so JoinPresentationGuestRequest is sent instead of JoinGuestVideo
+const joinGuestVideoMainApi = (
+  navigate,
+  t,
+  data,
+  setJoinButton,
+  isPresentation = false,
+) => {
   return (dispatch) => {
+    const joinMethod = isPresentation
+      ? joinPresentationGuestRequest.RequestMethod
+      : joinGuestVideo.RequestMethod;
+    const joinCodePrefix = isPresentation
+      ? "Meeting_MeetingServiceManager_JoinPresentationGuestRequest"
+      : "Meeting_MeetingServiceManager_JoinGuestVideo";
     dispatch(joinGuestVideoInit());
     let form = new FormData();
-    form.append("RequestMethod", joinGuestVideo.RequestMethod);
+    form.append("RequestMethod", joinMethod);
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
@@ -355,14 +369,22 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           //   await dispatch(RefreshToken(navigate, t));
-          dispatch(joinGuestVideoMainApi(navigate, t, data, setJoinButton));
+          dispatch(
+            joinGuestVideoMainApi(
+              navigate,
+              t,
+              data,
+              setJoinButton,
+              isPresentation,
+            ),
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinGuestVideo_01".toLowerCase(),
+                  `${joinCodePrefix}_01`.toLowerCase(),
                 )
             ) {
               try {
@@ -396,7 +418,7 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinGuestVideo_02".toLowerCase(),
+                  `${joinCodePrefix}_02`.toLowerCase(),
                 )
             ) {
               try {
@@ -411,7 +433,7 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinGuestVideo_03".toLowerCase(),
+                  `${joinCodePrefix}_03`.toLowerCase(),
                 )
             ) {
               try {
@@ -1371,7 +1393,22 @@ const guestLeaveMeetingVideoFail = (message) => {
   };
 };
 
-const guestLeaveMeetingVideoApi = (navigate, t, data) => {
+const guestHostEmailUpdated = (hostEmail) => {
+  return {
+    type: actions.GUEST_HOST_EMAIL_UPDATED,
+    response: hostEmail,
+  };
+};
+
+const guestEmptySession = (response) => {
+  return {
+    type: actions.GUEST_EMPTY_SESSION,
+    response: response,
+  };
+};
+
+// showEndedScreen: land on "The meeting has ended" (screen 4) instead of the join lobby
+const guestLeaveMeetingVideoApi = (navigate, t, data, showEndedScreen = false) => {
   return (dispatch) => {
     dispatch(guestLeaveMeetingVideoInit());
     let form = new FormData();
@@ -1382,7 +1419,9 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
+          dispatch(
+            guestLeaveMeetingVideoApi(navigate, t, data, showEndedScreen),
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1395,7 +1434,12 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
               await dispatch(
                 guestLeaveMeetingVideoSuccess(response.data.responseResult, ""),
               );
-              sessionStorage.setItem("isRejoining", "true");
+              if (showEndedScreen) {
+                sessionStorage.removeItem("isRejoining");
+                sessionStorage.setItem("isLeftCheck", true);
+              } else {
+                sessionStorage.setItem("isRejoining", "true");
+              }
               sessionStorage.removeItem("isZoomEnabled");
               let leftCheck = JSON.parse(sessionStorage.getItem("isLeftCheck"));
               if (leftCheck) {
@@ -1888,4 +1932,6 @@ export {
   setVoiceControleGuestForAllbyHost,
   transferMeetingHostSuccess,
   setGuestVideoHostByGuid,
+  guestEmptySession,
+  guestHostEmailUpdated,
 };

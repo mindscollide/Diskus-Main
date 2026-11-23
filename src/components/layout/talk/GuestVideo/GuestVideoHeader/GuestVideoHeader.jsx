@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 import {
   getVideoCallParticipantsGuestMainApi,
+  guestEmptySession,
   guestLeaveMeetingVideoApi,
   hideUnhideSelfMainApi,
   muteUnMuteParticipantsorGuestbyHost,
@@ -411,7 +412,11 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     };
   }, [isParticipant]);
 
-  const onClickEndGuestVideo = () => {
+  const emptySessionForGuest = useSelector(
+    (state) => state.GuestVideoReducer.emptySessionForGuest
+  );
+
+  const onClickEndGuestVideo = (showEndedScreen = false) => {
     // The iframe is unmounted without sending a stop event, so release the
     // share lock for everyone else if this guest was sharing.
     if (isZoomEnabled && isScreenShare && roomId && guestGuid) {
@@ -432,8 +437,17 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       Name: String(guestName),
       MeetingID: MeetingId,
     };
-    dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
+    dispatch(
+      guestLeaveMeetingVideoApi(navigate, t, data, showEndedScreen === true),
+    );
   };
+
+  // Host left and the session is empty: leave and show "The meeting has ended"
+  useEffect(() => {
+    if (!emptySessionForGuest) return;
+    dispatch(guestEmptySession(false));
+    onClickEndGuestVideo(true);
+  }, [emptySessionForGuest]);
 
   useEffect(() => {
     if (muteUnMuteParticpantorGuest?.uid) {

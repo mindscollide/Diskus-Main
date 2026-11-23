@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GuestJoinVideo from "../GuestJoinVideo/GuestJoinVideo";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 import {
   getVideoCallParticipantGuestSuccess,
   guestLeaveMeetingVideoApi,
+  guestEmptySession,
+  guestHostEmailUpdated,
   guestVideoNavigationScreen,
   hideUnHideVideoByHost,
   hideUnHideVideoParticipantsorGuest,
@@ -86,6 +88,9 @@ const GuestVideoCall = () => {
   const getAllParticipantGuest = useSelector(
     (state) => state.GuestVideoReducer.getAllParticipantGuest,
   );
+  // The MQTT handler is bound once, so it reads the current screen through a ref
+  const guestScreenRef = useRef(guestVideoNavigationData);
+  guestScreenRef.current = guestVideoNavigationData;
   // let viewState = sessionStorage.getItem("viewState");
 
   const [actionValue, setActionValue] = useState("");
@@ -287,6 +292,14 @@ const GuestVideoCall = () => {
           await dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
         } else if (
           data.payload.message.toLowerCase() ===
+          "EMPTY_SESSION_FOR_GUEST".toLowerCase()
+        ) {
+          // Only a guest inside the call leaves; the header runs the normal leave
+          if (guestScreenRef.current === 2) {
+            dispatch(guestEmptySession(true));
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
           "VIDEO_PARTICIPANT_LEFT".toLowerCase()
         ) {
           console.log(data.payload, "JOINEDJOINEDJOINED");
@@ -302,6 +315,8 @@ const GuestVideoCall = () => {
           const newHost = data.payload.newHost;
           if (newHost?.guid) {
             dispatch(setGuestVideoHostByGuid(newHost.guid));
+            // Rejoin after leaving must send the current host's email, not the first host's
+            dispatch(guestHostEmailUpdated(newHost.email));
             sessionStorage.setItem(
               "currentmeetingHost",
               JSON.stringify([{ guid: newHost.guid, userID: newHost.userID }]),

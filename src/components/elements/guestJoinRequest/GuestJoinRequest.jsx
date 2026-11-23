@@ -273,7 +273,9 @@ const GuestJoinRequest = () => {
                 <p className={styles["title-alert"]}>
                   <strong>
                     {filteredWaitingParticipants.map((participant, index) =>
-                      participant.isGuest === false ? (
+                      // `name` comes from the meeting-video guest request, so a presentation guest uses its own row
+                      participant.isGuest === false ||
+                      participant.isPresentationRequest ? (
                         <div key={index}>{participant.name}</div>
                       ) : (
                         <>{name + " "}</>
