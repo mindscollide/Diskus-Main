@@ -809,17 +809,15 @@ const PublishedMeetingList = () => {
             (btn) => Number(btn.meetingID) === Number(pK_MDID),
           );
 
+          // Start Meeting shows when the meeting is within the start window by this
+          // browser's clock, OR as soon as the server's reminder MQTT said so
+          // (isButtonShown). The MQTT arrives at the exact moment the window opens,
+          // when the clock-based difference is still not "< minutesAgo", so the flag
+          // must not also require the clock check (it used to, which made it a no-op).
           const canStartMeeting =
             meetingCurrentStatus === STATUS.UPCOMING &&
             isOrganizer &&
-            (
-              minutesDifference < minutesAgo ||
-              (
-                pK_MDID === isButtonShown?.meetingID &&
-                isButtonShown?.showButton &&
-                minutesDifference < minutesAgo
-              )
-            );
+            (minutesDifference < minutesAgo || Boolean(isButtonShown?.showButton));
 
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);

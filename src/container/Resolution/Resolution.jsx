@@ -1358,10 +1358,10 @@ const Resolution = () => {
           <>
             <Row>
               <Col
-                lg={6}
-                md={6}
+                lg={7}
+                md={12}
                 sm={12}
-                className=' d-flex justify-content-start align-items-center  gap-3 flex-wrap '>
+                className=' d-flex justify-content-start align-items-center  gap-3 flex-wrap flex-lg-nowrap '>
                 <span className={styles["Resolution-heading-size"]}>
                   {t("Resolution")}
                 </span>
@@ -1414,10 +1414,10 @@ const Resolution = () => {
               </Col>
 
               <Col
-                lg={6}
-                md={6}
+                lg={5}
+                md={12}
                 sm={12}
-                className=' d-flex justify-content-end  align-items-start  position-relative Search-filed-resolution'>
+                className=' d-flex justify-content-end  align-items-start  position-relative Search-filed-resolution mt-3 mt-lg-0'>
                 <span className={styles["search_input"]}>
                   <TextField
                     name='Title'

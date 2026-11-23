@@ -32,3 +32,227 @@
     animation: none;
   }
 }
+
+/*
+ * Page titles: a short rise + fade when a page / screen opens, right after the
+ * page fade above. Opt-in by CSS-module class name (CSS modules hash the class, so
+ * a substring match is used; :where keeps specificity at zero so any local
+ * `animation` still wins). Only the individual `translate` and `opacity`
+ * properties are animated: no layout shift, and it stacks with any `transform`
+ * the title already has (e.g. the RTL flips). To animate another page's title, add
+ * its class name to this list.
+ */
+@keyframes pageHeadingIn {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where(
+    [class*="Resolution-heading-size"],
+    [class*="Committee-heading-size"],
+    [class*="Groups-heading-size"],
+    [class*="Data_room_heading"],
+    [class*="Meeting-Main-Heading"],
+    [class*="Auhtority-Main-Heading"],
+    [class*="General_Setting-Main-Heading"],
+    [class*="ComplianceMainHeading"],
+    [class*="Compliance_dashboard_heading"],
+    [class*="ChecklistMainHeading"],
+    [class*="AuditTrialHeading"],
+    [class*="BillingHeading"],
+    [class*="Edit-Main-Heading"],
+    [class*="Create-Committee-Heading"],
+    [class*="Update-Committee-Heading"],
+    [class*="View-Committee-heading"],
+    [class*="Create-Group-Heading"],
+    [class*="Resolution_create_heading"],
+    [class*="Create_Poll_Heading"],
+    [class*="Update_Poll_Heading"],
+    [class*="View_poll_heading"],
+    [class*="Vote_poll_Heading"],
+    [class*="notes-heading-size"],
+    [class*="NOtes_heading"],
+    [class*="Addnote-heading"],
+    [class*="UpdateNote-heading"],
+    [class*="Viewnote-heading"],
+    [class*="pendingApprovalHeading"],
+    [class*="Calender-heading"],
+    [class*="todolist-heading-size"],
+    [class*="NewMeetinHeading"],
+    [class*="Poll_Container__heading"],
+    [class*="Meeting-heading-onboard"],
+    [class*="AddUserheading"],
+    [class*="UserLevelConfig_Heading"],
+    [class*="BillingDetailsHeading"],
+    [class*="View_resolution_heading"],
+    [class*="ComplianceNameHeading"],
+    [class*="ComplianceStatusReport_heading"],
+    [class*="Heading_prposed_meeting"],
+    [class*="Update_Password_Heading"]
+  ) {
+    animation: pageHeadingIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.08s backwards;
+  }
+}
+
+/*
+ * Dashboard widgets (Recent activity, Notes, Events): their rows used to appear all
+ * at once after the data arrived. Now each row fades in and rises slightly, one
+ * after the other (capped, so a long list never waits long). Rows that are already
+ * on screen keep their DOM node, so only newly added rows animate, e.g. a live
+ * activity pushed over the socket slides in at the top. Opacity + the individual
+ * `translate` property only.
+ */
+@keyframes dashItemIn {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    [class*="RecentAcitivy_newDashboard"] > *,
+    [class*="NotesDashboard"] > *,
+    [class*="Events_content"] > * {
+    animation: dashItemIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(1),
+    [class*="NotesDashboard"] > :nth-child(1),
+    [class*="Events_content"] > :nth-child(1) {
+    animation-delay: 35ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(2),
+    [class*="NotesDashboard"] > :nth-child(2),
+    [class*="Events_content"] > :nth-child(2) {
+    animation-delay: 70ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(3),
+    [class*="NotesDashboard"] > :nth-child(3),
+    [class*="Events_content"] > :nth-child(3) {
+    animation-delay: 105ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(4),
+    [class*="NotesDashboard"] > :nth-child(4),
+    [class*="Events_content"] > :nth-child(4) {
+    animation-delay: 140ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(5),
+    [class*="NotesDashboard"] > :nth-child(5),
+    [class*="Events_content"] > :nth-child(5) {
+    animation-delay: 175ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(6),
+    [class*="NotesDashboard"] > :nth-child(6),
+    [class*="Events_content"] > :nth-child(6) {
+    animation-delay: 210ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(7),
+    [class*="NotesDashboard"] > :nth-child(7),
+    [class*="Events_content"] > :nth-child(7) {
+    animation-delay: 245ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(8),
+    [class*="NotesDashboard"] > :nth-child(8),
+    [class*="Events_content"] > :nth-child(8) {
+    animation-delay: 280ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(9),
+    [class*="NotesDashboard"] > :nth-child(9),
+    [class*="Events_content"] > :nth-child(9) {
+    animation-delay: 315ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(10),
+    [class*="NotesDashboard"] > :nth-child(10),
+    [class*="Events_content"] > :nth-child(10) {
+    animation-delay: 350ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(11),
+    [class*="NotesDashboard"] > :nth-child(11),
+    [class*="Events_content"] > :nth-child(11) {
+    animation-delay: 385ms;
+  }
+
+    [class*="RecentAcitivy_newDashboard"] > :nth-child(12),
+    [class*="NotesDashboard"] > :nth-child(12),
+    [class*="Events_content"] > :nth-child(12) {
+    animation-delay: 420ms;
+  }
+}
+
+/* Tasks widget: its rows are antd table rows (.newDashboardTable), and the "no
+   task" block, so they get the same entrance as the lists above. */
+@media (prefers-reduced-motion: no-preference) {
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row,
+  [class*="No_Tasks_View"] {
+    animation: dashItemIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(2) {
+    animation-delay: 35ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(3) {
+    animation-delay: 70ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(4) {
+    animation-delay: 105ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(5) {
+    animation-delay: 140ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(6) {
+    animation-delay: 175ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(7) {
+    animation-delay: 210ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(8) {
+    animation-delay: 245ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(9) {
+    animation-delay: 280ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(10) {
+    animation-delay: 315ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(11) {
+    animation-delay: 350ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(12) {
+    animation-delay: 385ms;
+  }
+
+  .newDashboardTable .ant-table-tbody > tr.ant-table-row:nth-child(13) {
+    animation-delay: 420ms;
+  }
+}

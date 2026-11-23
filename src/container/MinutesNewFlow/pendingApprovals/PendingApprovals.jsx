@@ -12,6 +12,7 @@ import {
   reviewMinutesPage,
   GetMinuteReviewPendingApprovalsStatsByReviewerId,
   GetMinuteReviewPendingApprovalsByReviewerId,
+  clearMinuteReviewPendingApprovals,
   currentMeetingMinutesToReview,
 } from "../../../store/actions/Minutes_action"; // Importing Page Change State
 import { useDispatch } from "react-redux"; // Importing Redux hook
@@ -37,9 +38,12 @@ import { convertToArabicNumerals } from "../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import { MeetingContext } from "../../../context/MeetingContext";
 import { useTableScrollBottom } from "../../../commen/functions/useTableScrollBottom";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../Committee/ViewTodo/Todolist.css";
 
-const DEFAULT_PENDING_APPROVALS_PAGE = { sRow: 0, Length: 10 };
+const DEFAULT_PENDING_APPROVALS_PAGE = { sRow: 0, Length: 10, Status: ["Reviewed", "Pending", "Expired"] };
 const PENDING_APPROVALS_PAGE_LENGTH = 10;
+const DEFAULT_STATUS_FILTER = ["Reviewed", "Pending", "Expired"];
 
 // Functional component for pending approvals section
 const PendingApproval = () => {
@@ -114,6 +118,10 @@ const PendingApproval = () => {
   // Click handler for Review Minutes button
   const handleReviewMinutesClick = async () => {
     let Data = DEFAULT_PENDING_APPROVALS_PAGE;
+    // coming back from Review & Sign: status filter starts with everything selected
+    setSelectedValues(DEFAULT_STATUS_FILTER);
+    setAppliedStatusFilter(DEFAULT_STATUS_FILTER);
+    setIsScrollingMinutes(false);
     await dispatch(
       GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t),
     );
@@ -127,6 +135,10 @@ const PendingApproval = () => {
 
   // Click handler for Review & Sign button
   const handleReviewAndSignClick = async () => {
+    // drop the minutes list from Redux; it is loaded again when coming back
+    dispatch(clearMinuteReviewPendingApprovals());
+    setSelectedValues(DEFAULT_STATUS_FILTER);
+    setAppliedStatusFilter(DEFAULT_STATUS_FILTER);
     // let Data = { sRow: 0, Length: 10 };
     // await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
 
@@ -156,11 +168,23 @@ const PendingApproval = () => {
   // nothing more to fetch on scroll — see useTableScrollBottom below,
   // which is new).
   const handleApplyFilter = () => {
+    let Data = DEFAULT_PENDING_APPROVALS_PAGE;
+    setIsScrollingMinutes(false);
+    dispatch(
+      GetMinuteReviewPendingApprovalsByReviewerId(navigate, t, { sRow: Data.sRow, Length: Data.Length, Status: selectedValues }, "", {}),
+    );
     setAppliedStatusFilter(selectedValues);
+    setSelectedValues(selectedValues);
+
     setVisible(false);
   };
 
   const resetFilter = () => {
+    let Data = DEFAULT_PENDING_APPROVALS_PAGE;
+    setIsScrollingMinutes(false);
+    dispatch(
+      GetMinuteReviewPendingApprovalsByReviewerId(navigate, t, Data, "", {}),
+    );
     const defaultValues = ["Reviewed", "Pending", "Expired"];
     setSelectedValues(defaultValues);
     setAppliedStatusFilter(defaultValues);
@@ -208,14 +232,14 @@ const PendingApproval = () => {
   // one column controlled-sorted at a time.
   const toggleSort =
     (setter, otherSetters = []) =>
-    () => {
-      otherSetters.forEach((otherSetter) => otherSetter(null));
-      setter((order) => {
-        if (order === "descend") return "ascend";
-        if (order === "ascend") return null;
-        return "descend";
-      });
-    };
+      () => {
+        otherSetters.forEach((otherSetter) => otherSetter(null));
+        setter((order) => {
+          if (order === "descend") return "ascend";
+          if (order === "ascend") return null;
+          return "descend";
+        });
+      };
 
   // Columns configuration for the table displaying pending approval data
   const pendingApprovalColumns = [
@@ -375,6 +399,13 @@ const PendingApproval = () => {
 
   const reviewMinutesLink = localStorage.getItem("reviewMinutesLink");
 
+  // leaving the page drops the minutes list from Redux
+  useEffect(() => {
+    return () => {
+      dispatch(clearMinuteReviewPendingApprovals());
+    };
+  }, []);
+
   useEffect(() => {
     let Data = DEFAULT_PENDING_APPROVALS_PAGE;
     dispatch(GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t));
@@ -497,10 +528,13 @@ const PendingApproval = () => {
   // once the table is scrolled to the bottom, as long as there's more data
   // than what's been loaded so far — mirrors the same pattern already used
   // by ReviewSignature.js (the Review & Sign tab) for its own pagination.
+  // only the statuses currently applied in the filter count: the server returns
+  // just those, so comparing against the all-status total would keep firing
+  // empty page requests once every filtered record is loaded.
   const totalMinutesRecords =
-    (progress.reviewed || 0) +
-    (progress.pending || 0) +
-    (progress.expired || 0);
+    (appliedStatusFilter.includes("Reviewed") ? progress.reviewed || 0 : 0) +
+    (appliedStatusFilter.includes("Pending") ? progress.pending || 0 : 0) +
+    (appliedStatusFilter.includes("Expired") ? progress.expired || 0 : 0);
 
   useTableScrollBottom(async () => {
     if (!reviewMinutesActive) return;
@@ -509,6 +543,7 @@ const PendingApproval = () => {
       let Data = {
         sRow: originalData.length,
         Length: PENDING_APPROVALS_PAGE_LENGTH,
+        Status: appliedStatusFilter,
       };
       await dispatch(
         GetMinuteReviewPendingApprovalsByReviewerId(navigate, t, Data, "", {}),
@@ -576,7 +611,7 @@ const PendingApproval = () => {
                 icon={formatNumber(pendingApprovalsTabCount.pendingMinutes)}
                 iconClass={
                   reviewMinutesActive === false &&
-                  pendingApprovalsTabCount.pendingMinutes !== 0
+                    pendingApprovalsTabCount.pendingMinutes !== 0
                     ? styles["pendingCountValue"]
                     : styles["pendingCountValue_hidden"]
                 }
@@ -590,24 +625,24 @@ const PendingApproval = () => {
               {/* Review & Sign button */}
               {(checkFeatureIDAvailability(19) ||
                 checkFeatureIDAvailability(21)) && (
-                <Button
-                  text={t("Review-&-sign")}
-                  icon={formatNumber(pendingApprovalsTabCount.pendingSignature)}
-                  // iconClass={styles["pendingSignatureValue"]}
-                  iconClass={
-                    pendingApprovalsTabCount.pendingSignature !== 0 &&
-                    !reviewAndSignActive
-                      ? styles["pendingSignatureValue"]
-                      : styles["pendingSignatureValue_hidden"]
-                  }
-                  className={
-                    reviewAndSignActive
-                      ? styles.activeMinutes
-                      : styles.inActiveMinutes
-                  } // Apply active or inactive styles based on state
-                  onClick={handleReviewAndSignClick} // Attach click handler
-                />
-              )}
+                  <Button
+                    text={t("Review-&-sign")}
+                    icon={formatNumber(pendingApprovalsTabCount.pendingSignature)}
+                    // iconClass={styles["pendingSignatureValue"]}
+                    iconClass={
+                      pendingApprovalsTabCount.pendingSignature !== 0 &&
+                        !reviewAndSignActive
+                        ? styles["pendingSignatureValue"]
+                        : styles["pendingSignatureValue_hidden"]
+                    }
+                    className={
+                      reviewAndSignActive
+                        ? styles.activeMinutes
+                        : styles.inActiveMinutes
+                    } // Apply active or inactive styles based on state
+                    onClick={handleReviewAndSignClick} // Attach click handler
+                  />
+                )}
             </div>
           </Col>
         </Row>

@@ -1079,7 +1079,8 @@ const CommitteePublishedMeetingList = () => {
             (meetingCurrentStatus === STATUS.UPCOMING &&
               isOrganizer &&
               minutesDifference < minutesAgo) ||
-            (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
+            (Number(pK_MDID) === Number(isButtonShown?.meetingID) &&
+              isButtonShown?.showButton);
 
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);

@@ -8,6 +8,8 @@ import videoAvatar from "../../../../../assets/images/newElements/VideoAvatar.pn
 import MultipleAvatar1 from "../../../../../assets/images/newElements/MultipleVideoAvatar-1.png";
 import MultipleAvatar2 from "../../../../../assets/images/newElements/MultipleVideoAvatar-2.png";
 import MultipleAvatar3 from "../../../../../assets/images/newElements/MultipleVideoAvatar-3.png";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../VideoCallScreen.css";
 
 const VideoMaxMultiple = ({ show, setShow, ModalTitle }) => {
   const { t } = useTranslation();

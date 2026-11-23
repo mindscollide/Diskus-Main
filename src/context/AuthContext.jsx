@@ -2,6 +2,7 @@ import React, { createContext, useContext } from "react";
 import { initaialStateFun } from "../store/actions/Auth_Sign_Out";
 import { useDispatch } from "react-redux";
 import { LoginFlowRoutes } from "../store/actions/UserManagementActions";
+import { clearLocalStorage } from "@/commen/functions/clearLocalStorage";
 
 /**
  * @context AuthContext
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }) => {
         "rememberPasswordValue"
       );
 
-      localStorage.clear();
+      clearLocalStorage();
       sessionStorage.clear()
 
       if (reLang !== undefined && reLang != null) {
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     } else if (RememberEmailLocal === true) {
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 
-      localStorage.clear();
+      clearLocalStorage();
       sessionStorage.clear()
       if (reLang !== undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
@@ -65,7 +66,7 @@ export const AuthProvider = ({ children }) => {
         "rememberPasswordValue"
       );
 
-      localStorage.clear();
+      clearLocalStorage();
       sessionStorage.clear()
       if (reLang !== undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
@@ -73,7 +74,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
       localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
     } else {
-      localStorage.clear();
+      clearLocalStorage();
       if (reLang !== undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }

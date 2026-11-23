@@ -323,6 +323,12 @@ const MinutesReducer = (state = initialState, action) => {
         errorSeverity: "success",
       };
     }
+    case actions.CLEAR_MINUTE_REVIEW_PENDING_APPROVALS: {
+      return {
+        ...state,
+        GetMinuteReviewPendingApprovalsByReviewerIdData: null,
+      };
+    }
     case actions.GET_MINUTEREVIEWPENDINGAPPROVALSBYREVIEWERID_FAIL: {
       return {
         ...state,

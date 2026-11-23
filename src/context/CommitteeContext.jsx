@@ -39,6 +39,9 @@ export const CommitteeProvider = ({ children }) => {
   const getMeetingByCommitteeID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingByCommitteeID,
   );
+  const meetingReminderNotification = useSelector(
+    (state) => state.NewMeetingreducer.meetingReminderNotification,
+  );
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData,
   );
@@ -737,6 +740,43 @@ export const CommitteeProvider = ({ children }) => {
   //     } catch (error) {}
   //   }
   // }, [UserMeetPropoDatPoll]);
+
+
+  /**
+   * MeetingReminderNotification MQTT (sent when a meeting's start window opens):
+   * mark the meeting as upcoming and let its organizer's "Edit meeting" button
+   * turn into "Start meeting" right away. Meetings are matched by ID, so only the
+   * ones in this committee's lists are touched.
+   */
+  useEffect(() => {
+    if (meetingReminderNotification == null) return;
+
+    try {
+      const meetingData = meetingReminderNotification.meetingDetails;
+      if (!meetingData?.pK_MDID) return;
+
+      updateMeetingInAllLists(meetingData.pK_MDID, (item) => ({
+        ...item,
+        status: String(meetingData.statusID),
+      }));
+
+      if (Number(meetingData.statusID) === 1) {
+        setStartMeetingButton((prev) => {
+          const exists = prev.some(
+            (b) => Number(b.meetingID) === Number(meetingData.pK_MDID),
+          );
+          if (exists) return prev;
+          return [
+            ...prev,
+            { meetingID: Number(meetingData.pK_MDID), showButton: true },
+          ];
+        });
+      }
+    } catch (error) {
+      console.error("src/context/CommitteeContext.js:", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meetingReminderNotification]);
 
   // =========================
   // CONTEXT VALUE

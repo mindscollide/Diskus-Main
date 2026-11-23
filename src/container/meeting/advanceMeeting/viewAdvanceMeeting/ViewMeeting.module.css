@@ -83,3 +83,22 @@
   border-radius: 4px !important;
   font-weight: 600 !important;
 }
+
+/* The Close button of every tab of the meeting view (Agenda, Agenda viewer, Minutes,
+   Actions, Attendance, Attendees, Agenda contributors) stays pinned at the bottom
+   right of the screen while the tab's content is longer than the screen, instead of
+   being at the very end of a long page. Each tab renders it inside its own
+   <Row><Col class="d-flex justify-content-end"> (Attendees: a Col in the tab's Row),
+   so the container of the button is made sticky; the paper is white, so the sticky
+   row gets the same background and the content scrolls underneath it. */
+.Scedule_meeting_paper
+  :global(.row):has(> [class*="col-"] > [class*="CloseMeetingButton"]),
+.Scedule_meeting_paper [class*="col-"]:has(> [class*="CloseMeetingButton"]),
+.Scedule_meeting_paper :global(.col):has(> [class*="CloseMeetingButton"]) {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  background: #fff;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}

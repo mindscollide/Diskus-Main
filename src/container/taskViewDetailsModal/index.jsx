@@ -38,6 +38,8 @@ import {
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 import { useMeetingContext } from "../../context/MeetingContext";
 import { getRandomUniqueNumber } from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/drageFunction";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../todolistviewModal/ModalViewToDo.css";
 
 const TaskViewDetailsModal = ({
   viewFlagToDo = true,

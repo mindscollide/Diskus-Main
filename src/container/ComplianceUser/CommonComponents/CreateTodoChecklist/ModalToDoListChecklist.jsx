@@ -38,6 +38,8 @@ import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 import { parseYYYYMMDDToEndOfDay } from "../commonFunctions";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../todolistModal/ModalToDoList.css";
 
 const ModalToDoListChecklist = ({
   checkListData,

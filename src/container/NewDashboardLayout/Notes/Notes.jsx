@@ -22,8 +22,12 @@ import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { useNotesContext } from "../../../context/NotesContext";
 import { buildNotesSearchPayload } from "../../notes/notes.helpers";
 const Notes = () => {
-  const [notes, setNotes] = useState([]);
   const NotesReducer = useSelector((state) => state.NotesReducer);
+  // start from the notes Redux already holds so the list doesn't flash the
+  // empty state and then pop in
+  const [notes, setNotes] = useState(
+    () => NotesReducer?.GetAllNotesResponse?.getNotes || [],
+  );
   const { createNotesModal, setCreateNotesModal } = useNotesContext();
 
   const { t } = useTranslation();
@@ -101,7 +105,7 @@ const Notes = () => {
           <img
             src={PlusButton}
             onClick={() => setCreateNotesModal(true)}
-            className="cursor-pointer"
+            className={`cursor-pointer ${styles["addNoteButton"]}`}
             alt=""
             draggable="false"
           />
@@ -112,10 +116,9 @@ const Notes = () => {
           notes.map((data, index) => {
             if (index <= 11) {
               return (
-                <>
+                <React.Fragment key={data.pK_NotesID}>
                   <div
                     className={styles["notesdescription"]}
-                    key={data.pK_NotesID}
                     onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}
                   >
                     <Row>
@@ -151,7 +154,7 @@ const Notes = () => {
                       </Col>
                     </Row>
                   </div>
-                </>
+                </React.Fragment>
               );
             } else if (index === 12) {
               // Display a different message when index is 12

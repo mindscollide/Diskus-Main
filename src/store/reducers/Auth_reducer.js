@@ -1,4 +1,5 @@
 import * as actions from "../action_types";
+import { clearLocalStorage } from "@/commen/functions/clearLocalStorage";
 
 const initialState = {
   UserDetails: null,
@@ -257,7 +258,7 @@ const authReducer = (state = initialState, action) => {
           "rememberPasswordValue",
         );
 
-        localStorage.clear();
+        clearLocalStorage();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
         }
@@ -272,7 +273,7 @@ const authReducer = (state = initialState, action) => {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
 
-        localStorage.clear();
+        clearLocalStorage();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
         }
@@ -283,7 +284,7 @@ const authReducer = (state = initialState, action) => {
           "rememberPasswordValue",
         );
 
-        localStorage.clear();
+        clearLocalStorage();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
         }
@@ -293,7 +294,7 @@ const authReducer = (state = initialState, action) => {
           RememberPasswordLocalValue,
         );
       } else {
-        localStorage.clear();
+        clearLocalStorage();
         if (reLang !== undefined && reLang !== null) {
           localStorage.setItem("i18nextLng", reLang);
         }

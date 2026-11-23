@@ -29,6 +29,8 @@ import styles from "./complianceByMe.module.css";
 import { getFiscalQuarterDetails } from "../../../../commen/functions/validations";
 import { dateConverterIntoUTCForDataroom } from "../../../../commen/functions/date_formater";
 import moment from "moment";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../Committee/ViewTodo/Todolist.css";
 
 /**
  * ComplianceByMe

@@ -6,6 +6,8 @@ import MeetingIconSvg from "../../../../assets/images/newElements/MeetingIcon.sv
 import NewTodoIcon from "../../../../assets/images/newElements/newTodoIcon.svg";
 import NewCalendarIcon from "../../../../assets/images/newElements/newCalenderIcon.svg";
 import NewLockIcon from "../../../../assets/images/newElements/newlockIcon.svg";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../../components/layout/sidebar/sidebar.css";
 
 const Sidebar = () => {
   const { setCurrentStep } = useTour();

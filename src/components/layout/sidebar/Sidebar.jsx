@@ -499,7 +499,11 @@ const Sidebar = () => {
       return true;
     }
 
-    if (location.pathname !== targetPath) {
+    // Compare the paths case-insensitively. An email link opens "/DisKus/Meeting"
+    // (different casing from the sidebar's "/Diskus/Meeting"), which made this look
+    // like a different page, so closing the meeting view took the branch that does
+    // not reload the meeting listing and the listing was left empty.
+    if (location.pathname.toLowerCase() !== targetPath.toLowerCase()) {
       // if (isMeetingLocation) {
 
       if (advanceMeetingViewModal) {
@@ -517,6 +521,28 @@ const Sidebar = () => {
             isPrimaryOrganizer: false,
           });
           navigate(targetPath);
+          if (targetPath.toLowerCase() === "/diskus/meeting") {
+            // the listing page is shown again: make sure it has its data
+            const view = Number(localStorage.getItem("MeetingCurrentView"));
+            dispatch(
+              listOfMeetingsApi(
+                navigate,
+                t,
+                {
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(localStorage.getItem("userID")),
+                  PageNumber: 1,
+                  Length: 30,
+                  PublishedMeetings: view === 1,
+                  ProposedMeetings: view === 2,
+                },
+                "",
+                {},
+              ),
+            );
+          }
           return;
         } else {
           if (!isMeetingVideo) {

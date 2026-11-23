@@ -30,6 +30,8 @@ import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.p
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "./Todolist.css";
 const CreateTodoCommittee = ({ committeeStatus }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");

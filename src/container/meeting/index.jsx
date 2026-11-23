@@ -187,6 +187,8 @@ const MainMeeting = () => {
       ["meetingStr", "meetingDetails"],
       ["meetingUpd", "meetingDetails"],
       ["viewPublishMinutesLink", "minutes"],
+      // "minutes submitted for review" email (/Meeting?MRSP=): same meeting + Minutes tab
+      ["reviewSubmittedMinutesLink", "minutes"],
     ];
     const [linkKey, linkTab] =
       emailLinks.find(([key]) => localStorage.getItem(key)) || [];

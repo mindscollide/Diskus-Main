@@ -9,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import { FaSort } from "react-icons/fa";
 import "../Meeting/Onboard-meeting.css";
 import CustomButton from "../../../../components/elements/button/Button";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../meeting/commonComponents/Meeting.css";
 
 export const Meeting = ({ pagination }) => {
   const { t } = useTranslation();

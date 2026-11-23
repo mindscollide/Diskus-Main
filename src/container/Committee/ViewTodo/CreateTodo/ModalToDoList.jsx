@@ -35,6 +35,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { maxFileSize } from "../../../../commen/functions/utils";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../todolistModal/ModalToDoList.css";
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization

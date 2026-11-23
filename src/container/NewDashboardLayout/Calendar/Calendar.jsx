@@ -98,6 +98,9 @@ const NewCalendar = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [dates, setDates] = useState([]);
+  // bumped on every month change; its parity picks which of two identical
+  // animations the day grid plays, so the animation restarts each time
+  const [monthTick, setMonthTick] = useState(0);
   let currentDate = new Date(); // Get the current date
   let currentDateObject = new DateObject(currentDate);
   let lang = localStorage.getItem("i18nextLng");
@@ -339,6 +342,7 @@ const NewCalendar = () => {
   };
 
   const handleMonthChange = (value) => {
+    setMonthTick((tick) => tick + 1);
     const formattedDate = value.format("YYYYMMDD");
     const dateString = value.toDate().toString();
     let newStartDataUpdate = moment(startDataUpdate).format("YYYYMMDD");
@@ -607,7 +611,14 @@ const NewCalendar = () => {
           <Spin />
         </section>
       ) : (
-        <>
+        <div
+          className={`${styles["calendarMotion"]} ${
+            monthTick === 0
+              ? ""
+              : monthTick % 2 === 0
+                ? styles["monthTickA"]
+                : styles["monthTickB"]
+          }`}>
           <Calendar
             lazy
             value={dates}
@@ -625,7 +636,7 @@ const NewCalendar = () => {
             onMonthChange={handleMonthChange}
             currentDate={currentDateObject}
           />
-        </>
+        </div>
       )}
 
       {eventModal && (

@@ -141,7 +141,7 @@ const AgendaWise = ({
     (state) => state.NewMeetingreducer.ResponseMessage,
   );
 
-    const updateReviewMinutesByReviewer = useSelector((state) => state.SignatureWorkFlowReducer.updateReviewMinutesByReviewer)
+  const updateReviewMinutesByReviewer = useSelector((state) => state.SignatureWorkFlowReducer.updateReviewMinutesByReviewer)
   const agendaWiseMinuteID = useSelector(
     (state) => state.NewMeetingreducer.agendaWiseMinuteID,
   );
@@ -1018,29 +1018,29 @@ const AgendaWise = ({
     }
   }, [GetMinuteReviewStatsForOrganizerByMeetingIdData]);
 
-  
 
-useEffect(() => {
-  if (
-    updateReviewMinutesByReviewer !== null &&
-    updateReviewMinutesByReviewer !== undefined
-  ) {
-    try {
-      const { data } = updateReviewMinutesByReviewer;
 
-      if (data?.meetingID === Number(advanceMeetingModalID)) {
-        setMinutesData((prev) =>
-          updateMinutesRecursively(
-            prev,
-            data.agendaMinutesReviewsList || []
-          )
-        );
+  useEffect(() => {
+    if (
+      updateReviewMinutesByReviewer !== null &&
+      updateReviewMinutesByReviewer !== undefined
+    ) {
+      try {
+        const { data } = updateReviewMinutesByReviewer;
+
+        if (data?.meetingID === Number(advanceMeetingModalID)) {
+          setMinutesData((prev) =>
+            updateMinutesRecursively(
+              prev,
+              data.agendaMinutesReviewsList || []
+            )
+          );
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
-  }
-}, [updateReviewMinutesByReviewer, advanceMeetingModalID]);
+  }, [updateReviewMinutesByReviewer, advanceMeetingModalID]);
 
 
   // When you click on Revision History Button then the api will hit and If minute has revison then open a modal
@@ -1427,12 +1427,7 @@ useEffect(() => {
                                                 }>
                                                 {t("Reviewed")}:
                                               </span>{" "}
-                                              {/* {parentMinutedata?.MinuteStats
-                                                ?.rejectedByUsers?.length > 0 &&
-                                                parentMinutedata?.MinuteStats?.rejectedByUsers?.map(
-                                                  (rejectedUser, index) =>
-                                                    `${rejectedUser}, `
-                                                )} */}
+                                         
                                               {parentMinutedata?.MinuteStats
                                                 ?.rejectedByUsers?.length > 0 &&
                                                 parentMinutedata?.MinuteStats?.rejectedByUsers.map(
@@ -1458,33 +1453,7 @@ useEffect(() => {
                                     sm={12}
                                     className='position-relative'>
                                     <div className={styles["uploaded-details"]}>
-                                      {/* {(
-                                        Number(editorRole.status) === 1 ||
-                                          Number(editorRole.status) === 11 ||
-                                          Number(editorRole.status) === 12
-                                          ? null
-                                          : (editorRole.role === "Organizer" &&
-                                            Number(editorRole.status) ===
-                                            9) ||
-                                          (Number(editorRole.status) === 10 &&
-                                            editorRole.role === "Organizer")
-                                      ) ? (
-                                        <img
-                                          className={styles["delete-icon"]}
-                                          src={DeleteIcon}
-                                          alt=''
-                                          onClick={() => {
-                                            dispatch(
-                                              deleteCommentModalAgenda(true),
-                                            );
-                                            dispatch(
-                                              DeleteMinuteReducer(
-                                                parentMinutedata,
-                                              ),
-                                            );
-                                          }}
-                                        />
-                                      ) : null} */}
+                                  
                                       {/* the minute being edited cannot be removed */}
                                       {!(
                                         isEdit === true &&
@@ -1602,37 +1571,7 @@ useEffect(() => {
                                               sm={12}
                                               className='d-grid justify-content-end p-0'>
                                               <div className='d-flex justify-content-center align-items-center'>
-                                                {/* {(
-                                                  Number(editorRole.status) ===
-                                                    1 ||
-                                                    Number(editorRole.status) ===
-                                                    11 ||
-                                                    Number(editorRole.status) ===
-                                                    12
-                                                    ? null
-                                                    : (editorRole.role ===
-                                                      "Organizer" &&
-                                                      Number(
-                                                        editorRole.status,
-                                                      ) === 9) ||
-                                                    (Number(
-                                                      editorRole.status,
-                                                    ) === 10 &&
-                                                      editorRole.role ===
-                                                      "Organizer")
-                                                ) ? (
-                                                  <img
-                                                    className='cursor-pointer mx-2'
-                                                    src={EditIcon}
-                                                    alt=''
-                                                    onClick={() =>
-                                                      handleEditFunc(
-                                                        parentMinutedata,
-                                                        data.agendaTitle,
-                                                      )
-                                                    }
-                                                  />
-                                                ) : null} */}
+                                             
                                                 {(
                                                   Number(localStorage.getItem("userID")) ===
                                                   Number(parentMinutedata.userID) &&
@@ -1742,21 +1681,40 @@ useEffect(() => {
                         </>
                       ) : null}
                       {data.subMinutes.map((subMinuteData, subMinuteIndex) => {
+                        let isSubAgendaMinuteRejectedMemberHas = subMinuteData.minuteData.filter(
+                          (data, index) =>
+                            data?.MinuteStats?.rejectedByUsers.length > 0,
+                        );
                         return (
                           <div>
                             {subMinuteData.minuteData.length === 0 ? null : (
-                              <Row className='mx-50'>
-                                <Col lg={12} md={12} sm={12}>
+                              <Row>
+                                <Col lg={6} md={6} sm={12} >
                                   <p className={styles["Parent-title-heading"]}>
                                     {/* numbered among the sub-agendas that are shown (have minutes) */}
                                     {`${data.agendaNumber}.${data.subMinutes
-                                        .filter(
-                                          (subItem) =>
-                                            subItem.minuteData.length > 0,
-                                        )
-                                        .indexOf(subMinuteData) + 1
+                                      .filter(
+                                        (subItem) =>
+                                          subItem.minuteData.length > 0,
+                                      )
+                                      .indexOf(subMinuteData) + 1
                                       } ${subMinuteData.agendaTitle}`}
                                   </p>
+                                </Col>
+                                <Col sm={6} lg={6} md={6} className='d-flex justify-content-end align-items-center px-0'>
+                                  {isSubAgendaMinuteRejectedMemberHas.length > 0 && (
+                                    <Tooltip
+                                      placement='top'
+                                      motion={true}
+                                      showArrow={false}
+                                      title={`Reviewed By ${isSubAgendaMinuteRejectedMemberHas[0]?.MinuteStats?.rejected} Members`}>
+                                      <img
+                                        className={styles["Attachment"]}
+                                        alt=''
+                                        src={WarningIcon}
+                                      />
+                                    </Tooltip>
+                                  )}
                                 </Col>
                               </Row>
                             )}

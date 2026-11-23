@@ -20,6 +20,8 @@ import {
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../../../components/layout/talk/GuestVideo/GuestJoinVideo/GuestJoinVideo.css";
 
 const NormalHostVideoCallComponent = () => {
   const { t } = useTranslation();

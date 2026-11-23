@@ -35,6 +35,10 @@ import { getActorColorByUserID } from "../../../../commen/functions/converthexto
 import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
 import useSnackbar from "../../../../components/elements/snack_bar/useSnackbar";
 import { useApryseDocument } from "../../../../context/DocumentContext";
+// Styles of this screen (Signers modal, "Add another signer", Cancel / Save buttons ...).
+// The import was lost when the file was converted, and the page only looked right while
+// another screen's chunk happened to be loaded; route-level lazy loading removed that.
+import "./signaturewebviewer.css";
 
 // ─── Pure helpers (no component state) ──────────────────────────────────────
 

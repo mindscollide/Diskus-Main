@@ -16,6 +16,8 @@ import {
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./NormalParticipantVideoComponent.css";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../../../../components/layout/talk/GuestVideo/GuestJoinVideo/GuestJoinVideo.css";
 
 const NormalParticipantVideoComponent = () => {
   const { t } = useTranslation();

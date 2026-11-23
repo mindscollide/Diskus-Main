@@ -1355,6 +1355,12 @@ const getAllPendingApprovalsSignatures_success = (response, message) => {
   };
 };
 
+const clearPendingApprovalSignatures = () => {
+  return {
+    type: actions.CLEAR_PENDING_APPROVAL_SIGNATURES,
+  };
+};
+
 const getAllPendingApprovalsSignatures_fail = (message) => {
   return {
     type: actions.GETALLPENDINGAPPROVALSIGNATURES_FAIL,
@@ -1508,7 +1514,11 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
                   getAllSignaturesDocumentsforCreatorApi(navigate, t, Data),
                 );
               } else {
-                let Data2 = { sRow: 0, Length: 10 };
+                let Data2 = {
+                  sRow: 0,
+                  Length: 10,
+                  Status: ["Signed", "Pending Signature", "Declined"],
+                };
 
                 await dispatch(
                   getAllPendingApprovalsSignaturesApi(navigate, t, Data2),
@@ -2646,7 +2656,22 @@ const updateMinuteReviewByReviewer = (response) => {
     response,
   };
 };
+
+const declineRealtimeSignatureDocumentAction = (payload) => {
+  return {
+    type: actions.DECLINE_REALTIME_SIGNATURE_DOCUMENT,
+    payload,
+  };
+};
+const receivedRealtimeSignatureDocumentAction = (payload) => {
+  return {
+    type: actions.RECEIVED_REALTIME_SIGNATURE_DOCUMENT,
+    payload,
+  };
+};
 export {
+  declineRealtimeSignatureDocumentAction,
+  receivedRealtimeSignatureDocumentAction,
   updateMinuteReviewByReviewer,
   SignatureDocumentStatusChangeSignees,
   SignatureDocumentStatusChange,
@@ -2666,6 +2691,7 @@ export {
   clearSignatureViewerData,
   getAllPendingApprovalsStatsApi,
   getAllPendingApprovalsSignaturesApi,
+  clearPendingApprovalSignatures,
   getAllSignaturesDocumentsforCreatorApi,
   createWorkflowApi,
   saveWorkflowApi,

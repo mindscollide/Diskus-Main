@@ -18,6 +18,8 @@ import {
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import { Table } from "antd";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../Committee/ViewTodo/Todolist.css";
 const Task = () => {
   const { t } = useTranslation();
   const getDashboardTaskData = useSelector(
@@ -277,7 +279,7 @@ const Task = () => {
               tableLayout="fixed"
               pagination={false}
               size="small"
-              rowKey="id"
+              rowKey="pK_TID"
               bordered={false}
               rowClassName={(record, index) => {
                 if (Number(record?.taskCreator?.pK_UID) === creatorID) {

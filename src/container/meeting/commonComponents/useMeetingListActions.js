@@ -109,7 +109,27 @@ export const useMeetingListActions = ({
 
   const handleViewMeeting = async (record, viewer = "meetingDetails") => {
     try {
-      let tabActive = viewer === "polls" ? "polls" : "agendaViewer";
+      let tabActive =
+        viewer === "polls"
+          ? "polls"
+          : viewer === "minutes"
+            ? "minutes"
+            : "agendaViewer";
+
+      // Minutes opened from an email link: the view's tab effect resets an ended
+      // meeting to "meetingDetails" unless the route id says Minutes (5), exactly
+      // like handleClickViewMinutes does, and the Minutes tab needs the flag to load
+      // the minutes. For an ACTIVE meeting the same route id is what makes that effect
+      // pick Minutes instead of the default Agenda viewer, so it is set before the
+      // active / join branch below, not after it.
+      // (not for quick meetings: they use another view that never clears this id)
+      if (viewer === "minutes" && !record.isQuickMeeting) {
+        dispatch(emailRouteID(5));
+        if (record.isMinutePublished !== undefined) {
+          localStorage.setItem("isMinutePublished", record.isMinutePublished);
+        }
+      }
+
       if (Number(record.status) === STATUS_ACTIVE) {
         // Already inside this meeting (joined, then moved to another screen): just
         // open its view again on the requested tab. Joining a second time would
@@ -152,16 +172,6 @@ export const useMeetingListActions = ({
         return;
       }
 
-      // Minutes opened from an email link: the view's tab effect resets an ended
-      // meeting to "meetingDetails" unless the route id says Minutes (5), exactly
-      // like handleClickViewMinutes does, and the Minutes tab needs the flag to load
-      // the published minutes.
-      if (viewer === "minutes") {
-        dispatch(emailRouteID(5));
-        if (record.isMinutePublished !== undefined) {
-          localStorage.setItem("isMinutePublished", record.isMinutePublished);
-        }
-      }
       dispatch(setCurrentMeetingInfo({ meetingID: record.pK_MDID }));
       dispatch(toggleViewMeetingModal(true));
       dispatch(setViewTab(viewer));

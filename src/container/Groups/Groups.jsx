@@ -363,6 +363,9 @@ const Groups = () => {
       ["groups_meetingStr_action", "meetingDetails"],
       ["groups_meetingUpd_action", "meetingDetails"],
       ["groups_mtAgUpdate", "agendaViewer"],
+      // minutes links (submitted for review / published): meeting + Minutes tab
+      ["groups_reviewSubmittedMinutesLink", "minutes"],
+      ["groups_viewPublishMinutesLink", "minutes"],
     ];
     const [linkKey, linkTab] =
       emailLinks.find(([key]) => localStorage.getItem(key)) || [];

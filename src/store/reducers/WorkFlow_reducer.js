@@ -33,7 +33,9 @@ const initialState = {
   validateEncryptedStringSignatureDataResponse: null,
   addedAsMinuteReviwerMqttPayload: null,
   signeeCounterData: null,
-  updateReviewMinutesByReviewer: null
+  updateReviewMinutesByReviewer: null,
+  declineRealtimeSignatureDocument: null,
+  receivedRealtimeSignatureDocument: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -321,6 +323,12 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         listOfPendingForApprovalSignatures: action.response,
         ResponseMessage: action.message,
         errorSeverity: "success",
+      };
+    }
+    case actions.CLEAR_PENDING_APPROVAL_SIGNATURES: {
+      return {
+        ...state,
+        listOfPendingForApprovalSignatures: null,
       };
     }
     case actions.GETALLPENDINGAPPROVALSIGNATURES_FAIL: {
@@ -652,6 +660,20 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         ...state,
         signeeCounterData: action.response,
       };
+    }
+
+    case actions.RECEIVED_REALTIME_SIGNATURE_DOCUMENT: {
+      return {
+        ...state,
+        receivedRealtimeSignatureDocument: action.payload
+      }
+    }
+
+    case actions.DECLINE_REALTIME_SIGNATURE_DOCUMENT: {
+      return {
+        ...state,
+        declineRealtimeSignatureDocument: action.payload
+      }
     }
 
     case actions.CLEAR_MINUTE_REVIEWER_MQTT: {

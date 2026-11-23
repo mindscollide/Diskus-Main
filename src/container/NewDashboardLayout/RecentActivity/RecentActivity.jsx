@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 import { getNotifications } from "../../../store/actions/GetUserNotification";
 import { useTranslation } from "react-i18next";
 import DemoIcon from "../../../assets/images/Recent Activity Icons/Task/Added In Task.png";
+// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
+import "../../pages/home/dashboard-module.css";
 
 const RecentActivity = () => {
   const RecentActivityData = useSelector(
@@ -23,7 +25,13 @@ const RecentActivity = () => {
   );
   const Spinner = useSelector((state) => state.settingReducer.Spinner);
   let currentLanguage = localStorage.getItem("i18nextLng") || "en";
-  const [recentActivityData, setRecentActivityData] = useState([]);
+  // start from what Redux already holds (e.g. coming back to the dashboard);
+  // starting at [] showed the empty state for a frame and then popped the list in
+  const [recentActivityData, setRecentActivityData] = useState(() =>
+    RecentActivityData && Object.keys(RecentActivityData).length > 0
+      ? RecentActivityData
+      : [],
+  );
   let createrID = localStorage.getItem("userID");
   const navigate = useNavigate();
   const { t } = useTranslation();
