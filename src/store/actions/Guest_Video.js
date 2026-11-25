@@ -401,6 +401,7 @@ const joinGuestVideoMainApi = (
           }
           onPresentationCheck?.(
             Boolean(response.data.responseResult.isPresenterViewStarted),
+            response.data.responseResult.isMeetingVideoStarted,
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -415,6 +416,15 @@ const joinGuestVideoMainApi = (
                 setJoinButton(false);
               } catch (error) {
                 console.error("src/store/actions/Guest_Video.js:", error);
+              }
+              // The host left the meeting video while this guest sat in the lobby (a live presentation still counts as running): show "The meeting has ended"
+              if (
+                !isPresentation &&
+                response.data.responseResult.isMeetingVideoStarted === false &&
+                response.data.responseResult.isPresenterViewStarted !== true
+              ) {
+                dispatch(guestVideoNavigationScreen(4));
+                return;
               }
               // dispatch(guestVideoNavigationScreen(true));
               mqttConnectionGuestUser(
@@ -437,6 +447,12 @@ const joinGuestVideoMainApi = (
               await dispatch(
                 joinGuestVideoSuccess(response.data.responseResult, ""),
               );
+              // Registered as a presentation guest (even while still waiting for admit) leaves through LeavePresenterView on refresh/close; a meeting-video join clears it
+              if (isPresentation) {
+                sessionStorage.setItem("guestInPresentation", "true");
+              } else {
+                sessionStorage.removeItem("guestInPresentation");
+              }
               sessionStorage.setItem("hasJoined", true);
             } else if (
               response.data.responseResult.responseMessage
@@ -1558,7 +1574,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data, showEndedScreen = false) =
 
 // Guest leaving a presentation: LeavePresenterView instead of GuestLeaveMeetingVideo, then back to the lobby's "left" view
 const leavePresenterViewGuestMainApi = (navigate, t, data) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     let form = new FormData();
     form.append("RequestMethod", leavePresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
@@ -1578,9 +1594,13 @@ const leavePresenterViewGuestMainApi = (navigate, t, data) => {
             )
         ) {
           // guestInPresentation stays so the Rejoin button sends JoinPresentationGuestRequest
-          sessionStorage.setItem("isRejoining", "true");
           sessionStorage.removeItem("isZoomEnabled");
           sessionStorage.setItem("hasJoined", false);
+          // A presentation-ended screen shown meanwhile (MEETING_PRESENTATION_STOPPED) must not be replaced by the lobby
+          if (getState().GuestVideoReducer.guestVideoNavigationData === 8) {
+            return;
+          }
+          sessionStorage.setItem("isRejoining", "true");
           dispatch(guestVideoNavigationScreen(1));
           dispatch(setVideoCameraGuest(false));
           dispatch(setVoiceControleGuest(false));

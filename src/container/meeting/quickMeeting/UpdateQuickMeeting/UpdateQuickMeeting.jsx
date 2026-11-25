@@ -68,9 +68,6 @@ import { useMeetingContext } from "../../../../context/MeetingContext";
 import { DataRoomDownloadFileApiFunc } from "../../../../store/actions/DataRoom_actions";
 import { useCommitteeContext } from "../../../../context/CommitteeContext";
 import { useGroupsContext } from "../../../../context/GroupsContext";
-// styles of classes used below that live in plain .css files (not CSS modules): without these imports a lazily loaded page loses them in production
-import "../../../../components/layout/talk/videoCallScreen/VideoCallScreen.css";
-
 const UpdateQuickMeeting = ({ ModalTitle, checkFlag }) => {
   //For Localization
   const { t } = useTranslation();

@@ -226,6 +226,23 @@ const GuestVideoCall = () => {
           dispatch(guestVideoNavigationScreen(9));
         } else if (
           data.payload.message.toLowerCase() ===
+          "MEETING_PRESENTATION_STOPPED".toLowerCase()
+        ) {
+          // Only a guest that is part of the presentation (waiting, inside, or left/removed from it) gets the "presentation ended" screen
+          const screen = guestScreenRef.current;
+          if (
+            sessionStorage.getItem("guestInPresentation") === "true" &&
+            (screen === 1 || screen === 2 || screen === 5)
+          ) {
+            // The presentation is over, so refresh must not call a leave API
+            sessionStorage.removeItem("hasJoined");
+            sessionStorage.removeItem("isZoomEnabled");
+            dispatch(setVideoCameraGuest(false));
+            dispatch(setVoiceControleGuest(false));
+            dispatch(guestVideoNavigationScreen(8));
+          }
+        } else if (
+          data.payload.message.toLowerCase() ===
           "GUEST_REMOVED_FROM_PRESENTATION".toLowerCase()
         ) {
           // Presenter removed this guest: same cleanup as a meeting removal, but the removed screen and rejoin lobby use the presentation view
@@ -478,9 +495,7 @@ const GuestVideoCall = () => {
           leavePresenterViewGuestMainApi(navigate, t, {
             RoomID: String(sessionStorage.getItem("roomId") || getRoomId),
             UserGUID: String(getGuestUid),
-            UID: String(getGuestUid),
             Name: String(getGuestName),
-            IsGuest: true,
           }),
         );
       } else {
@@ -500,18 +515,22 @@ const GuestVideoCall = () => {
       try {
         const inPresentation =
           sessionStorage.getItem("guestInPresentation") === "true";
-        const data = {
-          RoomID: String(
-            sessionStorage.getItem("roomId") ||
-              sessionStorage.getItem("roomID"),
-          ),
-          UID: String(sessionStorage.getItem("GuestUserID")),
-          Name: String(sessionStorage.getItem("guestName")),
-          MeetingID: Number(sessionStorage.getItem("MeetingId")),
-          ...(inPresentation
-            ? { UserGUID: String(sessionStorage.getItem("GuestUserID")), IsGuest: true }
-            : {}),
-        };
+        const roomID = String(
+          sessionStorage.getItem("roomId") || sessionStorage.getItem("roomID"),
+        );
+        // LeavePresenterView takes only RoomID, UserGUID and Name; GuestLeaveMeetingVideo keeps its own payload
+        const data = inPresentation
+          ? {
+              RoomID: roomID,
+              UserGUID: String(sessionStorage.getItem("GuestUserID")),
+              Name: String(sessionStorage.getItem("guestName")),
+            }
+          : {
+              RoomID: roomID,
+              UID: String(sessionStorage.getItem("GuestUserID")),
+              Name: String(sessionStorage.getItem("guestName")),
+              MeetingID: Number(sessionStorage.getItem("MeetingId")),
+            };
         const form = new FormData();
         form.append(
           "RequestMethod",
@@ -595,7 +614,9 @@ const GuestVideoCall = () => {
       ) : guestVideoNavigationData === 7 ? (
         <VideoCallNotPublishedYet />
       ) : guestVideoNavigationData === 8 ? (
-        <GuestPresentationEnded />
+        <div className='Main-Guest-Video'>
+          <GuestPresentationEnded />
+        </div>
       ) : guestVideoNavigationData === 9 ? (
         <div className='Main-Guest-Video'>
           <GuestVideoReject isPresentation />

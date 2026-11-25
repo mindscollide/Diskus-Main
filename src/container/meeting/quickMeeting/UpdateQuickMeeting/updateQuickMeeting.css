@@ -809,3 +809,9 @@ body[dir="rtl"] .UpdateQuickMeetingTabActive {
   font-size: 14px !important;
   font-weight: 600 !important;
 }
+
+/* Update/cancel confirmation modal: shrink to content (was only reachable through the global VideoCallScreen.css) */
+.modal-content:has(.modal-body .row.confirmationDialogue) {
+  height: auto !important;
+  margin-left: -70px !important;
+}

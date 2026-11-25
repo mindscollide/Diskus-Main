@@ -438,9 +438,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
         leavePresenterViewGuestMainApi(navigate, t, {
           RoomID: String(roomId),
           UserGUID: String(joinGuestData.guestGuid),
-          UID: String(joinGuestData.guestGuid),
           Name: String(guestName),
-          IsGuest: true,
         }),
       );
       return;

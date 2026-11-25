@@ -1901,27 +1901,24 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   </Tooltip>
                 )}
 
-              {/* {((meetingHostData?.isHost &&
-                !presenterViewHostFlag &&
-                !presenterViewJoinFlag) ||
-                (presenterViewFlag && presenterViewHostFlag)) &&
-                meetingHostData?.isDashboardVideo && (
-                  <Tooltip placement="topRight" title={t("Copy-link")}>
-                    <div
-                      className={
-                        LeaveCallModalFlag
-                          ? "grayScaleImage"
-                          : "screenShare-Toggle inactive-state"
-                      }
-                    >
-                      <img
-                        src={CopyLinkWhite}
-                        onClick={copyToClipboardd}
-                        alt="Copy Link"
-                      />
-                    </div>
-                  </Tooltip>
-                )} */}
+              {/* Copy link: only the presenter of a running presentation, never a presentation viewer */}
+              {presenterViewFlag && presenterViewHostFlag && (
+                <Tooltip placement="topRight" title={t("Copy-link")}>
+                  <div
+                    className={
+                      LeaveCallModalFlag
+                        ? "grayScaleImage"
+                        : "screenShare-Toggle inactive-state"
+                    }
+                  >
+                    <img
+                      src={CopyLinkWhite}
+                      onClick={copyToClipboardd}
+                      alt="Copy Link"
+                    />
+                  </div>
+                </Tooltip>
+              )}
               {/* {(!presenterViewFlag || */}
               {/* {activeCall && currentCallType === 1 && ( */}
               <div className="position-relative">

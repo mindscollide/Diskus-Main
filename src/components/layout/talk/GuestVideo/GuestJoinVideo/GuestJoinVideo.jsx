@@ -329,12 +329,19 @@ const GuestJoinVideo = ({
       };
 
       // Join answered _04 with isPresenterViewStarted: switch to the other join once, otherwise back to the lobby
-      const onPresentationCheck = (isPresenterViewStarted) => {
+      const onPresentationCheck = (isPresenterViewStarted, isMeetingVideoStarted) => {
         if (switched) {
           backToLobby();
           return;
         }
-        if (isPresentationJoin && !isPresenterViewStarted) {
+        if (
+          isPresentationJoin &&
+          !isPresenterViewStarted &&
+          isMeetingVideoStarted === false
+        ) {
+          // Neither the presentation nor the meeting video is running: nothing left to join
+          dispatch(guestVideoNavigationScreen(8));
+        } else if (isPresentationJoin && !isPresenterViewStarted) {
           switched = true;
           sendMeetingJoin();
         } else if (!isPresentationJoin && isPresenterViewStarted) {
