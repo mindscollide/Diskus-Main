@@ -47,6 +47,7 @@ const VIDEO_REQUEST_METHODS = new Set([
   "ServiceManager.InitiateVideoCall",
   "ServiceManager.IsSharedScreen",
   "ServiceManager.JoinGuestVideo",
+  "ServiceManager.JoinGuestPresenterView",
   "ServiceManager.JoinMeetingVideoRequest",
   "ServiceManager.JoinPresentationRequest",
   "ServiceManager.JoinPresenterView",

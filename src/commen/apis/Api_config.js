@@ -1992,6 +1992,11 @@ export const joinPresenterView = {
   RequestMethod: "ServiceManager.JoinPresenterView",
 };
 
+//Join Guest Presenter View (guest user only)
+export const joinGuestPresenterView = {
+  RequestMethod: "ServiceManager.JoinGuestPresenterView",
+};
+
 //Leave Presenter View
 export const leavePresenterView = {
   RequestMethod: "ServiceManager.LeavePresenterView",

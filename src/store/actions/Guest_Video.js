@@ -7,7 +7,7 @@ import {
   ValidateEncryptedStringGuestVideoLink,
   joinGuestVideo,
   joinPresentationGuestRequest,
-  joinPresenterView,
+  joinGuestPresenterView,
   leavePresenterView,
   admitRejectAttendee,
   raiseUnRaisedHand,
@@ -512,12 +512,12 @@ const joinGuestVideoMainApi = (
   };
 };
 
-// Guest side of JoinPresenterView, called once the presenter admits the guest (PRESENTATION_JOIN_REQUEST_APPROVED).
+// Guest-only JoinGuestPresenterView, called once the presenter admits the guest (PRESENTATION_JOIN_REQUEST_APPROVED).
 // It cannot reuse joinPresenterViewMainApi, which drives the logged-in user's presenter-view state.
 const joinPresenterViewGuestMainApi = (data, onSuccess, onFail) => {
   return () => {
     let form = new FormData();
-    form.append("RequestMethod", joinPresenterView.RequestMethod);
+    form.append("RequestMethod", joinGuestPresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
       .post(meetingApi, form)
@@ -529,7 +529,7 @@ const joinPresenterViewGuestMainApi = (data, onSuccess, onFail) => {
           String(result.responseMessage)
             .toLowerCase()
             .includes(
-              "Meeting_MeetingServiceManager_JoinPresenterView_01".toLowerCase(),
+              "Meeting_MeetingServiceManager_JoinGuestPresenterView_01".toLowerCase(),
             )
         ) {
           onSuccess?.(result);
