@@ -367,6 +367,26 @@ const GuestVideoCall = () => {
           );
         } else if (
           data.payload.message.toLowerCase() ===
+          "PRESENTATION_PARTICIPANT_LEFT".toLowerCase()
+        ) {
+          // A presentation participant (user or guest) left: drop them from the guest's roster by guid
+          dispatch(
+            getVideoCallParticipantGuestSuccess(data.payload.uid, "", 3),
+          );
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "PARTICIPANT_REMOVED_FROM_PRESENTATION".toLowerCase()
+        ) {
+          // Presenter removed someone: same guid field the presenter side reads (guid, else UID)
+          dispatch(
+            getVideoCallParticipantGuestSuccess(
+              data.payload.guid ?? data.payload.UID ?? data.payload.uid,
+              "",
+              3,
+            ),
+          );
+        } else if (
+          data.payload.message.toLowerCase() ===
           "PARTICIPANT_REMOVED_FROM_MEETING".toLowerCase()
         ) {
           console.log(data, "JOINEDJOINEDJOINED");
