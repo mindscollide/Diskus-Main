@@ -2968,5 +2968,22 @@
   "Presenter-has-declined-your-request": "رفض مقدم العرض طلبك",
   "Comment-deleted-successfully": "تم حذف التعليق بنجاح",
   "The-owner-has-removed-this-file": "قام مالك الملف بإزالة هذا الملف",
-  "The-owner-has-removed-this-folder": "قام مالك المجلد بإزالة هذا المجلد"
+  "The-owner-has-removed-this-folder": "قام مالك المجلد بإزالة هذا المجلد",
+  "There-are-no-agenda-contributors": "لا يوجد مساهمون في جدول الأعمال",
+  "No-tags": "لا توجد وسوم",
+  "Due": "مستحق",
+  "Retry": "إعادة المحاولة",
+  "Multiple-people-want-to-join-the-meeting": "يرغب عدة أشخاص في الانضمام إلى الاجتماع.",
+  "Vote-distribution": "توزيع الأصوات",
+  "Category": "الفئة",
+  "Votes": "الأصوات",
+  "Postal-Code-is-Required": "الرمز البريدي مطلوب",
+  "Full-Name-is-required": "الاسم الكامل مطلوب",
+  "Please-Enter-Fields-Value": "يرجى إدخال قيم الحقول",
+  "Folder-should-have-alpha-numeric-special-character": "يجب أن يحتوي اسم المجلد على أحرف وأرقام ورموز خاصة",
+  "Session-expired": "انتهت الجلسة",
+  "New-StatusID-is-required": "معرّف الحالة الجديد مطلوب",
+  "Accumulative-report": "التقرير التراكمي",
+  "Compliance-standing-report": "تقرير حالة الامتثال",
+  "End-of-quarter": "نهاية الربع"
 }

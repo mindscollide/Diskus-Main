@@ -267,7 +267,7 @@ const ViewVoteModal = () => {
                         loader={<div>{t("Loading-chart")}</div>}
                         data={barChartData}
                         options={{
-                          title: "Vote Distribution",
+                          title: t("Vote-distribution"),
                           pieHole: 0.4, // Adjust the value to control the size of the hole (0 to 1)
                           colors: [
                             "#FF7F7F",
@@ -310,12 +310,12 @@ const ViewVoteModal = () => {
                         loader={<div>{t("Loading-chart")}</div>}
                         data={barChartData}
                         options={{
-                          title: "Vote Distribution",
+                          title: t("Vote-distribution"),
                           hAxis: {
-                            title: "Category",
+                            title: t("Category"),
                           },
                           vAxis: {
-                            title: "Votes",
+                            title: t("Votes"),
                             format: "0", // Ensures whole numbers on the Y-axis
                             ticks: [0, 1, 2, 3, 4, 5], // Define specific tick marks if needed
                           },

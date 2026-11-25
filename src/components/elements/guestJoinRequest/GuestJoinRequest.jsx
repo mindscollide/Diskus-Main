@@ -340,7 +340,7 @@ const GuestJoinRequest = () => {
                 })}
               </div>
               <p className={styles["text"]}>
-                Multiple people want to join the meeting.
+                {t("Multiple-people-want-to-join-the-meeting")}
               </p>
               <Button
                 className={styles["title-deny"]}

@@ -133,7 +133,7 @@ const PasswordCreationUM = () => {
       passwordDetails.ConfirmPassword.length >= 8
     ) {
       setErrorBar(false);
-      show("Please Enter Fields Value", "error");
+      show(t("Please-Enter-Fields-Value"), "error");
     } else if (passwordDetails.Password !== passwordDetails.ConfirmPassword) {
       setErrorBar(true);
     } else {

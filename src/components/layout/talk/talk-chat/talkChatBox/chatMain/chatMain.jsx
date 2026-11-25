@@ -2667,7 +2667,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   )
                                                 }
                                                 className='option-r'>
-                                                Retry
+                                                {t("Retry")}
                                               </span>
                                               <span
                                                 onClick={() =>
@@ -2677,7 +2677,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                                   )
                                                 }
                                                 className='option-d'>
-                                                Delete
+                                                {t("Delete")}
                                               </span>
                                             </div>
                                           ) : null}

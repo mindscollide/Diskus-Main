@@ -423,7 +423,7 @@ const AccumulativeReport = () => {
           await generatePdfHtml({
             element,
             fileName: getDynamicFileName("Accumalative Report"),
-            reportTitle: "Accumalative Report",
+            reportTitle: t("Accumulative-report"),
           });
         }
 

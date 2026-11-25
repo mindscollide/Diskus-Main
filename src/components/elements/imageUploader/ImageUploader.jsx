@@ -109,7 +109,7 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
           ) : fileList.length === 0 ? (
             <>
               <span className="d-flex align-items-center gap-1">
-                <PlusLg /> Upload
+                <PlusLg /> {t("Upload")}
               </span>
             </>
           ) : null}

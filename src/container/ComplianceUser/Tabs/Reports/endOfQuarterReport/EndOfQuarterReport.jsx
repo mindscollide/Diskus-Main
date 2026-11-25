@@ -438,7 +438,7 @@ const EndOfQuarterReport = () => {
           await generatePdfHtml({
             element,
             fileName: getDynamicFileName("End Of Quarter Report"),
-            reportTitle: "End Of Quarter",
+            reportTitle: t("End-of-quarter"),
           });
         }
 

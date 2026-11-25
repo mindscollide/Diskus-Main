@@ -189,7 +189,7 @@ const downlooadUserloginHistoryApi = (navigate, t, Data) => {
           dispatch(
             downlooadUserloginHistory_success(
               response.data.responseResult,
-              t("Download-successffuly"),
+              t("Download-successfully"),
             ),
           );
         }
@@ -260,7 +260,7 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
           dispatch(
             downloadAuditTrialReport_success(
               response.data.responseResult,
-              t("Download-successffuly"),
+              t("Download-successfully"),
             ),
           );
         }

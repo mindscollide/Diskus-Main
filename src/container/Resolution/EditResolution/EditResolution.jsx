@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { getResolutionReminderOptions } from "../resolutionReminders";
 import styles from "./EditResolution.module.css";
 import DatePicker from "react-multi-date-picker";
 import { useDispatch, useSelector } from "react-redux";
@@ -106,36 +107,7 @@ const EditResolution = ({ setCancelresolution }) => {
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
-  const [reminderData] = useState([
-    {
-      label: "10 minutes before",
-      value: 1,
-    },
-    {
-      label: "30 minutes before",
-      value: 2,
-    },
-    {
-      label: "1 hour before",
-      value: 3,
-    },
-    {
-      label: "5 hours before",
-      value: 4,
-    },
-    {
-      label: "1 day before",
-      value: 5,
-    },
-    {
-      label: "1 day before",
-      value: 6,
-    },
-    {
-      label: "7 days before",
-      value: 7,
-    },
-  ]);
+  const reminderData = getResolutionReminderOptions(t);
 
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",

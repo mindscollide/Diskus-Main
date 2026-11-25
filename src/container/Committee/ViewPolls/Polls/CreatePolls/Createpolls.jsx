@@ -561,7 +561,7 @@ const Createpolls = ({ setCreatepoll }) => {
                           closeMenuOnSelect={false}
                           filterOption={customFilter}
                           components={animatedComponents}
-                          placeholder='Add Members '
+                          placeholder={t("Add-members")}
                           isMulti
                           onChange={handleSelectValue}
                         />

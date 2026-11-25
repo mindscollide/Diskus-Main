@@ -22,7 +22,8 @@
  *   fails with no response at all (network down, DNS, timeout, CORS preflight)
  *   throws inside the interceptor and masks the original error.
  */
-import axios from "axios";
+import axios from "axios";
+import { t } from "i18next";
 import { signOut } from "../../store/actions/Auth_Sign_Out";
 import store from "../../store/store";
 import { logVideoApiResponse } from "../../components/layout/talk/videoLog";
@@ -80,7 +81,7 @@ axiosInstance.interceptors.response.use(
       code === 400 &&
       message.toLowerCase() === "Token is required".toLowerCase()
     ) {
-      signOut("Session expired", store.dispatch);
+      signOut(t("Session-expired"), store.dispatch);
       return;
     }
 
@@ -89,7 +90,7 @@ axiosInstance.interceptors.response.use(
       (message === "tokens does not match" ||
         message === "Invalid Agent".toLowerCase())
     ) {
-      signOut("Session expired", store.dispatch);
+      signOut(t("Session-expired"), store.dispatch);
       return;
     }
 
@@ -119,7 +120,7 @@ axiosInstance.interceptors.response.use(
       code === 400 &&
       message.toLowerCase() === "Token is required".toLowerCase()
     ) {
-      signOut("Session expired", store.dispatch);
+      signOut(t("Session-expired"), store.dispatch);
       return;
     }
 
@@ -128,7 +129,7 @@ axiosInstance.interceptors.response.use(
       (message === "tokens does not match" ||
         message === "Invalid Agent".toLowerCase())
     ) {
-      signOut("Session expired", store.dispatch);
+      signOut(t("Session-expired"), store.dispatch);
     }
 
     return Promise.reject(error);

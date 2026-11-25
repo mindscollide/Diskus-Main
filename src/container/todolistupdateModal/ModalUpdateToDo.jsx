@@ -318,7 +318,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo }) => {
                     name='Title'
                     applyClass='form-control2'
                     type='text'
-                    placeholder='Title'
+                    placeholder={t("Title")}
                     required
                     value={task.Title}
                   />
@@ -461,7 +461,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo }) => {
                     onClick={updateToDoList}
                     className={"btn btn-primary px-4 fw-600"}
                     variant={"Primary"}
-                    text='Update'
+                    text={t("Update")}
                   />
                 </Col>
               </Row>
