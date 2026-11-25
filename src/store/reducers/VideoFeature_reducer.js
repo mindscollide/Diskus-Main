@@ -1756,7 +1756,11 @@ const videoFeatureReducer = (state = initialState, action) => {
       // Also drop the removed participant from the waiting list (if they
       // were re-added there) and the admitted roster, so the host's UI
       // doesn't keep showing someone who was just removed.
-      const removedGuid = action.response?.guid ?? action.response?.UID;
+      // Backend sends the removed person's guid as removedUID
+      const removedGuid =
+        action.response?.removedUID ??
+        action.response?.guid ??
+        action.response?.UID;
       return {
         ...state,
         participantRemovedFromPresentationData: action.response,

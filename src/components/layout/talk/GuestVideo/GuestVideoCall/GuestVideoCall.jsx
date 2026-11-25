@@ -377,10 +377,13 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "PARTICIPANT_REMOVED_FROM_PRESENTATION".toLowerCase()
         ) {
-          // Presenter removed someone: same guid field the presenter side reads (guid, else UID)
+          // Presenter removed someone: backend sends their guid in removedUID
           dispatch(
             getVideoCallParticipantGuestSuccess(
-              data.payload.guid ?? data.payload.UID ?? data.payload.uid,
+              data.payload.removedUID ??
+                data.payload.guid ??
+                data.payload.UID ??
+                data.payload.uid,
               "",
               3,
             ),

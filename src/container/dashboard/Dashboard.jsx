@@ -2479,7 +2479,10 @@ const Dashboard = () => {
               dispatch(participantRemovedFromPresentationMqtt(data.payload));
               dispatch(
                 presenterLeaveParticipant({
-                  uid: data.payload?.guid ?? data.payload?.UID,
+                  uid:
+                    data.payload?.removedUID ??
+                    data.payload?.guid ??
+                    data.payload?.UID,
                 }),
               );
             } else if (
