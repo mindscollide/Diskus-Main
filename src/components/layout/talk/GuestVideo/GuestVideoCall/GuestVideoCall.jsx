@@ -34,7 +34,7 @@ import Helper from "../../../../../commen/functions/history_logout";
 import { meetingApi } from "../../../../../commen/apis/Api_ends_points";
 import {
   guestLeaveMeetingVideo,
-  leavePresenterView,
+  leaveGuestPresenterView,
 } from "../../../../../commen/apis/Api_config";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 import GuestVideoReject from "../GuestVideoReject/GuestVideoReject";
@@ -343,6 +343,30 @@ const GuestVideoCall = () => {
           );
         } else if (
           data.payload.message.toLowerCase() ===
+          "PRESENTATION_NEW_PARTICIPANTS_JOINED".toLowerCase()
+        ) {
+          // Presenter admitted more people: append them to the guest's roster (same guid is replaced, not duplicated)
+          dispatch(
+            getVideoCallParticipantGuestSuccess(
+              data.payload.newParticipants,
+              "",
+              2,
+            ),
+          );
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
+        ) {
+          // Single-participant version of the same event
+          dispatch(
+            getVideoCallParticipantGuestSuccess(
+              data.payload.newParticipant,
+              "",
+              2,
+            ),
+          );
+        } else if (
+          data.payload.message.toLowerCase() ===
           "PARTICIPANT_REMOVED_FROM_MEETING".toLowerCase()
         ) {
           console.log(data, "JOINEDJOINEDJOINED");
@@ -518,7 +542,7 @@ const GuestVideoCall = () => {
         const roomID = String(
           sessionStorage.getItem("roomId") || sessionStorage.getItem("roomID"),
         );
-        // LeavePresenterView takes only RoomID, UserGUID and Name; GuestLeaveMeetingVideo keeps its own payload
+        // LeaveGuestPresenterView takes only RoomID, UserGUID and Name; GuestLeaveMeetingVideo keeps its own payload
         const data = inPresentation
           ? {
               RoomID: roomID,
@@ -535,7 +559,7 @@ const GuestVideoCall = () => {
         form.append(
           "RequestMethod",
           inPresentation
-            ? leavePresenterView.RequestMethod
+            ? leaveGuestPresenterView.RequestMethod
             : guestLeaveMeetingVideo.RequestMethod,
         );
         form.append("RequestData", JSON.stringify(data));

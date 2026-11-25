@@ -8,7 +8,7 @@ import {
   joinGuestVideo,
   joinPresentationGuestRequest,
   joinGuestPresenterView,
-  leavePresenterView,
+  leaveGuestPresenterView,
   admitRejectAttendee,
   raiseUnRaisedHand,
   muteUnMuteParticipant,
@@ -1572,11 +1572,11 @@ const guestLeaveMeetingVideoApi = (navigate, t, data, showEndedScreen = false) =
   };
 };
 
-// Guest leaving a presentation: LeavePresenterView instead of GuestLeaveMeetingVideo, then back to the lobby's "left" view
+// Guest leaving a presentation: LeaveGuestPresenterView instead of GuestLeaveMeetingVideo, then back to the lobby's "left" view
 const leavePresenterViewGuestMainApi = (navigate, t, data) => {
   return (dispatch, getState) => {
     let form = new FormData();
-    form.append("RequestMethod", leavePresenterView.RequestMethod);
+    form.append("RequestMethod", leaveGuestPresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
       .post(meetingApi, form)
@@ -1590,7 +1590,7 @@ const leavePresenterViewGuestMainApi = (navigate, t, data) => {
           response.data.responseResult.responseMessage
             .toLowerCase()
             .includes(
-              "Meeting_MeetingServiceManager_LeavePresenterView_01".toLowerCase(),
+              "Meeting_MeetingServiceManager_LeaveGuestPresenterView_01".toLowerCase(),
             )
         ) {
           // guestInPresentation stays so the Rejoin button sends JoinPresentationGuestRequest
@@ -1607,7 +1607,7 @@ const leavePresenterViewGuestMainApi = (navigate, t, data) => {
         } else {
           logVideoError(
             "leavePresenterViewGuestMainApi",
-            "LeavePresenterView was not successful",
+            "LeaveGuestPresenterView was not successful",
             response.data,
           );
         }

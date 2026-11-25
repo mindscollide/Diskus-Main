@@ -52,6 +52,7 @@ const VIDEO_REQUEST_METHODS = new Set([
   "ServiceManager.JoinPresentationRequest",
   "ServiceManager.JoinPresenterView",
   "ServiceManager.LeaveCall",
+  "ServiceManager.LeaveGuestPresenterView",
   "ServiceManager.LeaveMeetingVideo",
   "ServiceManager.LeaveMeetingVideoWaitingRoom",
   "ServiceManager.LeavePresentationWaitingRoom",
