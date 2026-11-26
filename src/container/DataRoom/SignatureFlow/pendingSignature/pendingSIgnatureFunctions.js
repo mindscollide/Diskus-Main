@@ -540,3 +540,88 @@ export const isUserSigned = (xfdfString) => {
     
     return false;
 }
+
+/**
+ * Make an XFDF written by the Apryse iOS/iPad SDK readable by the web viewer.
+ *
+ * Web (WebViewer) signs a Sig field as an <ink> annotation in <annots>, and when
+ * it saves a widget it keeps the picture in `<appearance>base64</appearance>`.
+ * The iPad SDK writes the same signature differently: <annots> is empty and the
+ * picture sits inside the widget as
+ *   <appearances><aappearance name="_DEFAULT"><Normal>data:image/png;base64,...
+ * plus appearance="BLANK" and an <apref> that points at an object number of the
+ * iPad's own copy of the PDF. WebViewer understands neither, so it paints an
+ * empty Sig field ("Sign here") and the iPad signature never shows.
+ *
+ * Each such widget is rewritten as: the widget without the iPad-only parts, plus
+ * a <stamp> annotation carrying the PNG over the widget's rect (the widget and
+ * the stamp share the same coordinate space, so they line up). Web-written XFDF
+ * has no <appearances>, so it is returned untouched.
+ *
+ * @param {string} xfdfString
+ * @returns {string}
+ */
+export const normalizeMobileSignatureXfdf = (xfdfString) => {
+  if (!xfdfString || !xfdfString.includes("<appearances")) return xfdfString;
+  try {
+    const doc = new DOMParser().parseFromString(xfdfString, "text/xml");
+    if (doc.querySelector("parsererror")) return xfdfString;
+
+    const xfdfNs = doc.documentElement.namespaceURI;
+    let annots = doc.querySelector("annots");
+    if (!annots) {
+      annots = doc.createElementNS(xfdfNs, "annots");
+      doc.documentElement.appendChild(annots);
+    }
+
+    let changed = false;
+    Array.from(doc.querySelectorAll("widget")).forEach((widget) => {
+      const normal = widget.querySelector("appearances aappearance Normal");
+      const png = normal?.textContent?.trim();
+      if (!png || !/^data:image\//i.test(png)) return;
+
+      const fieldName = widget.getAttribute("field");
+      const isSig = Array.from(doc.querySelectorAll("ffield")).some(
+        (f) => f.getAttribute("name") === fieldName && f.getAttribute("type") === "Sig",
+      );
+      const rect = widget.querySelector("rect");
+      if (!isSig || !rect) return;
+
+      const pageIndex = Math.max(parseInt(widget.getAttribute("page"), 10) - 1, 0);
+      const stamp = doc.createElementNS(xfdfNs, "stamp");
+      stamp.setAttribute("page", String(pageIndex));
+      stamp.setAttribute(
+        "rect",
+        ["x1", "y1", "x2", "y2"].map((k) => rect.getAttribute(k)).join(","),
+      );
+      stamp.setAttribute("flags", "print");
+      stamp.setAttribute("name", `${widget.getAttribute("name")}-sig`);
+      stamp.setAttribute("subject", "Signature");
+      stamp.setAttribute("title", "Guest");
+      const date = widget.getAttribute("modified-date");
+      if (date) stamp.setAttribute("date", date);
+
+      // keep the signer id so ownership checks (diskusSignerUserId) still work
+      const custom = widget.querySelector("trn-custom-data");
+      if (custom) stamp.appendChild(custom.cloneNode(true));
+
+      const imageData = doc.createElementNS(xfdfNs, "imagedata");
+      imageData.textContent = png;
+      stamp.appendChild(imageData);
+      annots.appendChild(stamp);
+
+      // drop the iPad-only parts: WebViewer cannot read them and the stale
+      // apref would point at an unrelated object of the server PDF
+      widget.querySelector("appearances")?.remove();
+      widget.querySelectorAll("apref").forEach((n) => n.remove());
+      if (widget.getAttribute("appearance") === "BLANK") {
+        widget.removeAttribute("appearance");
+      }
+      changed = true;
+    });
+
+    return changed ? new XMLSerializer().serializeToString(doc) : xfdfString;
+  } catch {
+    return xfdfString; // never block the document over a conversion problem
+  }
+};
