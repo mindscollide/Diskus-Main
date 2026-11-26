@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Row, Col } from "react-bootstrap";
 import { Checkbox } from "antd";
 import enUS from "antd/es/date-picker/locale/en_US";
+import arEG from "antd/es/date-picker/locale/ar_EG";
 import { Button, InputDatePicker } from "../../../../../elements";
 import {
   DateDisplayFormat,
@@ -34,7 +35,8 @@ const ChatActionModals = ({
   onConfirm,
   onCancel,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const datePickerLocale = String(i18n.language || "en").startsWith("ar") ? arEG : enUS;
 
   if (kind === "save") {
     return (
@@ -84,7 +86,7 @@ const ChatActionModals = ({
                     DateRange
                     placeholder={t("Select-date")}
                     change={onDateChange}
-                    locale={enUS}
+                    locale={datePickerLocale}
                   />
                 </Col>
                 <Col lg={5} md={5} sm={12}>
@@ -101,10 +103,10 @@ const ChatActionModals = ({
                         : null
                     }
                     DateRange
-                    placeholder={t("Select Date")}
+                    placeholder={t("Select-date")}
                     change={onDateChange}
                     disable={endDatedisable}
-                    locale={enUS}
+                    locale={datePickerLocale}
                   />
                 </Col>
                 <Col lg={1} md={1} sm={12}></Col>

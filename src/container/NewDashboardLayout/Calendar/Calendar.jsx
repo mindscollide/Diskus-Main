@@ -130,7 +130,7 @@ const NewCalendar = () => {
 
   useEffect(() => {
     calendarApiCall();
-  }, []);
+  }, [CalenderMonthsSpan]);
 
   useEffect(() => {
     if (Object.keys(calenderData).length > 0) {

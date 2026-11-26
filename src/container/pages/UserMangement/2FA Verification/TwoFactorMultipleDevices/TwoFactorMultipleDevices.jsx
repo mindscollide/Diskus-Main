@@ -60,7 +60,6 @@ const [notificationType, setNotificationType] = useState("");
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
 

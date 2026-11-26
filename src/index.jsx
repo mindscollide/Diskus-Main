@@ -5,6 +5,9 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import store from "./store/store";
 import App from "./App";
 import "./index.css";
+// i18n (also keeps moment's global locale in sync with the app language) must be loaded at startup,
+// not only when some component happens to import it
+import "./i18n";
 import { AuthProvider } from "./context/AuthContext";
 import SpinComponent from "./components/elements/mainLoader/loader";
 

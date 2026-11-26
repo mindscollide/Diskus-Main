@@ -2,7 +2,7 @@
  * @module Calendar
  * @description Provides the CustomCalendar component — a full-featured monthly
  * calendar built on top of react-big-calendar. Supports multi-language / RTL
- * rendering (English, French, Arabic, Hijri), lazy-loads event data when the
+ * rendering (English, Arabic, Hijri), lazy-loads event data when the
  * user navigates to previous or future months, and renders a custom toolbar
  * with a month-picker and a "Today" shortcut button.
  */
@@ -31,28 +31,13 @@ import { getCalendarDataResponse } from "../../../store/actions/GetDataForCalend
 import CalendarFooter from "./calender_footer";
 import "moment/dist/locale/ar";
 import "moment/dist/locale/ar-sa";
-import "moment/dist/locale/fr";
-import "moment/dist/locale/en-gb";
-moment.locale("en-US");
+// (no module-level moment.locale("en-US") here: this runs when the file is first imported,
+// which can be after the user switched to Arabic, and reset the whole app's moment locale;
+// the language is kept in sync centrally in src/i18n.js)
 const localizer = momentLocalizer(moment);
 
 const lang = {
   en: null,
-  "en-GB": null,
-  fr: {
-    week: "La semaine",
-    work_week: "Semaine de travail",
-    day: "Jour",
-    month: "Mois",
-    previous: "Antérieur",
-    next: "Prochain",
-    today: `Aujourd'hui`,
-    agenda: "Ordre du jour",
-
-    showMore: (total) => (
-      <span className={styles["calendarsowMore"]}>{`+${total} plus`}</span>
-    ),
-  },
   ar: {
     week: "أسبوع",
     work_week: "أسبوع العمل",
@@ -118,7 +103,7 @@ function CustomCalendar({
   defaultValue,
   setDefaultValue,
 }) {
-  const [culture, setCulture] = useState("fr");
+  const [culture, setCulture] = useState("en");
   const [rightToLeft, setRightToLeft] = useState(false);
   const [prevCheck, setPrevCheck] = useState(false);
   const [nextCheck, setNextCheck] = useState(false);
@@ -239,9 +224,6 @@ function CustomCalendar({
       setRightToLeft(true);
       moment.locale(lan);
     } else if (lan === "ar") {
-      setRightToLeft(true);
-      moment.locale(lan);
-    } else if (lan === "fr") {
       setRightToLeft(true);
       moment.locale(lan);
     } else {

@@ -19,7 +19,6 @@
  */
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import "./fr.css";
 import "./ar.css";
 import "./assets/font-icons/font-icons.css";
 // Fonts: only the subsets the app uses. The plain "<weight>.css" files declare every

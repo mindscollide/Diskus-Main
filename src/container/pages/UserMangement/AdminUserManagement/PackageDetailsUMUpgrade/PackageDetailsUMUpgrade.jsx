@@ -109,7 +109,6 @@ const PakageDetailsUMUpgrade = () => {
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
 
