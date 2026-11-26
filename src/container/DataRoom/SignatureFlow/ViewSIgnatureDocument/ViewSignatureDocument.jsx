@@ -228,16 +228,24 @@ const ViewSignatureDocument = () => {
 
   // === Api calling === //
   async function apiCall(Data) {
-    await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t, 1));
+    try {
+      await dispatch(getWorkFlowByWorkFlowIdwApi(Data, navigate, t, 1));
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument.jsx:", error);
+    }
   }
 
   useEffect(() => {
     const fetchData = async () => {
-      if (docWorkflowID !== null && docWorkflowID !== undefined) {
-        let Data = {
-          FileID: Number(docWorkflowID),
-        };
-        apiCall(Data);
+      try {
+        if (docWorkflowID !== null && docWorkflowID !== undefined) {
+          let Data = {
+            FileID: Number(docWorkflowID),
+          };
+          apiCall(Data);
+        }
+      } catch (error) {
+        console.error("src/container/DataRoom/SignatureFlow/ViewSIgnatureDocument/ViewSignatureDocument.jsx:", error);
       }
     };
 

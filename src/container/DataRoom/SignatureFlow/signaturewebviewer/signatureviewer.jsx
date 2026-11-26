@@ -709,47 +709,51 @@ const SignatureViewer = () => {
 
   // ─── Build API payload (reads only from refs — no state reads) ───────────
   const collectPayload = useCallback(async () => {
-    if (!instance) return null;
-    const { annotationManager, documentViewer } = instance.Core;
-    const doc = documentViewer.getDocument();
-    const data = await doc.getFileData({});
-    const blob = new Blob([new Uint8Array(data)], { type: "application/pdf" });
-    const base64 = await generateBase64FromBlob(blob);
-    const xfdfString = await annotationManager.exportAnnotations();
-    const filtered = filterAnnotationsAgainstXFDF(
-      userAnnotationsRef.current,
-      xfdfString,
-    );
+    try {
+      if (!instance) return null;
+      const { annotationManager, documentViewer } = instance.Core;
+      const doc = documentViewer.getDocument();
+      const data = await doc.getFileData({});
+      const blob = new Blob([new Uint8Array(data)], { type: "application/pdf" });
+      const base64 = await generateBase64FromBlob(blob);
+      const xfdfString = await annotationManager.exportAnnotations();
+      const filtered = filterAnnotationsAgainstXFDF(
+        userAnnotationsRef.current,
+        xfdfString,
+      );
 
-    return {
-      xfdfString,
-      filtered,
-      base64,
-      saveWorkFlowData: {
-        PK_WorkFlow_ID: pdfDataRef.current.workFlowID,
-        WorkFlowTitle: pdfDataRef.current.title,
-        Description: pdfDataRef.current.description,
-        isDeadline: pdfDataRef.current.isDeadline,
-        DeadlineDateTime: pdfDataRef.current.isDeadline
-          ? pdfDataRef.current.deadlineDatetime
-          : "",
-        CreatorID: pdfDataRef.current.creatorID,
-        ListOfActionAbleBundle: buildBundleList(
-          signerDataRef.current,
-          pdfDataRef.current,
-          orderCheckedRef.current,
-        ),
-      },
-      newData: { ActorsFieldValuesList: convertAnnotationsForApi(filtered) },
-      addAnnotationPayload: {
-        FileID: Number(docWorkflowID),
-        AnnotationString: xfdfString,
-      },
-      saveSignatureDocPayload: {
-        FileID: Number(docWorkflowID),
-        base64File: base64,
-      },
-    };
+      return {
+        xfdfString,
+        filtered,
+        base64,
+        saveWorkFlowData: {
+          PK_WorkFlow_ID: pdfDataRef.current.workFlowID,
+          WorkFlowTitle: pdfDataRef.current.title,
+          Description: pdfDataRef.current.description,
+          isDeadline: pdfDataRef.current.isDeadline,
+          DeadlineDateTime: pdfDataRef.current.isDeadline
+            ? pdfDataRef.current.deadlineDatetime
+            : "",
+          CreatorID: pdfDataRef.current.creatorID,
+          ListOfActionAbleBundle: buildBundleList(
+            signerDataRef.current,
+            pdfDataRef.current,
+            orderCheckedRef.current,
+          ),
+        },
+        newData: { ActorsFieldValuesList: convertAnnotationsForApi(filtered) },
+        addAnnotationPayload: {
+          FileID: Number(docWorkflowID),
+          AnnotationString: xfdfString,
+        },
+        saveSignatureDocPayload: {
+          FileID: Number(docWorkflowID),
+          base64File: base64,
+        },
+      };
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.jsx:", error);
+    }
   }, [instance, docWorkflowID]);
 
   // ─── Validation: every participant must have ≥ 1 annotation for Send ─────
@@ -762,22 +766,26 @@ const SignatureViewer = () => {
   // ─── Action handlers ─────────────────────────────────────────────────────
 
   const handleSave = useCallback(async () => {
-    const payload = await collectPayload();
+    try {
+      const payload = await collectPayload();
 
-    if (!payload) return;
-    dispatch(
-      saveWorkflowApi(
-        payload.saveWorkFlowData,
-        navigate,
-        t,
-        setOpenAddParticipentModal,
-        1,
-        payload.newData,
-        payload.addAnnotationPayload,
-        payload.saveSignatureDocPayload,
-        1,
-      ),
-    );
+      if (!payload) return;
+      dispatch(
+        saveWorkflowApi(
+          payload.saveWorkFlowData,
+          navigate,
+          t,
+          setOpenAddParticipentModal,
+          1,
+          payload.newData,
+          payload.addAnnotationPayload,
+          payload.saveSignatureDocPayload,
+          1,
+        ),
+      );
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.jsx:", error);
+    }
   }, [collectPayload, dispatch, navigate, t]);
 
   const handleSendClick = useCallback(() => {
@@ -792,27 +800,31 @@ const SignatureViewer = () => {
   }, [validateBeforeSend, t]);
 
   const handlePublish = useCallback(async () => {
-    const payload = await collectPayload();
-    if (!payload) return;
-    dispatch(
-      saveWorkflowApi(
-        payload.saveWorkFlowData,
-        navigate,
-        t,
-        setOpenAddParticipentModal,
-        1,
-        payload.newData,
-        payload.addAnnotationPayload,
-        payload.saveSignatureDocPayload,
-        2,
-        {
-          PK_WorkFlow_ID: pdfDataRef.current.workFlowID,
-          FinalDocumentName: pdfDataRef.current.title,
-          Message: sendMessage,
-          ListOfViewers: [],
-        },
-      ),
-    );
+    try {
+      const payload = await collectPayload();
+      if (!payload) return;
+      dispatch(
+        saveWorkflowApi(
+          payload.saveWorkFlowData,
+          navigate,
+          t,
+          setOpenAddParticipentModal,
+          1,
+          payload.newData,
+          payload.addAnnotationPayload,
+          payload.saveSignatureDocPayload,
+          2,
+          {
+            PK_WorkFlow_ID: pdfDataRef.current.workFlowID,
+            FinalDocumentName: pdfDataRef.current.title,
+            Message: sendMessage,
+            ListOfViewers: [],
+          },
+        ),
+      );
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.jsx:", error);
+    }
   }, [collectPayload, dispatch, navigate, sendMessage, t]);
 
   // ─── Keep handler refs in sync with latest useCallback references ─────────
@@ -1244,27 +1256,31 @@ const SignatureViewer = () => {
   }, [resetSignerForm]);
 
   const handleSaveSigners = useCallback(async () => {
-    if (!signerData.length) {
-      show(t("Atleast-one-signatory-is-required"), "error");
-      return;
+    try {
+      if (!signerData.length) {
+        show(t("Atleast-one-signatory-is-required"), "error");
+        return;
+      }
+      const payload = {
+        PK_WorkFlow_ID: pdfDataRef.current.workFlowID,
+        WorkFlowTitle: pdfDataRef.current.title,
+        Description: pdfDataRef.current.description,
+        isDeadline: pdfDataRef.current.isDeadline,
+        DeadlineDateTime: pdfDataRef.current.isDeadline
+          ? pdfDataRef.current.deadlineDatetime
+          : "",
+        CreatorID: pdfDataRef.current.creatorID,
+        ListOfActionAbleBundle: buildBundleList(
+          signerData,
+          pdfDataRef.current,
+          orderCheckBox,
+        ),
+      };
+      resetSignerForm();
+      dispatch(saveWorkflowApi(payload, navigate, t, setOpenAddParticipentModal));
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureFlow/signaturewebviewer/signatureviewer.jsx:", error);
     }
-    const payload = {
-      PK_WorkFlow_ID: pdfDataRef.current.workFlowID,
-      WorkFlowTitle: pdfDataRef.current.title,
-      Description: pdfDataRef.current.description,
-      isDeadline: pdfDataRef.current.isDeadline,
-      DeadlineDateTime: pdfDataRef.current.isDeadline
-        ? pdfDataRef.current.deadlineDatetime
-        : "",
-      CreatorID: pdfDataRef.current.creatorID,
-      ListOfActionAbleBundle: buildBundleList(
-        signerData,
-        pdfDataRef.current,
-        orderCheckBox,
-      ),
-    };
-    resetSignerForm();
-    dispatch(saveWorkflowApi(payload, navigate, t, setOpenAddParticipentModal));
   }, [signerData, orderCheckBox, dispatch, navigate, t, resetSignerForm]);
 
   // ─── Render ───────────────────────────────────────────────────────────────

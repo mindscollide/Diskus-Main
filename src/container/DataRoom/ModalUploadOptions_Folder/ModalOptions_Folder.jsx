@@ -19,16 +19,20 @@ const ModalOptionsFolder = ({
   let folderName = localStorage.getItem("folderName");
 
   const handleUploadFolder = async () => {
-    await dispatch(
-      createFolderApi(
-        navigate,
-        folderName,
-        t,
-        setAddfolder,
-        folderUploadOptions,
-        setIsExistFolder,
-      ),
-    );
+    try {
+      await dispatch(
+        createFolderApi(
+          navigate,
+          folderName,
+          t,
+          setAddfolder,
+          folderUploadOptions,
+          setIsExistFolder,
+        ),
+      );
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalUploadOptions_Folder/ModalOptions_Folder.jsx:", error);
+    }
   };
   return (
     <>

@@ -11,7 +11,11 @@ const ModalCancelUpload = ({
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
-    setCanselingDetaUplodingForFOlder(false);
+    try {
+      setCanselingDetaUplodingForFOlder(false);
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalCancelUpload/ModalCancelUpload.jsx:", error);
+    }
   };
   return (
     <>

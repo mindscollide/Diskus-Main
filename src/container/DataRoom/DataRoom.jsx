@@ -557,30 +557,34 @@ const DataRoom = () => {
    * Also resets the breadcrumb trail to root.
    */
   const apiCalling = async () => {
-    if (currentView === 4) {
-      let Data = {
-        UserID: Number(userID),
-        OrganizationID: Number(organizationID),
-      };
-      dispatch(getRecentDocumentsApi(navigate, t, Data));
-    } else if (currentView === 5) {
-      // let newData = { IsCreator: true };
-      // await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+    try {
+      if (currentView === 4) {
+        let Data = {
+          UserID: Number(userID),
+          OrganizationID: Number(organizationID),
+        };
+        dispatch(getRecentDocumentsApi(navigate, t, Data));
+      } else if (currentView === 5) {
+        // let newData = { IsCreator: true };
+        // await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
 
-      setGetAllData([]);
-      setSharedwithmebtn(true);
-      localStorage.removeItem("folderID");
-      if (searchoptions) {
-        setSearchoptions(false);
+        setGetAllData([]);
+        setSharedwithmebtn(true);
+        localStorage.removeItem("folderID");
+        if (searchoptions) {
+          setSearchoptions(false);
+        }
+      } else {
+        let getData = await dispatch(
+          getDocumentsAndFolderApi(navigate, currentView, t, 1),
+        );
+
+        localStorage.removeItem("folderID");
       }
-    } else {
-      let getData = await dispatch(
-        getDocumentsAndFolderApi(navigate, currentView, t, 1),
-      );
-
-      localStorage.removeItem("folderID");
+      dispatch(BreadCrumbsList([]));
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
-    dispatch(BreadCrumbsList([]));
   };
 
   // ─── docSignedCrAction redirect ───────────────────────────────────────────
@@ -617,23 +621,27 @@ const DataRoom = () => {
   useEffect(() => {
     try {
       window.addEventListener("click", async function (e) {
-        let clsname = e.target.className;
-        if (typeof clsname === "string") {
-          let arr = clsname && clsname.split("_");
-          if (arr !== undefined) {
-            if (searchbarshow === true) {
-              if (
-                arr[0] !== "DataRoom" &&
-                arr[1] !== "Drop" &&
-                arr[2] !== "Down" &&
-                arr[3] !== "searchBar"
-              ) {
-                setSearchbarshow(false);
+        try {
+          let clsname = e.target.className;
+          if (typeof clsname === "string") {
+            let arr = clsname && clsname.split("_");
+            if (arr !== undefined) {
+              if (searchbarshow === true) {
+                if (
+                  arr[0] !== "DataRoom" &&
+                  arr[1] !== "Drop" &&
+                  arr[2] !== "Down" &&
+                  arr[3] !== "searchBar"
+                ) {
+                  setSearchbarshow(false);
+                }
+              } else if (arr[2] === "dataRoomSearchInput") {
+                setSearchbarshow(true);
               }
-            } else if (arr[2] === "dataRoomSearchInput") {
-              setSearchbarshow(true);
             }
           }
+        } catch (error) {
+          console.error("src/container/DataRoom/DataRoom.jsx:", error);
         }
       });
     } catch (error) {
@@ -656,29 +664,33 @@ const DataRoom = () => {
 
     if (viewFol_action !== null) {
       const callApi = async () => {
-        // Validate the encrypted committee view ID
-        const getResponse = await dispatch(
-          validateEncryptedStringViewFolderLinkApi(viewFol_action, navigate, t),
-        );
+        try {
+          // Validate the encrypted committee view ID
+          const getResponse = await dispatch(
+            validateEncryptedStringViewFolderLinkApi(viewFol_action, navigate, t),
+          );
 
-        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
-          // Set necessary states and flags for viewing committee details
-          localStorage.setItem(
-            "folderID",
-            getResponse.response.response.folderID,
-          );
-          await dispatch(
-            getFolderDocumentsApi(
-              navigate,
-              getResponse?.response?.response?.folderID,
-              t,
-              2,
-              null,
-              BreadCrumbsListArr,
-            ),
-          );
+          if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+            // Set necessary states and flags for viewing committee details
+            localStorage.setItem(
+              "folderID",
+              getResponse.response.response.folderID,
+            );
+            await dispatch(
+              getFolderDocumentsApi(
+                navigate,
+                getResponse?.response?.response?.folderID,
+                t,
+                2,
+                null,
+                BreadCrumbsListArr,
+              ),
+            );
+          }
+          localStorage.removeItem("viewFolderLink"); // Cleanup the localStorage key
+        } catch (error) {
+          console.error("src/container/DataRoom/DataRoom.jsx:", error);
         }
-        localStorage.removeItem("viewFolderLink"); // Cleanup the localStorage key
       };
       callApi();
       // let ext = documentViewer?.split(".").pop();
@@ -686,26 +698,30 @@ const DataRoom = () => {
     }
     if (documentViewer !== null) {
       const callApi = async () => {
-        // Validate the encrypted committee view ID
-        const getResponse = await dispatch(
-          validateEncryptedStringViewFileLinkApi(documentViewer, navigate, t),
-        );
+        try {
+          // Validate the encrypted committee view ID
+          const getResponse = await dispatch(
+            validateEncryptedStringViewFileLinkApi(documentViewer, navigate, t),
+          );
 
-        if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
-          let ext = getResponse.response.fileName?.split(".").pop();
-          let record = { id: getResponse.response.response.fileID };
+          if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
+            let ext = getResponse.response.fileName?.split(".").pop();
+            let record = { id: getResponse.response.response.fileID };
 
-          const pdfData = {
-            taskId: getResponse.response.response.fileID,
-            commingFrom: 4,
-            fileName: getResponse.response.fileName,
-            attachmentID: getResponse.response.response.fileID,
-            isPermission: getResponse.response.response.permissionID,
-          };
+            const pdfData = {
+              taskId: getResponse.response.response.fileID,
+              commingFrom: 4,
+              fileName: getResponse.response.fileName,
+              attachmentID: getResponse.response.response.fileID,
+              isPermission: getResponse.response.response.permissionID,
+            };
 
-          const pdfDataJson = JSON.stringify(pdfData);
-          openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
-          localStorage.removeItem("documentViewer"); // Cleanup the localStorage key
+            const pdfDataJson = JSON.stringify(pdfData);
+            openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
+            localStorage.removeItem("documentViewer"); // Cleanup the localStorage key
+          }
+        } catch (error) {
+          console.error("src/container/DataRoom/DataRoom.jsx:", error);
         }
       };
       callApi();
@@ -1209,17 +1225,21 @@ const DataRoom = () => {
    * Resets data, breadcrumbs, folderID and shows the ApprovalSend component.
    */
   const SendForApprovalButton = async () => {
-    setSRowsData(0);
-    dispatch(BreadCrumbsList([]));
+    try {
+      setSRowsData(0);
+      dispatch(BreadCrumbsList([]));
 
-    localStorage.setItem("setTableView", 5);
+      localStorage.setItem("setTableView", 5);
 
-    //  localStorage.set
-    setGetAllData([]);
-    setSharedwithmebtn(true);
-    localStorage.removeItem("folderID");
-    if (searchoptions) {
-      setSearchoptions(false);
+      //  localStorage.set
+      setGetAllData([]);
+      setSharedwithmebtn(true);
+      localStorage.removeItem("folderID");
+      if (searchoptions) {
+        setSearchoptions(false);
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
   };
 
@@ -1228,16 +1248,20 @@ const DataRoom = () => {
    * Resets data and fetches shared items for the current user.
    */
   const SharewithmeButonShow = async () => {
-    setSRowsData(0);
-    dispatch(BreadCrumbsList([]));
+    try {
+      setSRowsData(0);
+      dispatch(BreadCrumbsList([]));
 
-    setGetAllData([]);
-    localStorage.setItem("setTableView", 2);
-    await dispatch(getDocumentsAndFolderApi(navigate, 2, t, 1));
-    setSharedwithmebtn(true);
-    localStorage.removeItem("folderID");
-    if (searchoptions) {
-      setSearchoptions(false);
+      setGetAllData([]);
+      localStorage.setItem("setTableView", 2);
+      await dispatch(getDocumentsAndFolderApi(navigate, 2, t, 1));
+      setSharedwithmebtn(true);
+      localStorage.removeItem("folderID");
+      if (searchoptions) {
+        setSearchoptions(false);
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
   };
 
@@ -1246,16 +1270,20 @@ const DataRoom = () => {
    * Resets data and fetches documents owned by the current user.
    */
   const MydocumentButtonShow = async () => {
-    setSRowsData(0);
-    dispatch(BreadCrumbsList([]));
-    setGetAllData([]);
+    try {
+      setSRowsData(0);
+      dispatch(BreadCrumbsList([]));
+      setGetAllData([]);
 
-    localStorage.setItem("setTableView", 1);
-    await dispatch(getDocumentsAndFolderApi(navigate, 1, t, 1));
-    localStorage.removeItem("folderID");
-    setSharedwithmebtn(false);
-    if (searchoptions) {
-      setSearchoptions(false);
+      localStorage.setItem("setTableView", 1);
+      await dispatch(getDocumentsAndFolderApi(navigate, 1, t, 1));
+      localStorage.removeItem("folderID");
+      setSharedwithmebtn(false);
+      if (searchoptions) {
+        setSearchoptions(false);
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
   };
 
@@ -1264,37 +1292,45 @@ const DataRoom = () => {
    * Resets data and fetches all accessible documents & folders.
    */
   const AllDocuments = async () => {
-    setSRowsData(0);
-    dispatch(BreadCrumbsList([]));
-    localStorage.setItem("setTableView", 3);
-    localStorage.removeItem("folderID");
-    setGetAllData([]);
+    try {
+      setSRowsData(0);
+      dispatch(BreadCrumbsList([]));
+      localStorage.setItem("setTableView", 3);
+      localStorage.removeItem("folderID");
+      setGetAllData([]);
 
-    await dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
-    localStorage.removeItem("folderID");
-    setSharedwithmebtn(false);
-    if (searchoptions) {
-      setSearchoptions(false);
+      await dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
+      localStorage.removeItem("folderID");
+      setSharedwithmebtn(false);
+      if (searchoptions) {
+        setSearchoptions(false);
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
   };
 
   const RecentTab = async () => {
-    setSRowsData(0);
-    dispatch(BreadCrumbsList([]));
+    try {
+      setSRowsData(0);
+      dispatch(BreadCrumbsList([]));
 
-    localStorage.setItem("setTableView", 4);
-    localStorage.removeItem("folderID");
-    setGetAllData([]);
+      localStorage.setItem("setTableView", 4);
+      localStorage.removeItem("folderID");
+      setGetAllData([]);
 
-    let Data = {
-      UserID: Number(userID),
-      OrganizationID: Number(organizationID),
-    };
-    await dispatch(getRecentDocumentsApi(navigate, t, Data));
-    localStorage.removeItem("folderID");
-    setSharedwithmebtn(false);
-    if (searchoptions) {
-      setSearchoptions(false);
+      let Data = {
+        UserID: Number(userID),
+        OrganizationID: Number(organizationID),
+      };
+      await dispatch(getRecentDocumentsApi(navigate, t, Data));
+      localStorage.removeItem("folderID");
+      setSharedwithmebtn(false);
+      if (searchoptions) {
+        setSearchoptions(false);
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
   };
 
@@ -1310,18 +1346,22 @@ const DataRoom = () => {
    * @param {object} record - Full row record (used for breadcrumb construction).
    */
   const getFolderDocuments = async (folderid, record) => {
-    localStorage.setItem("folderID", folderid);
-    await dispatch(
-      getFolderDocumentsApi(
-        navigate,
-        folderid,
-        t,
-        2,
-        record,
-        BreadCrumbsListArr,
-      ),
-    );
-    setSearchTabOpen(false);
+    try {
+      localStorage.setItem("folderID", folderid);
+      await dispatch(
+        getFolderDocumentsApi(
+          navigate,
+          folderid,
+          t,
+          2,
+          record,
+          BreadCrumbsListArr,
+        ),
+      );
+      setSearchTabOpen(false);
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
+    }
   };
 
   // ─── Context-menu action dispatcher ──────────────────────────────────────
@@ -2926,49 +2966,53 @@ const DataRoom = () => {
    * @param {File} file - The File object passed via router state.
    */
   const handleUploadFilefromDashbard = async (file) => {
-    const taskId = Math.floor(Math.random() * 1000000);
-    const axiosCancelSource = axios.CancelToken.source();
-    let newJsonCreateFile = {
-      TaskId: taskId,
-      FileName: "",
-      File: {},
-      Uploaded: false,
-      Uploading: false,
-      UploadCancel: false,
-      Progress: 0,
-      UploadingError: false,
-      NetDisconnect: false,
-      axiosCancelToken: axiosCancelSource,
-    };
-    if (file.name && Object.keys(file).length > 0) {
-      newJsonCreateFile = {
-        TaskId: newJsonCreateFile.TaskId,
-        FileName: file.name,
-        File: file,
-        Uploaded: newJsonCreateFile.Uploaded,
-        Uploading: newJsonCreateFile.Uploading,
-        UploadCancel: newJsonCreateFile.UploadCancel,
-        Progress: newJsonCreateFile.Progress,
-        UploadingError: newJsonCreateFile.UploadingError,
+    try {
+      const taskId = Math.floor(Math.random() * 1000000);
+      const axiosCancelSource = axios.CancelToken.source();
+      let newJsonCreateFile = {
+        TaskId: taskId,
+        FileName: "",
+        File: {},
+        Uploaded: false,
+        Uploading: false,
+        UploadCancel: false,
+        Progress: 0,
+        UploadingError: false,
         NetDisconnect: false,
         axiosCancelToken: axiosCancelSource,
       };
-      setTasksAttachmentsID(newJsonCreateFile.TaskId);
-      setTasksAttachments((prevTasks) => ({
-        ...prevTasks,
-        [taskId]: newJsonCreateFile,
-      }));
-      dispatch(
-        FileisExist(
-          navigate,
-          t,
-          newJsonCreateFile,
-          setTasksAttachments,
-          tasksAttachments,
-          setShowbarupload,
-          showbarupload,
-        ),
-      );
+      if (file.name && Object.keys(file).length > 0) {
+        newJsonCreateFile = {
+          TaskId: newJsonCreateFile.TaskId,
+          FileName: file.name,
+          File: file,
+          Uploaded: newJsonCreateFile.Uploaded,
+          Uploading: newJsonCreateFile.Uploading,
+          UploadCancel: newJsonCreateFile.UploadCancel,
+          Progress: newJsonCreateFile.Progress,
+          UploadingError: newJsonCreateFile.UploadingError,
+          NetDisconnect: false,
+          axiosCancelToken: axiosCancelSource,
+        };
+        setTasksAttachmentsID(newJsonCreateFile.TaskId);
+        setTasksAttachments((prevTasks) => ({
+          ...prevTasks,
+          [taskId]: newJsonCreateFile,
+        }));
+        dispatch(
+          FileisExist(
+            navigate,
+            t,
+            newJsonCreateFile,
+            setTasksAttachments,
+            tasksAttachments,
+            setShowbarupload,
+            showbarupload,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
   };
 
@@ -2981,51 +3025,55 @@ const DataRoom = () => {
    */
   // this is file Upload
   const handleUploadFile = async ({ file }) => {
-    setNewPopoverOpen(false);
-    console.log(file, "filefilefilefilefile");
-    const taskId = Math.floor(Math.random() * 1000000);
-    const axiosCancelSource = axios.CancelToken.source();
-    let newJsonCreateFile = {
-      TaskId: taskId,
-      FileName: "",
-      File: {},
-      Uploaded: false,
-      Uploading: false,
-      UploadCancel: false,
-      Progress: 0,
-      UploadingError: false,
-      NetDisconnect: false,
-      axiosCancelToken: axiosCancelSource,
-    };
-    if (file.name && Object.keys(file).length > 0) {
-      newJsonCreateFile = {
-        TaskId: newJsonCreateFile.TaskId,
-        FileName: file.name,
-        File: file,
-        Uploaded: newJsonCreateFile.Uploaded,
-        Uploading: newJsonCreateFile.Uploading,
-        UploadCancel: newJsonCreateFile.UploadCancel,
-        Progress: newJsonCreateFile.Progress,
-        UploadingError: newJsonCreateFile.UploadingError,
+    try {
+      setNewPopoverOpen(false);
+      console.log(file, "filefilefilefilefile");
+      const taskId = Math.floor(Math.random() * 1000000);
+      const axiosCancelSource = axios.CancelToken.source();
+      let newJsonCreateFile = {
+        TaskId: taskId,
+        FileName: "",
+        File: {},
+        Uploaded: false,
+        Uploading: false,
+        UploadCancel: false,
+        Progress: 0,
+        UploadingError: false,
         NetDisconnect: false,
         axiosCancelToken: axiosCancelSource,
       };
-      setTasksAttachmentsID(newJsonCreateFile.TaskId);
-      setTasksAttachments((prevTasks) => ({
-        ...prevTasks,
-        [taskId]: newJsonCreateFile,
-      }));
-      dispatch(
-        FileisExist(
-          navigate,
-          t,
-          newJsonCreateFile,
-          setTasksAttachments,
-          tasksAttachments,
-          setShowbarupload,
-          showbarupload,
-        ),
-      );
+      if (file.name && Object.keys(file).length > 0) {
+        newJsonCreateFile = {
+          TaskId: newJsonCreateFile.TaskId,
+          FileName: file.name,
+          File: file,
+          Uploaded: newJsonCreateFile.Uploaded,
+          Uploading: newJsonCreateFile.Uploading,
+          UploadCancel: newJsonCreateFile.UploadCancel,
+          Progress: newJsonCreateFile.Progress,
+          UploadingError: newJsonCreateFile.UploadingError,
+          NetDisconnect: false,
+          axiosCancelToken: axiosCancelSource,
+        };
+        setTasksAttachmentsID(newJsonCreateFile.TaskId);
+        setTasksAttachments((prevTasks) => ({
+          ...prevTasks,
+          [taskId]: newJsonCreateFile,
+        }));
+        dispatch(
+          FileisExist(
+            navigate,
+            t,
+            newJsonCreateFile,
+            setTasksAttachments,
+            tasksAttachments,
+            setShowbarupload,
+            showbarupload,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
   };
 
@@ -3440,21 +3488,25 @@ const DataRoom = () => {
    * @param {*} data - Unused; kept for API consistency with the modal callback.
    */
   const CanceUploadinFromModalTrue = async (data) => {
-    const dataArray = Object.values(tasksAttachments);
-    await dataArray.map((data, index) => {
-      data.axiosCancelToken.cancel(t("Upload-canceled"));
-    });
-    detaUplodingForFOlder.map((data, index) => {
-      data.UploadCancel = true;
-      data.Uploading = false;
-      return data;
-    });
-    dispatch(CreateFolderEmpty());
+    try {
+      const dataArray = Object.values(tasksAttachments);
+      await dataArray.map((data, index) => {
+        data.axiosCancelToken.cancel(t("Upload-canceled"));
+      });
+      detaUplodingForFOlder.map((data, index) => {
+        data.UploadCancel = true;
+        data.Uploading = false;
+        return data;
+      });
+      dispatch(CreateFolderEmpty());
 
-    setDetaUplodingForFOlder([]);
-    setTasksAttachments([]);
-    setShowbarupload(false);
-    setCanselingDetaUplodingForFOlder(false);
+      setDetaUplodingForFOlder([]);
+      setTasksAttachments([]);
+      setShowbarupload(false);
+      setCanselingDetaUplodingForFOlder(false);
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
+    }
   };
 
   /**
@@ -3552,42 +3604,46 @@ const DataRoom = () => {
   // api call onscroll
 
   useScrollerAuditBottom(async () => {
-    if (currentView === 5) {
-      return;
-    }
+    try {
+      if (currentView === 5) {
+        return;
+      }
 
-    if (getAllData.length !== totalRecords) {
-      if (sRowsData <= totalRecords) {
-        await dispatch(dataBehaviour(true));
-        if (
-          viewFolderID !== null &&
-          viewFolderID !== undefined &&
-          Number(viewFolderID) !== 0
-        ) {
-          await dispatch(
-            getFolderDocumentsApiScrollBehaviour(
-              navigate,
-              viewFolderID,
-              t,
-              2,
-              sRowsData,
-              1,
-              true,
-            ),
-          );
-        } else {
-          await dispatch(
-            getDocumentsAndFolderApiScrollbehaviour(
-              navigate,
-              currentView,
-              t,
-              Number(sRowsData),
-              Number(sortValue),
-              isAscending,
-            ),
-          );
+      if (getAllData.length !== totalRecords) {
+        if (sRowsData <= totalRecords) {
+          await dispatch(dataBehaviour(true));
+          if (
+            viewFolderID !== null &&
+            viewFolderID !== undefined &&
+            Number(viewFolderID) !== 0
+          ) {
+            await dispatch(
+              getFolderDocumentsApiScrollBehaviour(
+                navigate,
+                viewFolderID,
+                t,
+                2,
+                sRowsData,
+                1,
+                true,
+              ),
+            );
+          } else {
+            await dispatch(
+              getDocumentsAndFolderApiScrollbehaviour(
+                navigate,
+                currentView,
+                t,
+                Number(sRowsData),
+                Number(sortValue),
+                isAscending,
+              ),
+            );
+          }
         }
       }
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
   }, 50);
 
@@ -3654,31 +3710,35 @@ const DataRoom = () => {
    * @param {number} index  - Position of the crumb in the breadcrumb array.
    */
   const handleClickGetFolderData = async (id, record, index) => {
-    if (record?.main !== undefined && record?.main !== null && record?.main) {
-      let currentView = localStorage.getItem("setTableView");
-      if (currentView && Number(currentView) === 4) {
-        let Data = {
-          UserID: Number(userID),
-          OrganizationID: Number(organizationID),
-        };
-        await dispatch(getRecentDocumentsApi(navigate, t, Data));
-      } else {
-        await dispatch(getDocumentsAndFolderApi(navigate, record.id, t, 1));
-      }
-      localStorage.removeItem("folderID");
+    try {
+      if (record?.main !== undefined && record?.main !== null && record?.main) {
+        let currentView = localStorage.getItem("setTableView");
+        if (currentView && Number(currentView) === 4) {
+          let Data = {
+            UserID: Number(userID),
+            OrganizationID: Number(organizationID),
+          };
+          await dispatch(getRecentDocumentsApi(navigate, t, Data));
+        } else {
+          await dispatch(getDocumentsAndFolderApi(navigate, record.id, t, 1));
+        }
+        localStorage.removeItem("folderID");
 
-      dispatch(BreadCrumbsList([]));
-    } else {
-      dispatch(
-        getFolderDocumentsApi(
-          navigate,
-          Number(id),
-          t,
-          5,
-          record,
-          BreadCrumbsListArr,
-        ),
-      );
+        dispatch(BreadCrumbsList([]));
+      } else {
+        dispatch(
+          getFolderDocumentsApi(
+            navigate,
+            Number(id),
+            t,
+            5,
+            record,
+            BreadCrumbsListArr,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/DataRoom.jsx:", error);
     }
   };
 

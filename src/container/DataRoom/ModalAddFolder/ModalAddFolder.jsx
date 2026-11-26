@@ -17,7 +17,11 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const closebtn = async () => {
-    setAddfolder(false);
+    try {
+      setAddfolder(false);
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalAddFolder/ModalAddFolder.jsx:", error);
+    }
   };
   const handleAddFolder = () => {
     if (FolderName.content !== "") {

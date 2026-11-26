@@ -25,27 +25,35 @@ const ModalOptions = ({
   const [fileUploadOptions, setFileUploadOptions] = useState(1);
 
   const handleuploadFile = async () => {
-    dispatch(
-      uploadDocumentsApi(
-        navigate,
-        t,
-        tasksAttachments[tasksAttachmentsID],
-        tasksAttachments[tasksAttachmentsID].TaskId,
-        setTasksAttachments,
-        tasksAttachments,
-        fileUploadOptions,
-        setShowbarupload,
-        showbarupload,
-      ),
-    );
-    await dispatch(IsFileisExist(null));
-    setUploadOptions(false);
+    try {
+      dispatch(
+        uploadDocumentsApi(
+          navigate,
+          t,
+          tasksAttachments[tasksAttachmentsID],
+          tasksAttachments[tasksAttachmentsID].TaskId,
+          setTasksAttachments,
+          tasksAttachments,
+          fileUploadOptions,
+          setShowbarupload,
+          showbarupload,
+        ),
+      );
+      await dispatch(IsFileisExist(null));
+      setUploadOptions(false);
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalUploadOptions/ModalOptions.jsx:", error);
+    }
   };
   let fileName = localStorage.getItem("fileName");
   const cancelButton = async () => {
-    await dispatch(IsFileisExist(null));
-    localStorage.removeItem("fileName");
-    setUploadOptions(false);
+    try {
+      await dispatch(IsFileisExist(null));
+      localStorage.removeItem("fileName");
+      setUploadOptions(false);
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalUploadOptions/ModalOptions.jsx:", error);
+    }
   };
   return (
     <>

@@ -240,12 +240,16 @@ const ModalShareFolder = ({
   };
 
   const handleChangeGeneralAccess = async (selectValue) => {
-    setGeneralAccess({
-      label: selectValue.label,
-      value: selectValue.value,
-    });
-    let data = { FolderID: Number(folderId), AccessID: selectValue.value };
-    await dispatch(updateFolderGeneralAccessApi(navigate, t, data));
+    try {
+      setGeneralAccess({
+        label: selectValue.label,
+        value: selectValue.value,
+      });
+      let data = { FolderID: Number(folderId), AccessID: selectValue.value };
+      await dispatch(updateFolderGeneralAccessApi(navigate, t, data));
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalShareFolder/ModalShareFolder.jsx:", error);
+    }
   };
 
   const handleRemoveMember = (memberData) => {

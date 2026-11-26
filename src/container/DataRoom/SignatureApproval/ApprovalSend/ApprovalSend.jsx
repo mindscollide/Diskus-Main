@@ -77,8 +77,12 @@ const ApprovalSend = () => {
 
   useEffect(() => {
     const fetchStatusOptions = async () => {
-      let newData = { IsCreator: true };
-      await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+      try {
+        let newData = { IsCreator: true };
+        await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+      } catch (error) {
+        console.error("src/container/DataRoom/SignatureApproval/ApprovalSend/ApprovalSend.jsx:", error);
+      }
     };
     fetchStatusOptions();
   }, []);
@@ -95,21 +99,25 @@ const ApprovalSend = () => {
     setVisible((prevVisible) => !prevVisible);
   };
   const resetFilter = async () => {
-    setSortingData({
-      ...sortingData,
-      statusID: defaultreviewAndSignatureStatus,
-      sentOn: 0,
-      title: 0,
-    });
-    setVisible(false);
-    let Data = {
-      sRow: 0,
-      Length: 10,
-      SentOnSort: 0,
-      StatusIDs: defaultreviewAndSignatureStatus,
-      TitleSort: 0,
-    };
-    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    try {
+      setSortingData({
+        ...sortingData,
+        statusID: defaultreviewAndSignatureStatus,
+        sentOn: 0,
+        title: 0,
+      });
+      setVisible(false);
+      let Data = {
+        sRow: 0,
+        Length: 10,
+        SentOnSort: 0,
+        StatusIDs: defaultreviewAndSignatureStatus,
+        TitleSort: 0,
+      };
+      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureApproval/ApprovalSend/ApprovalSend.jsx:", error);
+    }
   };
 
   const handleMenuClick = (filterValue) => {
@@ -121,15 +129,19 @@ const ApprovalSend = () => {
     }));
   };
   const handleApplyFilter = async () => {
-    let Data = {
-      sRow: 0,
-      Length: 10,
-      SentOnSort: sortingData.sentOn,
-      StatusIDs: sortingData.statusID,
-      TitleSort: sortingData.title,
-    };
-    await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
-    setVisible(false);
+    try {
+      let Data = {
+        sRow: 0,
+        Length: 10,
+        SentOnSort: sortingData.sentOn,
+        StatusIDs: sortingData.statusID,
+        TitleSort: sortingData.title,
+      };
+      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      setVisible(false);
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureApproval/ApprovalSend/ApprovalSend.jsx:", error);
+    }
   };
 
   const menu = (
@@ -162,32 +174,36 @@ const ApprovalSend = () => {
   );
 
   const handleSortingFunc = async (sortTab) => {
-    if (sortTab === "title") {
-      setSortingData({
-        ...sortingData,
-        title: sortingData.title === 1 ? 2 : 1,
-      });
-      let Data = {
-        sRow: 0,
-        Length: 10,
-        SentOnSort: sortingData.sentOn,
-        StatusIDs: sortingData.statusID,
-        TitleSort: sortingData.title === 1 ? 2 : 1,
-      };
-      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
-    } else if (sortTab === "sentOn") {
-      setSortingData({
-        ...sortingData,
-        sentOn: sortingData.sentOn === 1 ? 2 : 1,
-      });
-      let Data = {
-        sRow: 0,
-        Length: 10,
-        SentOnSort: sortingData.sentOn === 1 ? 2 : 1,
-        StatusIDs: sortingData.statusID,
-        TitleSort: sortingData.title,
-      };
-      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+    try {
+      if (sortTab === "title") {
+        setSortingData({
+          ...sortingData,
+          title: sortingData.title === 1 ? 2 : 1,
+        });
+        let Data = {
+          sRow: 0,
+          Length: 10,
+          SentOnSort: sortingData.sentOn,
+          StatusIDs: sortingData.statusID,
+          TitleSort: sortingData.title === 1 ? 2 : 1,
+        };
+        await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      } else if (sortTab === "sentOn") {
+        setSortingData({
+          ...sortingData,
+          sentOn: sortingData.sentOn === 1 ? 2 : 1,
+        });
+        let Data = {
+          sRow: 0,
+          Length: 10,
+          SentOnSort: sortingData.sentOn === 1 ? 2 : 1,
+          StatusIDs: sortingData.statusID,
+          TitleSort: sortingData.title,
+        };
+        await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureApproval/ApprovalSend/ApprovalSend.jsx:", error);
     }
   };
   // Columns configuration for the table displaying pending approval data
@@ -594,19 +610,23 @@ const ApprovalSend = () => {
   );
 
   useTableScrollBottom(async (hasReachedBottom) => {
+    try {
 
 
-    if (approvalsData.length > 0 && rowsDataLength !== totalRecords) {
-      setIsScrolling(true);
-      let Data = {
-        sRow: Number(rowsDataLength),
-        Length: 10,
-        SentOnSort: sortingData.sentOn,
-        StatusIDs: sortingData.statusID,
-        TitleSort: sortingData.title,
-      };
+      if (approvalsData.length > 0 && rowsDataLength !== totalRecords) {
+        setIsScrolling(true);
+        let Data = {
+          sRow: Number(rowsDataLength),
+          Length: 10,
+          SentOnSort: sortingData.sentOn,
+          StatusIDs: sortingData.statusID,
+          TitleSort: sortingData.title,
+        };
 
-      await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+        await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureApproval/ApprovalSend/ApprovalSend.jsx:", error);
     }
   });
 

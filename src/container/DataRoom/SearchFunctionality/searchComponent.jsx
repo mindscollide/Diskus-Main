@@ -130,226 +130,230 @@ const SearchComponent = ({
   }, []);
 
   const handeClickSortingFunc = async (statusID) => {
-    // this is for All Tab and My Document tab
-    if (Number(statusID) === 1) {
-      // Document Name Sorter
-      setAllDocumentsTitleSorter((order) => {
-        if (order === "descend") {
-          let data = {
-            UserID: parseInt(userID),
-            OrganizationID: parseInt(organizationID),
-            StatusID: Number(searchDataFields.StatusID),
-            Title: searchDataFields.Title,
-            isDocument: searchDataFields.isDocument,
-            isSpreadSheet: searchDataFields.isSpreadSheet,
-            isPresentation: searchDataFields.isPresentation,
-            isForms: searchDataFields.isForms,
-            isPDF: searchDataFields.isPDF,
-            isFolders: searchDataFields.isFolders,
-            isVideos: searchDataFields.isVideos,
-            isImages: searchDataFields.isImages,
-            isAudios: searchDataFields.isAudios,
-            isSites: searchDataFields.isSites,
-            LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedStartDate,
-              1,
-            ),
-            LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedEndDate,
-              2,
-            ),
-            UserIDToSearch: 0,
-            isOwnedByMe: searchDataFields.isOwnedByMe,
-            isSpecificUser: false,
-            sRow: 0,
-            Length: 10,
-            SortBy: Number(statusID),
-            isDescending: false,
-          };
-          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
-          return "ascend";
-        } else {
-          let data = {
-            UserID: parseInt(userID),
-            OrganizationID: parseInt(organizationID),
-            StatusID: Number(searchDataFields.StatusID),
-            Title: searchDataFields.Title,
-            isDocument: searchDataFields.isDocument,
-            isSpreadSheet: searchDataFields.isSpreadSheet,
-            isPresentation: searchDataFields.isPresentation,
-            isForms: searchDataFields.isForms,
-            isPDF: searchDataFields.isPDF,
-            isFolders: searchDataFields.isFolders,
-            isVideos: searchDataFields.isVideos,
-            isImages: searchDataFields.isImages,
-            isAudios: searchDataFields.isAudios,
-            isSites: searchDataFields.isSites,
-            LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedStartDate,
-              1,
-            ),
-            LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedEndDate,
-              2,
-            ),
-            UserIDToSearch: 0,
-            isOwnedByMe: searchDataFields.isOwnedByMe,
-            isSpecificUser: false,
-            sRow: 0,
-            Length: 10,
-            SortBy: Number(statusID),
-            isDescending: true,
-          };
-          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
-          return "descend";
-        }
-      });
-    } else if (Number(statusID) === 2) {
-      //  Owner name sorting
-      setAllOwnerSorter((order) => {
-        if (order === "descend") {
-          let data = {
-            UserID: parseInt(userID),
-            OrganizationID: parseInt(organizationID),
-            StatusID: Number(searchDataFields.StatusID),
-            Title: searchDataFields.Title,
-            isDocument: searchDataFields.isDocument,
-            isSpreadSheet: searchDataFields.isSpreadSheet,
-            isPresentation: searchDataFields.isPresentation,
-            isForms: searchDataFields.isForms,
-            isPDF: searchDataFields.isPDF,
-            isFolders: searchDataFields.isFolders,
-            isVideos: searchDataFields.isVideos,
-            isImages: searchDataFields.isImages,
-            isAudios: searchDataFields.isAudios,
-            isSites: searchDataFields.isSites,
-            LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedStartDate,
-              1,
-            ),
-            LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedEndDate,
-              2,
-            ),
-            UserIDToSearch: 0,
-            isOwnedByMe: searchDataFields.isOwnedByMe,
-            isSpecificUser: false,
-            sRow: 0,
-            Length: 10,
-            SortBy: Number(statusID),
-            isDescending: false,
-          };
-          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
-          return "ascend";
-        } else {
-          let data = {
-            UserID: parseInt(userID),
-            OrganizationID: parseInt(organizationID),
-            StatusID: Number(searchDataFields.StatusID),
-            Title: searchDataFields.Title,
-            isDocument: searchDataFields.isDocument,
-            isSpreadSheet: searchDataFields.isSpreadSheet,
-            isPresentation: searchDataFields.isPresentation,
-            isForms: searchDataFields.isForms,
-            isPDF: searchDataFields.isPDF,
-            isFolders: searchDataFields.isFolders,
-            isVideos: searchDataFields.isVideos,
-            isImages: searchDataFields.isImages,
-            isAudios: searchDataFields.isAudios,
-            isSites: searchDataFields.isSites,
-            LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedStartDate,
-              1,
-            ),
-            LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedEndDate,
-              2,
-            ),
-            UserIDToSearch: 0,
-            isOwnedByMe: searchDataFields.isOwnedByMe,
-            isSpecificUser: false,
-            sRow: 0,
-            Length: 10,
-            SortBy: Number(statusID),
-            isDescending: true,
-          };
-          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
-          return "descend";
-        }
-      });
-    } else if (Number(statusID) === 3) {
-      // Last Modified Date Sorter
-      setAllLastModifiedSorter((order) => {
-        if (order === "descend") {
-          let data = {
-            UserID: parseInt(userID),
-            OrganizationID: parseInt(organizationID),
-            StatusID: Number(searchDataFields.StatusID),
-            Title: searchDataFields.Title,
-            isDocument: searchDataFields.isDocument,
-            isSpreadSheet: searchDataFields.isSpreadSheet,
-            isPresentation: searchDataFields.isPresentation,
-            isForms: searchDataFields.isForms,
-            isPDF: searchDataFields.isPDF,
-            isFolders: searchDataFields.isFolders,
-            isVideos: searchDataFields.isVideos,
-            isImages: searchDataFields.isImages,
-            isAudios: searchDataFields.isAudios,
-            isSites: searchDataFields.isSites,
-            LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedStartDate,
-              1,
-            ),
-            LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedEndDate,
-              2,
-            ),
-            UserIDToSearch: 0,
-            isOwnedByMe: searchDataFields.isOwnedByMe,
-            isSpecificUser: false,
-            sRow: 0,
-            Length: 10,
-            SortBy: Number(statusID),
-            isDescending: false,
-          };
-          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
-          return "ascend";
-        } else {
-          let data = {
-            UserID: parseInt(userID),
-            OrganizationID: parseInt(organizationID),
-            StatusID: Number(searchDataFields.StatusID),
-            Title: searchDataFields.Title,
-            isDocument: searchDataFields.isDocument,
-            isSpreadSheet: searchDataFields.isSpreadSheet,
-            isPresentation: searchDataFields.isPresentation,
-            isForms: searchDataFields.isForms,
-            isPDF: searchDataFields.isPDF,
-            isFolders: searchDataFields.isFolders,
-            isVideos: searchDataFields.isVideos,
-            isImages: searchDataFields.isImages,
-            isAudios: searchDataFields.isAudios,
-            isSites: searchDataFields.isSites,
-            LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedStartDate,
-              1,
-            ),
-            LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-              searchDataFields.LastModifiedEndDate,
-              2,
-            ),
-            UserIDToSearch: 0,
-            isOwnedByMe: searchDataFields.isOwnedByMe,
-            isSpecificUser: false,
-            sRow: 0,
-            Length: 10,
-            SortBy: Number(statusID),
-            isDescending: true,
-          };
-          dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
-          return "descend";
-        }
-      });
+    try {
+      // this is for All Tab and My Document tab
+      if (Number(statusID) === 1) {
+        // Document Name Sorter
+        setAllDocumentsTitleSorter((order) => {
+          if (order === "descend") {
+            let data = {
+              UserID: parseInt(userID),
+              OrganizationID: parseInt(organizationID),
+              StatusID: Number(searchDataFields.StatusID),
+              Title: searchDataFields.Title,
+              isDocument: searchDataFields.isDocument,
+              isSpreadSheet: searchDataFields.isSpreadSheet,
+              isPresentation: searchDataFields.isPresentation,
+              isForms: searchDataFields.isForms,
+              isPDF: searchDataFields.isPDF,
+              isFolders: searchDataFields.isFolders,
+              isVideos: searchDataFields.isVideos,
+              isImages: searchDataFields.isImages,
+              isAudios: searchDataFields.isAudios,
+              isSites: searchDataFields.isSites,
+              LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedStartDate,
+                1,
+              ),
+              LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedEndDate,
+                2,
+              ),
+              UserIDToSearch: 0,
+              isOwnedByMe: searchDataFields.isOwnedByMe,
+              isSpecificUser: false,
+              sRow: 0,
+              Length: 10,
+              SortBy: Number(statusID),
+              isDescending: false,
+            };
+            dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+            return "ascend";
+          } else {
+            let data = {
+              UserID: parseInt(userID),
+              OrganizationID: parseInt(organizationID),
+              StatusID: Number(searchDataFields.StatusID),
+              Title: searchDataFields.Title,
+              isDocument: searchDataFields.isDocument,
+              isSpreadSheet: searchDataFields.isSpreadSheet,
+              isPresentation: searchDataFields.isPresentation,
+              isForms: searchDataFields.isForms,
+              isPDF: searchDataFields.isPDF,
+              isFolders: searchDataFields.isFolders,
+              isVideos: searchDataFields.isVideos,
+              isImages: searchDataFields.isImages,
+              isAudios: searchDataFields.isAudios,
+              isSites: searchDataFields.isSites,
+              LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedStartDate,
+                1,
+              ),
+              LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedEndDate,
+                2,
+              ),
+              UserIDToSearch: 0,
+              isOwnedByMe: searchDataFields.isOwnedByMe,
+              isSpecificUser: false,
+              sRow: 0,
+              Length: 10,
+              SortBy: Number(statusID),
+              isDescending: true,
+            };
+            dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+            return "descend";
+          }
+        });
+      } else if (Number(statusID) === 2) {
+        //  Owner name sorting
+        setAllOwnerSorter((order) => {
+          if (order === "descend") {
+            let data = {
+              UserID: parseInt(userID),
+              OrganizationID: parseInt(organizationID),
+              StatusID: Number(searchDataFields.StatusID),
+              Title: searchDataFields.Title,
+              isDocument: searchDataFields.isDocument,
+              isSpreadSheet: searchDataFields.isSpreadSheet,
+              isPresentation: searchDataFields.isPresentation,
+              isForms: searchDataFields.isForms,
+              isPDF: searchDataFields.isPDF,
+              isFolders: searchDataFields.isFolders,
+              isVideos: searchDataFields.isVideos,
+              isImages: searchDataFields.isImages,
+              isAudios: searchDataFields.isAudios,
+              isSites: searchDataFields.isSites,
+              LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedStartDate,
+                1,
+              ),
+              LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedEndDate,
+                2,
+              ),
+              UserIDToSearch: 0,
+              isOwnedByMe: searchDataFields.isOwnedByMe,
+              isSpecificUser: false,
+              sRow: 0,
+              Length: 10,
+              SortBy: Number(statusID),
+              isDescending: false,
+            };
+            dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+            return "ascend";
+          } else {
+            let data = {
+              UserID: parseInt(userID),
+              OrganizationID: parseInt(organizationID),
+              StatusID: Number(searchDataFields.StatusID),
+              Title: searchDataFields.Title,
+              isDocument: searchDataFields.isDocument,
+              isSpreadSheet: searchDataFields.isSpreadSheet,
+              isPresentation: searchDataFields.isPresentation,
+              isForms: searchDataFields.isForms,
+              isPDF: searchDataFields.isPDF,
+              isFolders: searchDataFields.isFolders,
+              isVideos: searchDataFields.isVideos,
+              isImages: searchDataFields.isImages,
+              isAudios: searchDataFields.isAudios,
+              isSites: searchDataFields.isSites,
+              LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedStartDate,
+                1,
+              ),
+              LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedEndDate,
+                2,
+              ),
+              UserIDToSearch: 0,
+              isOwnedByMe: searchDataFields.isOwnedByMe,
+              isSpecificUser: false,
+              sRow: 0,
+              Length: 10,
+              SortBy: Number(statusID),
+              isDescending: true,
+            };
+            dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+            return "descend";
+          }
+        });
+      } else if (Number(statusID) === 3) {
+        // Last Modified Date Sorter
+        setAllLastModifiedSorter((order) => {
+          if (order === "descend") {
+            let data = {
+              UserID: parseInt(userID),
+              OrganizationID: parseInt(organizationID),
+              StatusID: Number(searchDataFields.StatusID),
+              Title: searchDataFields.Title,
+              isDocument: searchDataFields.isDocument,
+              isSpreadSheet: searchDataFields.isSpreadSheet,
+              isPresentation: searchDataFields.isPresentation,
+              isForms: searchDataFields.isForms,
+              isPDF: searchDataFields.isPDF,
+              isFolders: searchDataFields.isFolders,
+              isVideos: searchDataFields.isVideos,
+              isImages: searchDataFields.isImages,
+              isAudios: searchDataFields.isAudios,
+              isSites: searchDataFields.isSites,
+              LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedStartDate,
+                1,
+              ),
+              LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedEndDate,
+                2,
+              ),
+              UserIDToSearch: 0,
+              isOwnedByMe: searchDataFields.isOwnedByMe,
+              isSpecificUser: false,
+              sRow: 0,
+              Length: 10,
+              SortBy: Number(statusID),
+              isDescending: false,
+            };
+            dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+            return "ascend";
+          } else {
+            let data = {
+              UserID: parseInt(userID),
+              OrganizationID: parseInt(organizationID),
+              StatusID: Number(searchDataFields.StatusID),
+              Title: searchDataFields.Title,
+              isDocument: searchDataFields.isDocument,
+              isSpreadSheet: searchDataFields.isSpreadSheet,
+              isPresentation: searchDataFields.isPresentation,
+              isForms: searchDataFields.isForms,
+              isPDF: searchDataFields.isPDF,
+              isFolders: searchDataFields.isFolders,
+              isVideos: searchDataFields.isVideos,
+              isImages: searchDataFields.isImages,
+              isAudios: searchDataFields.isAudios,
+              isSites: searchDataFields.isSites,
+              LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedStartDate,
+                1,
+              ),
+              LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+                searchDataFields.LastModifiedEndDate,
+                2,
+              ),
+              UserIDToSearch: 0,
+              isOwnedByMe: searchDataFields.isOwnedByMe,
+              isSpecificUser: false,
+              sRow: 0,
+              Length: 10,
+              SortBy: Number(statusID),
+              isDescending: true,
+            };
+            dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+            return "descend";
+          }
+        });
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.jsx:", error);
     }
   };
 
@@ -847,1095 +851,1119 @@ const SearchComponent = ({
 
   // api call onscroll
   const handleScroll = async (e) => {
-    if (sRowsData <= totalRecords) {
-      await dispatch(dataBehaviour(true));
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: searchDataFields.isDocument,
-        isSpreadSheet: searchDataFields.isSpreadSheet,
-        isPresentation: searchDataFields.isPresentation,
-        isForms: searchDataFields.isForms,
-        isPDF: searchDataFields.isPDF,
-        isFolders: searchDataFields.isFolders,
-        isVideos: searchDataFields.isVideos,
-        isImages: searchDataFields?.isImages,
-        isAudios: searchDataFields?.isAudios,
-        isSites: searchDataFields?.isSites,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: 0,
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: false,
-        sRow: sRowsData,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
+    try {
+      if (sRowsData <= totalRecords) {
+        await dispatch(dataBehaviour(true));
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: searchDataFields.isDocument,
+          isSpreadSheet: searchDataFields.isSpreadSheet,
+          isPresentation: searchDataFields.isPresentation,
+          isForms: searchDataFields.isForms,
+          isPDF: searchDataFields.isPDF,
+          isFolders: searchDataFields.isFolders,
+          isVideos: searchDataFields.isVideos,
+          isImages: searchDataFields?.isImages,
+          isAudios: searchDataFields?.isAudios,
+          isSites: searchDataFields?.isSites,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: 0,
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: false,
+          sRow: sRowsData,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
 
-      console.log(
-        { data, searchDataFields },
-        "searchDocumentsAndFoldersApisearchDocumentsAndFoldersApi",
-      );
-      await dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+        console.log(
+          { data, searchDataFields },
+          "searchDocumentsAndFoldersApisearchDocumentsAndFoldersApi",
+        );
+        await dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.jsx:", error);
     }
   };
 
   // this is onchange envent of search modal Documnet
   const handleChangeDocumentsOptions = async (event) => {
-    setSearchResultFields((prevState) => ({
-      ...prevState, // Copy the existing state
-      Type: event, // Update the Type field
-    }));
-    if (event.value === 1) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: true,
-        isSpreadSheet: true,
-        isPresentation: true,
-        isForms: true,
-        isPDF: true,
-        isFolders: true,
-        isVideos: true,
-        isImages: true,
-        isAudios: true,
-        isSites: true,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: true,
-        isSpreadSheet: true,
-        isPresentation: true,
-        isForms: true,
-        isPDF: true,
-        isFolders: true,
-        isVideos: true,
-        isImages: true,
-        isAudios: true,
-        isSites: true,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 2) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: true,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: true,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 3) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: true,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: true,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 4) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: true,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: true,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 5) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: true,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: true,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 6) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: true,
-        isAudios: false,
-        isSites: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: true,
-        isAudios: false,
-        isSites: false,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 7) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: true,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: true,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 8) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: true,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: true,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 10) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: true,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: true,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: false,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 11) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: true,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: false,
-        isSites: true,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 12) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: true,
-        isSites: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: false,
-        isVideos: false,
-        isImages: false,
-        isAudios: true,
-        isSites: false,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else {
+    try {
+      setSearchResultFields((prevState) => ({
+        ...prevState, // Copy the existing state
+        Type: event, // Update the Type field
+      }));
+      if (event.value === 1) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: true,
+          isSpreadSheet: true,
+          isPresentation: true,
+          isForms: true,
+          isPDF: true,
+          isFolders: true,
+          isVideos: true,
+          isImages: true,
+          isAudios: true,
+          isSites: true,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: true,
+          isSpreadSheet: true,
+          isPresentation: true,
+          isForms: true,
+          isPDF: true,
+          isFolders: true,
+          isVideos: true,
+          isImages: true,
+          isAudios: true,
+          isSites: true,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 2) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: true,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: true,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 3) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: false,
+          isSpreadSheet: true,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: false,
+          isSpreadSheet: true,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 4) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: true,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: true,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 5) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: true,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: true,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 6) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: true,
+          isAudios: false,
+          isSites: false,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: true,
+          isAudios: false,
+          isSites: false,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 7) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: true,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: true,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 8) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: true,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: true,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 10) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: true,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: true,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: false,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 11) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: true,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: false,
+          isSites: true,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 12) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: true,
+          isSites: false,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: false,
+          isSpreadSheet: false,
+          isPresentation: false,
+          isForms: false,
+          isPDF: false,
+          isFolders: false,
+          isVideos: false,
+          isImages: false,
+          isAudios: true,
+          isSites: false,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: parseInt(userID),
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else {
+      }
+      await dispatch(dataBehaviour(false));
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.jsx:", error);
     }
-    await dispatch(dataBehaviour(false));
   };
 
   // this is for Location
   const handleChangeLocationValue = async (event) => {
-    setSearchResultFields((prevState) => ({
-      ...prevState, // Copy the existing state
-      Location: event, // Update the Type field
-    }));
-    setSearchDataFields({
-      ...searchDataFields,
-      StatusID: parseInt(event.value),
-    });
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      StatusID: parseInt(event.value),
-      Title: searchDataFields.Title,
-      isDocument: searchDataFields.isDocument,
-      isSpreadSheet: searchDataFields.isSpreadSheet,
-      isPresentation: searchDataFields.isPresentation,
-      isForms: searchDataFields.isForms,
-      isPDF: searchDataFields.isPDF,
-      isFolders: searchDataFields.isFolders,
-      isVideos: searchDataFields.isVideos,
-      isImages: searchDataFields.isImages,
-      isAudios: searchDataFields.isAudios,
-      isSites: searchDataFields.isSites,
-      LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-        searchDataFields.LastModifiedStartDate,
-        1,
-      ),
-      LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-        searchDataFields.LastModifiedEndDate,
-        2,
-      ),
-      UserIDToSearch: 0,
-      // isOwnedByMe: searchDataFields.isOwnedByMe,
-      isOwnedByMe: Number(event.value),
-      isSpecificUser: searchDataFields.isSpecificUser,
-      sRow: 0,
-      Length: 10,
-      SortBy: 1,
-      isDescending: searchDataFields.isDescending,
-    };
-    dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    await dispatch(dataBehaviour(false));
+    try {
+      setSearchResultFields((prevState) => ({
+        ...prevState, // Copy the existing state
+        Location: event, // Update the Type field
+      }));
+      setSearchDataFields({
+        ...searchDataFields,
+        StatusID: parseInt(event.value),
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: parseInt(event.value),
+        Title: searchDataFields.Title,
+        isDocument: searchDataFields.isDocument,
+        isSpreadSheet: searchDataFields.isSpreadSheet,
+        isPresentation: searchDataFields.isPresentation,
+        isForms: searchDataFields.isForms,
+        isPDF: searchDataFields.isPDF,
+        isFolders: searchDataFields.isFolders,
+        isVideos: searchDataFields.isVideos,
+        isImages: searchDataFields.isImages,
+        isAudios: searchDataFields.isAudios,
+        isSites: searchDataFields.isSites,
+        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+          searchDataFields.LastModifiedStartDate,
+          1,
+        ),
+        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+          searchDataFields.LastModifiedEndDate,
+          2,
+        ),
+        UserIDToSearch: 0,
+        // isOwnedByMe: searchDataFields.isOwnedByMe,
+        isOwnedByMe: Number(event.value),
+        isSpecificUser: searchDataFields.isSpecificUser,
+        sRow: 0,
+        Length: 10,
+        SortBy: 1,
+        isDescending: searchDataFields.isDescending,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      await dispatch(dataBehaviour(false));
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.jsx:", error);
+    }
   };
 
   // this is for  people
   const handleChangeStatus = async (event) => {
-    setSearchResultFields((prevState) => ({
-      ...prevState, // Copy the existing state
-      People: event, // Update the Type field
-    }));
-    if (event.value === 1) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isOwnedByMe: 1,
-        isSpecificUser: false,
-        UserIDToSearch: 0,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: searchDataFields.isDocument,
-        isSpreadSheet: searchDataFields.isSpreadSheet,
-        isPresentation: searchDataFields.isPresentation,
-        isForms: searchDataFields.isForms,
-        isPDF: searchDataFields.isPDF,
-        isFolders: searchDataFields.isFolders,
-        isVideos: searchDataFields.isVideos,
-        isImages: searchDataFields.isImages,
-        isAudios: searchDataFields.isAudios,
-        isSites: searchDataFields.isSites,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        UserIDToSearch: 0,
-        isOwnedByMe: 1,
-        isSpecificUser: false,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 2) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isOwnedByMe: 2,
-        isSpecificUser: false,
-        UserIDToSearch: 0,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: searchDataFields.isDocument,
-        isSpreadSheet: searchDataFields.isSpreadSheet,
-        isPresentation: searchDataFields.isPresentation,
-        isForms: searchDataFields.isForms,
-        isPDF: searchDataFields.isPDF,
-        isFolders: searchDataFields.isFolders,
-        isVideos: searchDataFields.isVideos,
-        isImages: searchDataFields.isImages,
-        isAudios: searchDataFields.isAudios,
-        isSites: searchDataFields.isSites,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        isOwnedByMe: 2,
-        isSpecificUser: false,
-        UserIDToSearch: 0,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 3) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isOwnedByMe: 3,
-        isSpecificUser: false,
-        UserIDToSearch: 0,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: searchDataFields.isDocument,
-        isSpreadSheet: searchDataFields.isSpreadSheet,
-        isPresentation: searchDataFields.isPresentation,
-        isForms: searchDataFields.isForms,
-        isPDF: searchDataFields.isPDF,
-        isFolders: searchDataFields.isFolders,
-        isVideos: searchDataFields.isVideos,
-        isImages: searchDataFields.isImages,
-        isAudios: searchDataFields.isAudios,
-        isSites: searchDataFields.isSites,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        isOwnedByMe: 3,
-        isSpecificUser: false,
-        UserIDToSearch: 0,
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else {
-      setSearchDataFields({
-        ...searchDataFields,
-        isOwnedByMe: 3,
-        isSpecificUser: 3,
-        UserIDToSearch: parseInt(event.value),
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: Number(searchDataFields.StatusID),
-        Title: searchDataFields.Title,
-        isDocument: searchDataFields.isDocument,
-        isSpreadSheet: searchDataFields.isSpreadSheet,
-        isPresentation: searchDataFields.isPresentation,
-        isForms: searchDataFields.isForms,
-        isPDF: searchDataFields.isPDF,
-        isFolders: searchDataFields.isFolders,
-        isVideos: searchDataFields.isVideos,
-        isImages: searchDataFields.isImages,
-        isAudios: searchDataFields.isAudios,
-        isSites: searchDataFields.isSites,
-        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedStartDate,
-          1,
-        ),
-        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-          searchDataFields.LastModifiedEndDate,
-          2,
-        ),
-        isOwnedByMe: 3,
-        isSpecificUser: true,
-        UserIDToSearch: parseInt(event.value),
-        sRow: 0,
-        Length: 10,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    try {
+      setSearchResultFields((prevState) => ({
+        ...prevState, // Copy the existing state
+        People: event, // Update the Type field
+      }));
+      if (event.value === 1) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isOwnedByMe: 1,
+          isSpecificUser: false,
+          UserIDToSearch: 0,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: searchDataFields.isDocument,
+          isSpreadSheet: searchDataFields.isSpreadSheet,
+          isPresentation: searchDataFields.isPresentation,
+          isForms: searchDataFields.isForms,
+          isPDF: searchDataFields.isPDF,
+          isFolders: searchDataFields.isFolders,
+          isVideos: searchDataFields.isVideos,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          UserIDToSearch: 0,
+          isOwnedByMe: 1,
+          isSpecificUser: false,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 2) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isOwnedByMe: 2,
+          isSpecificUser: false,
+          UserIDToSearch: 0,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: searchDataFields.isDocument,
+          isSpreadSheet: searchDataFields.isSpreadSheet,
+          isPresentation: searchDataFields.isPresentation,
+          isForms: searchDataFields.isForms,
+          isPDF: searchDataFields.isPDF,
+          isFolders: searchDataFields.isFolders,
+          isVideos: searchDataFields.isVideos,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          isOwnedByMe: 2,
+          isSpecificUser: false,
+          UserIDToSearch: 0,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else if (event.value === 3) {
+        setSearchDataFields({
+          ...searchDataFields,
+          isOwnedByMe: 3,
+          isSpecificUser: false,
+          UserIDToSearch: 0,
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: searchDataFields.isDocument,
+          isSpreadSheet: searchDataFields.isSpreadSheet,
+          isPresentation: searchDataFields.isPresentation,
+          isForms: searchDataFields.isForms,
+          isPDF: searchDataFields.isPDF,
+          isFolders: searchDataFields.isFolders,
+          isVideos: searchDataFields.isVideos,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          isOwnedByMe: 3,
+          isSpecificUser: false,
+          UserIDToSearch: 0,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      } else {
+        setSearchDataFields({
+          ...searchDataFields,
+          isOwnedByMe: 3,
+          isSpecificUser: 3,
+          UserIDToSearch: parseInt(event.value),
+        });
+        let data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: Number(searchDataFields.StatusID),
+          Title: searchDataFields.Title,
+          isDocument: searchDataFields.isDocument,
+          isSpreadSheet: searchDataFields.isSpreadSheet,
+          isPresentation: searchDataFields.isPresentation,
+          isForms: searchDataFields.isForms,
+          isPDF: searchDataFields.isPDF,
+          isFolders: searchDataFields.isFolders,
+          isVideos: searchDataFields.isVideos,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedStartDate,
+            1,
+          ),
+          LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+            searchDataFields.LastModifiedEndDate,
+            2,
+          ),
+          isOwnedByMe: 3,
+          isSpecificUser: true,
+          UserIDToSearch: parseInt(event.value),
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      }
+      await dispatch(dataBehaviour(false));
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.jsx:", error);
     }
-    await dispatch(dataBehaviour(false));
   };
 
   // Search Box Last modified Date handle Change Function
   const handleChangeLastModifedDate = async (event) => {
-    setSearchResultFields((prevState) => ({
-      ...prevState, // Copy the existing state
-      Date: event, // Update the Type field
-    }));
-    setDateValue(event.label);
-    const currentDate = new Date();
-    let startDate = null;
-    let endDate = null;
-    let data = {};
-    switch (event.value) {
-      case 1: // Any-time
-        // No specific date range, so no need to set start and end dates.
-        setCustomRangeVisible(false);
-        setSearchDataFields({
-          ...searchDataFields,
-          LastModifiedEndDate: endDate,
-          LastModifiedStartDate: startDate,
-        });
-        data = {
-          UserID: parseInt(userID),
-          OrganizationID: parseInt(organizationID),
-          StatusID: Number(searchDataFields.StatusID),
-          Title: searchDataFields.Title,
-          isDocument: searchDataFields.isDocument,
-          isSpreadSheet: searchDataFields.isSpreadSheet,
-          isPresentation: searchDataFields.isPresentation,
-          isForms: searchDataFields.isForms,
-          isPDF: searchDataFields.isPDF,
-          isFolders: searchDataFields.isFolders,
-          isVideos: searchDataFields.isVideos,
-          isImages: searchDataFields.isImages,
-          isAudios: searchDataFields.isAudios,
-          isSites: searchDataFields.isSites,
-          LastModifiedStartDate: "",
-          LastModifiedEndDate: "",
-          UserIDToSearch: searchDataFields.UserIDToSearch,
-          isOwnedByMe: searchDataFields.isOwnedByMe,
-          isSpecificUser: searchDataFields.isSpecificUser,
-          sRow: 0,
-          Length: 10,
-          SortBy: 1,
-          isDescending: searchDataFields.isDescending,
-        };
-        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-        break;
-      case 2: // Today
-        startDate = dateConverterIntoUTCForDataroom(currentDate, 1);
-        endDate = dateConverterIntoUTCForDataroom(currentDate, 2);
-        setCustomRangeVisible(false);
-        setSearchDataFields({
-          ...searchDataFields,
-          LastModifiedEndDate: dateConverterIntoUTCForDataroom(currentDate, 2),
-          LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-            currentDate,
-            1,
-          ),
-        });
-        data = {
-          UserID: parseInt(userID),
-          OrganizationID: parseInt(organizationID),
-          StatusID: Number(searchDataFields.StatusID),
-          Title: searchDataFields.Title,
-          isDocument: searchDataFields.isDocument,
-          isSpreadSheet: searchDataFields.isSpreadSheet,
-          isPresentation: searchDataFields.isPresentation,
-          isForms: searchDataFields.isForms,
-          isPDF: searchDataFields.isPDF,
-          isFolders: searchDataFields.isFolders,
-          isVideos: searchDataFields.isVideos,
-          isImages: searchDataFields.isImages,
-          isAudios: searchDataFields.isAudios,
-          isSites: searchDataFields.isSites,
-          LastModifiedStartDate: startDate,
-          LastModifiedEndDate: endDate,
-          UserIDToSearch: searchDataFields.UserIDToSearch,
-          isOwnedByMe: searchDataFields.isOwnedByMe,
-          isSpecificUser: searchDataFields.isSpecificUser,
-          sRow: 0,
-          Length: 10,
-          SortBy: 1,
-          isDescending: searchDataFields.isDescending,
-        };
-        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-        break;
-      case 3: // Last 7 days
-        endDate = new Date(currentDate);
-        startDate = new Date(currentDate);
-        startDate.setDate(currentDate.getDate() - 7);
+    try {
+      setSearchResultFields((prevState) => ({
+        ...prevState, // Copy the existing state
+        Date: event, // Update the Type field
+      }));
+      setDateValue(event.label);
+      const currentDate = new Date();
+      let startDate = null;
+      let endDate = null;
+      let data = {};
+      switch (event.value) {
+        case 1: // Any-time
+          // No specific date range, so no need to set start and end dates.
+          setCustomRangeVisible(false);
+          setSearchDataFields({
+            ...searchDataFields,
+            LastModifiedEndDate: endDate,
+            LastModifiedStartDate: startDate,
+          });
+          data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: Number(searchDataFields.StatusID),
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: "",
+            LastModifiedEndDate: "",
+            UserIDToSearch: searchDataFields.UserIDToSearch,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: searchDataFields.isSpecificUser,
+            sRow: 0,
+            Length: 10,
+            SortBy: 1,
+            isDescending: searchDataFields.isDescending,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+          break;
+        case 2: // Today
+          startDate = dateConverterIntoUTCForDataroom(currentDate, 1);
+          endDate = dateConverterIntoUTCForDataroom(currentDate, 2);
+          setCustomRangeVisible(false);
+          setSearchDataFields({
+            ...searchDataFields,
+            LastModifiedEndDate: dateConverterIntoUTCForDataroom(currentDate, 2),
+            LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+              currentDate,
+              1,
+            ),
+          });
+          data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: Number(searchDataFields.StatusID),
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: startDate,
+            LastModifiedEndDate: endDate,
+            UserIDToSearch: searchDataFields.UserIDToSearch,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: searchDataFields.isSpecificUser,
+            sRow: 0,
+            Length: 10,
+            SortBy: 1,
+            isDescending: searchDataFields.isDescending,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+          break;
+        case 3: // Last 7 days
+          endDate = new Date(currentDate);
+          startDate = new Date(currentDate);
+          startDate.setDate(currentDate.getDate() - 7);
 
-        setCustomRangeVisible(false);
-        setSearchDataFields({
-          ...searchDataFields,
-          LastModifiedEndDate: endDate,
-          LastModifiedStartDate: startDate,
-        });
+          setCustomRangeVisible(false);
+          setSearchDataFields({
+            ...searchDataFields,
+            LastModifiedEndDate: endDate,
+            LastModifiedStartDate: startDate,
+          });
 
-        data = {
-          UserID: parseInt(userID),
-          OrganizationID: parseInt(organizationID),
-          StatusID: Number(searchDataFields.StatusID),
-          Title: searchDataFields.Title,
-          isDocument: searchDataFields.isDocument,
-          isSpreadSheet: searchDataFields.isSpreadSheet,
-          isPresentation: searchDataFields.isPresentation,
-          isForms: searchDataFields.isForms,
-          isPDF: searchDataFields.isPDF,
-          isFolders: searchDataFields.isFolders,
-          isVideos: searchDataFields.isVideos,
-          isImages: searchDataFields.isImages,
-          isAudios: searchDataFields.isAudios,
-          isSites: searchDataFields.isSites,
-          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
-          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
-          UserIDToSearch: searchDataFields.UserIDToSearch,
-          isOwnedByMe: searchDataFields.isOwnedByMe,
-          isSpecificUser: searchDataFields.isSpecificUser,
-          sRow: 0,
-          Length: 10,
-          SortBy: 1,
-          isDescending: searchDataFields.isDescending,
-        };
-        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-        break;
-      case 4: // Last 30 days
-        endDate = new Date(currentDate);
-        startDate = new Date(currentDate);
-        startDate.setDate(currentDate.getDate() - 30);
-        setCustomRangeVisible(false);
-        setSearchDataFields({
-          ...searchDataFields,
-          LastModifiedEndDate: endDate,
-          LastModifiedStartDate: startDate,
-        });
-        data = {
-          UserID: parseInt(userID),
-          OrganizationID: parseInt(organizationID),
-          StatusID: Number(searchDataFields.StatusID),
-          Title: searchDataFields.Title,
-          isDocument: searchDataFields.isDocument,
-          isSpreadSheet: searchDataFields.isSpreadSheet,
-          isPresentation: searchDataFields.isPresentation,
-          isForms: searchDataFields.isForms,
-          isPDF: searchDataFields.isPDF,
-          isFolders: searchDataFields.isFolders,
-          isVideos: searchDataFields.isVideos,
-          isImages: searchDataFields.isImages,
-          isAudios: searchDataFields.isAudios,
-          isSites: searchDataFields.isSites,
-          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
-          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
-          UserIDToSearch: searchDataFields.UserIDToSearch,
-          isOwnedByMe: searchDataFields.isOwnedByMe,
-          isSpecificUser: searchDataFields.isSpecificUser,
-          sRow: 0,
-          Length: 10,
-          SortBy: 1,
-          isDescending: searchDataFields.isDescending,
-        };
-        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-        break;
-      case 5: // This year (2023)
-        startDate = new Date(currentDate.getFullYear(), 0, 1); // January 1, 2023
-        endDate = new Date(currentDate);
-        setCustomRangeVisible(false);
-        setSearchDataFields({
-          ...searchDataFields,
-          LastModifiedEndDate: endDate,
-          LastModifiedStartDate: startDate,
-        });
-        data = {
-          UserID: parseInt(userID),
-          OrganizationID: parseInt(organizationID),
-          StatusID: Number(searchDataFields.StatusID),
-          Title: searchDataFields.Title,
-          isDocument: searchDataFields.isDocument,
-          isSpreadSheet: searchDataFields.isSpreadSheet,
-          isPresentation: searchDataFields.isPresentation,
-          isForms: searchDataFields.isForms,
-          isPDF: searchDataFields.isPDF,
-          isFolders: searchDataFields.isFolders,
-          isVideos: searchDataFields.isVideos,
-          isImages: searchDataFields.isImages,
-          isAudios: searchDataFields.isAudios,
-          isSites: searchDataFields.isSites,
-          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
-          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
-          UserIDToSearch: searchDataFields.UserIDToSearch,
-          isOwnedByMe: searchDataFields.isOwnedByMe,
-          isSpecificUser: searchDataFields.isSpecificUser,
-          sRow: 0,
-          Length: 10,
-          SortBy: 1,
-          isDescending: searchDataFields.isDescending,
-        };
-        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-        break;
-      case 6: // Last year (2022)
-        startDate = new Date(currentDate.getFullYear() - 1, 0, 1); // January 1, 2022
-        endDate = new Date(currentDate.getFullYear() - 1, 11, 31); // December 31, 2022
-        setCustomRangeVisible(false);
-        setSearchDataFields({
-          ...searchDataFields,
-          LastModifiedEndDate: endDate,
-          LastModifiedStartDate: startDate,
-        });
-        data = {
-          UserID: parseInt(userID),
-          OrganizationID: parseInt(organizationID),
-          StatusID: Number(searchDataFields.StatusID),
-          Title: searchDataFields.Title,
-          isDocument: searchDataFields.isDocument,
-          isSpreadSheet: searchDataFields.isSpreadSheet,
-          isPresentation: searchDataFields.isPresentation,
-          isForms: searchDataFields.isForms,
-          isPDF: searchDataFields.isPDF,
-          isFolders: searchDataFields.isFolders,
-          isVideos: searchDataFields.isVideos,
-          isImages: searchDataFields.isImages,
-          isAudios: searchDataFields.isAudios,
-          isSites: searchDataFields.isSites,
-          LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
-          LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
-          UserIDToSearch: searchDataFields.UserIDToSearch,
-          isOwnedByMe: searchDataFields.isOwnedByMe,
-          isSpecificUser: searchDataFields.isSpecificUser,
-          sRow: 0,
-          Length: 10,
-          SortBy: 1,
-          isDescending: searchDataFields.isDescending,
-        };
-        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-        break;
-      case 7: // Custom range
-        setCustomRangeVisible(true);
-        break;
-      default:
-        break;
+          data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: Number(searchDataFields.StatusID),
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+            LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
+            UserIDToSearch: searchDataFields.UserIDToSearch,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: searchDataFields.isSpecificUser,
+            sRow: 0,
+            Length: 10,
+            SortBy: 1,
+            isDescending: searchDataFields.isDescending,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+          break;
+        case 4: // Last 30 days
+          endDate = new Date(currentDate);
+          startDate = new Date(currentDate);
+          startDate.setDate(currentDate.getDate() - 30);
+          setCustomRangeVisible(false);
+          setSearchDataFields({
+            ...searchDataFields,
+            LastModifiedEndDate: endDate,
+            LastModifiedStartDate: startDate,
+          });
+          data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: Number(searchDataFields.StatusID),
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+            LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
+            UserIDToSearch: searchDataFields.UserIDToSearch,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: searchDataFields.isSpecificUser,
+            sRow: 0,
+            Length: 10,
+            SortBy: 1,
+            isDescending: searchDataFields.isDescending,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+          break;
+        case 5: // This year (2023)
+          startDate = new Date(currentDate.getFullYear(), 0, 1); // January 1, 2023
+          endDate = new Date(currentDate);
+          setCustomRangeVisible(false);
+          setSearchDataFields({
+            ...searchDataFields,
+            LastModifiedEndDate: endDate,
+            LastModifiedStartDate: startDate,
+          });
+          data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: Number(searchDataFields.StatusID),
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+            LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
+            UserIDToSearch: searchDataFields.UserIDToSearch,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: searchDataFields.isSpecificUser,
+            sRow: 0,
+            Length: 10,
+            SortBy: 1,
+            isDescending: searchDataFields.isDescending,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+          break;
+        case 6: // Last year (2022)
+          startDate = new Date(currentDate.getFullYear() - 1, 0, 1); // January 1, 2022
+          endDate = new Date(currentDate.getFullYear() - 1, 11, 31); // December 31, 2022
+          setCustomRangeVisible(false);
+          setSearchDataFields({
+            ...searchDataFields,
+            LastModifiedEndDate: endDate,
+            LastModifiedStartDate: startDate,
+          });
+          data = {
+            UserID: parseInt(userID),
+            OrganizationID: parseInt(organizationID),
+            StatusID: Number(searchDataFields.StatusID),
+            Title: searchDataFields.Title,
+            isDocument: searchDataFields.isDocument,
+            isSpreadSheet: searchDataFields.isSpreadSheet,
+            isPresentation: searchDataFields.isPresentation,
+            isForms: searchDataFields.isForms,
+            isPDF: searchDataFields.isPDF,
+            isFolders: searchDataFields.isFolders,
+            isVideos: searchDataFields.isVideos,
+            isImages: searchDataFields.isImages,
+            isAudios: searchDataFields.isAudios,
+            isSites: searchDataFields.isSites,
+            LastModifiedStartDate: dateConverterIntoUTCForDataroom(startDate, 1),
+            LastModifiedEndDate: dateConverterIntoUTCForDataroom(endDate, 2),
+            UserIDToSearch: searchDataFields.UserIDToSearch,
+            isOwnedByMe: searchDataFields.isOwnedByMe,
+            isSpecificUser: searchDataFields.isSpecificUser,
+            sRow: 0,
+            Length: 10,
+            SortBy: 1,
+            isDescending: searchDataFields.isDescending,
+          };
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+          break;
+        case 7: // Custom range
+          setCustomRangeVisible(true);
+          break;
+        default:
+          break;
+      }
+      await dispatch(dataBehaviour(false));
+
+      return { startDate, endDate };
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.jsx:", error);
     }
-    await dispatch(dataBehaviour(false));
-
-    return { startDate, endDate };
   };
 
   // this is for cleare state
   const handleClearAllSearchOptions = async () => {
-    setSearchTabOpen(false);
-    // setSearchbarsearchoptions(false);
-    setDateValue(t("Date-modified"));
-    setSearchDataFields({
-      UserID: userID ? parseInt(userID) : 0,
-      OrganizationID: organizationID
-        ? parseInt(organizationID)
-        : organizationID,
-      StatusID: 3,
-      Title: "",
-      isDocument: false,
-      isSpreadSheet: false,
-      isPresentation: false,
-      isForms: false,
-      isPDF: false,
-      isFolders: false,
-      isVideos: false,
-      isImages: false,
-      isAudios: false,
-      isSites: false,
-      LastModifiedStartDate: "",
-      LastModifiedEndDate: "",
-      UserIDToSearch: 0,
-      isOwnedByMe: 2,
-      isSpecificUser: false,
-      sRow: 0,
-      Length: 10,
-      SortBy: 1,
-      isDescending: false,
-    });
-    let data = {
-      UserID: userID ? parseInt(userID) : 0,
-      OrganizationID: organizationID
-        ? parseInt(organizationID)
-        : organizationID,
-      StatusID: 3,
-      Title: "",
-      isDocument: false,
-      isSpreadSheet: false,
-      isPresentation: false,
-      isForms: false,
-      isPDF: false,
-      isFolders: false,
-      isVideos: false,
-      isImages: false,
-      isAudios: false,
-      isSites: false,
-      LastModifiedStartDate: "",
-      LastModifiedEndDate: "",
-      UserIDToSearch: 0,
-      isOwnedByMe: 2,
-      isSpecificUser: false,
-      sRow: 0,
-      Length: 10,
-      SortBy: 1,
-      isDescending: false,
-    };
-    dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    setSearchResultFields({
-      Date: null,
-      Type: null,
-      Location: {
-        value: 3,
-        label: t("Any-where-in-dataRoom"),
-      },
-      People: null,
-    });
+    try {
+      setSearchTabOpen(false);
+      // setSearchbarsearchoptions(false);
+      setDateValue(t("Date-modified"));
+      setSearchDataFields({
+        UserID: userID ? parseInt(userID) : 0,
+        OrganizationID: organizationID
+          ? parseInt(organizationID)
+          : organizationID,
+        StatusID: 3,
+        Title: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+        LastModifiedStartDate: "",
+        LastModifiedEndDate: "",
+        UserIDToSearch: 0,
+        isOwnedByMe: 2,
+        isSpecificUser: false,
+        sRow: 0,
+        Length: 10,
+        SortBy: 1,
+        isDescending: false,
+      });
+      let data = {
+        UserID: userID ? parseInt(userID) : 0,
+        OrganizationID: organizationID
+          ? parseInt(organizationID)
+          : organizationID,
+        StatusID: 3,
+        Title: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+        LastModifiedStartDate: "",
+        LastModifiedEndDate: "",
+        UserIDToSearch: 0,
+        isOwnedByMe: 2,
+        isSpecificUser: false,
+        sRow: 0,
+        Length: 10,
+        SortBy: 1,
+        isDescending: false,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      setSearchResultFields({
+        Date: null,
+        Type: null,
+        Location: {
+          value: 3,
+          label: t("Any-where-in-dataRoom"),
+        },
+        People: null,
+      });
 
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
-    await dispatch(dataBehaviour(false));
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+      await dispatch(dataBehaviour(false));
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.jsx:", error);
+    }
   };
 
   // this is select for start date
@@ -1960,40 +1988,44 @@ const SearchComponent = ({
 
   // this is search button handler of serach modal
   const handleSearchThroughCustomeRange = async () => {
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      StatusID: Number(searchDataFields.StatusID),
-      Title: searchDataFields.Title,
-      isDocument: searchDataFields.isDocument,
-      isSpreadSheet: searchDataFields.isSpreadSheet,
-      isPresentation: searchDataFields.isPresentation,
-      isForms: searchDataFields.isForms,
-      isPDF: searchDataFields.isPDF,
-      isFolders: searchDataFields.isFolders,
-      isVideos: searchDataFields.isVideos,
-      isImages: searchDataFields.isImages,
-      isAudios: searchDataFields.isAudios,
-      isSites: searchDataFields.isSites,
-      LastModifiedStartDate: dateConverterIntoUTCForDataroom(
-        searchDataFields.LastModifiedStartDate,
-        1,
-      ),
-      LastModifiedEndDate: dateConverterIntoUTCForDataroom(
-        searchDataFields.LastModifiedEndDate,
-        2,
-      ),
-      UserIDToSearch: searchDataFields.UserIDToSearch,
-      isOwnedByMe: searchDataFields.isOwnedByMe,
-      isSpecificUser: searchDataFields.isSpecificUser,
-      sRow: 0,
-      Length: 10,
-      SortBy: searchDataFields.SortBy,
-      isDescending: searchDataFields.isDescending,
-    };
-    await dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    setCustomRangeVisible(false);
-    await dispatch(dataBehaviour(false));
+    try {
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: Number(searchDataFields.StatusID),
+        Title: searchDataFields.Title,
+        isDocument: searchDataFields.isDocument,
+        isSpreadSheet: searchDataFields.isSpreadSheet,
+        isPresentation: searchDataFields.isPresentation,
+        isForms: searchDataFields.isForms,
+        isPDF: searchDataFields.isPDF,
+        isFolders: searchDataFields.isFolders,
+        isVideos: searchDataFields.isVideos,
+        isImages: searchDataFields.isImages,
+        isAudios: searchDataFields.isAudios,
+        isSites: searchDataFields.isSites,
+        LastModifiedStartDate: dateConverterIntoUTCForDataroom(
+          searchDataFields.LastModifiedStartDate,
+          1,
+        ),
+        LastModifiedEndDate: dateConverterIntoUTCForDataroom(
+          searchDataFields.LastModifiedEndDate,
+          2,
+        ),
+        UserIDToSearch: searchDataFields.UserIDToSearch,
+        isOwnedByMe: searchDataFields.isOwnedByMe,
+        isSpecificUser: searchDataFields.isSpecificUser,
+        sRow: 0,
+        Length: 10,
+        SortBy: searchDataFields.SortBy,
+        isDescending: searchDataFields.isDescending,
+      };
+      await dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      setCustomRangeVisible(false);
+      await dispatch(dataBehaviour(false));
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchComponent.jsx:", error);
+    }
   };
 
   // const cross button on documents dropdowns

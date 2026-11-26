@@ -1172,46 +1172,50 @@ const SearchBarComponent = ({
   
   
   const handleSearch = async () => {
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      StatusID: Number(searchDataFields.StatusID),
-      Title: searchResultBoxFields.itemname,
-      isDocument: searchDataFields.isDocument,
-      isSpreadSheet: searchDataFields.isSpreadSheet,
-      isPresentation: searchDataFields.isPresentation,
-      isForms: searchDataFields.isForms,
-      isPDF: searchDataFields.isPDF,
-      isFolders: searchDataFields.isFolders,
-      isVideos: searchDataFields.isVideos,
-      isImages: searchDataFields.isImages,
-      isAudios: searchDataFields.isAudios,
-      isSites: searchDataFields.isSites,
-      LastModifiedStartDate: searchDataFields.LastModifiedStartDate
-        ? formatDateToUTC(searchDataFields.LastModifiedStartDate, 1)
-        : "",
-      LastModifiedEndDate: searchDataFields.LastModifiedEndDate
-        ? formatDateToUTC(searchDataFields.LastModifiedEndDate, 2)
-        : "",
-      UserIDToSearch: searchDataFields.UserIDToSearch,
-      isOwnedByMe: searchDataFields.isOwnedByMe,
-      isSpecificUser: searchDataFields.isSpecificUser,
-      sRow: 0,
-      Length: 10,
-      SortBy: 1,
-      isDescending: searchDataFields.isDescending,
-    };
+    try {
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: Number(searchDataFields.StatusID),
+        Title: searchResultBoxFields.itemname,
+        isDocument: searchDataFields.isDocument,
+        isSpreadSheet: searchDataFields.isSpreadSheet,
+        isPresentation: searchDataFields.isPresentation,
+        isForms: searchDataFields.isForms,
+        isPDF: searchDataFields.isPDF,
+        isFolders: searchDataFields.isFolders,
+        isVideos: searchDataFields.isVideos,
+        isImages: searchDataFields.isImages,
+        isAudios: searchDataFields.isAudios,
+        isSites: searchDataFields.isSites,
+        LastModifiedStartDate: searchDataFields.LastModifiedStartDate
+          ? formatDateToUTC(searchDataFields.LastModifiedStartDate, 1)
+          : "",
+        LastModifiedEndDate: searchDataFields.LastModifiedEndDate
+          ? formatDateToUTC(searchDataFields.LastModifiedEndDate, 2)
+          : "",
+        UserIDToSearch: searchDataFields.UserIDToSearch,
+        isOwnedByMe: searchDataFields.isOwnedByMe,
+        isSpecificUser: searchDataFields.isSpecificUser,
+        sRow: 0,
+        Length: 10,
+        SortBy: 1,
+        isDescending: searchDataFields.isDescending,
+      };
     
     
-    await dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    setSelectedStartDate(null);
-    setSelectedEndDate(null);
-    setSearchTabOpen(true);
-    setSearchbarsearchoptions(false);
-    setSearchbarshow(false);
-    setIsStartOpen(false);
-    setIsEndOpen(false);
-    setCustomRangeVisible(false);
+      await dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+      setSearchTabOpen(true);
+      setSearchbarsearchoptions(false);
+      setSearchbarshow(false);
+      setIsStartOpen(false);
+      setIsEndOpen(false);
+      setCustomRangeVisible(false);
+    } catch (error) {
+      console.error("src/container/DataRoom/SearchFunctionality/searchBar.jsx:", error);
+    }
   };
 
   const handleOutsideClick = (event) => {

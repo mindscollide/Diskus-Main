@@ -156,9 +156,13 @@ const ReviewSignature = () => {
 
   useEffect(() => {
     const callFunc = async () => {
-      await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
-      let newData = { IsCreator: false };
-      await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+      try {
+        await dispatch(getAllPendingApprovalsStatsApi(navigate, t));
+        let newData = { IsCreator: false };
+        await dispatch(getAllPendingApprovalStatusApi(navigate, t, newData, 1));
+      } catch (error) {
+        console.error("src/container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature.jsx:", error);
+      }
     };
     callFunc();
   }, []);
@@ -515,14 +519,18 @@ const ReviewSignature = () => {
   // loaded. Compare against originalData.length (everything fetched so
   // far, unfiltered) instead.
   useTableScrollBottom(async () => {
-    if (originalData.length < totalRecords) {
-      setIsScrolling(true);
-      let Data = {
-        sRow: Number(totalDataLnegth),
-        Length: 10,
-        Status: appliedStatusFilter,
-      };
-      await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+    try {
+      if (originalData.length < totalRecords) {
+        setIsScrolling(true);
+        let Data = {
+          sRow: Number(totalDataLnegth),
+          Length: 10,
+          Status: appliedStatusFilter,
+        };
+        await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/SignatureApproval/ReviewAndSign/ReviewSignature.jsx:", error);
     }
   });
 

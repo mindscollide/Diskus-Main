@@ -19,16 +19,24 @@ const ModalOptionsisExistFolder = ({
   const dispatch = useDispatch();
 
   const handleUploadFolder = async () => {
-    if (isFolderExist) {
-      await dispatch(FolderisExist_success(null));
+    try {
+      if (isFolderExist) {
+        await dispatch(FolderisExist_success(null));
+      }
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalUploadFolderisExist/ModalUploadFolderisExist.jsx:", error);
     }
   };
   const onHideModal = async () => {
-    setIsFolderExist(false);
-    const updatedArray = [...detaUplodingForFOlder]; // Create a shallow copy of the array
-    updatedArray.pop(); // Remove the last object
-    setDetaUplodingForFOlder(updatedArray);
-    await dispatch(FolderisExist_success(null));
+    try {
+      setIsFolderExist(false);
+      const updatedArray = [...detaUplodingForFOlder]; // Create a shallow copy of the array
+      updatedArray.pop(); // Remove the last object
+      setDetaUplodingForFOlder(updatedArray);
+      await dispatch(FolderisExist_success(null));
+    } catch (error) {
+      console.error("src/container/DataRoom/ModalUploadFolderisExist/ModalUploadFolderisExist.jsx:", error);
+    }
   };
   return (
     <>
