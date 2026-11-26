@@ -164,8 +164,12 @@ const EditUserModal = ({ editModalData }) => {
 
   // Handler for when an option is selected.
   const handleSelectChange = async (selectedOption) => {
-    setUserStatus(selectedOption);
-    setUserStatusID(selectedOption.value);
+    try {
+      setUserStatus(selectedOption);
+      setUserStatusID(selectedOption.value);
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/ModalsUserManagement/EditUserModal/EditUserModal.jsx:", error);
+    }
   };
 
   // Handle the country selection
@@ -310,8 +314,12 @@ const EditUserModal = ({ editModalData }) => {
   };
 
   const handlePackageAssigned = async (selectedOption) => {
-    setPackageAssignedValue(selectedOption);
-    setEditPakageID(selectedOption.value);
+    try {
+      setPackageAssignedValue(selectedOption);
+      setEditPakageID(selectedOption.value);
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/ModalsUserManagement/EditUserModal/EditUserModal.jsx:", error);
+    }
   };
 
   return (

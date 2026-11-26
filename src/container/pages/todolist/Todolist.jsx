@@ -204,20 +204,24 @@ const TodoList = () => {
     const taskViewId = localStorage.getItem("taskListView_Id");
     if (taskViewId) {
       (async () => {
-        const res = await dispatch(
-          validateEncryptedStringViewTaskDetailLinkApi(taskViewId, navigate, t),
-        );
-        if (mounted && res?.isExecuted && res?.responseCode === 1) {
-          dispatch(
-            ViewToDoList(
-              navigate,
-              { ToDoListID: res.response.taskID },
-              t,
-              setViewFlagToDo,
-            ),
+        try {
+          const res = await dispatch(
+            validateEncryptedStringViewTaskDetailLinkApi(taskViewId, navigate, t),
           );
+          if (mounted && res?.isExecuted && res?.responseCode === 1) {
+            dispatch(
+              ViewToDoList(
+                navigate,
+                { ToDoListID: res.response.taskID },
+                t,
+                setViewFlagToDo,
+              ),
+            );
+          }
+          localStorage.removeItem("taskListView_Id");
+        } catch (error) {
+          console.error("src/container/pages/todolist/Todolist.jsx:", error);
         }
-        localStorage.removeItem("taskListView_Id");
       })();
     }
 
@@ -241,10 +245,14 @@ const TodoList = () => {
     const taskListLink = localStorage.getItem("taskListView");
     if (taskListLink) {
       (async () => {
-        await dispatch(
-          validateEncryptedStringViewTaskListLinkApi(taskListLink, navigate, t),
-        );
-        localStorage.removeItem("taskListView");
+        try {
+          await dispatch(
+            validateEncryptedStringViewTaskListLinkApi(taskListLink, navigate, t),
+          );
+          localStorage.removeItem("taskListView");
+        } catch (error) {
+          console.error("src/container/pages/todolist/Todolist.jsx:", error);
+        }
       })();
     }
 

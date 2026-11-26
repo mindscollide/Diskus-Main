@@ -238,61 +238,65 @@ const AddUserMain = () => {
 
   // API hit on create button
   const handleCreate = async () => {
-    if (
-      userAddMain.Name.value !== "" &&
-      userAddMain.Designation.value !== "" &&
-      userAddMain.MobileNumber.value !== "" &&
-      userAddMain.PackageAssigned.value !== "" &&
-      userAddMain.Email.value !== ""
-    ) {
-      let createData = {
-        UserDataList: [
-          {
-            UserName: userAddMain.Name.value,
-            OrganizationName: organizationName,
-            Designation: userAddMain.Designation.value,
-            MobileNumber: userAddMain.MobileNumber.value,
-            UserEmail: userAddMain.Email.value,
-            OrganizationID: Number(organizationID),
-            RoleID: userAddMain.isAdmin,
-            FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
-            PackageID: Number(userAddMain.PackageAssigned.value),
+    try {
+      if (
+        userAddMain.Name.value !== "" &&
+        userAddMain.Designation.value !== "" &&
+        userAddMain.MobileNumber.value !== "" &&
+        userAddMain.PackageAssigned.value !== "" &&
+        userAddMain.Email.value !== ""
+      ) {
+        let createData = {
+          UserDataList: [
+            {
+              UserName: userAddMain.Name.value,
+              OrganizationName: organizationName,
+              Designation: userAddMain.Designation.value,
+              MobileNumber: userAddMain.MobileNumber.value,
+              UserEmail: userAddMain.Email.value,
+              OrganizationID: Number(organizationID),
+              RoleID: userAddMain.isAdmin,
+              FK_NumberWorldCountryID: userAddMain.FK_NumberWorldCountryID,
+              PackageID: Number(userAddMain.PackageAssigned.value),
+            },
+          ],
+        };
+        await dispatch(AddOrganizationsUserApi(navigate, t, createData));
+      } else {
+        setUserAddMain({
+          ...userAddMain,
+          Name: {
+            value: userAddMain.Name.value,
+            errorMessage: t("Please-enter-full-name"),
+            errorStatus: userAddMain.Name.errorStatus,
           },
-        ],
-      };
-      await dispatch(AddOrganizationsUserApi(navigate, t, createData));
-    } else {
-      setUserAddMain({
-        ...userAddMain,
-        Name: {
-          value: userAddMain.Name.value,
-          errorMessage: t("Please-enter-full-name"),
-          errorStatus: userAddMain.Name.errorStatus,
-        },
-        Designation: {
-          value: userAddMain.Designation.value,
-          errorMessage: t("Please-select-designation"),
-          errorStatus: userAddMain.Designation.errorStatus,
-        },
-        MobileNumber: {
-          value: userAddMain.MobileNumber.value,
-          errorMessage: t("Please-enter-mobile-number"),
-          errorStatus: userAddMain.MobileNumber.errorStatus,
-        },
-        PackageAssigned: {
-          value: userAddMain.PackageAssigned.value,
-          errorMessage: t("Please-select-a-package"),
-          errorStatus: userAddMain.PackageAssigned.errorStatus,
-        },
-        Email: {
-          ...userAddMain.Email,
-          errorMessage:
-            userAddMain.Email.value === ""
-              ? t("Please-enter-email-address")
-              : userAddMain.Email.errorMessage, // Retain previous error message if field is not empty
-          errorStatus: userAddMain.Email.value === "",
-        },
-      });
+          Designation: {
+            value: userAddMain.Designation.value,
+            errorMessage: t("Please-select-designation"),
+            errorStatus: userAddMain.Designation.errorStatus,
+          },
+          MobileNumber: {
+            value: userAddMain.MobileNumber.value,
+            errorMessage: t("Please-enter-mobile-number"),
+            errorStatus: userAddMain.MobileNumber.errorStatus,
+          },
+          PackageAssigned: {
+            value: userAddMain.PackageAssigned.value,
+            errorMessage: t("Please-select-a-package"),
+            errorStatus: userAddMain.PackageAssigned.errorStatus,
+          },
+          Email: {
+            ...userAddMain.Email,
+            errorMessage:
+              userAddMain.Email.value === ""
+                ? t("Please-enter-email-address")
+                : userAddMain.Email.errorMessage, // Retain previous error message if field is not empty
+            errorStatus: userAddMain.Email.value === "",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain.jsx:", error);
     }
   };
 
@@ -481,34 +485,38 @@ const AddUserMain = () => {
 
   // handler of package Assigned
   const handlePackageAssigned = async (selectedOption) => {
-    setPackageAssignedValue(selectedOption);
-    // Treat any chosen option as a valid selection. Using a null/undefined
-    // check (instead of a truthiness check on `selectedOption.value`, which
-    // misfired for a falsy package id) means picking a package always stores
-    // its id and clears the error. The functional updater also prevents a
-    // stale-closure spread from later reverting PackageAssigned back to 0.
-    if (
-      selectedOption &&
-      selectedOption.value !== undefined &&
-      selectedOption.value !== null
-    ) {
-      setUserAddMain((prev) => ({
-        ...prev,
-        PackageAssigned: {
-          value: selectedOption.value,
-          errorMessage: "",
-          errorStatus: false,
-        },
-      }));
-    } else {
-      setUserAddMain((prev) => ({
-        ...prev,
-        PackageAssigned: {
-          value: 0,
-          errorMessage: t("Please-select-a-package"),
-          errorStatus: true,
-        },
-      }));
+    try {
+      setPackageAssignedValue(selectedOption);
+      // Treat any chosen option as a valid selection. Using a null/undefined
+      // check (instead of a truthiness check on `selectedOption.value`, which
+      // misfired for a falsy package id) means picking a package always stores
+      // its id and clears the error. The functional updater also prevents a
+      // stale-closure spread from later reverting PackageAssigned back to 0.
+      if (
+        selectedOption &&
+        selectedOption.value !== undefined &&
+        selectedOption.value !== null
+      ) {
+        setUserAddMain((prev) => ({
+          ...prev,
+          PackageAssigned: {
+            value: selectedOption.value,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        }));
+      } else {
+        setUserAddMain((prev) => ({
+          ...prev,
+          PackageAssigned: {
+            value: 0,
+            errorMessage: t("Please-select-a-package"),
+            errorStatus: true,
+          },
+        }));
+      }
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/AdminUserManagement/AddUserMain/AddUserMain.jsx:", error);
     }
   };
 

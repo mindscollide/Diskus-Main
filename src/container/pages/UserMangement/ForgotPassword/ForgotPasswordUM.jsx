@@ -39,21 +39,25 @@ const ForgotPasswordUM = () => {
 
   //Form submit
   const submitForm = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    if (!email) {
-      show(t("Please-enter-email"), "error");
+      if (!email) {
+        show(t("Please-enter-email"), "error");
+        setMessege("");
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        setMessege(t("Please-enter-a-valid-email"));
+        return;
+      }
+
       setMessege("");
-      return;
+      await dispatch(changePasswordRequest(email, t, navigate));
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/ForgotPassword/ForgotPasswordUM.jsx:", error);
     }
-
-    if (!validateEmail(email)) {
-      setMessege(t("Please-enter-a-valid-email"));
-      return;
-    }
-
-    setMessege("");
-    await dispatch(changePasswordRequest(email, t, navigate));
   };
 
   //handle Go Back Function

@@ -425,305 +425,309 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
   };
 
   const handlerSignup = async () => {
-    if (isFreeTrail === true) {
-      if (
-        signUpDetails.CompanyName.value !== "" &&
-        signUpDetails.FullName.value !== "" &&
-        signUpDetails.Email.value !== "" &&
-        signUpDetails.PhoneNumber.value !== "" &&
-        signUpDetails.CountryName.value !== ""
-      ) {
-        if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
-          if (
-            adminReducerOrganisationCheckData !== false &&
-            adminReducerEmailCheckData !== false
-          ) {
-            let PackageID = localStorage.getItem("PackageID");
-            let tenureOfSuscriptionID = localStorage.getItem(
-              "TenureOfSuscriptionID",
-            );
+    try {
+      if (isFreeTrail === true) {
+        if (
+          signUpDetails.CompanyName.value !== "" &&
+          signUpDetails.FullName.value !== "" &&
+          signUpDetails.Email.value !== "" &&
+          signUpDetails.PhoneNumber.value !== "" &&
+          signUpDetails.CountryName.value !== ""
+        ) {
+          if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
+            if (
+              adminReducerOrganisationCheckData !== false &&
+              adminReducerEmailCheckData !== false
+            ) {
+              let PackageID = localStorage.getItem("PackageID");
+              let tenureOfSuscriptionID = localStorage.getItem(
+                "TenureOfSuscriptionID",
+              );
 
-            let data = {
-              TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
-              Organization: {
-                OrganizationName: signUpDetails.CompanyName.value,
-                FK_WorldCountryID: signUpDetails.CountryName.value,
-                ContactPersonName: signUpDetails.FullName.value,
-                ContactPersonEmail: signUpDetails.Email.value,
-                ContactPersonNumber: signUpDetails.PhoneNumber.value,
-                FK_NumberWorldCountryID: JSON.parse(
-                  signUpDetails.PhoneNumberCountryID,
+              let data = {
+                TenureOfSubscriptionID: JSON.parse(tenureOfSuscriptionID),
+                Organization: {
+                  OrganizationName: signUpDetails.CompanyName.value,
+                  FK_WorldCountryID: signUpDetails.CountryName.value,
+                  ContactPersonName: signUpDetails.FullName.value,
+                  ContactPersonEmail: signUpDetails.Email.value,
+                  ContactPersonNumber: signUpDetails.PhoneNumber.value,
+                  FK_NumberWorldCountryID: JSON.parse(
+                    signUpDetails.PhoneNumberCountryID,
+                  ),
+                  CustomerReferenceNumber: "",
+                  PersonalNumber: signUpDetails.PhoneNumber.value,
+                  OrganizationAddress1: signUpDetails.Address1.value,
+                  OrganizationAddress2: signUpDetails.Address2.value,
+                  City: signUpDetails.City.value,
+                  StateProvince: signUpDetails.State.value,
+                  PostalCode: signUpDetails.PostalCode.value,
+                  TimeZoneID: 1,
+                },
+                Packages: [{ PackageID: Number(PackageID), HeadCount: 20 }],
+              };
+              dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+            } else {
+              await dispatch(setLoader(true));
+              await dispatch(
+                checkOraganisation(
+                  setCompanyNameValidate,
+                  setCompanyNameValidateError,
+                  signUpDetails,
+                  t,
+                  setCompanyNameUnique,
                 ),
-                CustomerReferenceNumber: "",
-                PersonalNumber: signUpDetails.PhoneNumber.value,
-                OrganizationAddress1: signUpDetails.Address1.value,
-                OrganizationAddress2: signUpDetails.Address2.value,
-                City: signUpDetails.City.value,
-                StateProvince: signUpDetails.State.value,
-                PostalCode: signUpDetails.PostalCode.value,
-                TimeZoneID: 1,
-              },
-              Packages: [{ PackageID: Number(PackageID), HeadCount: 20 }],
-            };
-            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+              );
+              handeEmailvlidate();
+              setAgainCall(true);
+            }
           } else {
-            await dispatch(setLoader(true));
-            await dispatch(
-              checkOraganisation(
-                setCompanyNameValidate,
-                setCompanyNameValidateError,
-                signUpDetails,
-                t,
-                setCompanyNameUnique,
-              ),
-            );
-            handeEmailvlidate();
-            setAgainCall(true);
+            show(t("Invalid-email-format"), "error");
           }
         } else {
-          show(t("Invalid-email-format"), "error");
+          setSignUpDetails({
+            ...signUpDetails,
+            // CompanyName: {
+            //   value: signUpDetails.CompanyName.value,
+            //   errorMessage:
+            //     signUpDetails.CompanyName.value === ""
+            //       ? `${(t("Company-name-is-required"), locale)}`
+            //       : signUpDetails.CompanyName.errorMessage,
+            //   errorStatus:
+            //     signUpDetails.CompanyName.value === ""
+            //       ? true
+            //       : signUpDetails.CompanyName.errorStatus,
+            // },
+            CountryName: {
+              value: signUpDetails.CountryName.value,
+              errorMessage:
+                signUpDetails.CountryName.value === ""
+                  ? t("Please-select-country")
+                  : signUpDetails.CountryName.errorMessage,
+              errorStatus:
+                signUpDetails.CountryName.value === ""
+                  ? true
+                  : signUpDetails.CountryName.errorStatus,
+            },
+            Address1: {
+              value: signUpDetails.Address1.value,
+              errorMessage:
+                signUpDetails.Address1.value === ""
+                  ? t("Address-1-is-required")
+                  : signUpDetails.Address1.errorMessage,
+              errorStatus:
+                signUpDetails.Address1.value === ""
+                  ? true
+                  : signUpDetails.Address1.errorStatus,
+            },
+            Address2: {
+              value: signUpDetails.Address2.value,
+              errorMessage:
+                signUpDetails.Address2.value === ""
+                  ? t("Address-2-is-required")
+                  : signUpDetails.Address2.errorMessage,
+              errorStatus:
+                signUpDetails.Address2.value === ""
+                  ? true
+                  : signUpDetails.Address2.errorStatus,
+            },
+            State: {
+              value: signUpDetails.State.value,
+              errorMessage: "",
+            },
+            City: {
+              value: signUpDetails.City.value,
+              errorMessage: "",
+            },
+            PostalCode: {
+              value: signUpDetails.PostalCode.value,
+              errorMessage: "",
+            },
+            FullName: {
+              value: signUpDetails.FullName.value,
+              errorMessage:
+                signUpDetails.FullName.value === ""
+                  ? t("Full-name-is-required")
+                  : signUpDetails.FullName.errorMessage,
+              errorStatus:
+                signUpDetails.FullName.value === ""
+                  ? true
+                  : signUpDetails.FullName.errorStatus,
+            },
+            Email: {
+              value: signUpDetails.Email.value,
+              errorMessage:
+                signUpDetails.Email.value === ""
+                  ? t("Email-address-is-required")
+                  : signUpDetails.Email.errorMessage,
+              errorStatus: signUpDetails.Email.errorStatus,
+            },
+            PhoneNumber: {
+              value: signUpDetails.PhoneNumber.value,
+              errorMessage:
+                signUpDetails.PhoneNumber.value === ""
+                  ? t("Phone-number-is-required")
+                  : signUpDetails.PhoneNumber.errorMessage,
+              errorStatus:
+                signUpDetails.PhoneNumber.value === ""
+                  ? true
+                  : signUpDetails.PhoneNumber.errorStatus,
+            },
+          });
+
+          show(t("Please-fill-all-the-fields"), "error");
         }
       } else {
-        setSignUpDetails({
-          ...signUpDetails,
-          // CompanyName: {
-          //   value: signUpDetails.CompanyName.value,
-          //   errorMessage:
-          //     signUpDetails.CompanyName.value === ""
-          //       ? `${(t("Company-name-is-required"), locale)}`
-          //       : signUpDetails.CompanyName.errorMessage,
-          //   errorStatus:
-          //     signUpDetails.CompanyName.value === ""
-          //       ? true
-          //       : signUpDetails.CompanyName.errorStatus,
-          // },
-          CountryName: {
-            value: signUpDetails.CountryName.value,
-            errorMessage:
-              signUpDetails.CountryName.value === ""
-                ? t("Please-select-country")
-                : signUpDetails.CountryName.errorMessage,
-            errorStatus:
-              signUpDetails.CountryName.value === ""
-                ? true
-                : signUpDetails.CountryName.errorStatus,
-          },
-          Address1: {
-            value: signUpDetails.Address1.value,
-            errorMessage:
-              signUpDetails.Address1.value === ""
-                ? t("Address-1-is-required")
-                : signUpDetails.Address1.errorMessage,
-            errorStatus:
-              signUpDetails.Address1.value === ""
-                ? true
-                : signUpDetails.Address1.errorStatus,
-          },
-          Address2: {
-            value: signUpDetails.Address2.value,
-            errorMessage:
-              signUpDetails.Address2.value === ""
-                ? t("Address-2-is-required")
-                : signUpDetails.Address2.errorMessage,
-            errorStatus:
-              signUpDetails.Address2.value === ""
-                ? true
-                : signUpDetails.Address2.errorStatus,
-          },
-          State: {
-            value: signUpDetails.State.value,
-            errorMessage: "",
-          },
-          City: {
-            value: signUpDetails.City.value,
-            errorMessage: "",
-          },
-          PostalCode: {
-            value: signUpDetails.PostalCode.value,
-            errorMessage: "",
-          },
-          FullName: {
-            value: signUpDetails.FullName.value,
-            errorMessage:
-              signUpDetails.FullName.value === ""
-                ? t("Full-name-is-required")
-                : signUpDetails.FullName.errorMessage,
-            errorStatus:
-              signUpDetails.FullName.value === ""
-                ? true
-                : signUpDetails.FullName.errorStatus,
-          },
-          Email: {
-            value: signUpDetails.Email.value,
-            errorMessage:
-              signUpDetails.Email.value === ""
-                ? t("Email-address-is-required")
-                : signUpDetails.Email.errorMessage,
-            errorStatus: signUpDetails.Email.errorStatus,
-          },
-          PhoneNumber: {
-            value: signUpDetails.PhoneNumber.value,
-            errorMessage:
-              signUpDetails.PhoneNumber.value === ""
-                ? t("Phone-number-is-required")
-                : signUpDetails.PhoneNumber.errorMessage,
-            errorStatus:
-              signUpDetails.PhoneNumber.value === ""
-                ? true
-                : signUpDetails.PhoneNumber.errorStatus,
-          },
-        });
-
-        show(t("Please-fill-all-the-fields"), "error");
-      }
-    } else {
-      //if its not a free trial in User Management
-      if (
-        signUpDetails.CompanyName.value !== "" &&
-        signUpDetails.FullName.value !== "" &&
-        signUpDetails.Email.value !== "" &&
-        signUpDetails.PhoneNumber.value !== "" &&
-        signUpDetails.CountryName.value !== ""
-      ) {
-        if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
-          if (
-            adminReducerOrganisationCheckData !== false &&
-            adminReducerEmailCheckData !== false
-          ) {
-            let data = {
-              TenureOfSubscriptionID: Number(
-                packageSubscriptionDetail.TenureOfSubscriptionID,
-              ),
-              Organization: {
-                OrganizationName: signUpDetails.CompanyName.value,
-                FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
-                ContactPersonName: signUpDetails.FullName.value,
-                ContactPersonEmail: signUpDetails.Email.value,
-                ContactPersonNumber: signUpDetails.PhoneNumber.value,
-                FK_NumberWorldCountryID: JSON.parse(
-                  signUpDetails.PhoneNumberCountryID,
+        //if its not a free trial in User Management
+        if (
+          signUpDetails.CompanyName.value !== "" &&
+          signUpDetails.FullName.value !== "" &&
+          signUpDetails.Email.value !== "" &&
+          signUpDetails.PhoneNumber.value !== "" &&
+          signUpDetails.CountryName.value !== ""
+        ) {
+          if (validateEmailEnglishAndArabicFormat(signUpDetails.Email.value)) {
+            if (
+              adminReducerOrganisationCheckData !== false &&
+              adminReducerEmailCheckData !== false
+            ) {
+              let data = {
+                TenureOfSubscriptionID: Number(
+                  packageSubscriptionDetail.TenureOfSubscriptionID,
                 ),
-                CustomerReferenceNumber: "",
-                PersonalNumber: signUpDetails.PhoneNumber.value,
-                OrganizationAddress1: signUpDetails.Address1.value,
-                OrganizationAddress2: signUpDetails.Address2.value,
-                City: signUpDetails.City.value,
-                StateProvince: signUpDetails.State.value,
-                PostalCode: signUpDetails.PostalCode.value,
-                TimeZoneID: 1,
-              },
-              Packages: packageSubscriptionDetail.Packages,
-            };
-            dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+                Organization: {
+                  OrganizationName: signUpDetails.CompanyName.value,
+                  FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+                  ContactPersonName: signUpDetails.FullName.value,
+                  ContactPersonEmail: signUpDetails.Email.value,
+                  ContactPersonNumber: signUpDetails.PhoneNumber.value,
+                  FK_NumberWorldCountryID: JSON.parse(
+                    signUpDetails.PhoneNumberCountryID,
+                  ),
+                  CustomerReferenceNumber: "",
+                  PersonalNumber: signUpDetails.PhoneNumber.value,
+                  OrganizationAddress1: signUpDetails.Address1.value,
+                  OrganizationAddress2: signUpDetails.Address2.value,
+                  City: signUpDetails.City.value,
+                  StateProvince: signUpDetails.State.value,
+                  PostalCode: signUpDetails.PostalCode.value,
+                  TimeZoneID: 1,
+                },
+                Packages: packageSubscriptionDetail.Packages,
+              };
+              dispatch(signUpOrganizationAndPakageSelection(data, navigate, t));
+            } else {
+              await dispatch(setLoader(true));
+              await dispatch(
+                checkOraganisation(
+                  setCompanyNameValidate,
+                  setCompanyNameValidateError,
+                  signUpDetails,
+                  t,
+                  setCompanyNameUnique,
+                ),
+              );
+              handeEmailvlidate();
+              setAgainCall(true);
+            }
           } else {
-            await dispatch(setLoader(true));
-            await dispatch(
-              checkOraganisation(
-                setCompanyNameValidate,
-                setCompanyNameValidateError,
-                signUpDetails,
-                t,
-                setCompanyNameUnique,
-              ),
-            );
-            handeEmailvlidate();
-            setAgainCall(true);
+            show(t("Invalid-email-format"), "error");
           }
         } else {
-          show(t("Invalid-email-format"), "error");
+          setSignUpDetails({
+            ...signUpDetails,
+            CompanyName: {
+              value: signUpDetails.CompanyName.value,
+              errorMessage:
+                signUpDetails.CompanyName.value === ""
+                  ? t("Company-name-is-required")
+                  : signUpDetails.CompanyName.errorMessage,
+              errorStatus:
+                signUpDetails.CompanyName.value === ""
+                  ? true
+                  : signUpDetails.CompanyName.errorStatus,
+            },
+            CountryName: {
+              value: signUpDetails.CountryName.value,
+              errorMessage:
+                signUpDetails.CountryName.value === ""
+                  ? t("Country-name-is-required")
+                  : signUpDetails.CountryName.errorMessage,
+              errorStatus:
+                signUpDetails.CountryName.value === ""
+                  ? true
+                  : signUpDetails.CountryName.errorStatus,
+            },
+            Address1: {
+              value: signUpDetails.Address1.value,
+              errorMessage:
+                signUpDetails.Address1.value === ""
+                  ? t("Address-1-is-required")
+                  : signUpDetails.Address1.errorMessage,
+              errorStatus:
+                signUpDetails.Address1.value === ""
+                  ? true
+                  : signUpDetails.Address1.errorStatus,
+            },
+            Address2: {
+              value: signUpDetails.Address2.value,
+              errorMessage:
+                signUpDetails.Address2.value === ""
+                  ? t("Address-2-is-required")
+                  : signUpDetails.Address2.errorMessage,
+              errorStatus:
+                signUpDetails.Address2.value === ""
+                  ? true
+                  : signUpDetails.Address2.errorStatus,
+            },
+            State: {
+              value: signUpDetails.State.value,
+              errorMessage: "",
+            },
+            City: {
+              value: signUpDetails.City.value,
+              errorMessage: "",
+            },
+            PostalCode: {
+              value: signUpDetails.PostalCode.value,
+              errorMessage: "",
+            },
+            FullName: {
+              value: signUpDetails.FullName.value,
+              errorMessage:
+                signUpDetails.FullName.value === ""
+                  ? t("Full-name-is-required")
+                  : signUpDetails.FullName.errorMessage,
+              errorStatus:
+                signUpDetails.FullName.value === ""
+                  ? true
+                  : signUpDetails.FullName.errorStatus,
+            },
+            Email: {
+              value: signUpDetails.Email.value,
+              errorMessage:
+                signUpDetails.Email.value === ""
+                  ? t("Email-address-is-required")
+                  : signUpDetails.Email.errorMessage,
+              errorStatus: signUpDetails.Email.errorStatus,
+            },
+            PhoneNumber: {
+              value: signUpDetails.PhoneNumber.value,
+              errorMessage:
+                signUpDetails.PhoneNumber.value === ""
+                  ? t("Phone-number-is-required")
+                  : signUpDetails.PhoneNumber.errorMessage,
+              errorStatus:
+                signUpDetails.PhoneNumber.value === ""
+                  ? true
+                  : signUpDetails.PhoneNumber.errorStatus,
+            },
+          });
+          show(t("Please-fill-all-the-fields"), "error");
         }
-      } else {
-        setSignUpDetails({
-          ...signUpDetails,
-          CompanyName: {
-            value: signUpDetails.CompanyName.value,
-            errorMessage:
-              signUpDetails.CompanyName.value === ""
-                ? t("Company-name-is-required")
-                : signUpDetails.CompanyName.errorMessage,
-            errorStatus:
-              signUpDetails.CompanyName.value === ""
-                ? true
-                : signUpDetails.CompanyName.errorStatus,
-          },
-          CountryName: {
-            value: signUpDetails.CountryName.value,
-            errorMessage:
-              signUpDetails.CountryName.value === ""
-                ? t("Country-name-is-required")
-                : signUpDetails.CountryName.errorMessage,
-            errorStatus:
-              signUpDetails.CountryName.value === ""
-                ? true
-                : signUpDetails.CountryName.errorStatus,
-          },
-          Address1: {
-            value: signUpDetails.Address1.value,
-            errorMessage:
-              signUpDetails.Address1.value === ""
-                ? t("Address-1-is-required")
-                : signUpDetails.Address1.errorMessage,
-            errorStatus:
-              signUpDetails.Address1.value === ""
-                ? true
-                : signUpDetails.Address1.errorStatus,
-          },
-          Address2: {
-            value: signUpDetails.Address2.value,
-            errorMessage:
-              signUpDetails.Address2.value === ""
-                ? t("Address-2-is-required")
-                : signUpDetails.Address2.errorMessage,
-            errorStatus:
-              signUpDetails.Address2.value === ""
-                ? true
-                : signUpDetails.Address2.errorStatus,
-          },
-          State: {
-            value: signUpDetails.State.value,
-            errorMessage: "",
-          },
-          City: {
-            value: signUpDetails.City.value,
-            errorMessage: "",
-          },
-          PostalCode: {
-            value: signUpDetails.PostalCode.value,
-            errorMessage: "",
-          },
-          FullName: {
-            value: signUpDetails.FullName.value,
-            errorMessage:
-              signUpDetails.FullName.value === ""
-                ? t("Full-name-is-required")
-                : signUpDetails.FullName.errorMessage,
-            errorStatus:
-              signUpDetails.FullName.value === ""
-                ? true
-                : signUpDetails.FullName.errorStatus,
-          },
-          Email: {
-            value: signUpDetails.Email.value,
-            errorMessage:
-              signUpDetails.Email.value === ""
-                ? t("Email-address-is-required")
-                : signUpDetails.Email.errorMessage,
-            errorStatus: signUpDetails.Email.errorStatus,
-          },
-          PhoneNumber: {
-            value: signUpDetails.PhoneNumber.value,
-            errorMessage:
-              signUpDetails.PhoneNumber.value === ""
-                ? t("Phone-number-is-required")
-                : signUpDetails.PhoneNumber.errorMessage,
-            errorStatus:
-              signUpDetails.PhoneNumber.value === ""
-                ? true
-                : signUpDetails.PhoneNumber.errorStatus,
-          },
-        });
-        show(t("Please-fill-all-the-fields"), "error");
       }
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/SignUpOrganizationUM/SignUpOrganizationUM.jsx:", error);
     }
   };
 
@@ -779,15 +783,19 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
   }, [countryNamesReducerCountryNamesData]);
 
   const onClickLink = async () => {
-    if (isFreeTrail === true) {
-      localStorage.removeItem("SignupFlowPageRoute");
-      localStorage.setItem("LoginFlowPageRoute", 1);
-      await dispatch(LoginFlowRoutes(1));
-      navigate("/");
-    } else {
-      setStoredStep(1);
-      localStorage.setItem("SignupFlowPageRoute", 1);
-      await dispatch(signUpFlowRoutes(1));
+    try {
+      if (isFreeTrail === true) {
+        localStorage.removeItem("SignupFlowPageRoute");
+        localStorage.setItem("LoginFlowPageRoute", 1);
+        await dispatch(LoginFlowRoutes(1));
+        navigate("/");
+      } else {
+        setStoredStep(1);
+        localStorage.setItem("SignupFlowPageRoute", 1);
+        await dispatch(signUpFlowRoutes(1));
+      }
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/SignUpOrganizationUM/SignUpOrganizationUM.jsx:", error);
     }
   };
 

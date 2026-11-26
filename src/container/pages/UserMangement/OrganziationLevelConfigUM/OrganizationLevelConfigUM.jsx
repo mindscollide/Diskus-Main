@@ -964,138 +964,142 @@ const OrganizationLevelConfigUM = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    let OrganizationID = localStorage.getItem("organizationID");
-    let Data = {
-      CalenderMonthsSpan: userOrganizationSetting.CalenderMonthsSpan,
-      DormantInactiveUsersForDays:
-        userOrganizationSetting.DormatInactiveUsersforDays,
-      EmailOnCancelledDeletedMeeting:
-        userOrganizationSetting.EmailCancelOrDeleteMeeting,
-      EmailOnEditMeeting: userOrganizationSetting.EmailEditMeeting,
-      EmailOnNewMeeting: userOrganizationSetting.EmailOnNewMeeting,
-      EmailWhenAddedToCommittee:
-        userOrganizationSetting.EmailWhenAddedToCommittee,
-      EmailWhenAddedToGroup: userOrganizationSetting.EmailWhenAddedToGroup,
-      EmailWhenCommitteeIsActive:
-        userOrganizationSetting.EmailWhenCommitteeisActive,
-      EmailWhenCommitteeIsDissolvedArchived:
-        userOrganizationSetting.EmailWhenCommitteeIsDissolvedOrArchived,
-      EmailWhenCommitteeIsInActive:
-        userOrganizationSetting.EmailWhenCommitteeisActive,
-      EmailWhenGroupIsActive: userOrganizationSetting.EmailWhenGroupisActive,
-      EmailWhenGroupIsClosedArchived:
-        userOrganizationSetting.EmailWhenGroupIsDissolvedOrArchived,
-      EmailWhenGroupIsInActive:
-        userOrganizationSetting.EmailWhenGroupIsSetInActive,
-      EmailWhenNewPollIsPublished:
-        userOrganizationSetting.EmailWhenNewPollIsPublished,
-      EmailWhenPollDueDateIsPassed:
-        userOrganizationSetting.EmailWhenPollDueDateIsPassed,
-      EmailWhenPublishedPollIsDeleted:
-        userOrganizationSetting.EmailWhenPublishedPollIsDeleted,
-      EmailWhenPublishedPollIsUpdated:
-        userOrganizationSetting.EmailWhenPublishedPollIsUpdated,
-      EmailWhenRemovedFromCommittee:
-        userOrganizationSetting.EmailWhenRemovedFromCommittee,
-      EmailWhenRemovedFromGroup:
-        userOrganizationSetting.EmailWhenRemovedFromGroup,
-      EmailwhenNewResolutionisCirculated:
-        userOrganizationSetting.EmailWhenResolutionIsCirculated,
-      EmailwhenResolutionisCancelledafterCirculation:
-        userOrganizationSetting.EmailWhenNewResolutionIsCancelledAfterCirculation,
-      EmailwhenaResolutionisClosed:
-        userOrganizationSetting.EmailWhenResolutionIsClosed,
-      FK_OrganizationID: JSON.parse(OrganizationID),
-      FK_TZID: userOrganizationSetting.TimeZoneId,
-      FK_WorldCountryID: userOrganizationSetting.worldCountryID,
-      Is2FAEnabled: userOrganizationSetting.Is2FAEnabled,
-      MaximumMeetingDuration: userOrganizationSetting.MaximumMeetingDuration,
-      PushNotificationOnEditMeeting:
-        userOrganizationSetting.PushNotificationEditMeeting,
-      PushNotificationOnNewMeeting:
-        userOrganizationSetting.PushNotificationonNewMeeting,
-      PushNotificationWhenNewPollIsPublished:
-        userOrganizationSetting.PushNotificationWhenNewPollIsPublished,
-      PushNotificationWhenPollDueDateIsPassed:
-        userOrganizationSetting.PushNotificationWhenPollDueDateIsPassed,
-      PushNotificationWhenPublishedPollIsDeleted:
-        userOrganizationSetting.PushNotificationWhenPublishedPollIsDeleted,
-      PushNotificationWhenPublishedPollIsUpdated:
-        userOrganizationSetting.PushNotificationWhenPublishedPollIsUpdated,
-      PushNotificationWhenResolutionIsClosed:
-        userOrganizationSetting.PushNotificationWhenResolutionISClosed,
-      PushNotificationonCancelledDeletedMeeting:
-        userOrganizationSetting.PushNotificationCancelledOrDeleteMeeting,
-      PushNotificationwhenAddedtoCommittee:
-        userOrganizationSetting.PushNotificationWhenAddedToCommittee,
-      PushNotificationwhenAddedtoGroup:
-        userOrganizationSetting.PushNotificationWhenAddedToGroup,
-      PushNotificationwhenCommitteeisDissolvedArchived:
-        userOrganizationSetting.PushNotificationWhenCommitteeIsDissolvedOrArchived,
-      PushNotificationwhenCommitteeissetActive:
-        userOrganizationSetting.PushNotificationWhenCommitteeisActive,
-      PushNotificationwhenCommitteeissetInActive:
-        userOrganizationSetting.PushNotificationWhenCommitteeisSetInActive,
-      PushNotificationwhenGroupisClosedArchived:
-        userOrganizationSetting.PushNotificationWhenGroupIsDissolvedOrArchived,
-      PushNotificationwhenGroupissetActive:
-        userOrganizationSetting.PushNotificationWhenGroupisSetInActive,
-      PushNotificationwhenGroupissetInActive:
-        userOrganizationSetting.PushNotificationWhenGroupisActive,
-      PushNotificationwhenNewResolutionisCirculated:
-        userOrganizationSetting.PushNotificationWhenNewResolutionIsCirculated,
-      PushNotificationwhenRemovedfromCommittee:
-        userOrganizationSetting.PushNotificationWhenRemovedFromCommittee,
-      PushNotificationwhenRemovedfromGroup:
-        userOrganizationSetting.PushNotificationWhenRemovedFromGroup,
-      PushNotificationwhenResolutionisCancelledafterCirculation:
-        userOrganizationSetting.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
-      ShowNotificationOnParticipantJoining:
-        userOrganizationSetting.ShowNotificationOnParticipantJoining,
-      UserAllowGoogleCalendarSynch: userOrganizationSetting.AllowCalenderSync,
-      UserAllowMicrosoftCalendarSynch:
-        userOrganizationSetting.AllowMicrosoftCalenderSync,
-      PushNotificationWhenNewTODOAssigned:
-        userOrganizationSetting.PushNotificationWhenNewTODOAssigned,
-      PushNotificationWhenNewTODODeleted:
-        userOrganizationSetting.PushNotificationWhenNewTODODeleted,
-      PushNotificationWhenNewTODOEdited:
-        userOrganizationSetting.PushNotificationWhenNewTODOEdited,
-      PushNotificationWhenNewCommentAdded:
-        userOrganizationSetting.PushNotificationWhenNewCommentAdded,
-      PushNotificationWhenCommentDeleted:
-        userOrganizationSetting.PushNotificationWhenCommentDeleted,
-      EmailWhenCommentDeleted: userOrganizationSetting.EmailWhenCommentDeleted,
-      EmailWhenNewCommentAdded:
-        userOrganizationSetting.EmailWhenNewCommentAdded,
-      EmailWhenNewTODOAssigned:
-        userOrganizationSetting.EmailWhenNewTODOAssigned,
-      EmailWhenNewTODODeleted: userOrganizationSetting.EmailWhenNewTODODeleted,
-      EmailWhenNewTODOEdited: userOrganizationSetting.EmailWhenNewTODOEdited,
-      EmailWhenActiveMeetingAgendaUpdated:
-        userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated,
-      AutoCloseResolutionDays: autoCloseResolution?.value || 1,
-      FiscalEndMonth: userOrganizationSetting.fiscalEndMonth,
-      ComplianceAlertOne: userOrganizationSetting.complianceAlertOne,
-      ComplianceAlertTwo: userOrganizationSetting.complianceAlertTwo,
-      ComplianceAlertThree: userOrganizationSetting.complianceAlertThree,
-      IsMondayWorkingDay: userOrganizationSetting.isMondayWorkingDay,
-      IsTuesdayWorkingDay: userOrganizationSetting.isTuesdayWorkingDay,
-      IsWednesdayWorkingDay: userOrganizationSetting.isWednesdayWorkingDay,
-      IsThursdayWorkingDay: userOrganizationSetting.isThursdayWorkingDay,
-      IsFridayWorkingDay: userOrganizationSetting.isFridayWorkingDay,
-      IsSaturdayWorkingDay: userOrganizationSetting.isSaturdayWorkingDay,
-      IsSundayWorkingDay: userOrganizationSetting.isSundayWorkingDay,
-      IsOneToOneCallRecordingEnabled:
-        userOrganizationSetting.IsOneToOneCallRecordingEnabled,
-      IsGroupCallRecordingEnabled:
-        userOrganizationSetting.IsGroupCallRecordingEnabled,
-      TaskReminderOneDay: userOrganizationSetting.TaskReminderOneDay,
-      TaskReminderSevenDay: userOrganizationSetting.TaskReminderSevenDay,
-      TaskReminderFifteenDay: userOrganizationSetting.TaskReminderFifteenDay,
-    };
+    try {
+      let OrganizationID = localStorage.getItem("organizationID");
+      let Data = {
+        CalenderMonthsSpan: userOrganizationSetting.CalenderMonthsSpan,
+        DormantInactiveUsersForDays:
+          userOrganizationSetting.DormatInactiveUsersforDays,
+        EmailOnCancelledDeletedMeeting:
+          userOrganizationSetting.EmailCancelOrDeleteMeeting,
+        EmailOnEditMeeting: userOrganizationSetting.EmailEditMeeting,
+        EmailOnNewMeeting: userOrganizationSetting.EmailOnNewMeeting,
+        EmailWhenAddedToCommittee:
+          userOrganizationSetting.EmailWhenAddedToCommittee,
+        EmailWhenAddedToGroup: userOrganizationSetting.EmailWhenAddedToGroup,
+        EmailWhenCommitteeIsActive:
+          userOrganizationSetting.EmailWhenCommitteeisActive,
+        EmailWhenCommitteeIsDissolvedArchived:
+          userOrganizationSetting.EmailWhenCommitteeIsDissolvedOrArchived,
+        EmailWhenCommitteeIsInActive:
+          userOrganizationSetting.EmailWhenCommitteeisActive,
+        EmailWhenGroupIsActive: userOrganizationSetting.EmailWhenGroupisActive,
+        EmailWhenGroupIsClosedArchived:
+          userOrganizationSetting.EmailWhenGroupIsDissolvedOrArchived,
+        EmailWhenGroupIsInActive:
+          userOrganizationSetting.EmailWhenGroupIsSetInActive,
+        EmailWhenNewPollIsPublished:
+          userOrganizationSetting.EmailWhenNewPollIsPublished,
+        EmailWhenPollDueDateIsPassed:
+          userOrganizationSetting.EmailWhenPollDueDateIsPassed,
+        EmailWhenPublishedPollIsDeleted:
+          userOrganizationSetting.EmailWhenPublishedPollIsDeleted,
+        EmailWhenPublishedPollIsUpdated:
+          userOrganizationSetting.EmailWhenPublishedPollIsUpdated,
+        EmailWhenRemovedFromCommittee:
+          userOrganizationSetting.EmailWhenRemovedFromCommittee,
+        EmailWhenRemovedFromGroup:
+          userOrganizationSetting.EmailWhenRemovedFromGroup,
+        EmailwhenNewResolutionisCirculated:
+          userOrganizationSetting.EmailWhenResolutionIsCirculated,
+        EmailwhenResolutionisCancelledafterCirculation:
+          userOrganizationSetting.EmailWhenNewResolutionIsCancelledAfterCirculation,
+        EmailwhenaResolutionisClosed:
+          userOrganizationSetting.EmailWhenResolutionIsClosed,
+        FK_OrganizationID: JSON.parse(OrganizationID),
+        FK_TZID: userOrganizationSetting.TimeZoneId,
+        FK_WorldCountryID: userOrganizationSetting.worldCountryID,
+        Is2FAEnabled: userOrganizationSetting.Is2FAEnabled,
+        MaximumMeetingDuration: userOrganizationSetting.MaximumMeetingDuration,
+        PushNotificationOnEditMeeting:
+          userOrganizationSetting.PushNotificationEditMeeting,
+        PushNotificationOnNewMeeting:
+          userOrganizationSetting.PushNotificationonNewMeeting,
+        PushNotificationWhenNewPollIsPublished:
+          userOrganizationSetting.PushNotificationWhenNewPollIsPublished,
+        PushNotificationWhenPollDueDateIsPassed:
+          userOrganizationSetting.PushNotificationWhenPollDueDateIsPassed,
+        PushNotificationWhenPublishedPollIsDeleted:
+          userOrganizationSetting.PushNotificationWhenPublishedPollIsDeleted,
+        PushNotificationWhenPublishedPollIsUpdated:
+          userOrganizationSetting.PushNotificationWhenPublishedPollIsUpdated,
+        PushNotificationWhenResolutionIsClosed:
+          userOrganizationSetting.PushNotificationWhenResolutionISClosed,
+        PushNotificationonCancelledDeletedMeeting:
+          userOrganizationSetting.PushNotificationCancelledOrDeleteMeeting,
+        PushNotificationwhenAddedtoCommittee:
+          userOrganizationSetting.PushNotificationWhenAddedToCommittee,
+        PushNotificationwhenAddedtoGroup:
+          userOrganizationSetting.PushNotificationWhenAddedToGroup,
+        PushNotificationwhenCommitteeisDissolvedArchived:
+          userOrganizationSetting.PushNotificationWhenCommitteeIsDissolvedOrArchived,
+        PushNotificationwhenCommitteeissetActive:
+          userOrganizationSetting.PushNotificationWhenCommitteeisActive,
+        PushNotificationwhenCommitteeissetInActive:
+          userOrganizationSetting.PushNotificationWhenCommitteeisSetInActive,
+        PushNotificationwhenGroupisClosedArchived:
+          userOrganizationSetting.PushNotificationWhenGroupIsDissolvedOrArchived,
+        PushNotificationwhenGroupissetActive:
+          userOrganizationSetting.PushNotificationWhenGroupisSetInActive,
+        PushNotificationwhenGroupissetInActive:
+          userOrganizationSetting.PushNotificationWhenGroupisActive,
+        PushNotificationwhenNewResolutionisCirculated:
+          userOrganizationSetting.PushNotificationWhenNewResolutionIsCirculated,
+        PushNotificationwhenRemovedfromCommittee:
+          userOrganizationSetting.PushNotificationWhenRemovedFromCommittee,
+        PushNotificationwhenRemovedfromGroup:
+          userOrganizationSetting.PushNotificationWhenRemovedFromGroup,
+        PushNotificationwhenResolutionisCancelledafterCirculation:
+          userOrganizationSetting.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+        ShowNotificationOnParticipantJoining:
+          userOrganizationSetting.ShowNotificationOnParticipantJoining,
+        UserAllowGoogleCalendarSynch: userOrganizationSetting.AllowCalenderSync,
+        UserAllowMicrosoftCalendarSynch:
+          userOrganizationSetting.AllowMicrosoftCalenderSync,
+        PushNotificationWhenNewTODOAssigned:
+          userOrganizationSetting.PushNotificationWhenNewTODOAssigned,
+        PushNotificationWhenNewTODODeleted:
+          userOrganizationSetting.PushNotificationWhenNewTODODeleted,
+        PushNotificationWhenNewTODOEdited:
+          userOrganizationSetting.PushNotificationWhenNewTODOEdited,
+        PushNotificationWhenNewCommentAdded:
+          userOrganizationSetting.PushNotificationWhenNewCommentAdded,
+        PushNotificationWhenCommentDeleted:
+          userOrganizationSetting.PushNotificationWhenCommentDeleted,
+        EmailWhenCommentDeleted: userOrganizationSetting.EmailWhenCommentDeleted,
+        EmailWhenNewCommentAdded:
+          userOrganizationSetting.EmailWhenNewCommentAdded,
+        EmailWhenNewTODOAssigned:
+          userOrganizationSetting.EmailWhenNewTODOAssigned,
+        EmailWhenNewTODODeleted: userOrganizationSetting.EmailWhenNewTODODeleted,
+        EmailWhenNewTODOEdited: userOrganizationSetting.EmailWhenNewTODOEdited,
+        EmailWhenActiveMeetingAgendaUpdated:
+          userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated,
+        AutoCloseResolutionDays: autoCloseResolution?.value || 1,
+        FiscalEndMonth: userOrganizationSetting.fiscalEndMonth,
+        ComplianceAlertOne: userOrganizationSetting.complianceAlertOne,
+        ComplianceAlertTwo: userOrganizationSetting.complianceAlertTwo,
+        ComplianceAlertThree: userOrganizationSetting.complianceAlertThree,
+        IsMondayWorkingDay: userOrganizationSetting.isMondayWorkingDay,
+        IsTuesdayWorkingDay: userOrganizationSetting.isTuesdayWorkingDay,
+        IsWednesdayWorkingDay: userOrganizationSetting.isWednesdayWorkingDay,
+        IsThursdayWorkingDay: userOrganizationSetting.isThursdayWorkingDay,
+        IsFridayWorkingDay: userOrganizationSetting.isFridayWorkingDay,
+        IsSaturdayWorkingDay: userOrganizationSetting.isSaturdayWorkingDay,
+        IsSundayWorkingDay: userOrganizationSetting.isSundayWorkingDay,
+        IsOneToOneCallRecordingEnabled:
+          userOrganizationSetting.IsOneToOneCallRecordingEnabled,
+        IsGroupCallRecordingEnabled:
+          userOrganizationSetting.IsGroupCallRecordingEnabled,
+        TaskReminderOneDay: userOrganizationSetting.TaskReminderOneDay,
+        TaskReminderSevenDay: userOrganizationSetting.TaskReminderSevenDay,
+        TaskReminderFifteenDay: userOrganizationSetting.TaskReminderFifteenDay,
+      };
 
-    dispatch(updateOrganizationLevelSetting(navigate, Data, t));
+      dispatch(updateOrganizationLevelSetting(navigate, Data, t));
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/OrganziationLevelConfigUM/OrganizationLevelConfigUM.jsx:", error);
+    }
   };
 
   return (

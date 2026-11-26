@@ -213,17 +213,21 @@ const SignInUserManagement = () => {
 
     // 🚀 Browser detection only decides whether to show the "switch to Chrome" box
     (async () => {
-      const browser = await detectBrowser();
-      console.log("Detected Browser:", browser);
+      try {
+        const browser = await detectBrowser();
+        console.log("Detected Browser:", browser);
 
-      const isIncognito = browser === "Chrome" ? await checkIncognito() : false;
+        const isIncognito = browser === "Chrome" ? await checkIncognito() : false;
 
-      if (browser !== "Chrome") {
-        setBestExperienceBox(true);
+        if (browser !== "Chrome") {
+          setBestExperienceBox(true);
+        }
+
+        console.log("Incognito Mode:", isIncognito);
+        console.log("onChangeAllowMicrosoftCalenderSync", code);
+      } catch (error) {
+        console.error("src/container/pages/UserMangement/SignInUserManagement/SignInUserManagement.jsx:", error);
       }
-
-      console.log("Incognito Mode:", isIncognito);
-      console.log("onChangeAllowMicrosoftCalenderSync", code);
     })();
   }, [code, getpayemntString, currentUrl, emailRef]);
 

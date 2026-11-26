@@ -99,46 +99,50 @@ const DeviceFor2FAVerify = () => {
   };
 
   const onClickRealmeXtra = async (e) => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let UserID = localStorage.getItem("userID");
-    e.preventDefault();
-    if (xtrazoom) {
-      let Data = {
-        UserID: JSON.parse(UserID),
-        Device: "BROWSER",
-        DeviceID: "1",
-        OrganizationID: OrganizationID,
-        isEmail: notificationType === "email",
-        isSMS: notificationType === "sms",
-        isDevice: notificationType === "device",
-        UserDevices: [
-          {
-            DeviceName: currentDevice.DeviceName,
-            UserDeviceID: currentDevice.UserDeviceID,
-            DeviceRegistrationToken: currentDevice.DeviceRegistrationToken,
-          },
-        ],
-      };
-      await dispatch(
-        sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes),
-      );
-      localStorage.setItem("GobackSelection", 2);
-      localStorage.setItem("currentDevice", JSON.stringify(currentDevice));
-    } else {
-      let Data = {
-        UserID: JSON.parse(UserID),
-        Device: "BROWSER",
-        DeviceID: "1",
-        OrganizationID: OrganizationID,
-        isEmail: notificationType === "email",
-        isSMS: notificationType === "sms",
-        isDevice: notificationType === "device",
-        UserDevices: [],
-      };
-      localStorage.setItem("GobackSelection", 2);
-      await dispatch(
-        sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes),
-      );
+    try {
+      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let UserID = localStorage.getItem("userID");
+      e.preventDefault();
+      if (xtrazoom) {
+        let Data = {
+          UserID: JSON.parse(UserID),
+          Device: "BROWSER",
+          DeviceID: "1",
+          OrganizationID: OrganizationID,
+          isEmail: notificationType === "email",
+          isSMS: notificationType === "sms",
+          isDevice: notificationType === "device",
+          UserDevices: [
+            {
+              DeviceName: currentDevice.DeviceName,
+              UserDeviceID: currentDevice.UserDeviceID,
+              DeviceRegistrationToken: currentDevice.DeviceRegistrationToken,
+            },
+          ],
+        };
+        await dispatch(
+          sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes),
+        );
+        localStorage.setItem("GobackSelection", 2);
+        localStorage.setItem("currentDevice", JSON.stringify(currentDevice));
+      } else {
+        let Data = {
+          UserID: JSON.parse(UserID),
+          Device: "BROWSER",
+          DeviceID: "1",
+          OrganizationID: OrganizationID,
+          isEmail: notificationType === "email",
+          isSMS: notificationType === "sms",
+          isDevice: notificationType === "device",
+          UserDevices: [],
+        };
+        localStorage.setItem("GobackSelection", 2);
+        await dispatch(
+          sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes),
+        );
+      }
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/2FA Verification/DevicesFor2FAVerify/DeviceFor2FAVerify.jsx:", error);
     }
   };
 

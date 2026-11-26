@@ -329,30 +329,34 @@ const UserLevelConfigUM = () => {
   // };
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
-    // const value = e.target.checked;
-    // if (value) {
-    //   // signInMicrowSoft(value);
-    // } else {
-    //   try {
-    //     // Initiate the logout process
-    //     await instance.logoutPopup();
-    //     // Check if the user is still authenticated after logout
-    //     const isAuthenticated = !!instance.getAllAccounts().length;
-    //     if (!isAuthenticated) {
-    //       setAuthMicrosoftAccessToken("");
-    //       setAuthMicrosoftRefreshToken("");
-    //       setUserOptionsSettings({
-    //         ...userOptionsSettings,
-    //         AllowMicrosoftCalenderSync: value,
-    //       });
-    //       // Perform any additional actions after successful logout
-    //     } else {
-    //       // Handle the case where the user is still authenticated after logout
-    //     }
-    //   } catch (error) {
-    //     // Handle any errors that occur during logout
-    //   }
-    // }
+    try {
+      // const value = e.target.checked;
+      // if (value) {
+      //   // signInMicrowSoft(value);
+      // } else {
+      //   try {
+      //     // Initiate the logout process
+      //     await instance.logoutPopup();
+      //     // Check if the user is still authenticated after logout
+      //     const isAuthenticated = !!instance.getAllAccounts().length;
+      //     if (!isAuthenticated) {
+      //       setAuthMicrosoftAccessToken("");
+      //       setAuthMicrosoftRefreshToken("");
+      //       setUserOptionsSettings({
+      //         ...userOptionsSettings,
+      //         AllowMicrosoftCalenderSync: value,
+      //       });
+      //       // Perform any additional actions after successful logout
+      //     } else {
+      //       // Handle the case where the user is still authenticated after logout
+      //     }
+      //   } catch (error) {
+      //     // Handle any errors that occur during logout
+      //   }
+      // }
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM.jsx:", error);
+    }
   };
 
   const onChangeEmailWhenAddedToCommittee = (e) => {
@@ -651,59 +655,44 @@ const UserLevelConfigUM = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    let AllowMicrosoftCalenderSyncCall =
-      userOptionsSettings.AllowMicrosoftCalenderSync;
+    try {
+      let AllowMicrosoftCalenderSyncCall =
+        userOptionsSettings.AllowMicrosoftCalenderSync;
 
-    if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
-      if (authMicrosoftAccessToken !== "") {
-        await dispatch(
-          getMicrosoftValidToken(
-            navigate,
-            authMicrosoftAccessToken,
-            authMicrosoftRefreshToken,
-            userOptionsSettings,
-            AllowMicrosoftCalenderSyncCall,
-            t,
-          ),
-        );
+      if (userOptionsSettings.AllowMicrosoftCalenderSync !== false) {
+        if (authMicrosoftAccessToken !== "") {
+          await dispatch(
+            getMicrosoftValidToken(
+              navigate,
+              authMicrosoftAccessToken,
+              authMicrosoftRefreshToken,
+              userOptionsSettings,
+              AllowMicrosoftCalenderSyncCall,
+              t,
+            ),
+          );
+        }
       }
-    }
     
-    // global is tru and update local state is false then call revoke token api
-    // else if(){
-    // const tokenRevoke=await dispatch(
-    //   getMicroSoftRevokeToken(navigate, signUpCodeToken, userOptionsSettings, t,2)
-    // );
-    // AllowMicrosoftCalenderSyncCall=tokenRevoke
-    // }
-    if (signUpCodeToken !== "") {
-      if (userOptionsSettings.AllowGoogleCalenderSync) {
-        await dispatch(
-          getGoogleValidToken(
-            navigate,
-            signUpCodeToken,
-            userOptionsSettings,
-            t,
-            AllowMicrosoftCalenderSyncCall,
-          ),
-        );
-      } else {
-        console.log("CHeck Is Calling Here");
-
-        await dispatch(
-          updateUserSettingFunc(
-            navigate,
-            userOptionsSettings,
-            t,
-            true,
-            AllowMicrosoftCalenderSyncCall,
-          ),
-        );
-      }
-      setSignUpCodeToken("");
-    } else {
-      if (settingReducerUserProfileData.userAllowGoogleCalendarSynch) {
+      // global is tru and update local state is false then call revoke token api
+      // else if(){
+      // const tokenRevoke=await dispatch(
+      //   getMicroSoftRevokeToken(navigate, signUpCodeToken, userOptionsSettings, t,2)
+      // );
+      // AllowMicrosoftCalenderSyncCall=tokenRevoke
+      // }
+      if (signUpCodeToken !== "") {
         if (userOptionsSettings.AllowGoogleCalenderSync) {
+          await dispatch(
+            getGoogleValidToken(
+              navigate,
+              signUpCodeToken,
+              userOptionsSettings,
+              t,
+              AllowMicrosoftCalenderSyncCall,
+            ),
+          );
+        } else {
           console.log("CHeck Is Calling Here");
 
           await dispatch(
@@ -715,29 +704,48 @@ const UserLevelConfigUM = () => {
               AllowMicrosoftCalenderSyncCall,
             ),
           );
+        }
+        setSignUpCodeToken("");
+      } else {
+        if (settingReducerUserProfileData.userAllowGoogleCalendarSynch) {
+          if (userOptionsSettings.AllowGoogleCalenderSync) {
+            console.log("CHeck Is Calling Here");
+
+            await dispatch(
+              updateUserSettingFunc(
+                navigate,
+                userOptionsSettings,
+                t,
+                true,
+                AllowMicrosoftCalenderSyncCall,
+              ),
+            );
+          } else {
+            await dispatch(
+              revokeToken(
+                navigate,
+                userOptionsSettings,
+                t,
+                AllowMicrosoftCalenderSyncCall,
+              ),
+            );
+          }
         } else {
+          console.log("CHeck Is Calling Here");
+
           await dispatch(
-            revokeToken(
+            updateUserSettingFunc(
               navigate,
               userOptionsSettings,
               t,
+              false,
               AllowMicrosoftCalenderSyncCall,
             ),
           );
         }
-      } else {
-        console.log("CHeck Is Calling Here");
-
-        await dispatch(
-          updateUserSettingFunc(
-            navigate,
-            userOptionsSettings,
-            t,
-            false,
-            AllowMicrosoftCalenderSyncCall,
-          ),
-        );
       }
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/UserLevelConfigUM/UserLevelConfigUM.jsx:", error);
     }
   };
 

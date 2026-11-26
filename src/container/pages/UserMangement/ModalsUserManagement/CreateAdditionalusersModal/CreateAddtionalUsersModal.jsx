@@ -207,22 +207,30 @@ const CreateAddtionalUsersModal = () => {
 
   //Handle Skip Button
   const handleSkipButton = async () => {
-    await dispatch(showCreateAddtionalUsersModal(false));
+    try {
+      await dispatch(showCreateAddtionalUsersModal(false));
 
-    await dispatch(getPackageExpiryDetail(navigate, Number(organzataionID), t));
-    navigate("/Admin/ManageUsers");
+      await dispatch(getPackageExpiryDetail(navigate, Number(organzataionID), t));
+      navigate("/Admin/ManageUsers");
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal.jsx:", error);
+    }
   };
 
   //handle Create button
   const handleCreatebutton = async () => {
-    if (Object.keys(members).length > 0) {
-      let data = { UserDataList: members };
-      await dispatch(
-        getPackageExpiryDetail(navigate, Number(organzataionID), t)
-      );
-      await dispatch(AddOrganizationsUserApi(navigate, t, data, false));
-    } else {
-      // add notification that ad atleast one user
+    try {
+      if (Object.keys(members).length > 0) {
+        let data = { UserDataList: members };
+        await dispatch(
+          getPackageExpiryDetail(navigate, Number(organzataionID), t)
+        );
+        await dispatch(AddOrganizationsUserApi(navigate, t, data, false));
+      } else {
+        // add notification that ad atleast one user
+      }
+    } catch (error) {
+      console.error("src/container/pages/UserMangement/ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal.jsx:", error);
     }
   };
 
