@@ -1639,6 +1639,20 @@ const Dashboard = () => {
               }
             } else if (
               data.payload.message.toLowerCase() ===
+              "PARTICIPANT_REMOVED_FROM_MEETING".toLowerCase()
+            ) {
+              // Host removed someone from meeting video: drop them (guest or user) from this participant's list, same as VIDEO_PARTICIPANT_LEFT
+              const meetingHost = JSON.parse(
+                localStorage.getItem("meetinHostInfo"),
+              );
+              const myGuid = meetingHost?.isHost
+                ? localStorage.getItem("isGuid")
+                : localStorage.getItem("participantUID");
+              if (myGuid !== data.payload.removedUID) {
+                dispatch(participantLeaveVideoMeeting(data.payload.removedUID));
+              }
+            } else if (
+              data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_PARTICIPANT_LEFT_WAITING_ROOM".toLowerCase()
             ) {
               // Someone left the meeting-video waiting room: drop them from the host's waiting list
