@@ -1,5 +1,5 @@
 import ImgCrop from "antd-img-crop";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Upload, Spin } from "antd";
 import CustomModal from "../../elements/modal/Modal";
 import styles from "./imageUploader.module.css";
@@ -21,7 +21,9 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
   const Authreducer = useSelector((state) => state.Authreducer);
   const { t } = useTranslation();
   const navigate = useNavigate();
-  
+  // true from the moment a new picture is sent until the API answers
+  const uploadPending = useRef(false);
+
   const handlePreview = async (file) => {
     const base64Image = file.url.split(",")[1];
     if (isBase64(base64Image)) {
@@ -33,10 +35,16 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
   const handleCancel = () => setPreviewOpen(false);
 
   const uploadProfilePic = ({ file }) => {
-    
+    console.log("uploadProfilePic file", file);
+
     getBase64(file)
       .then((res) => {
         let fileUrL = res.split(",")[1];
+        // show the new picture right away: the list is controlled by the saved picture, which
+        // only changes after the API and the user-details reload have finished (and stayed on
+        // "+ Upload" when the user had removed the old picture first)
+        uploadPending.current = true;
+        setFileList([{ uid: "-1", name: file.name, url: res }]);
         dispatch(updateUserProfilePicture(navigate, t, file.name, fileUrL));
       })
       .catch((err) => console.log(err));
@@ -55,10 +63,22 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
     return [];
   }, [pictureObj.DisplayProfilePictureName]);
 
-  
+
   useEffect(() => {
     setFileList(memoizedFile);
   }, [memoizedFile]);
+
+  // the upload failed: go back to the saved picture instead of showing one that was not saved
+  useEffect(() => {
+    if (
+      uploadPending.current &&
+      !Authreducer.Loading &&
+      Authreducer.errorSeverity === "error"
+    ) {
+      uploadPending.current = false;
+      setFileList(memoizedFile);
+    }
+  }, [Authreducer.Loading, Authreducer.errorSeverity]);
 
   //For Removing Profile Picture funtion
   const onRemovePicture = () => {
@@ -104,7 +124,7 @@ const AvatarEditorComponent = ({ pictureObj, setUserProfileEdit }) => {
               : "not_working"
           }
         >
-          {Authreducer.Loading ? (
+          {Authreducer.Loading && fileList.length === 0 ? (
             <Spin />
           ) : fileList.length === 0 ? (
             <>

@@ -1523,7 +1523,7 @@
   "End-for-all": "End for All",
   "End-for-me": "End for Me",
   "Publish-the-meeting": "Publish the meeting",
-  "Delete-meeting": "Delete Meeting",
+  "Delete-meeting": "Delete Meeting?",
   "Schedule-proposed-meetings": "Schedule Proposed Meetings",
   "Create-another-minute-in-this-agenda": "Create another minute in this agenda",
   "Create-another-minute-in-this-subagenda": "Create another minute in this sub agenda",
@@ -2988,5 +2988,6 @@
   "New-StatusID-is-required": "New StatusID is required",
   "Accumulative-report": "Accumulative Report",
   "Compliance-standing-report": "Compliance Standing Report",
-  "End-of-quarter": "End Of Quarter"
+  "End-of-quarter": "End Of Quarter",
+  "Edit-propose-meeting": "Edit Propose Meeting"
 }

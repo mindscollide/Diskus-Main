@@ -1520,7 +1520,7 @@
   "End-for-all": "انهاء للجميع",
   "End-for-me": "انهاء لأجلي",
   "Publish-the-meeting": "نشر الاجتماع",
-  "Delete-meeting": "حذف الاجتماع",
+  "Delete-meeting": "حذف الاجتماع؟",
   "Schedule-proposed-meetings": "جدولة الاجتماعات المقترحة",
   "Create-another-minute-in-this-agenda": "قم بإنشاء دقيقة أخرى في جدول الأعمال هذا",
   "Create-another-minute-in-this-subagenda": "قم بإنشاء دقيقة أخرى في جدول الأعمال الفرعي هذا",
@@ -2985,5 +2985,6 @@
   "New-StatusID-is-required": "معرّف الحالة الجديد مطلوب",
   "Accumulative-report": "التقرير التراكمي",
   "Compliance-standing-report": "تقرير حالة الامتثال",
-  "End-of-quarter": "نهاية الربع"
+  "End-of-quarter": "نهاية الربع",
+  "Edit-propose-meeting": "تعديل الاجتماع المقترح"
 }

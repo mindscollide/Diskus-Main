@@ -31,6 +31,7 @@ import { getCalendarDataResponse } from "../../../store/actions/GetDataForCalend
 import CalendarFooter from "./calender_footer";
 import "moment/dist/locale/ar";
 import "moment/dist/locale/ar-sa";
+import useCalendarMonthsSpan from "../../../commen/functions/useCalendarMonthsSpan";
 // (no module-level moment.locale("en-US") here: this runs when the file is first imported,
 // which can be after the user switched to Arabic, and reset the whole app's moment locale;
 // the language is kept in sync centrally in src/i18n.js)
@@ -122,10 +123,9 @@ function CustomCalendar({
     (newDate) => setDefaultValue(newDate),
     [setDefaultValue]
   );
-  let CalenderMonthsSpan =
-    localStorage.getItem("calenderMonthsSpan") !== null
-      ? localStorage.getItem("calenderMonthsSpan")
-      : 1;
+  // null until the user settings are loaded (the first request must carry the real span)
+  const loadedMonthsSpan = useCalendarMonthsSpan();
+  const CalenderMonthsSpan = loadedMonthsSpan ?? 1;
   let OrganizationID = localStorage.getItem("organizationID");
   const userID = localStorage.getItem("userID");
   const dispatch = useDispatch();

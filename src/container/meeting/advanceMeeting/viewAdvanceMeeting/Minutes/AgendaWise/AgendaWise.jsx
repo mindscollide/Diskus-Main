@@ -195,32 +195,23 @@ const AgendaWise = ({
   FontAttributor.whitelist = fonts;
   Quill.register(FontAttributor, true);
 
-  useEffect(() => {
-    try {
-      if (AllAgendas !== null && AllAgendas !== undefined) {
-        let NewData = [];
-        AllAgendas.agendaList.forEach((agenda, index) => {
-          NewData.push({
-            value: agenda.id,
-            label: agenda.title,
-          });
+  console.log(AllAgendas, "AllAgendasAllAgendasAllAgendas");
 
-          agenda.subAgenda.forEach((subajendaData, index) => {
-            NewData.push({
-              value: subajendaData.subAgendaID,
-              label: subajendaData.subTitle,
-            });
-          });
-        });
-        setAgendaOptions(NewData);
-      }
-    } catch (error) {
-      console.error(
-        "src/container/meeting/advanceMeeting/viewAdvanceMeeting/Minutes/AgendaWise/AgendaWise.js:",
-        error,
-        AllAgendas,
-      );
-    }
+  useEffect(() => {
+    const agendaList = AllAgendas?.agendaList ?? [];
+
+    const NewData = agendaList.flatMap((agenda) => [
+      {
+        value: agenda.id,
+        label: agenda.title,
+      },
+      ...(agenda.subAgenda ?? []).map((subAgenda) => ({
+        value: subAgenda.subAgendaID,
+        label: subAgenda.subTitle,
+      })),
+    ]);
+
+    setAgendaOptions(NewData);
   }, [AllAgendas]);
 
   const modules = {
@@ -1427,7 +1418,7 @@ const AgendaWise = ({
                                                 }>
                                                 {t("Reviewed")}:
                                               </span>{" "}
-                                         
+
                                               {parentMinutedata?.MinuteStats
                                                 ?.rejectedByUsers?.length > 0 &&
                                                 parentMinutedata?.MinuteStats?.rejectedByUsers.map(
@@ -1453,7 +1444,7 @@ const AgendaWise = ({
                                     sm={12}
                                     className='position-relative'>
                                     <div className={styles["uploaded-details"]}>
-                                  
+
                                       {/* the minute being edited cannot be removed */}
                                       {!(
                                         isEdit === true &&
@@ -1571,7 +1562,7 @@ const AgendaWise = ({
                                               sm={12}
                                               className='d-grid justify-content-end p-0'>
                                               <div className='d-flex justify-content-center align-items-center'>
-                                             
+
                                                 {(
                                                   Number(localStorage.getItem("userID")) ===
                                                   Number(parentMinutedata.userID) &&

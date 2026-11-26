@@ -67,7 +67,7 @@ const DeleteMeetingConfirmationModal = () => {
             <Row>
               <Col sm={12} md={12} lg={12}>
                 <h3 className={styles["delete-meeting-heading"]}>
-                  {t("Delete-meeting")}?
+                  {t("Delete-meeting")}
                 </h3>
               </Col>
               <Col sm={12} md={12} lg={12}>
@@ -81,6 +81,8 @@ const DeleteMeetingConfirmationModal = () => {
                 <TextField
                   type={showPassword ? "text" : "password"}
                   label={t("Password")}
+                  // the browser must not auto-fill the saved login password here
+                  autoComplete="new-password"
                   value={passwordValue}
                   change={(e) => setPasswordValue(e.target.value)}
                   width={"100%"}

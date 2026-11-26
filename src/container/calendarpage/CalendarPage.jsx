@@ -31,6 +31,7 @@ import {
 } from "../../store/actions/NewMeetingActions";
 import CreateQuickMeeting from "../meeting/quickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 import { useNewMeetingContext } from "../../context/NewMeetingContext";
+import useCalendarMonthsSpan from "../../commen/functions/useCalendarMonthsSpan";
 import {
   getViewMeetingByMeetingIdApi,
   joinMeetingApi,
@@ -158,10 +159,9 @@ const CalendarPage = () => {
 
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
-  let CalenderMonthsSpan =
-    localStorage.getItem("calenderMonthsSpan") !== null
-      ? localStorage.getItem("calenderMonthsSpan")
-      : 1;
+  // null until the user settings are loaded (the first request must carry the real span)
+  const loadedMonthsSpan = useCalendarMonthsSpan();
+  const CalenderMonthsSpan = loadedMonthsSpan ?? 1;
   let OrganizationID = localStorage.getItem("organizationID");
   const userID = localStorage.getItem("userID");
   var currentDate = new Date();
@@ -258,7 +258,11 @@ const CalendarPage = () => {
 
   // calling Api for getting data for calendar
   useEffect(() => {
+    if (loadedMonthsSpan === null) return;
     callApi();
+  }, [loadedMonthsSpan]);
+
+  useEffect(() => {
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;
       let prev = "ant-picker-prev-icon";

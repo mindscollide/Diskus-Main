@@ -26,6 +26,7 @@ import {
 } from "../../../store/actions/GetMeetingUserId";
 import useSnackbar from "../../../components/elements/snack_bar/useSnackbar";
 import styles from "./Calendar.module.css";
+import useCalendarMonthsSpan from "../../../commen/functions/useCalendarMonthsSpan";
 
 // Maps a calendar event source ID to its translated label
 const getEventSourceLabel = (fK_CESID, t) => {
@@ -122,15 +123,14 @@ const NewCalendar = () => {
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
   const [show, SnackBar] = useSnackbar();
-  let CalenderMonthsSpan =
-    localStorage.getItem("calenderMonthsSpan") !== undefined &&
-    localStorage.getItem("calenderMonthsSpan") !== null
-      ? localStorage.getItem("calenderMonthsSpan")
-      : 1;
+  // null until the user settings are loaded, so the first request already carries the real span
+  const loadedMonthsSpan = useCalendarMonthsSpan();
+  const CalenderMonthsSpan = loadedMonthsSpan ?? 1;
 
   useEffect(() => {
+    if (loadedMonthsSpan === null) return;
     calendarApiCall();
-  }, [CalenderMonthsSpan]);
+  }, [loadedMonthsSpan]);
 
   useEffect(() => {
     if (Object.keys(calenderData).length > 0) {

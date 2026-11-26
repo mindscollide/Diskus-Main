@@ -4,7 +4,7 @@ const initialState = {
   loading: false,
   responseMessage: "",
   errorSeverity: null,
-  AllAgendas: [],
+  AllAgendas: null,
 };
 
 const AgendaWiseAgendaListReducer = (state = initialState, action) => {
@@ -28,7 +28,7 @@ const AgendaWiseAgendaListReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        AllAgendas: [],
+        AllAgendas:null,
         responseMessage: action.message,
         errorSeverity: "error",
       };

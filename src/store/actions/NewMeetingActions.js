@@ -4281,7 +4281,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
                 "Meeting_MeetingServiceManager_GetAllMeetingAgendaWiseMinutes_02".toLowerCase(),
               )
           ) {
-            dispatch(showGetAllAgendaWiseMinutesFailed(t("No-record-found")));
+            dispatch(showGetAllAgendaWiseMinutesFailed(""));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
