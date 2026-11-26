@@ -13,6 +13,25 @@ import SpinComponent from "./components/elements/mainLoader/loader";
 
 import disableConsole from "./commen/disableConsole";
 disableConsole();
+
+// After logout the browser Back button can restore the previous private page
+// straight from its back/forward cache (a frozen copy of the page, so none of
+// the route guards run again). When that happens with no session left, send the
+// user to the login page instead of showing the stale private screen.
+window.addEventListener("pageshow", (event) => {
+  try {
+    if (
+      event.persisted &&
+      !localStorage.getItem("token") &&
+      window.location.pathname.toLowerCase().startsWith("/diskus")
+    ) {
+      window.location.replace("/");
+    }
+  } catch (e) {
+    /* storage unavailable: nothing to check */
+  }
+});
+
 // Render the app with all providers
 // Root for Spinner or secondary element
 const spinnerContainer = document.getElementById("mainSpinner");
