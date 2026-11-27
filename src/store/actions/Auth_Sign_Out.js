@@ -107,7 +107,9 @@ const userLogOutApiFunc = (navigate, t) => {
 export const signOut = async (message, dispatch) => {
   // logoutChannel.postMessage("Logout");
   dispatch(initaialStateFun());
-  window.location.href = "/";
+  // replace, not assign: the private page the user logged out from must not stay
+  // as the previous history entry of the login page it is replaced by
+  window.location.replace("/");
   let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
   let RememberPasswordLocal = JSON.parse(
     localStorage.getItem("remeberPassword"),

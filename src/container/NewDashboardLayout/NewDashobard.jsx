@@ -35,8 +35,6 @@ const NewDashobard = () => {
   useEffect(() => {
     if (lang === "ar") {
       moment.locale(lang);
-    } else if (lang === "fr") {
-      moment.locale(lang);
     } else if (lang === "en") {
       moment.locale(lang);
     } else {

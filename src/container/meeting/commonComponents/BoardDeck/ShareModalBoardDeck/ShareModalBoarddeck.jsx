@@ -44,7 +44,7 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
         setShow={dispatch(boardDeckShareModal)}
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
-        // className="SelectAgendaModal"
+        className="SelectAgendaModal"
         onHide={() => {
           dispatch(boardDeckShareModal(false));
         }}
@@ -71,7 +71,7 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
                 <CustomRadioGroup
                   onChange={(e) => handleRadioChange(e.target.value)}
                   value={radioValue}
-                  className="AgendaSelectGroup"
+                  className={styles["AgendaSelectGroup"]}
                   options={[
                     { value: 1, label: t("Share-via-dataroom") },
                     { value: 2, label: t("Share-via-email") },
@@ -91,7 +91,7 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
                 className="d-flex justify-content-end gap-2"
               >
                 <Button
-                  text={"Share"}
+                  text={t("Share")}
                   className={styles["Cancel_Vote_Modal"]}
                   onClick={handleSharebutton}
                 />

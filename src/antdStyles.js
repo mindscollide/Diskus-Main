@@ -18,6 +18,7 @@ import "antd/es/input/style/css";
 import "antd/es/layout/style/css";
 import "antd/es/menu/style/css";
 import "antd/es/message/style/css";
+import "antd/es/modal/style/css"; // used inside antd-img-crop (profile picture cropper)
 import "antd/es/notification/style/css";
 import "antd/es/pagination/style/css";
 import "antd/es/popover/style/css";
@@ -25,6 +26,7 @@ import "antd/es/progress/style/css";
 import "antd/es/radio/style/css";
 import "antd/es/result/style/css";
 import "antd/es/select/style/css";
+import "antd/es/slider/style/css"; // zoom / rotation sliders of antd-img-crop
 import "antd/es/space/style/css";
 import "antd/es/spin/style/css";
 import "antd/es/switch/style/css";

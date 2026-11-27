@@ -1,30 +1,25 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateAdminRoute = () => {
-  let Blur = localStorage.getItem("blur");
-  let RoleID = localStorage.getItem("roleID");
+  const blur = localStorage.getItem("blur");
+  const roleID = localStorage.getItem("roleID");
+
   const token = JSON.parse(localStorage.getItem("token"));
-  const currentUser = (
-    (RoleID === "4" || RoleID === "1") && Blur === null ? true : null
-  );
-  let TwoFA = JSON.parse(localStorage.getItem("2fa"));
-  let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
-  const twoFaAproval =
-    TwoFA !== undefined &&
-      TwoFA != null &&
-      TwoFA === true &&
-      TowApproval !== undefined &&
-      TowApproval != null &&
-      TowApproval === true
-      ? true
-      : (TwoFA === undefined || TwoFA === null) &&
-        (TowApproval === undefined || TowApproval === null)
-        ? true
-        : false;
-  return currentUser && token && twoFaAproval ? (
+
+  const twoFA = JSON.parse(localStorage.getItem("2fa"));
+  const twoApproval = JSON.parse(localStorage.getItem("TowApproval"));
+
+  const currentUser =
+    (roleID === "4" || roleID === "1") && blur === null;
+
+  const twoFaApproval =
+    (twoFA === true && twoApproval === true) ||
+    (twoFA === null && twoApproval === null);
+
+  return currentUser && token && twoFaApproval ? (
     <Outlet />
   ) : (
-    <Navigate to="*" />
+    <Navigate to="*" replace />
   );
 };
 

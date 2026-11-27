@@ -67,7 +67,6 @@ const PasswordCreationUM = () => {
   // Languages
   const languages = [
     { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
 
@@ -133,7 +132,7 @@ const PasswordCreationUM = () => {
       passwordDetails.ConfirmPassword.length >= 8
     ) {
       setErrorBar(false);
-      show("Please Enter Fields Value", "error");
+      show(t("Please-Enter-Fields-Value"), "error");
     } else if (passwordDetails.Password !== passwordDetails.ConfirmPassword) {
       setErrorBar(true);
     } else {

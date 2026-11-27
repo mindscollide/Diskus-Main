@@ -5,16 +5,13 @@ import moment from "moment";
 import { ConfigProvider } from "antd";
 import ar_EG from "antd/es/locale/ar_EG";
 import en_US from "antd/es/locale/en_GB";
-import fr_FR from "antd/es/locale/fr_FR";
 import "moment/dist/locale/ar";
-import "moment/dist/locale/fr";
-import "moment/dist/locale/en-gb";
 /**
  * @component TimePickers
  * @description An internationalised time picker built on Ant Design's TimePicker and
  * wrapped in an Ant Design ConfigProvider to supply the correct locale. The active
  * locale is read from localStorage ("i18nextLng") and supports Arabic ("ar"),
- * French ("fr"), and English (default). moment.js locale is synchronised to match
+ * and English (default). moment.js locale is synchronised to match
  * whenever the language preference changes (via useEffect).
  *
  * Time is displayed and parsed in "HH:mm" (24-hour) format. The onChange callback
@@ -47,24 +44,12 @@ const TimePickers = ({ value, disable, placeholder, size, change, name }) => {
   }
 
   useEffect(() => {
-    if (currentLanguage === "ar") {
-      moment.locale(currentLanguage);
-    } else if (currentLanguage === "fr") {
-      moment.locale(currentLanguage);
-    } else {
-      moment.locale(currentLanguage);
-    }
+    moment.locale(currentLanguage === "ar" ? "ar" : "en");
   }, [currentLanguage]);
   return (
     <>
       <ConfigProvider
-        locale={
-          currentLanguage === "ar"
-            ? ar_EG
-            : currentLanguage === "fr"
-            ? fr_FR
-            : en_US
-        }
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
       >
         <TimePicker
           className="timepicker_width"

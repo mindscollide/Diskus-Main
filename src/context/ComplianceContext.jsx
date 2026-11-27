@@ -1158,7 +1158,7 @@ export const useComplianceContext = () => {
 
   if (!context) {
     throw new Error(
-      "useComplianceContext must be used within a AuthorityProvider",
+      "useComplianceContext must be used within a ComlianceProvider",
     );
   }
   return context;

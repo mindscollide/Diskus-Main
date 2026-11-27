@@ -342,7 +342,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
           ...signUpDetails,
           PostalCode: {
             value: valueCheck.trimStart(),
-            errorMessage: "Postal Code is Required",
+            errorMessage: t("Postal-Code-is-Required"),
             errorStatus: false,
           },
         });
@@ -364,7 +364,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
           ...signUpDetails,
           FullName: {
             value: valueCheck.trimStart(),
-            errorMessage: "Full Name is required",
+            errorMessage: t("Full-Name-is-required"),
             errorStatus: false,
           },
         });

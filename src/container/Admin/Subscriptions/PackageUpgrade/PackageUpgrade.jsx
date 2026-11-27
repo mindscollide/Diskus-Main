@@ -300,7 +300,7 @@ const PackageUpgrade = () => {
                                         >
                                           ${data.FirstYearDiscountedPrice}/
                                         </b>{" "}
-                                        {t("month")} <br />{" "}
+                                        {t("Month")} <br />{" "}
                                         {t("For-first-year-then")}
                                         <br />
                                         <b
@@ -312,7 +312,7 @@ const PackageUpgrade = () => {
                                         >
                                           ${data.YearlyDiscountedPrice}/
                                         </b>{" "}
-                                        {t("month")} <br />{" "}
+                                        {t("Month")} <br />{" "}
                                         {t("For-recurring-years")}
                                       </p>
                                     </Col>

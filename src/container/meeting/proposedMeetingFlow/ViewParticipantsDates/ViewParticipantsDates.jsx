@@ -463,8 +463,8 @@ const ViewParticipantsDates = () => {
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Staff_meeting_Heading"]}>
-                  {meetingDeatils.MeetingType.trim() === "Board Meetings".trim()
-                    ? t("Board-meetings")
+                  {meetingDeatils.MeetingType.trim() === "Board Meeting".trim()
+                    ? t("Board-meeting")
                     : meetingDeatils.MeetingType.trim() ===
                         "Group Meeting".trim()
                       ? t("Group-meeting")

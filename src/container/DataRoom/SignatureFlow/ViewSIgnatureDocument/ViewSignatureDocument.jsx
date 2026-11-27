@@ -16,6 +16,7 @@ import {
   deriveHiddenUsers,
   handleBlobFiles,
   hideFreetextElements,
+  normalizeMobileSignatureXfdf,
   processXmlForReadOnly,
   processXmlToHideFields,
   readOnlyFreetextElements,
@@ -474,8 +475,11 @@ const ViewSignatureDocument = () => {
         });
 
         // STEP 1: flag the visible form fields ReadOnly (kept visible and filled).
+        // (iPad signatures are a PNG inside the widget — convert to a stamp first)
         const readonlyXmlString = processXmlForReadOnly(
-          getSignatureFileAnnotationResponse.annotationString,
+          normalizeMobileSignatureXfdf(
+            getSignatureFileAnnotationResponse.annotationString,
+          ),
           visibleFieldNames,
         );
 

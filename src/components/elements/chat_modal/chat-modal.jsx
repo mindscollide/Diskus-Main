@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import "./chat-modal.css";
 import { Modal, InputDatePicker, Button } from "./../../elements";
 import { Row, Col, Container } from "react-bootstrap";
@@ -45,6 +46,7 @@ import {
  * />
  */
 const ChatModal = ({ setShow, show, save, print, email }) => {
+  const { t } = useTranslation();
   const [todayCheckState, setTodayCheckState] = useState(false);
   const [allCheckState, setAllCheckState] = useState(false);
   const [customCheckState, setCustomCheckState] = useState(false);
@@ -133,23 +135,23 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
                         checked={todayCheckState}
                         onChange={onChangeToday}
                       >
-                        Today
+                        {t("Today")}
                       </Checkbox>
                       <Checkbox checked={allCheckState} onChange={onChangeAll}>
-                        All
+                        {t("All")}
                       </Checkbox>
                       <Checkbox
                         checked={customCheckState}
                         onChange={onChangeCustom}
                       >
-                        Custom
+                        {t("Custom")}
                       </Checkbox>
                     </div>
                     {customCheckState === true ? (
                       <Row>
                         <Col lg={6} md={6} sm={12}>
                           <label style={{ marginLeft: "5px" }}>
-                            <b style={{ fontSize: "0.7rem" }}>Date From</b>
+                            <b style={{ fontSize: "0.7rem" }}>{t("Date-from")}</b>
                           </label>{" "}
                           <InputDatePicker
                             name="StartDate"
@@ -161,13 +163,13 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
                                 : null
                             }
                             DateRange
-                            placeholder={"Select Date"}
+                            placeholder={t("Select-date")}
                             change={onChangeDate}
                           />
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                           <label style={{ marginLeft: "5px" }}>
-                            <b style={{ fontSize: "0.7rem" }}>Date To</b>
+                            <b style={{ fontSize: "0.7rem" }}>{t("Date-to")}</b>
                           </label>
                           <InputDatePicker
                             name="EndDate"
@@ -179,7 +181,7 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
                                 : null
                             }
                             DateRange
-                            placeholder={"Select Date"}
+                            placeholder={t("Select-date")}
                             change={onChangeDate}
                             disable={endDatedisable}
                           />
@@ -192,7 +194,7 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
                   <Col lg={12} md={12} sm={12} className="text-center">
                     <Button
                       className=" Ok-btn"
-                      text="Okay"
+                      text={t("Okay")}
                       onClick={handleCancel}
                     />
                   </Col>

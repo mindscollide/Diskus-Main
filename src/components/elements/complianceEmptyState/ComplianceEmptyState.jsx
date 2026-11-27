@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./ComplianceEmptyState.module.css"; //  CSS MODULE
 
 import QuarterlySubmittedCompliances from "../../../assets/images/QuarterlySubmittedCompliances.png";
@@ -20,7 +21,7 @@ const imageMap = {
 
 const ComplianceEmptyState = ({
   type = "noQuarterlySubmittedCompliance",
-  title = "No Data Found",
+  title,
   description = "",
   layout = "imageLeft", // imageLeft | imageRight | imageTop | imageBottom
   imgWidth = "",
@@ -30,6 +31,9 @@ const ComplianceEmptyState = ({
   const imageSrc = imageMap[type] || QuarterlySubmittedCompliances;
 
   // Prevent invalid layout crash
+  const { t } = useTranslation();
+  // the default text is translated here (a default parameter cannot call t)
+  title = title ?? t("No-data-found");
   const layoutClass = styles[layout] || styles.imageLeft;
 
   return (

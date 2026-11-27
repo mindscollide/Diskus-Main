@@ -7,14 +7,15 @@ import { useTranslation } from "react-i18next";
 import { formatNumber } from "../../../commen/functions/utils";
 
 /* 🔹 Criticality Style Logic */
-const getCriticalityConfig = (id) => {
+// t: translation function, the label is user-visible
+const getCriticalityConfig = (id, t) => {
   switch (Number(id)) {
     case 1:
-      return { text: "High", bg: "#FFDEDE", color: "#F16B6B" };
+      return { text: t("High"), bg: "#FFDEDE", color: "#F16B6B" };
     case 2:
-      return { text: "Medium", bg: "#FFF8E1", color: "#D8A709" };
+      return { text: t("Medium"), bg: "#FFF8E1", color: "#D8A709" };
     case 3:
-      return { text: "Low", bg: "#DAF5DC", color: "#55CE5C" };
+      return { text: t("Low"), bg: "#DAF5DC", color: "#55CE5C" };
     default:
       return null;
   }
@@ -43,14 +44,13 @@ const ComplianceCard = ({
   onTitleClick,
 }) => {
   const { t } = useTranslation();
-  const criticality = getCriticalityConfig(criticalityId);
+  const criticality = getCriticalityConfig(criticalityId, t);
   const showProgress = progress !== undefined;
 
   // For Hovered Card Tile goTo Icon
   const [isHovered, setIsHovered] = useState(false);
 
   // For Attachment Icon show
-  const [isAttachmentIcon, setIsAttachmentIcon] = useState(false);
 
   const handleIconClick = (e) => {
     e.stopPropagation();

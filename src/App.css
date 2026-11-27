@@ -3052,8 +3052,14 @@ a.ant-picker-now-btn:hover {
   color: #6172d6 !important;
 }
 
-a.dropdown-item.dropdown-item:hover {
+a.dropdown-item.dropdown-item:hover,
+div.dropdown-item.dropdown-item:hover {
   background: #f9f9f9;
+}
+
+/* dropdown items that wrap a link are rendered as a div (an <a> inside an <a> is invalid HTML) */
+div.dropdown-item {
+  cursor: pointer;
 }
 
 button.btn.btn-primary.meeting.start.btn.btn-primary:hover {
@@ -3198,19 +3204,11 @@ body[dir="rtl"]
   background-image: linear-gradient(#5f7ad7, #4bdbde) !important;
 }
 
-.calendar.rbc-calendar .fr svg {
-  transform: rotate(180deg);
-}
-
 .calendar.rbc-calendar .ar svg {
   transform: rotate(180deg);
 }
 
 .TodayButton.ar {
-  text-align: left !important;
-}
-
-.TodayButton.fr {
   text-align: left !important;
 }
 

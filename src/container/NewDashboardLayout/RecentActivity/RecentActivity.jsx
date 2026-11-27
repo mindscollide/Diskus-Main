@@ -79,11 +79,15 @@ const RecentActivity = () => {
             className='recent-activity-text'
           />
         ) : (
-          recentActivityData.map((activity) => {
-            const { pK_NTID, description } = activity.notificationTypes;
+          recentActivityData.map((activity, index) => {
+            const { description } = activity.notificationTypes;
+            // pK_NID is missing on items pushed in over the socket and can repeat
+            // when the same notification arrives by socket and by the API, so it
+            // is combined with the position to keep every key unique
+            const activityKey = `${activity.pK_NID ?? activity.creationDateTime ?? "activity"}-${index}`;
 
             return (
-              <React.Fragment key={activity.pK_NID}>
+              <React.Fragment key={activityKey}>
                 <div className={styles["imageNotificationCard"]}>
                   <img src={DemoIcon} width={46} height={46} alt='' />
                   {description}

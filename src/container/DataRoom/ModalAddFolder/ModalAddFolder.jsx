@@ -54,7 +54,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
     } else {
       setFolderName({
         content: "",
-        errorMessage: "Folder should have alpha numeric special character",
+        errorMessage: t("Folder-should-have-alpha-numeric-special-character"),
         errorStatus: true,
       });
     }

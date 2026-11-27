@@ -3060,7 +3060,7 @@ const DataRoom = () => {
       },
     }));
     if (data.axiosCancelToken) {
-      data.axiosCancelToken.cancel("Upload canceled");
+      data.axiosCancelToken.cancel(t("Upload-canceled"));
     }
 
     // Optionally, you can also cancel the Axios request associated with this task here.
@@ -3442,7 +3442,7 @@ const DataRoom = () => {
   const CanceUploadinFromModalTrue = async (data) => {
     const dataArray = Object.values(tasksAttachments);
     await dataArray.map((data, index) => {
-      data.axiosCancelToken.cancel("Upload canceled");
+      data.axiosCancelToken.cancel(t("Upload-canceled"));
     });
     detaUplodingForFOlder.map((data, index) => {
       data.UploadCancel = true;

@@ -4641,7 +4641,7 @@ const ChangeTaskStatusAPI = (navigate, Data, complianceId, t) => {
                 .toLowerCase()
                 .includes("Task_StatusChange_03".toLowerCase())
             ) {
-              await dispatch(ChangeTaskStatusFail("New StatusID is required"));
+              await dispatch(ChangeTaskStatusFail(t("New-StatusID-is-required")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

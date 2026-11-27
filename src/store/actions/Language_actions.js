@@ -289,7 +289,7 @@ const getSelectedLanguage = (data, navigate, t, flag, loader) => {
               ) {
                 localStorage.setItem("i18nextLng", "ar");
               } else {
-                localStorage.setItem("i18nextLng", "fr");
+                localStorage.setItem("i18nextLng", "en");
               }
             } else if (
               response.data.responseResult.responseMessage

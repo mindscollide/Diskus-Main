@@ -8,6 +8,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { useTranslation } from "react-i18next";
+import { getResolutionReminderOptions } from "../resolutionReminders";
 import Select from "react-select";
 import styles from "./ScheduleNewResolution.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -93,32 +94,7 @@ const ScheduleNewResolution = () => {
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
-const reminderData = [
-  {
-    label: t("10-minutes-before"),
-    value: 1,
-  },
-  {
-    label: t("30-minutes-before"),
-    value: 2,
-  },
-  {
-    label: t("1-hour-before"),
-    value: 3,
-  },
-  {
-    label: t("5-hours-before"),
-    value: 4,
-  },
-  {
-    label: t("1-day-before"),
-    value: 5,
-  },
-  {
-    label: t("7-days-before"),
-    value: 6,
-  },
-];
+const reminderData = getResolutionReminderOptions(t);
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: dateforSend(new Date(), 1),
     time: timeforSend(new Date()),

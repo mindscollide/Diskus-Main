@@ -25,6 +25,7 @@ import {
   handleBlobFiles,
   hideFreetextElements,
   isUserSigned,
+  normalizeMobileSignatureXfdf,
   processXmlForReadOnly,
   processXmlToHideFields,
   readOnlyFreetextElements,
@@ -1175,8 +1176,12 @@ const PendingSignatureViewer = () => {
       );
 
       // 1. Mark non-hidden other users' widget fields as ReadOnly in XFDF
+      // 0. iPad (Apryse iOS) signatures arrive as a PNG inside the widget, which
+      //    the web viewer cannot draw — turn them into a stamp it can.
       const withReadOnly = processXmlForReadOnly(
-        getSignatureFileAnnotationResponse.annotationString,
+        normalizeMobileSignatureXfdf(
+          getSignatureFileAnnotationResponse.annotationString,
+        ),
         ReadArray,
       );
 

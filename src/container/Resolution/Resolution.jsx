@@ -1168,7 +1168,10 @@ const Resolution = () => {
   useEffect(() => {
     try {
       if (ResolutionReducersearchVoterResolution !== null) {
-        setSearchVoter(ResolutionReducersearchVoterResolution.resolutionTable);
+        // a response without resolutionTable must not leave the list undefined
+        setSearchVoter(
+          ResolutionReducersearchVoterResolution.resolutionTable ?? [],
+        );
         setTotalVoterResolution(
           ResolutionReducersearchVoterResolution.totalRecords,
         );
@@ -1185,7 +1188,7 @@ const Resolution = () => {
     try {
       if (ResolutionReducerGetResolutions !== null) {
         setTotalResolution(ResolutionReducerGetResolutions.totalRecords);
-        setRows(ResolutionReducerGetResolutions.resolutionTable);
+        setRows(ResolutionReducerGetResolutions.resolutionTable ?? []);
       } else {
         setRows([]);
       }
@@ -1671,6 +1674,8 @@ const Resolution = () => {
                         ),
                       }}
                     />
+                    {/* no pagination under an empty table */}
+                    {Array.isArray(rows) && rows.length > 0 && (
                     <Row>
                       <Col
                         sm={12}
@@ -1692,6 +1697,7 @@ const Resolution = () => {
                         />
                       </Col>
                     </Row>
+                    )}
                   </>
                 </Col>
               </Row>
@@ -1758,6 +1764,8 @@ const Resolution = () => {
                       ),
                     }}
                   />
+                  {/* no pagination under an empty table */}
+                  {Array.isArray(isSearchVoter) && isSearchVoter.length > 0 && (
                   <Row>
                     <Col
                       sm={12}
@@ -1774,6 +1782,7 @@ const Resolution = () => {
                       />
                     </Col>
                   </Row>
+                  )}
                 </Col>
               </Row>
             ) : null}
