@@ -228,10 +228,23 @@ import folderColor from "../../assets/images/folder_color.svg";
  * Falls back to the index only when `id` is missing, which is the best that can
  * be done for a record with no identity at all.
  */
-const dataRoomRowKey = (record, index) =>
-  record?.id != null
-    ? `${record.isFolder ? "folder" : "file"}-${record.id}`
-    : `row-${index}`;
+// A record with no id gets one generated key, remembered per record object. The
+// index is deliberately not used: antd 4 warns that rowKey's `index` parameter
+// is deprecated, and a position-based key breaks on sort and filter anyway.
+const fallbackRowKeys = new WeakMap();
+let fallbackRowKeyCount = 0;
+const dataRoomRowKey = (record) => {
+  if (record?.id != null) {
+    return `${record.isFolder ? "folder" : "file"}-${record.id}`;
+  }
+  if (record && typeof record === "object") {
+    if (!fallbackRowKeys.has(record)) {
+      fallbackRowKeys.set(record, `row-${++fallbackRowKeyCount}`);
+    }
+    return fallbackRowKeys.get(record);
+  }
+  return `row-${++fallbackRowKeyCount}`;
+};
 
 const DataRoom = () => {
   const [newPopoverOpen, setNewPopoverOpen] = useState(false);
