@@ -140,6 +140,14 @@ body[dir="rtl"] .video_call_icon img.video-call-start-icon {
   transform: scaleX(-1);
 }
 
+/* RTL: the missed / incoming / outgoing call arrows are directional, so they are
+   mirrored like the start-call camera above (an incoming arrow pointing
+   down-left becomes down-right). Applied to the image, not the span, because the
+   span already uses transform for its vertical centering. */
+body[dir="rtl"] span.call-status-icon img {
+  transform: scaleX(-1);
+}
+
 /* RTL: titles are often English (LTR) inside an RTL paragraph, which put the
    ellipsis at the wrong end. Let each title pick its own direction but keep
    it right-aligned. */

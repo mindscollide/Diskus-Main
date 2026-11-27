@@ -2120,7 +2120,7 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
                   "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_01".toLowerCase(),
                 )
             ) {
-              dispatch(changeSelectPacakge_Success(t("Successfully"), ""));
+              dispatch(changeSelectPacakge_Success("", ""));
               localStorage.setItem(
                 "organizationSubscriptionID",
                 Number(response.data.responseResult.subscriptionID),
@@ -2224,9 +2224,7 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
                   "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_01".toLowerCase(),
                 )
             ) {
-              dispatch(
-                cancelisTrailandSubscription_Success(t("Successfully"), ""),
-              );
+              dispatch(cancelisTrailandSubscription_Success("", ""));
               localStorage.setItem(
                 "organizationSubscriptionID",
                 Number(response.data.responseResult.subscriptionID),
@@ -2521,7 +2519,12 @@ const BoardDeckSendEmailApi = (
                   "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_01".toLowerCase(),
                 )
             ) {
-              dispatch(BoardDeckSendEmail_success(t("Successfully")));
+              dispatch(
+                BoardDeckSendEmail_success(
+                  response.data.responseResult,
+                  t("File-sent"),
+                ),
+              );
               dispatch(boardDeckEmailModal(false));
               setBoarddeckOptions({
                 selectall: false,
@@ -2615,7 +2618,10 @@ const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
                 new TextDecoder().decode(new Uint8Array(response.data)),
               );
             } catch (error) {
-              console.error("src/store/actions/UserManagementActions.js:", error);
+              console.error(
+                "src/store/actions/UserManagementActions.js:",
+                error,
+              );
             }
           }
 

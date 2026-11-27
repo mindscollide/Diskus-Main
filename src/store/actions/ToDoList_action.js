@@ -1935,7 +1935,8 @@ const validateEncryptedStringViewTaskListLinkApi = (
             dispatch(
               validateEncryptedStringViewTaskListLink_Success(
                 responseResult.data,
-                t("Successfully")
+                ""
+                // t("Successfully")
               )
             );
             return {
@@ -2092,7 +2093,8 @@ const validateEncryptedStringViewTaskDetailLinkApi = (
             dispatch(
               validateEncryptedStringViewTaskDetailLink_Success(
                 responseResult.data,
-                t("Successfully")
+                ""
+                // t("Successfully")
               )
             );
             return {

@@ -2484,7 +2484,8 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
               await dispatch(
                 validateStringPoll_success(
                   response.data.responseResult?.data,
-                  t("Successfully"),
+                  ""
+                  // t("Successfully"),
                 ),
               );
               dispatch(emailRouteID(RouteNo));

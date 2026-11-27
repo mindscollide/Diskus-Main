@@ -26,6 +26,11 @@ const Votepoll = () => {
   const PollsReducerAllpolls = useSelector(
     (state) => state.PollsReducer.Allpolls,
   );
+
+  const PollsReducernewPollDelete = useSelector(
+    (state) => state.PollsReducer.newPollDelete,
+  );
+
   const PollsReducerisVotePollModal = useSelector(
     (state) => state.PollsReducer.isVotePollModal,
   );
@@ -64,6 +69,22 @@ const Votepoll = () => {
       }
     }
   }, [PollsReducerAllpolls]);
+  useEffect(() => {
+    try {
+      if (PollsReducernewPollDelete !== null) {
+        const polls = PollsReducernewPollDelete;
+        if (polls?.pollID === viewProgressPollsDetails.PollID) {
+          dispatch(setVotePollModal(false));
+
+        }
+      }
+
+    } catch (error) {
+      console.error("src/container/Polling/Polling.js:", error);
+    }
+  }, [PollsReducernewPollDelete]);
+
+
 
   const handleCheckBoxYes = (e) => {
     let checked = e.target.checked;
@@ -317,7 +338,7 @@ const Votepoll = () => {
                                         styles["CheckBox_ViewProgressPolls"]
                                       }>
                                       {viewProgressPollsDetails.AllowMultipleAnswers ===
-                                      true ? (
+                                        true ? (
                                         <Checkbox
                                           name={data.pollAnswerID}
                                           checked={handleForCheck(

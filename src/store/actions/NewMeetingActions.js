@@ -6825,7 +6825,8 @@ const validateEncryptedStringUserAvailibilityForMeetingApi = (
             await dispatch(
               validateEmptyStringUserAvailibilitySuccess(
                 response.data.responseResult,
-                t("Successfully-updated"),
+                ""
+                // t("Successfully-updated"),
               ),
             );
             localStorage.removeItem("RSVP");
@@ -7914,7 +7915,8 @@ const validateStringEmailApi = (
                     key: encryptedKey,
                     value: response.data.responseResult?.data,
                   },
-                  t("Successfully"),
+                  ""
+                  // t("Successfully"),
                 ),
               );
               if (encryptedKey === "") {
@@ -8022,7 +8024,8 @@ const validateStringParticipantProposedApi = (emailString, navigate, t) => {
             await dispatch(
               validateStringParticipantProposed_success(
                 responseResult.data,
-                t("Successfully"),
+                ""
+                // t("Successfully"),
               ),
             );
             return responseResult.data;
@@ -8601,7 +8604,8 @@ const validateStringUserMeetingProposedDatesPollsApi = (
             await dispatch(
               validateStringUserMeetingProposedDatesPolls_Success(
                 responseResult.data,
-                t("Successfully"),
+                ""
+                // t("Successfully"),
               ),
             );
             return responseResult.data;
@@ -9040,7 +9044,8 @@ const validateEncryptedStringViewMeetingLinkApi = (
             dispatch(
               validateEncryptedStringViewMeetingLink_Success(
                 responseResult.data,
-                t("Successfully"),
+                ""
+                // t("Successfully"),
               ),
             );
 

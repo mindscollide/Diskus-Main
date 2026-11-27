@@ -320,7 +320,7 @@ const Polls = ({ committeeStatus }) => {
               Number(newData2.pollID) !== Number(polls?.pollID),
           );
         });
-        dispatch(deletePollsMQTT(null));
+        // dispatch(deletePollsMQTT(null));
       }
     } catch (error) {
       console.error("src/container/Committee/ViewPolls/Polls/Polls.js:", error);
@@ -512,8 +512,7 @@ const Polls = ({ committeeStatus }) => {
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <section className={styles["MaintainingHeight"]}>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
+              
                       <Table
                         column={PollsColoumn}
                         rows={pollsRows}
@@ -573,8 +572,6 @@ const Polls = ({ committeeStatus }) => {
                           ),
                         }}
                       />
-                    </Col>
-                  </Row>
                 </section>
               </Col>
             </Row>

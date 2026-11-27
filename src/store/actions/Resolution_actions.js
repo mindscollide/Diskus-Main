@@ -1744,7 +1744,8 @@ const validateStringResolutionApi = (
               await dispatch(
                 validateStringResolution_success(
                   response.data.responseResult?.data,
-                  t("Successfully")
+                  ""
+                  // t("Successfully")
                 )
               );
               dispatch(resoltionEmailRouteID(RouteNo));
