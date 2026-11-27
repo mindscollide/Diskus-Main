@@ -1,3 +1,4 @@
+import appConfig from "../../../../config/appConfig";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
 import {
@@ -350,7 +351,7 @@ const SignInUserManagement = () => {
                   </Col>
                 </Row>
               </Form>
-              {process.env.REACT_APP_ENV !== "prod" && (
+              {appConfig.ENV !== "prod" && (
                 <>
                   <Row className='mt-3'>
                     <Col sm={12} md={12} lg={12}>

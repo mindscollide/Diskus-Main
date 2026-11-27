@@ -37,3 +37,8 @@ yarn-error.log*
 # Never commit built bundles to the repo root.
 /prod_app.js
 /main.*.js
+
+# Runtime config
+# Real per-environment runtime configs (internal URLs) stay local, only the placeholder in public/ is committed.
+/runtime-config.local.js
+/deploy-config/

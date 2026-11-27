@@ -69,14 +69,8 @@
     "xregexp": "^5.1.1"
   },
   "scripts": {
-    "start": "env-cmd -f .env.local vite --host 0.0.0.0",
-    "build:local": "env-cmd -f .env.local vite build",
-    "build:pso": "env-cmd -f .env.pso vite build",
-    "start:pso": "env-cmd -f .env.pso vite --host 0.0.0.0",
-    "build:uat": "env-cmd -f .env.uat vite build",
-    "build:staging": "env-cmd -f .env.staging vite build",
-    "build:optimize": "env-cmd -f .env.optimized vite build",
-    "build:production": "env-cmd -f .env.production vite build",
+    "start": "env-cmd -f .env.build vite --host 0.0.0.0",
+    "build": "env-cmd -f .env.build vite build",
     "preview": "vite preview --outDir build",
     "test": "vitest",
     "test:run": "vitest run",

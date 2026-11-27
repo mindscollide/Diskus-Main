@@ -1,3 +1,4 @@
+import appConfig from "../../../../config/appConfig";
 import React, {
   useRef,
   useEffect,
@@ -1602,7 +1603,7 @@ const PendingSignatureViewer = () => {
           {
             path: "/webviewer/lib",
             fullAPI: true,
-            licenseKey: process.env.REACT_APP_APRYSEKEY,
+            licenseKey: appConfig.APRYSE_KEY,
           },
           viewerRef.current,
         );

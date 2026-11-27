@@ -1,3 +1,4 @@
+import appConfig from "../../../../config/appConfig";
 import React, { useRef, useEffect, useState } from "react";
 import WebViewer from "@pdftron/webviewer";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -576,7 +577,7 @@ const ViewSignatureDocument = () => {
           path: "/webviewer/lib",
           showLocalFilePicker: true,
           fullAPI: true,
-          licenseKey: process.env.REACT_APP_APRYSEKEY, // sign up to get a free trial key at https://dev.apryse.com
+          licenseKey: appConfig.APRYSE_KEY, // sign up to get a free trial key at https://dev.apryse.com
         },
         viewer.current,
       ).then(async (instance) => {

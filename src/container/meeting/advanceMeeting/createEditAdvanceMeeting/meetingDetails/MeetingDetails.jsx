@@ -1,3 +1,4 @@
+import appConfig from "../../../../../config/appConfig";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./MeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
@@ -1894,7 +1895,7 @@ const MeetingDetails = () => {
                       label: meetingDetails.RecurringOptions?.label,
                     }}
                     isDisabled={
-                      process.env.REACT_APP_ENV === "prod"
+                      appConfig.ENV === "prod"
                         ? true
                         : (Number(editorRole.status) === 9 ||
                               Number(editorRole.status) === 8 ||

@@ -41,18 +41,26 @@ function referencedEnvNames(dir, found = new Set()) {
  */
 export default defineConfig(({ mode }) => {
   /**
-   * (1) ENVIRONMENT VARIABLES — deliberately NOT Vite's `loadEnv`.
+   * (1) ENVIRONMENT VARIABLES — only three are left, and they are build-time.
    *
-   * Vite's own env loading would break this project. It always loads
-   * `.env.local` on top of `.env.[mode]`, and `.env.local` here holds the DEV
-   * API URLs — so `vite build --mode production` would silently ship a bundle
-   * pointing at the dev backend.
+   * Everything that differs between deployments (API / MQTT URLs, feature flags,
+   * the Apryse licence key ...) is RUNTIME configuration: `public/runtime-config.js`
+   * defines `window.APP_CONFIG`, src/config/appConfig.js validates it, and one
+   * build serves every environment. None of it may be read from `process.env`.
    *
-   * Instead the npm scripts keep using `env-cmd -f .env.<target>`, exactly as
-   * they did under CRA, which puts the chosen file's variables on `process.env`
-   * before Vite starts. We read them from there, so environment selection
-   * behaves identically to before this migration and there is one less thing to
-   * re-verify per environment.
+   * What still comes from `process.env` is identical in every environment and is
+   * not a deployment setting: `REACT_APP_SECERETKEY` (the obfuscation key used for
+   * localStorage and for the MQTT credentials) and `REACT_APP_MQTT_User` /
+   * `REACT_APP_MQTT_Pass` (the MQTT credentials, stored encrypted). They are kept
+   * out of runtime-config.js on purpose: that file is a plain, editable, publicly
+   * readable download and must never hold credentials.
+   *
+   * Deliberately NOT Vite's `loadEnv`: it always layers `.env.local` on top of
+   * `.env.[mode]`, which would mix a developer's local file into a release build.
+   * The npm scripts use `env-cmd -f .env.build`, which puts that file's variables
+   * on `process.env` before Vite starts (see `env.build.example`). Without that
+   * file these three become `undefined` and the app cannot decrypt anything, so
+   * build through `npm run build`, not a bare `vite build`.
    *
    * Each variable is defined individually rather than replacing `process.env`
    * wholesale: a blanket `define` of `process.env` would break
@@ -82,6 +90,28 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [
+      /**
+       * (2c) LOCAL RUNTIME CONFIG — dev server only.
+       *
+       * In production `/runtime-config.js` is a file the deployer provides. For
+       * `npm start`, a git-ignored `runtime-config.local.js` in the project root
+       * (generate it with `node scripts/generate-runtime-config.cjs .env.local`)
+       * is served at that URL instead of the placeholder in `public/`, so real
+       * developer URLs never need to be committed. The build never uses this.
+       */
+      {
+        name: "runtime-config-local",
+        apply: "serve",
+        configureServer(server) {
+          const local = path.resolve(__dirname, "runtime-config.local.js");
+          server.middlewares.use("/runtime-config.js", (req, res, next) => {
+            if (!fs.existsSync(local)) return next();
+            res.setHeader("Content-Type", "application/javascript");
+            res.setHeader("Cache-Control", "no-store");
+            res.end(fs.readFileSync(local));
+          });
+        },
+      },
       /**
        * (2b) FAST REFRESH FOR JSX-IN-`.js` — dev server only.
        *
@@ -266,6 +296,8 @@ export default defineConfig(({ mode }) => {
       // The app is not global-test-API based; import { describe, it, expect }
       // explicitly so a test file reads as ordinary module code.
       globals: false,
+      // modules that import src/config/appConfig.js need window.APP_CONFIG
+      setupFiles: ["src/config/testSetup.js"],
     },
   };
 });

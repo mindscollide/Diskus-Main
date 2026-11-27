@@ -1,3 +1,4 @@
+import appConfig from "../../../../../config/appConfig";
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
@@ -339,7 +340,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const guestGuid = joinGuestData?.guestGuid;
   useEffect(() => {
     const handleIframeMessage = (event) => {
-      if (event.origin !== process.env.REACT_APP_VIDEO_EVENTS) return;
+      if (event.origin !== appConfig.VIDEO_EVENTS) return;
       if (
         event.data !== "ScreenSharedMsgFromIframe" &&
         event.data !== "ScreenSharedStopMsgFromIframe"

@@ -20,6 +20,15 @@
       rel="stylesheet"
     /> -->
     <title>Diskus</title>
+    <!--
+      Runtime configuration (API / MQTT URLs, feature flags). It must stay a plain
+      synchronous script and stay ABOVE the module script at the bottom of <body>:
+      a module script is deferred, so this one always runs first and
+      `window.APP_CONFIG` exists before any application module is evaluated.
+      The file is not bundled or hashed on purpose, so it can be replaced on the
+      server without a rebuild (see public/web.config for its no-store header).
+    -->
+    <script src="/runtime-config.js"></script>
   </head>
   <body>
     <style>

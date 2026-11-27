@@ -1,3 +1,4 @@
+import appConfig from "./config/appConfig";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
@@ -47,7 +48,7 @@ if (spinnerContainer) {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+  <GoogleOAuthProvider clientId={appConfig.GOOGLE_CLIENT_ID}>
     <Provider store={store}>
       <AuthProvider>
         <App />

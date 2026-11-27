@@ -1,3 +1,4 @@
+import appConfig from "../../config/appConfig";
 import Paho from "paho-mqtt";
 import { setClientGuest } from "../../store/actions/Guest_Video";
 import { decrypt } from "./utils";
@@ -15,10 +16,16 @@ export const mqttConnectionGuestUser = (subscribeID, dispatch) => {
     const id = min + Math.random() * (max - min);
     const clientId = `${subscribeID}-${id}`;
 
-    if (process.env.REACT_APP_ENV === "dev") {
-      newClient = new Paho.Client("192.168.18.243", 8228, clientId);
+    // Broker host / port come from the runtime configuration. "dev" keeps its
+    // plain ws:// connection (host + port); every other environment uses wss.
+    if (appConfig.ENV === "dev") {
+      newClient = new Paho.Client(
+        appConfig.MQTT_HOST,
+        appConfig.MQTT_PORT,
+        clientId,
+      );
     } else {
-      const brokerUrl = `wss://${process.env.REACT_APP_MQTT}:${process.env.REACT_APP_MQTT_PORT}/mqtt`;
+      const brokerUrl = `wss://${appConfig.MQTT_HOST}:${appConfig.MQTT_PORT}/mqtt`;
       newClient = new Paho.Client(brokerUrl, clientId);
     }
 

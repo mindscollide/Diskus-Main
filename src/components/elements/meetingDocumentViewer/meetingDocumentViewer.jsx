@@ -15,6 +15,7 @@
  *
  * @returns {JSX.Element} The WebViewer container div and a Notification component.
  */
+import appConfig from "../../../config/appConfig";
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import WebViewer from "@pdftron/webviewer";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -231,7 +232,7 @@ const MeetingDocumentViewer = () => {
        WebViewer(
          {
            path: "/webviewer/lib",
-           licenseKey: process.env.REACT_APP_APRYSEKEY, // Replace with your key
+           licenseKey: appConfig.APRYSE_KEY, // Replace with your key
            fullAPI: true,
            officeEditor: true, // Enables Office file support
            officeWorker: true, // Enables Office file conversion

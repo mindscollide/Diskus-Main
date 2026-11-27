@@ -22,16 +22,17 @@
  *   fails with no response at all (network down, DNS, timeout, CORS preflight)
  *   throws inside the interceptor and masks the original error.
  */
-import axios from "axios";
+import appConfig from "../../config/appConfig";
+import axios from "axios";
 import { t } from "i18next";
 import { signOut } from "../../store/actions/Auth_Sign_Out";
 import store from "../../store/store";
 import { logVideoApiResponse } from "../../components/layout/talk/videoLog";
 
 const axiosInstance = axios.create({
-  // Read once at module load. Changing REACT_APP_BASE_URL needs a rebuild, not
-  // just a restart, because CRA inlines it at build time.
-  baseURL: process.env.REACT_APP_BASE_URL,
+  // Read once at module load from the runtime configuration (/runtime-config.js),
+  // so pointing the app at another backend is a config change, not a rebuild.
+  baseURL: appConfig.BASE_URL,
 });
 
 // ------------------- REQUEST -------------------

@@ -1,3 +1,4 @@
+import appConfig from "../config/appConfig";
 /**
  * Silence console output in production builds.
  *
@@ -23,7 +24,7 @@
  * genuine failures still surface in production.
  */
 const disableConsole = () => {
-  if (process.env.REACT_APP_ENV === "prod") {
+  if (appConfig.ENV === "prod") {
     const noop = () => {};
 
     console.log = noop;

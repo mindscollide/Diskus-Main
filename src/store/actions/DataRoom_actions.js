@@ -1,3 +1,4 @@
+import appConfig from "../../config/appConfig";
 import {
   FileisExistRequestMethod,
   deleteFolderRequestMethod,
@@ -3151,7 +3152,7 @@ const getPDFNet = async () => {
   const instance = await WebViewer(
     {
       path: "/webviewer/lib",
-      licenseKey: process.env.REACT_APP_APRYSEKEY,
+      licenseKey: appConfig.APRYSE_KEY,
       fullAPI: true, // required to access PDFNet
     },
     container,

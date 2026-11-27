@@ -1,3 +1,4 @@
+import appConfig from "../../../../../config/appConfig";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -1224,7 +1225,7 @@ const VideoPanelNormal = () => {
 
       const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
 
-      const targetOrigin = process.env.REACT_APP_VIDEO_EVENTS || "*";
+      const targetOrigin = appConfig.VIDEO_EVENTS || "*";
 
       if (isFirefox) {
         console.log("Yes Its FireFox");
@@ -1381,9 +1382,9 @@ const VideoPanelNormal = () => {
   iframeMessageHandlerRef.current = async (event) => {
     // Check the origin for security
     console.log("handlePostMessage", event.data);
-    console.log("handlePostMessage", process.env.REACT_APP_VIDEO_EVENTS);
+    console.log("handlePostMessage", appConfig.VIDEO_EVENTS);
     console.log("handlePostMessage", event.origin);
-    if (event.origin === process.env.REACT_APP_VIDEO_EVENTS) {
+    if (event.origin === appConfig.VIDEO_EVENTS) {
       // Example actions based on the message received
 
       console.log("handlePostMessage", presenterViewHostFlag);
