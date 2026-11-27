@@ -42,6 +42,7 @@ const VIDEO_REQUEST_METHODS = new Set([
   "ServiceManager.GetVideoCallParticipantsAndWaitingList",
   "ServiceManager.GetVideoCallStatus",
   "ServiceManager.GuestLeaveMeetingVideo",
+  "ServiceManager.GuestLeaveMeetingVideoWaitingRoom",
   "ServiceManager.HideUnHideParticpantVideo",
   "ServiceManager.HideUnHideVideo",
   "ServiceManager.InitiateVideoCall",

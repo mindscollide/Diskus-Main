@@ -8,15 +8,18 @@ import VideoOff from "../../../../../assets/images/Recent Activity Icons/Video/V
 import MicOff from "../../../../../assets/images/Recent Activity Icons/Video/MicOff.png";
 import MicOn from "../../../../../assets/images/Recent Activity Icons/Video/MicOn.png";
 import RemoveImage from "../../../../../assets/images/Recent Activity Icons/Video/RemoveImage.png";
+import EndCall from "../../../../../assets/images/Recent Activity Icons/Video/EndCall.png";
 import PresentationJoinIcon from "../../../../../assets/images/VideoCall/PresentationJoinIcon.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 import {
+  getGuestWaitingRoomLeaveData,
   getValidateString,
   guestVideoNavigationScreen,
   joinGuestVideoMainApi,
+  leaveMeetingVideoWaitingRoomGuestMainApi,
   makeStreamStop,
   setVideoCameraGuest,
   setVoiceControleGuest,
@@ -47,6 +50,7 @@ const GuestJoinVideo = ({
   extractMeetingId,
   extractMeetingTitle,
   onJoinNameChange,
+  autoJoinPresentationSignal = 0,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -72,9 +76,13 @@ const GuestJoinVideo = ({
   // guestInPresentation covers a guest admitted/removed in a presentation whose page-load validate flag was false
   // presentationEnded: the presentation request answered that it is over, so the lobby is a normal meeting lobby again
   const [presentationEnded, setPresentationEnded] = useState(false);
+  // A presentation started while the guest waited in the meeting video (set after the waiting room was left)
+  const [forcePresentation, setForcePresentation] = useState(false);
+  const [autoJoinPending, setAutoJoinPending] = useState(false);
   const isPresentationGuest =
     !presentationEnded &&
-    (Boolean(getValidateStringData?.isPresenterViewStarted) ||
+    (forcePresentation ||
+      Boolean(getValidateStringData?.isPresenterViewStarted) ||
       sessionStorage.getItem("guestInPresentation") === "true");
   // This guest was inside the presentation (admitted or removed), so its rejoin goes through JoinPresentationGuestRequest
   const leftPresentation =
@@ -246,8 +254,10 @@ const GuestJoinVideo = ({
     }
   }, [getValidateStringData]);
 
-  const onJoinNowButton = () => {
-    if (joinName === "") {
+  // nameOverride: the reload auto-join passes the saved name; a button click passes the click event instead
+  const onJoinNowButton = (nameOverride) => {
+    const name = typeof nameOverride === "string" ? nameOverride : joinName;
+    if (name === "") {
       setErrorMessage(true);
     } else {
       setJoinButton(true);
@@ -255,8 +265,8 @@ const GuestJoinVideo = ({
       setGetReady(true);
       setIsWaiting(true); // Show the waiting room text
       setRejoinState(false); // Exit rejoin state
-      onJoinNameChange(joinName);
-      sessionStorage.setItem("guestName", joinName);
+      onJoinNameChange(name);
+      sessionStorage.setItem("guestName", name);
       sessionStorage.removeItem("isRejoining");
 
       // The "Presentation is started" view sends the presentation request; a rejoin does too if the guest had been inside the presentation, otherwise it keeps JoinGuestVideo
@@ -266,7 +276,7 @@ const GuestJoinVideo = ({
       let data = {
         MeetingId: extractMeetingId,
         RoomID: validateRoomId,
-        GuestName: joinName,
+        GuestName: name,
         IsMuted: isPresentationJoin || !isMicEnabled,
         HideVideo: isPresentationJoin || !isWebCamEnabled,
         ...(isPresentationJoin ? {} : { HostEmail: validateHostEmail }),
@@ -363,6 +373,61 @@ const GuestJoinVideo = ({
       );
     }
   };
+
+  // Red leave icon on the presentation waiting room: leave the waiting list (GuestLeaveMeetingVideoWaitingRoom), then back to the presentation lobby
+  const leavingWaitingRoomRef = useRef(false);
+  const onLeaveWaitingRoom = () => {
+    if (leavingWaitingRoomRef.current) return;
+    const leaveData = getGuestWaitingRoomLeaveData();
+    if (!leaveData) {
+      console.error(
+        "GuestLeaveMeetingVideoWaitingRoom not sent: videoCallUrl missing",
+      );
+      return;
+    }
+    leavingWaitingRoomRef.current = true;
+    dispatch(
+      leaveMeetingVideoWaitingRoomGuestMainApi(
+        navigate,
+        t,
+        leaveData,
+        () => {
+          leavingWaitingRoomRef.current = false;
+          // The waiting entry is gone, so a refresh needs no leave API
+          sessionStorage.removeItem("hasJoined");
+          setIsWaiting(false);
+          setGetReady(false);
+          setJoinButton(false);
+          setJoinedAsPresentation(false);
+        },
+        () => {
+          leavingWaitingRoomRef.current = false;
+        },
+      ),
+    );
+  };
+
+  // A presentation started while this guest waited in the meeting video and the waiting room was left: switch the lobby to the presentation view
+  useEffect(() => {
+    if (!autoJoinPresentationSignal) return;
+    // Presentation guests join with camera and mic off, so release the lobby preview
+    stream?.getTracks().forEach((track) => track.stop());
+    streamAudio?.getTracks().forEach((track) => track.stop());
+    dispatch(setVoiceControleGuest(true));
+    dispatch(setVideoCameraGuest(true));
+    setForcePresentation(true);
+    setAutoJoinPending(true);
+  }, [autoJoinPresentationSignal]);
+
+  // Runs on the re-render where the lobby is a presentation lobby, so onJoinNowButton sends JoinPresentationGuestRequest
+  useEffect(() => {
+    if (!autoJoinPending || !forcePresentation) return;
+    setAutoJoinPending(false);
+    const name = joinName || sessionStorage.getItem("guestName") || "";
+    if (!name) return;
+    setJoinName(name);
+    onJoinNowButton(name);
+  }, [autoJoinPending, forcePresentation]);
 
   useEffect(() => {
     const savedName = sessionStorage.getItem("guestName");
@@ -486,6 +551,16 @@ const GuestJoinVideo = ({
           {
             <>
               <div className="guest-join-video-main">
+                {isWaiting && joinedAsPresentation ? (
+                  <Tooltip placement="bottomRight" title={t("Leave-presentation")}>
+                    <img
+                      src={EndCall}
+                      className="guest-waiting-leave-icon"
+                      onClick={onLeaveWaitingRoom}
+                      alt="EndCall"
+                    />
+                  </Tooltip>
+                ) : null}
                 <Container>
                   <Row>
                     <label className="name-label">

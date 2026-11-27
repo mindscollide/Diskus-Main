@@ -26,6 +26,7 @@ import {
   guestLeaveMeetingVideoApi,
   hideUnhideSelfMainApi,
   leavePresenterViewGuestMainApi,
+  getGuestMeetingLeaveData,
   muteUnMuteParticipantsorGuestbyHost,
   muteUnMuteSelfMainApi,
   raiseUnRaisedHandMainApi,
@@ -315,7 +316,12 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     sessionStorage.setItem("enableVideo", flag);
   };
 
+  // Guests in a presentation cannot share their screen
+  const screenShareDisabled =
+    sessionStorage.getItem("guestInPresentation") === "true";
+
   const openScreenShare = () => {
+    if (screenShareDisabled) return;
     const iframe = frameRef.current;
     if (iframe) {
       iframe.contentWindow.postMessage("ScreenShare", "*");
@@ -435,11 +441,17 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     // A guest inside a presentation leaves with LeavePresenterView, not GuestLeaveMeetingVideo
     if (sessionStorage.getItem("guestInPresentation") === "true") {
       dispatch(
-        leavePresenterViewGuestMainApi(navigate, t, {
-          RoomID: String(roomId),
-          UserGUID: String(joinGuestData.guestGuid),
-          Name: String(guestName),
-        }),
+        leavePresenterViewGuestMainApi(
+          navigate,
+          t,
+          {
+            RoomID: String(roomId),
+            UserGUID: String(joinGuestData.guestGuid),
+            Name: String(guestName),
+          },
+          // Guest who came from the meeting video also leaves it after the presentation leave
+          getGuestMeetingLeaveData(),
+        ),
       );
       return;
     }
@@ -555,6 +567,11 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                 src={Screenshare}
                 onClick={openScreenShare}
                 alt="Screenshare"
+                style={
+                  screenShareDisabled
+                    ? { opacity: 0.4, cursor: "not-allowed" }
+                    : undefined
+                }
               />
             </Tooltip>
           </div>

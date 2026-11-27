@@ -18,6 +18,7 @@ import {
   admitRejectPresentationAttendee,
   removeParticipantFromPresentation,
   guestLeaveMeetingVideo,
+  guestLeaveMeetingVideoWaitingRoom,
   muteUnMuteSelf,
   hideUnHideVideoSelf,
   getVideoCallParticipantsForGuest,
@@ -452,6 +453,20 @@ const joinGuestVideoMainApi = (
                 sessionStorage.setItem("guestInPresentation", "true");
               } else {
                 sessionStorage.removeItem("guestInPresentation");
+              }
+              // A fresh lobby join never counts as "came from meeting video"
+              sessionStorage.removeItem("guestPresentationFromVideo");
+              // Meeting's VideoCallURL (if the backend sends it here), needed to leave the waiting room or join a presentation later
+              {
+                const joinedVideoCallUrl =
+                  response.data.responseResult.videoCallUrl ??
+                  response.data.responseResult.videoCallURL;
+                if (joinedVideoCallUrl) {
+                  sessionStorage.setItem(
+                    "guestVideoCallUrl",
+                    String(joinedVideoCallUrl),
+                  );
+                }
               }
               sessionStorage.setItem("hasJoined", true);
             } else if (
@@ -1484,7 +1499,14 @@ const guestEmptySession = (response) => {
 };
 
 // showEndedScreen: land on "The meeting has ended" (screen 4) instead of the join lobby
-const guestLeaveMeetingVideoApi = (navigate, t, data, showEndedScreen = false) => {
+// skipNavigation: only leave the meeting video, the current screen (presentation left/ended) stays
+const guestLeaveMeetingVideoApi = (
+  navigate,
+  t,
+  data,
+  showEndedScreen = false,
+  skipNavigation = false,
+) => {
   return (dispatch) => {
     dispatch(guestLeaveMeetingVideoInit());
     let form = new FormData();
@@ -1496,7 +1518,13 @@ const guestLeaveMeetingVideoApi = (navigate, t, data, showEndedScreen = false) =
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            guestLeaveMeetingVideoApi(navigate, t, data, showEndedScreen),
+            guestLeaveMeetingVideoApi(
+              navigate,
+              t,
+              data,
+              showEndedScreen,
+              skipNavigation,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1510,6 +1538,11 @@ const guestLeaveMeetingVideoApi = (navigate, t, data, showEndedScreen = false) =
               await dispatch(
                 guestLeaveMeetingVideoSuccess(response.data.responseResult, ""),
               );
+              if (skipNavigation) {
+                sessionStorage.removeItem("isZoomEnabled");
+                sessionStorage.setItem("hasJoined", false);
+                return;
+              }
               if (showEndedScreen) {
                 sessionStorage.removeItem("isRejoining");
                 sessionStorage.setItem("isLeftCheck", true);
@@ -1572,8 +1605,96 @@ const guestLeaveMeetingVideoApi = (navigate, t, data, showEndedScreen = false) =
   };
 };
 
+// Guest leaving the meeting-video waiting room (a presentation started meanwhile); data: {VideoCallURL, MeetingID, UserGUID}
+const leaveMeetingVideoWaitingRoomGuestMainApi = (
+  navigate,
+  t,
+  data,
+  onSuccess,
+  onFail,
+) => {
+  return (dispatch) => {
+    let form = new FormData();
+    form.append("RequestMethod", guestLeaveMeetingVideoWaitingRoom.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            leaveMeetingVideoWaitingRoomGuestMainApi(
+              navigate,
+              t,
+              data,
+              onSuccess,
+              onFail,
+            ),
+          );
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult?.isExecuted === true &&
+          String(response.data.responseResult.responseMessage)
+            .toLowerCase()
+            .includes("LeaveMeetingVideoWaitingRoom_01".toLowerCase())
+        ) {
+          onSuccess?.(response.data.responseResult);
+        } else {
+          logVideoError(
+            "leaveMeetingVideoWaitingRoomGuestMainApi",
+            "GuestLeaveMeetingVideoWaitingRoom was not successful",
+            response.data,
+          );
+          onFail?.();
+        }
+      })
+      .catch((response) => {
+        logVideoError(
+          "leaveMeetingVideoWaitingRoomGuestMainApi",
+          "request or response handling failed",
+          response,
+        );
+        onFail?.();
+      });
+  };
+};
+
+// GuestLeaveMeetingVideoWaitingRoom payload for a guest still waiting (not admitted); null if the meeting's VideoCallURL is unknown
+const getGuestWaitingRoomLeaveData = () => {
+  const videoCallUrl = sessionStorage.getItem("guestVideoCallUrl");
+  if (!videoCallUrl) return null;
+  return {
+    VideoCallURL: String(videoCallUrl),
+    MeetingID: Number(sessionStorage.getItem("MeetingId")),
+    UserGUID: String(sessionStorage.getItem("GuestUserID")),
+  };
+};
+
+// Meeting-video leave payload, only for a guest who moved from the meeting video into the presentation (else null)
+const getGuestMeetingLeaveData = () => {
+  if (sessionStorage.getItem("guestPresentationFromVideo") !== "true") {
+    return null;
+  }
+  return {
+    RoomID: String(
+      sessionStorage.getItem("guestMeetingRoomId") ||
+        sessionStorage.getItem("roomID") ||
+        sessionStorage.getItem("roomId"),
+    ),
+    UID: String(sessionStorage.getItem("GuestUserID")),
+    Name: String(sessionStorage.getItem("guestName")),
+    MeetingID: Number(sessionStorage.getItem("MeetingId")),
+  };
+};
+
 // Guest leaving a presentation: LeaveGuestPresenterView instead of GuestLeaveMeetingVideo, then back to the lobby's "left" view
-const leavePresenterViewGuestMainApi = (navigate, t, data) => {
+// meetingLeaveData: guest came from meeting video, so GuestLeaveMeetingVideo follows once the presentation leave succeeds
+const leavePresenterViewGuestMainApi = (
+  navigate,
+  t,
+  data,
+  meetingLeaveData = null,
+) => {
   return (dispatch, getState) => {
     let form = new FormData();
     form.append("RequestMethod", leaveGuestPresenterView.RequestMethod);
@@ -1583,7 +1704,9 @@ const leavePresenterViewGuestMainApi = (navigate, t, data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(leavePresenterViewGuestMainApi(navigate, t, data));
+          dispatch(
+            leavePresenterViewGuestMainApi(navigate, t, data, meetingLeaveData),
+          );
         } else if (
           response.data.responseCode === 200 &&
           response.data.responseResult.isExecuted === true &&
@@ -1596,6 +1719,19 @@ const leavePresenterViewGuestMainApi = (navigate, t, data) => {
           // guestInPresentation stays so the Rejoin button sends JoinPresentationGuestRequest
           sessionStorage.removeItem("isZoomEnabled");
           sessionStorage.setItem("hasJoined", false);
+          if (meetingLeaveData) {
+            // Then leave the meeting video too, without changing the screen
+            sessionStorage.removeItem("guestPresentationFromVideo");
+            dispatch(
+              guestLeaveMeetingVideoApi(
+                navigate,
+                t,
+                meetingLeaveData,
+                false,
+                true,
+              ),
+            );
+          }
           // A presentation-ended screen shown meanwhile (MEETING_PRESENTATION_STOPPED) must not be replaced by the lobby
           if (getState().GuestVideoReducer.guestVideoNavigationData === 8) {
             return;
@@ -2040,6 +2176,9 @@ export {
   setAdmittedParticipant,
   guestLeaveMeetingVideoApi,
   leavePresenterViewGuestMainApi,
+  getGuestMeetingLeaveData,
+  getGuestWaitingRoomLeaveData,
+  leaveMeetingVideoWaitingRoomGuestMainApi,
   removeParticipantFromVideo,
   muteUnMuteSelfMainApi,
   hideUnhideSelfMainApi,

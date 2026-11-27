@@ -1783,6 +1783,15 @@ export const leaveMeetingVideoWaitingRoom = {
   RequestMethod: "ServiceManager.LeaveMeetingVideoWaitingRoom",
 };
 
+// Guest-only: leave the meeting-video waiting room
+export const guestLeaveMeetingVideoWaitingRoom = {
+  RequestMethod: "ServiceManager.GuestLeaveMeetingVideoWaitingRoom",
+};
+
+// Guest-only: leave the Presentation waiting room
+export const guestLeavePresentationWaitingRoom = {
+  RequestMethod: "ServiceManager.GuestLeavePresentationWaitingRoom",
+};
 export const leavePresentationWaitingRoom = {
   RequestMethod: "ServiceManager.LeavePresentationWaitingRoom",
 };

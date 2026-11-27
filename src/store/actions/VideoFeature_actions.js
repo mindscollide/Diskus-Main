@@ -1725,6 +1725,15 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               await dispatch(
                 startPresenterSuccess(response.data.responseResult, ""),
               );
+              // Requests that reached the presenter before this response were held back: open the popup for them now
+              if (flag === 1) {
+                const pendingPresentationRequests =
+                  store.getState().videoFeatureReducer
+                    ?.presentationWaitingParticipantsList;
+                if (pendingPresentationRequests?.length > 0) {
+                  dispatch(guestJoinPopup(true));
+                }
+              }
               // Only the user who started the presentation loads the latest participant + waiting list
               if (flag === 1) {
                 try {

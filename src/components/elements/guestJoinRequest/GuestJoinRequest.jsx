@@ -29,6 +29,10 @@ const GuestJoinRequest = () => {
   const [waitingOnParticipant, setWaitingOnParticipant] = useState([]);
   const GuestVideoReducer = useSelector((state) => state.GuestVideoReducer);
   const videoFeatureReducer = useSelector((state) => state.videoFeatureReducer);
+  // Presentation requests are listed only once StartPresenterView has answered and this user is the presentation host
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
+  );
 
   const [loadingAdmit, setLoadingAdmit] = useState(false);
   const [loadingDeny, setLoadingDeny] = useState(false);
@@ -83,9 +87,11 @@ const GuestJoinRequest = () => {
     // CR(0012249): presentation join requests are shown in this same
     // popup — tagged isPresentationRequest so handleAdmit can route them
     // to the presentation-specific admit/reject API instead.
-    const presentationList = (
-      videoFeatureReducer.presentationWaitingParticipantsList || []
-    ).map((p) => ({ ...p, isPresentationRequest: true }));
+    const presentationList = presenterViewHostFlag
+      ? (videoFeatureReducer.presentationWaitingParticipantsList || []).map(
+          (p) => ({ ...p, isPresentationRequest: true }),
+        )
+      : [];
     const combined = [...list, ...presentationList];
 
     if (combined.length > 0) {
@@ -98,6 +104,7 @@ const GuestJoinRequest = () => {
   }, [
     videoFeatureReducer.waitingParticipantsList,
     videoFeatureReducer.presentationWaitingParticipantsList,
+    presenterViewHostFlag,
   ]);
 
   const handleAdmit = (flag, participantInfo = null) => {
@@ -230,9 +237,11 @@ const GuestJoinRequest = () => {
 
   useEffect(() => {
     const list = videoFeatureReducer.waitingParticipantsList || [];
-    const presentationList = (
-      videoFeatureReducer.presentationWaitingParticipantsList || []
-    ).map((p) => ({ ...p, isPresentationRequest: true }));
+    const presentationList = presenterViewHostFlag
+      ? (videoFeatureReducer.presentationWaitingParticipantsList || []).map(
+          (p) => ({ ...p, isPresentationRequest: true }),
+        )
+      : [];
     const combined = [...list, ...presentationList];
 
     if (combined.length > 0) {
@@ -243,6 +252,7 @@ const GuestJoinRequest = () => {
   }, [
     videoFeatureReducer.waitingParticipantsList,
     videoFeatureReducer.presentationWaitingParticipantsList,
+    presenterViewHostFlag,
   ]);
 
   return (

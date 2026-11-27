@@ -16,6 +16,7 @@ const GuestPresentationEnded = () => {
     // The presentation is over, so a later lobby must not show the presentation view
     sessionStorage.removeItem("guestInPresentation");
     sessionStorage.removeItem("removedFromPresentation");
+    sessionStorage.removeItem("guestPresentationFromVideo");
   }, []);
 
   return (

@@ -2237,6 +2237,7 @@
   "Guest-removed-from-presentation-message": "قام مقدم العرض بإزالتك من العرض التقديمي.",
   "Guest-presentation-access-denied-message": "رفض مقدم هذا العرض التقديمي الطلب.",
   "Guest-left-presentation": "لقد غادرت العرض التقديمي",
+  "Guest-presentation-started": "بدأ العرض التقديمي.",
   "Guest-presentation-ended": "انتهى هذا العرض التقديمي ولم يعد الرابط نشطًا.",
   "Presentation-removed-title": "تمت إزالتك من العرض التقديمي",
   "Presentation-removed-message": "قام المقدّم بإزالتك من العرض التقديمي.",

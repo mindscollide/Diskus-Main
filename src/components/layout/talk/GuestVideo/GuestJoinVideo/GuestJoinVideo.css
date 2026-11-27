@@ -3,6 +3,15 @@
   border-radius: 16px;
   background: #ffffff;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Red leave icon in the top-right corner of the presentation waiting room */
+.guest-waiting-leave-icon {
+  position: absolute;
+  top: 16px;
+  inset-inline-end: 24px;
+  cursor: pointer;
 }
 
 .guest-video-inside-component {
