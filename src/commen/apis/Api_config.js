@@ -1792,6 +1792,7 @@ export const guestLeaveMeetingVideoWaitingRoom = {
 export const guestLeavePresentationWaitingRoom = {
   RequestMethod: "ServiceManager.GuestLeavePresentationWaitingRoom",
 };
+
 export const leavePresentationWaitingRoom = {
   RequestMethod: "ServiceManager.LeavePresentationWaitingRoom",
 };

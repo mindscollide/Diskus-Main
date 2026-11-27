@@ -13,7 +13,7 @@ import {
   guestLeaveMeetingVideoApi,
   guestEmptySession,
   getGuestMeetingLeaveData,
-  getGuestWaitingRoomLeaveData,
+  getGuestPresentationWaitingLeaveData,
   leaveMeetingVideoWaitingRoomGuestMainApi,
   guestHostEmailUpdated,
   joinPresenterViewGuestMainApi,
@@ -38,7 +38,7 @@ import useSnackbar from "../../../../elements/snack_bar/useSnackbar";
 import { meetingApi } from "../../../../../commen/apis/Api_ends_points";
 import {
   guestLeaveMeetingVideo,
-  guestLeaveMeetingVideoWaitingRoom,
+  guestLeavePresentationWaitingRoom,
   leaveGuestPresenterView,
 } from "../../../../../commen/apis/Api_config";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
@@ -710,7 +710,7 @@ const GuestVideoCall = () => {
         // Still waiting for the presenter (lobby screen, presentation request sent, not admitted): leave the waiting room
         const waitingLeaveData =
           inPresentation && guestScreenRef.current === 1
-            ? getGuestWaitingRoomLeaveData()
+            ? getGuestPresentationWaitingLeaveData()
             : null;
         // LeaveGuestPresenterView takes only RoomID, UserGUID and Name; GuestLeaveMeetingVideo keeps its own payload
         const data = waitingLeaveData
@@ -731,7 +731,7 @@ const GuestVideoCall = () => {
         form.append(
           "RequestMethod",
           waitingLeaveData
-            ? guestLeaveMeetingVideoWaitingRoom.RequestMethod
+            ? guestLeavePresentationWaitingRoom.RequestMethod
             : inPresentation
               ? leaveGuestPresenterView.RequestMethod
               : guestLeaveMeetingVideo.RequestMethod,

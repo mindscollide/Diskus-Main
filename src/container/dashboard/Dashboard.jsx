@@ -1653,7 +1653,10 @@ const Dashboard = () => {
               }
             } else if (
               data.payload.message.toLowerCase() ===
-              "MEETING_VIDEO_PARTICIPANT_LEFT_WAITING_ROOM".toLowerCase()
+                "MEETING_VIDEO_PARTICIPANT_LEFT_WAITING_ROOM".toLowerCase() ||
+              // Same event when the one who left the waiting room is a guest
+              data.payload.message.toLowerCase() ===
+                "MEETING_VIDEO_GUEST_PARTICIPANT_LEFT_WAITING_ROOM".toLowerCase()
             ) {
               // Someone left the meeting-video waiting room: drop them from the host's waiting list
               dispatch(
@@ -2555,7 +2558,10 @@ const Dashboard = () => {
               console.log("Participant Left:", data.payload.uid);
             } else if (
               data.payload.message.toLowerCase() ===
-              "PRESENTATION_PARTICIPANT_LEFT_WAITING_ROOM".toLowerCase()
+              "PRESENTATION_PARTICIPANT_LEFT_WAITING_ROOM".toLowerCase() ||
+              // Same event when the one who left the waiting room is a guest
+              data.payload.message.toLowerCase() ===
+                "PRESENTATION_GUEST_PARTICIPANT_LEFT_WAITING_ROOM".toLowerCase()
             ) {
               // Someone left the presentation waiting room: drop them from the presenter's waiting list and roster
               dispatch(presentationParticipantLeftMqtt(data.payload.guid));

@@ -15,11 +15,11 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "antd";
 import {
-  getGuestWaitingRoomLeaveData,
+  getGuestPresentationWaitingLeaveData,
   getValidateString,
   guestVideoNavigationScreen,
   joinGuestVideoMainApi,
-  leaveMeetingVideoWaitingRoomGuestMainApi,
+  leavePresentationWaitingRoomGuestMainApi,
   makeStreamStop,
   setVideoCameraGuest,
   setVoiceControleGuest,
@@ -374,20 +374,20 @@ const GuestJoinVideo = ({
     }
   };
 
-  // Red leave icon on the presentation waiting room: leave the waiting list (GuestLeaveMeetingVideoWaitingRoom), then back to the presentation lobby
+  // Red leave icon on the presentation waiting room: leave the waiting list (GuestLeavePresentationWaitingRoom), then back to the presentation lobby
   const leavingWaitingRoomRef = useRef(false);
   const onLeaveWaitingRoom = () => {
     if (leavingWaitingRoomRef.current) return;
-    const leaveData = getGuestWaitingRoomLeaveData();
+    const leaveData = getGuestPresentationWaitingLeaveData();
     if (!leaveData) {
       console.error(
-        "GuestLeaveMeetingVideoWaitingRoom not sent: videoCallUrl missing",
+        "GuestLeavePresentationWaitingRoom not sent: roomID missing",
       );
       return;
     }
     leavingWaitingRoomRef.current = true;
     dispatch(
-      leaveMeetingVideoWaitingRoomGuestMainApi(
+      leavePresentationWaitingRoomGuestMainApi(
         navigate,
         t,
         leaveData,
