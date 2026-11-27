@@ -19,6 +19,7 @@ import {
   removeParticipantFromPresentation,
   guestLeaveMeetingVideo,
   guestLeaveMeetingVideoWaitingRoom,
+  guestLeavePresentationWaitingRoom,
   muteUnMuteSelf,
   hideUnHideVideoSelf,
   getVideoCallParticipantsForGuest,
@@ -1659,12 +1660,70 @@ const leaveMeetingVideoWaitingRoomGuestMainApi = (
   };
 };
 
-// GuestLeaveMeetingVideoWaitingRoom payload for a guest still waiting (not admitted); null if the meeting's VideoCallURL is unknown
-const getGuestWaitingRoomLeaveData = () => {
-  const videoCallUrl = sessionStorage.getItem("guestVideoCallUrl");
-  if (!videoCallUrl) return null;
+// Guest leaving the presentation waiting room (request sent, not admitted yet); data: {RoomID, MeetingID, UserGUID}
+const leavePresentationWaitingRoomGuestMainApi = (
+  navigate,
+  t,
+  data,
+  onSuccess,
+  onFail,
+) => {
+  return (dispatch) => {
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      guestLeavePresentationWaitingRoom.RequestMethod,
+    );
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            leavePresentationWaitingRoomGuestMainApi(
+              navigate,
+              t,
+              data,
+              onSuccess,
+              onFail,
+            ),
+          );
+        } else if (
+          response.data.responseCode === 200 &&
+          response.data.responseResult?.isExecuted === true &&
+          String(response.data.responseResult.responseMessage)
+            .toLowerCase()
+            .includes("LeavePresentationWaitingRoom_01".toLowerCase())
+        ) {
+          onSuccess?.(response.data.responseResult);
+        } else {
+          logVideoError(
+            "leavePresentationWaitingRoomGuestMainApi",
+            "GuestLeavePresentationWaitingRoom was not successful",
+            response.data,
+          );
+          onFail?.();
+        }
+      })
+      .catch((response) => {
+        logVideoError(
+          "leavePresentationWaitingRoomGuestMainApi",
+          "request or response handling failed",
+          response,
+        );
+        onFail?.();
+      });
+  };
+};
+
+// GuestLeavePresentationWaitingRoom payload for a guest waiting for the presenter; null if the room is unknown
+const getGuestPresentationWaitingLeaveData = () => {
+  // The room the presentation request was sent for (from the validate API)
+  const roomId = sessionStorage.getItem("roomID");
+  if (!roomId) return null;
   return {
-    VideoCallURL: String(videoCallUrl),
+    RoomID: String(roomId),
     MeetingID: Number(sessionStorage.getItem("MeetingId")),
     UserGUID: String(sessionStorage.getItem("GuestUserID")),
   };
@@ -2177,8 +2236,9 @@ export {
   guestLeaveMeetingVideoApi,
   leavePresenterViewGuestMainApi,
   getGuestMeetingLeaveData,
-  getGuestWaitingRoomLeaveData,
+  getGuestPresentationWaitingLeaveData,
   leaveMeetingVideoWaitingRoomGuestMainApi,
+  leavePresentationWaitingRoomGuestMainApi,
   removeParticipantFromVideo,
   muteUnMuteSelfMainApi,
   hideUnhideSelfMainApi,
